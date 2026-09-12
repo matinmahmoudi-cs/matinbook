@@ -1,0 +1,124 @@
+%----------------------------------------
+% mb-headings.sty - Chapter/Section Styles for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/layout/mb-headings}[2025/01/01 v1.0 MatinBook Heading Styles]
+
+%----------------------------------------
+% Chapter Number Format
+%----------------------------------------
+\renewcommand{\thechapter}{\arabic{chapter}}
+
+%----------------------------------------
+% Chapter Style
+%----------------------------------------
+\titleformat{\chapter}[display]
+{\normalfont\bfseries\color{matindarkgray}}
+{%
+    \color{matinblue!20}\fontsize{72}{86}\selectfont\thechapter
+}
+{-20pt}
+{%
+    \Huge
+}
+[\vspace{-15pt}\noindent\textcolor{matinblue}{\rule{\textwidth}{2pt}}]
+
+% Space around chapter
+\titlespacing*{\chapter}
+{0pt}
+{-30pt}
+{50pt}
+
+%----------------------------------------
+% Section Style
+%----------------------------------------
+\titleformat{\section}
+{\normalfont\Large\bfseries\color{matindarkgray}}
+{%
+    \colorbox{matinblue!15}{\color{matinblue}\bfseries\thesection}%
+}
+{0.8em}
+{}
+
+\titlespacing*{\section}
+{0pt}
+{20pt}
+{10pt}
+
+%----------------------------------------
+% Subsection Style
+%----------------------------------------
+\titleformat{\subsection}
+{\normalfont\large\bfseries\color{matindarkgray}}
+{\color{matinblue!70}\thesubsection}
+{0.8em}
+{}
+
+\titlespacing*{\subsection}
+{0pt}
+{15pt}
+{8pt}
+
+%----------------------------------------
+% Subsubsection Style
+%----------------------------------------
+\titleformat{\subsubsection}
+{\normalfont\normalsize\bfseries\color{matindarkgray}}
+{\color{matinblue!50}\thesubsubsection}
+{0.8em}
+{}
+
+\titlespacing*{\subsubsection}
+{0pt}
+{12pt}
+{6pt}
+
+%----------------------------------------
+% Running Headers
+%----------------------------------------
+% Show chapter name in header
+\renewcommand{\chaptermark}[1]{%
+    \markboth{%
+        \ifnum\c@chapter>0
+        \small\bfseries \chaptername\space\thechapter: #1%
+        \fi
+    }{%
+        \ifnum\c@chapter>0
+        \small\bfseries \chaptername\space\thechapter: #1%
+        \fi
+    }%
+}
+
+\renewcommand{\sectionmark}[1]{%
+    \markright{%
+        \ifnum\c@chapter>0
+        \small\bfseries #1%
+        \fi
+    }%
+}
+
+%----------------------------------------
+% Table of Contents Style
+%----------------------------------------
+\renewcommand{\cftchapfont}{\bfseries\color{matindarkgray}}
+\renewcommand{\cftchappagefont}{\bfseries\color{matinblue}}
+\renewcommand{\cftsecfont}{\color{matindarkgray}}
+\renewcommand{\cftsubsecfont}{\color{matinmediumgray}}
+\renewcommand{\cftsubsubsecfont}{\color{matinmediumgray!70}}
+
+% Dots in ToC
+\renewcommand{\cftdotsep}{0.5}
+\renewcommand{\cftdot}{%
+    \textcolor{matinblue!30}{.}%
+}
+
+% Chapter number style in ToC
+\renewcommand{\cftchappresnum}{\color{matinblue!70}}
+\renewcommand{\cftchapaftersnum}{}
+
+% Space before chapter in ToC
+\setlength{\cftbeforechapskip}{8pt}
+\setlength{\cftbeforesecskip}{4pt}
+
+\endinput
