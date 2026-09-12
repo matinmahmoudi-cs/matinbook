@@ -1,0 +1,81 @@
+%----------------------------------------
+% mb-core.sty - Core Package Loader for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/core/mb-core}[2025/01/01 v1.0 MatinBook Core Packages]
+
+%----------------------------------------
+% Essential Packages (load order matters!)
+%----------------------------------------
+
+% Graphics and Colors (load first, before bidi)
+\RequirePackage{graphicx}
+\RequirePackage{pgf-pie}
+\RequirePackage{xcolor}
+
+% Font system
+\RequirePackage{fontspec}
+
+% Typography (before xepersian)
+\RequirePackage{microtype}
+
+% Mathematics (mathtools before unicode-math)
+\RequirePackage{mathtools}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{amsthm}
+\RequirePackage{unicode-math}
+
+% Algorithms (before xepersian)
+\RequirePackage{algorithm}
+\RequirePackage{algpseudocode}
+
+% Boxes - tcolorbox (before xepersian)
+\RequirePackage[most]{tcolorbox}
+
+% Code - minted (before xepersian)
+\RequirePackage{minted}
+
+% Bibliography (before xepersian)
+\RequirePackage[backend=biber,style=numeric,sorting=none]{biblatex}
+
+% Index (before xepersian)
+\RequirePackage{imakeidx}
+
+% Layout (before xepersian)
+\RequirePackage{geometry}
+\RequirePackage{fancyhdr}
+\RequirePackage{titlesec}
+\RequirePackage{tocloft}
+\RequirePackage{setspace}
+\RequirePackage{caption}
+\RequirePackage[bottom]{footmisc}
+
+% Professional Tables
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{multirow}
+
+% Enhanced column types for Persian tables
+\newcolumntype{L}{>{\raggedright\arraybackslash}p}
+\newcolumntype{R}{>{\raggedleft\arraybackslash}p}
+\newcolumntype{C}{>{\centering\arraybackslash}p}
+
+% Draft watermark (conditional)
+\if@matin@draft
+\RequirePackage{draftwatermark}
+\fi
+
+%----------------------------------------
+% Hyperref & Cleveref (before xepersian)
+%----------------------------------------
+\RequirePackage[bookmarks]{hyperref}
+\RequirePackage{cleveref}
+
+%----------------------------------------
+% Log
+%----------------------------------------
+\typeout{MatinBook: Core packages loaded successfully (v1.0)}
+
+\endinput
