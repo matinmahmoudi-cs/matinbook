@@ -1,0 +1,98 @@
+%----------------------------------------
+% mb-math.sty - Mathematical Environments for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/math/mb-math}[2025/01/01 v1.0 MatinBook Math System]
+
+%----------------------------------------
+% Equation Numbering
+%----------------------------------------
+\numberwithin{equation}{chapter}
+
+%----------------------------------------
+% Math Operators
+%----------------------------------------
+% Vector Calculus
+\DeclareMathOperator{\grad}{grad}
+\DeclareMathOperator{\curl}{curl}
+\DeclareMathOperator{\diver}{div}
+
+% Linear Algebra
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\trace}{trace}
+
+% Optimization
+\DeclareMathOperator{\argmax}{argmax}
+\DeclareMathOperator{\argmin}{argmin}
+
+% Number Theory
+\DeclareMathOperator{\lcm}{lcm}
+\DeclareMathOperator{\gcdop}{gcd}
+
+% Special Functions
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\erf}{erf}
+
+%----------------------------------------
+% Number Sets
+%----------------------------------------
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+
+%----------------------------------------
+% Delimiters
+%----------------------------------------
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+\DeclarePairedDelimiter{\inner}{\langle}{\rangle}
+\DeclarePairedDelimiter{\paren}{(}{)}
+
+%----------------------------------------
+% Sets
+%----------------------------------------
+% Simple set: \set{1, 2, 3}
+\newcommand{\set}[1]{\{#1\}}
+
+% Set builder: \setbuilder{x \in \R}{x > 0}
+\newcommand{\setbuilder}[2]{\{\, #1 \mid #2 \,\}}
+
+% Manual \given for \{...\given ...\}
+\newcommand{\given}{\;\middle|\;}
+
+%----------------------------------------
+% Matrix Commands
+%----------------------------------------
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
+
+%----------------------------------------
+% Derivatives and Integrals
+%----------------------------------------
+\newcommand{\dd}[1]{\mathrm{d}#1}
+\newcommand{\D}{\mathrm{d}}
+
+\newcommand{\deriv}[2]{\frac{\dd{#1}}{\dd{#2}}}
+\newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
+
+%----------------------------------------
+% Equation Array Settings
+%----------------------------------------
+\allowdisplaybreaks
+
+%----------------------------------------
+% Math Spacing
+%----------------------------------------
+\thickmuskip=5mu plus 5mu
+\medmuskip=4mu plus 2mu minus 4mu
+\thinmuskip=3mu
+
+\endinput
