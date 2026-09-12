@@ -1,0 +1,352 @@
+%========================================
+% MatinBook - Stage 07: Boxes Test
+% Test: All 10 Colored Box Types + Visual Comparison
+% Purpose: Validate all tcolorbox environments and color families
+%========================================
+
+% Add parent directory to search path
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+
+\documentclass{matinbook}
+
+\title{آزمون جعبه‌های رنگی}
+\author{تیم توسعه MatinBook}
+\date{تابستان ۱۴۰۵}
+
+\begin{document}
+
+%----------------------------------------
+% Title Page
+%----------------------------------------
+\maketitle
+
+%----------------------------------------
+% Chapter 1: Blue Family (Theorems)
+%----------------------------------------
+\chapter{خانواده آبی: قضایا و اثبات‌ها}
+
+\section{راهنمای رنگ‌ها}
+
+خانواده آبی برای مفاهیم اصلی و اثبات‌شده استفاده می‌شود.
+شامل چهار نوع جعبه است که از تیره به روشن مرتب شده‌اند:
+
+\begin{itemize}
+    \item \colorbox{matindarkblue!80}{\textcolor{white}{\textbf{گزاره}}} --- تیره‌ترین
+    \item \colorbox{matinblue}{\textcolor{white}{\textbf{قضیه}}} --- اصلی
+    \item \colorbox{matinblue!70}{\textcolor{white}{\textbf{لم}}} --- متوسط
+    \item \colorbox{matinblue!50}{\textcolor{white}{\textbf{نتیجه}}} --- روشن
+\end{itemize}
+
+\section{نمونه‌های خانواده آبی}
+
+\begin{theorem}[قضیه فیثاغورث]
+    در مثلث قائم‌الزاویه، مربع وتر برابر است با
+    مجموع مربعات دو ضلع دیگر:
+    \[
+        a^{2} + b^{2} = c^{2}
+    \]
+    \label{thm:pythagoras}
+\end{theorem}
+
+\begin{lemma}[لم کمکی]
+    این یک لم با رنگ آبی متوسط است.
+    لم‌ها معمولاً برای اثبات قضایای بزرگتر
+    به کار می‌روند و ارزش مستقلی ندارند.
+    \label{lem:sample}
+\end{lemma}
+
+\begin{corollary}[نتیجه مستقیم]
+    این یک نتیجه با رنگ آبی روشن است.
+    نتایج معمولاً بلافاصله از قضایا یا لم‌ها
+    نتیجه‌گیری می‌شوند.
+    \label{cor:sample}
+\end{corollary}
+
+\begin{proposition}[گزاره نمونه]
+    این یک گزاره با رنگ آبی تیره است.
+    گزاره‌ها احکامی هستند که ارزش اثبات دارند
+    اما لزوماً به اندازه قضایا مهم نیستند.
+    \label{prop:sample}
+\end{proposition}
+
+\begin{proof}[اثبات نمونه]
+    این یک جعبه اثبات است که از خانواده آبی
+    با رنگ بسیار روشن استفاده می‌کند.
+    اثبات‌ها معمولاً با علامت پایان مشخص می‌شوند. $\square$
+\end{proof}
+
+%----------------------------------------
+% Chapter 2: Green Family (Definitions)
+%----------------------------------------
+\chapter{خانواده سبز: تعاریف و مفاهیم}
+
+\section{راهنمای رنگ}
+
+خانواده سبز برای تعاریف و معرفی مفاهیم جدید
+استفاده می‌شود. رنگ سبز نماد رشد و یادگیری است.
+
+\colorbox{matingreen}{\textcolor{white}{\textbf{تعریف}}} ---
+رنگ اصلی خانواده سبز
+
+\section{نمونه‌های تعاریف}
+
+\begin{definition}[مشتق تابع]
+    مشتق تابع $f$ در نقطه $x_{0}$ به صورت زیر تعریف می‌شود:
+    \[
+        f'(x_{0}) = \lim_{h \to 0} \frac{f(x_{0} + h) - f(x_{0})}{h}
+    \]
+    مشتق نشان‌دهنده نرخ تغییرات لحظه‌ای تابع است.
+    \label{def:derivative}
+\end{definition}
+
+\begin{definition}[انتگرال معین]
+    انتگرال معین تابع $f$ روی بازه $[a, b]$:
+    \[
+        \int_{a}^{b} f(x) \dd{x} = \lim_{n \to \infty}
+        \sum_{i=1}^{n} f(x_{i}^{*}) \Delta x
+    \]
+    انتگرال سطح زیر نمودار تابع را محاسبه می‌کند.
+    \label{def:integral}
+\end{definition}
+
+\begin{definition}[ماتریس]
+    ماتریس $A$ با ابعاد $m \times n$ آرایه‌ای مستطیلی
+    از اعداد با $m$ سطر و $n$ ستون است:
+    \[
+        A = [a_{ij}]_{m \times n}
+    \]
+    \label{def:matrix}
+\end{definition}
+
+%----------------------------------------
+% Chapter 3: Orange Family (Examples)
+%----------------------------------------
+\chapter{خانواده نارنجی: مثال‌ها}
+
+\section{راهنمای رنگ}
+
+خانواده نارنجی برای مثال‌های کاربردی استفاده می‌شود.
+رنگ گرم نارنجی توجه خواننده را به کاربرد مفاهیم جلب می‌کند.
+
+\colorbox{matinorange}{\textcolor{white}{\textbf{مثال}}} ---
+رنگ اصلی خانواده نارنجی
+
+\section{نمونه‌های مثال}
+
+\begin{example}[مشتق چندجمله‌ای]
+    مشتق تابع $f(x) = x^{3} - 2x^{2} + 5x - 1$:
+    \[
+        f'(x) = 3x^{2} - 4x + 5
+    \]
+    \label{ex:derivative-poly}
+\end{example}
+
+\begin{example}[محاسبه انتگرال]
+    مساحت زیر نمودار $f(x) = x^{2}$ از $x = 0$ تا $x = 2$:
+    \[
+        \int_{0}^{2} x^{2} \dd{x}
+        = \left[ \frac{x^{3}}{3} \right]_{0}^{2}
+        = \frac{8}{3} \approx 2.67
+    \]
+    \label{ex:integral-x2}
+\end{example}
+
+\begin{example}[ضرب ماتریس‌ها]
+    \[
+    \mat{1 & 2 \\ 3 & 4} \times
+    \mat{5 & 6 \\ 7 & 8} =
+    \mat{1\cdot5+2\cdot7 & 1\cdot6+2\cdot8 \\
+         3\cdot5+4\cdot7 & 3\cdot6+4\cdot8} =
+    \mat{19 & 22 \\ 43 & 50}
+    \]
+    \label{ex:matrix-multiply}
+\end{example}
+
+%----------------------------------------
+% Chapter 4: Red Family (Remarks)
+%----------------------------------------
+\chapter{خانواده قرمز: نکات و هشدارها}
+
+\section{راهنمای رنگ}
+
+خانواده قرمز برای نکات مهم، هشدارها و توجه‌ها
+استفاده می‌شود. رنگ قرمز به طور طبیعی جلب توجه می‌کند.
+
+\colorbox{matinred}{\textcolor{white}{\textbf{نکته}}} ---
+رنگ اصلی خانواده قرمز
+
+\section{نمونه‌های نکات}
+
+\begin{remark}[نکته مهم]
+    در محاسبه مشتق، توجه داشته باشید که
+    $\deriv{}{x}(x^{n}) = nx^{n-1}$ فقط برای
+    $n \neq 0$ معتبر است. برای $n = 0$،
+    مشتق تابع ثابت صفر است.
+    \label{rem:derivative-power}
+\end{remark}
+
+\begin{remark}[هشدار]
+    تقسیم بر صفر تعریف نشده است!
+    هنگام ساده‌سازی عبارات کسری،
+    همواره فرض کنید مخرج غیرصفر است.
+    \label{rem:division-zero}
+\end{remark}
+
+\begin{remark}[نکته کاربردی]
+    برای حفظ کردن فرمول مشتق توابع مثلثاتی،
+    به یاد داشته باشید که مشتق سینوس، کسینوس
+    و مشتق کسینوس، \textbf{منفی} سینوس است:
+    \[
+        \deriv{}{x}(\sin x) = \cos x, \qquad
+        \deriv{}{x}(\cos x) = -\sin x
+    \]
+    \label{rem:trig-derivatives}
+\end{remark}
+
+%----------------------------------------
+% Chapter 5: Purple Family (Exercises)
+%----------------------------------------
+\chapter{خانواده بنفش: تمرین‌ها}
+
+\section{راهنمای رنگ}
+
+خانواده بنفش برای تمرین‌ها و مسائل استفاده می‌شود.
+رنگ بنفش محرک خلاقیت و تفکر است.
+
+\colorbox{matinpurple}{\textcolor{white}{\textbf{تمرین}}} ---
+رنگ اصلی خانواده بنفش
+
+\section{نمونه‌های تمرین}
+
+\begin{exercise}[مشتق توابع مثلثاتی]
+    مشتق توابع زیر را محاسبه کنید:
+    \begin{enumerate}
+        \item $f(x) = \sin(2x)$
+        \item $g(x) = \cos(x^{2})$
+        \item $h(x) = \tan x$
+    \end{enumerate}
+    \label{exc:trig-derivatives}
+\end{exercise}
+
+\begin{solution}[راه حل]
+    با استفاده از قاعده زنجیره‌ای:
+    \begin{enumerate}
+        \item $f'(x) = 2\cos(2x)$
+        \item $g'(x) = -2x\sin(x^{2})$
+        \item $h'(x) = \sec^{2} x = \frac{1}{\cos^{2} x}$
+    \end{enumerate}
+\end{solution}
+
+\begin{exercise}[انتگرال‌گیری]
+    انتگرال‌های زیر را محاسبه کنید:
+    \begin{enumerate}
+        \item $\int (3x^{2} - 4x + 1) \dd{x}$
+        \item $\int \sin x \dd{x}$
+        \item $\int e^{2x} \dd{x}$
+    \end{enumerate}
+    \label{exc:integrals}
+\end{exercise}
+
+\begin{solution}[راه حل]
+    \begin{enumerate}
+        \item $\int (3x^{2} - 4x + 1) \dd{x}
+        = x^{3} - 2x^{2} + x + C$
+        \item $\int \sin x \dd{x} = -\cos x + C$
+        \item $\int e^{2x} \dd{x}
+        = \frac{1}{2}e^{2x} + C$
+    \end{enumerate}
+\end{solution}
+
+%----------------------------------------
+% Chapter 6: All Boxes at a Glance
+%----------------------------------------
+\chapter{نمای کلی همه جعبه‌ها}
+
+\section{مقایسه بصری}
+
+در این بخش، هر ۱۰ نوع جعبه را بدون محتوای طولانی
+در کنار هم می‌بینیم تا تفاوت رنگ‌ها مشهود باشد:
+
+\begin{theorem}
+    \textbf{قضیه (آبی)}: مهم‌ترین احکام ریاضی
+\end{theorem}
+
+\begin{lemma}
+    \textbf{لم (آبی متوسط)}: احکام کمکی برای اثبات
+\end{lemma}
+
+\begin{corollary}
+    \textbf{نتیجه (آبی روشن)}: نتایج مستقیم قضایا
+\end{corollary}
+
+\begin{proposition}
+    \textbf{گزاره (آبی تیره)}: احکام با اهمیت کمتر
+\end{proposition}
+
+\begin{definition}
+    \textbf{تعریف (سبز)}: معرفی مفاهیم جدید
+\end{definition}
+
+\begin{example}
+    \textbf{مثال (نارنجی)}: کاربرد مفاهیم
+\end{example}
+
+\begin{remark}
+    \textbf{نکته (قرمز)}: توضیحات و هشدارهای مهم
+\end{remark}
+
+\begin{exercise}
+    \textbf{تمرین (بنفش)}: مسائل برای حل کردن
+\end{exercise}
+
+\begin{solution}
+    \textbf{راه حل (سبز روشن)}: پاسخ تشریحی تمرین‌ها
+\end{solution}
+
+\begin{proof}
+    \textbf{اثبات (آبی خیلی روشن)}: استدلال ریاضی
+\end{proof}
+
+%----------------------------------------
+% Summary
+%----------------------------------------
+\chapter{خلاصه نتایج}
+
+\section{وضعیت جعبه‌های رنگی}
+
+\begin{table}[h]
+\centering
+\caption{وضعیت تمام جعبه‌های رنگی MatinBook}
+\label{tab:boxes-status}
+\begin{tabular}{|c|C{3cm}|c|c|}
+\hline
+\textbf{خانواده} & \textbf{نوع جعبه} & \textbf{رنگ} & \textbf{وضعیت} \\
+\hline
+\multirow{5}{*}{آبی} & قضیه (\lr{theorem}) & \colorbox{matinblue}{\textcolor{white}{آبی}} & \textcolor{matingreen}{✅} \\
+& لم (\lr{lemma}) & \colorbox{matinblue!70}{\textcolor{white}{متوسط}} & \textcolor{matingreen}{✅} \\
+& نتیجه (\lr{corollary}) & \colorbox{matinblue!50}{\textcolor{white}{روشن}} & \textcolor{matingreen}{✅} \\
+& گزاره (\lr{proposition}) & \colorbox{matindarkblue}{\textcolor{white}{تیره}} & \textcolor{matingreen}{✅} \\
+& اثبات (\lr{proof}) & \colorbox{matinblue!30}{خیلی روشن} & \textcolor{matingreen}{✅} \\
+\hline
+سبز & تعریف (\lr{definition}) & \colorbox{matingreen}{\textcolor{white}{سبز}} & \textcolor{matingreen}{✅} \\
+\hline
+نارنجی & مثال (\lr{example}) & \colorbox{matinorange}{\textcolor{white}{نارنجی}} & \textcolor{matingreen}{✅} \\
+\hline
+قرمز & نکته (\lr{remark}) & \colorbox{matinred}{\textcolor{white}{قرمز}} & \textcolor{matingreen}{✅} \\
+\hline
+بنفش & تمرین (\lr{exercise}) & \colorbox{matinpurple}{\textcolor{white}{بنفش}} & \textcolor{matingreen}{✅} \\
+\hline
+سبز روشن & راه حل (\lr{solution}) & \colorbox{matingreen!60}{\textcolor{white}{روشن}} & \textcolor{matingreen}{✅} \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{نتیجه}
+
+\textbf{تمام ۱۰ نوع جعبه رنگی \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شدند.}
+رنگ‌ها در ۵ خانواده (آبی، سبز، نارنجی، قرمز، بنفش)
+به درستی کار می‌کنند و تمایز بصری مناسبی ایجاد می‌کنند. 🎉
+
+\end{document}
