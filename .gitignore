@@ -49,8 +49,6 @@ auto/
 # Ignore all PDFs by default
 *.pdf
 
-# But keep example PDFs (they're reference documents)
-!examples/**/*.pdf
 
 # ============================================
 # Editor / IDE
