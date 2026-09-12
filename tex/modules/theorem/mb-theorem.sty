@@ -1,0 +1,194 @@
+%----------------------------------------
+% mb-theorem.sty - Theorem Environments for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/theorem/mb-theorem}[2025/01/01 v1.0 MatinBook Theorem System]
+
+%----------------------------------------
+% Counter Setup
+%----------------------------------------
+% Shared counter for theorems, lemmas, corollaries, propositions
+\newcounter{theoremcounter}[chapter]
+\renewcommand{\thetheoremcounter}{\thechapter.\arabic{theoremcounter}}
+
+%----------------------------------------
+% Theorem Environment
+%----------------------------------------
+\newenvironment{theorem}[1][]{%
+    \refstepcounter{theoremcounter}%
+    \ifx\relax#1\relax
+        \begin{theorembox}{\theoremname\space\thetheoremcounter}%
+    \else
+        \begin{theorembox}{\theoremname\space\thetheoremcounter\space(#1)}%
+    \fi
+}{%
+    \end{theorembox}%
+}
+
+%----------------------------------------
+% Lemma Environment
+%----------------------------------------
+\newenvironment{lemma}[1][]{%
+    \refstepcounter{theoremcounter}%
+    \ifx\relax#1\relax
+        \begin{lemmabox}{\lemmaname\space\thetheoremcounter}%
+    \else
+        \begin{lemmabox}{\lemmaname\space\thetheoremcounter\space(#1)}%
+    \fi
+}{%
+    \end{lemmabox}%
+}
+
+%----------------------------------------
+% Corollary Environment
+%----------------------------------------
+\newenvironment{corollary}[1][]{%
+    \refstepcounter{theoremcounter}%
+    \ifx\relax#1\relax
+        \begin{corollarybox}{\corollaryname\space\thetheoremcounter}%
+    \else
+        \begin{corollarybox}{\corollaryname\space\thetheoremcounter\space(#1)}%
+    \fi
+}{%
+    \end{corollarybox}%
+}
+
+%----------------------------------------
+% Proposition Environment
+%----------------------------------------
+\newenvironment{proposition}[1][]{%
+    \refstepcounter{theoremcounter}%
+    \ifx\relax#1\relax
+        \begin{propositionbox}{\propositionname\space\thetheoremcounter}%
+    \else
+        \begin{propositionbox}{\propositionname\space\thetheoremcounter\space(#1)}%
+    \fi
+}{%
+    \end{propositionbox}%
+}
+
+%----------------------------------------
+% Definition Environment (separate counter)
+%----------------------------------------
+\newcounter{definitioncounter}[chapter]
+\renewcommand{\thedefinitioncounter}{\thechapter.\arabic{definitioncounter}}
+
+\newenvironment{definition}[1][]{%
+    \refstepcounter{definitioncounter}%
+    \ifx\relax#1\relax
+        \begin{definitionbox}{\definitionname\space\thedefinitioncounter}%
+    \else
+        \begin{definitionbox}{\definitionname\space\thedefinitioncounter\space(#1)}%
+    \fi
+}{%
+    \end{definitionbox}%
+}
+
+%----------------------------------------
+% Example Environment (separate counter)
+%----------------------------------------
+\newcounter{examplecounter}[chapter]
+\renewcommand{\theexamplecounter}{\thechapter.\arabic{examplecounter}}
+
+\newenvironment{example}[1][]{%
+    \refstepcounter{examplecounter}%
+    \ifx\relax#1\relax
+        \begin{examplebox}{\examplename\space\theexamplecounter}%
+    \else
+        \begin{examplebox}{\examplename\space\theexamplecounter\space(#1)}%
+    \fi
+}{%
+    \end{examplebox}%
+}
+
+%----------------------------------------
+% Remark Environment (separate counter)
+%----------------------------------------
+\newcounter{remarkcounter}[chapter]
+\renewcommand{\theremarkcounter}{\thechapter.\arabic{remarkcounter}}
+
+\newenvironment{remark}[1][]{%
+    \refstepcounter{remarkcounter}%
+    \ifx\relax#1\relax
+        \begin{remarkbox}{\remarkname\space\theremarkcounter}%
+    \else
+        \begin{remarkbox}{\remarkname\space\theremarkcounter\space(#1)}%
+    \fi
+}{%
+    \end{remarkbox}%
+}
+
+%----------------------------------------
+% Exercise Environment (separate counter)
+%----------------------------------------
+\newcounter{exercisecounter}[chapter]
+\renewcommand{\theexercisecounter}{\thechapter.\arabic{exercisecounter}}
+
+\newenvironment{exercise}[1][]{%
+    \refstepcounter{exercisecounter}%
+    \ifx\relax#1\relax
+        \begin{exercisebox}{\exercisename\space\theexercisecounter}%
+    \else
+        \begin{exercisebox}{\exercisename\space\theexercisecounter\space(#1)}%
+    \fi
+}{%
+    \end{exercisebox}%
+}
+
+%----------------------------------------
+% Solution Environment (no numbering)
+%----------------------------------------
+\newenvironment{solution}{%
+    \begin{solutionbox}%
+}{%
+    \end{solutionbox}%
+}
+
+%----------------------------------------
+% Proof Environment
+%----------------------------------------
+\renewenvironment{proof}[1][]{%
+    \begin{proofbox}%
+        \ifx\relax#1\relax
+            \textbf{\proofname}%
+        \else
+            \textbf{\proofname\space(#1)}%
+        \fi
+}{%
+    \end{proofbox}%
+}
+
+%----------------------------------------
+% Register Counters with Cleveref
+%----------------------------------------
+% These tell cleveref what name to use for each counter type
+
+% Shared counter (theorem, lemma, corollary, proposition)
+% We register it as "theorem" since it's the primary type
+\crefname{theoremcounter}{\theoremname}{\theoremname}
+\Crefname{theoremcounter}{\theoremname}{\theoremname}
+
+% Individual counters
+\crefname{definitioncounter}{\definitionname}{\definitionname}
+\Crefname{definitioncounter}{\definitionname}{\definitionname}
+
+\crefname{examplecounter}{\examplename}{\examplename}
+\Crefname{examplecounter}{\examplename}{\examplename}
+
+\crefname{remarkcounter}{\remarkname}{\remarkname}
+\Crefname{remarkcounter}{\remarkname}{\remarkname}
+
+\crefname{exercisecounter}{\exercisename}{\exercisename}
+\Crefname{exercisecounter}{\exercisename}{\exercisename}
+
+%----------------------------------------
+% Reference Commands
+%----------------------------------------
+\newcommand{\thmref}[1]{\theoremname\space\ref{#1}}
+\newcommand{\lemref}[1]{\lemmaname\space\ref{#1}}
+\newcommand{\corref}[1]{\corollaryname\space\ref{#1}}
+\newcommand{\defref}[1]{\definitionname\space\ref{#1}}
+\newcommand{\exref}[1]{\examplename\space\ref{#1}}
+
+\endinput
