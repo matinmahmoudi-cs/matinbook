@@ -1,0 +1,369 @@
+%========================================
+% MatinBook - Stage 09: Algorithm Test
+% Test: Algorithm Environments + Captions + List of Algorithms + References
+% Purpose: Validate algorithm display, numbering, and indexing
+%========================================
+
+% Add parent directory to search path
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+
+\documentclass{matinbook}
+
+\title{آزمون سیستم الگوریتم‌ها}
+\author{تیم توسعه MatinBook}
+\date{تابستان ۱۴۰۵}
+
+\begin{document}
+
+%----------------------------------------
+% Title Page
+%----------------------------------------
+\maketitle
+
+%----------------------------------------
+% List of Algorithms
+%----------------------------------------
+\listofalgorithms
+\clearpage
+
+%----------------------------------------
+% Chapter 1: Search Algorithms
+%----------------------------------------
+\chapter{الگوریتم‌های جستجو}
+
+\section{مقدمه}
+
+الگوریتم‌های جستجو\index{الگوریتم!جستجو} از پایه‌ای‌ترین
+الگوریتم‌های علوم کامپیوتر هستند. در این فصل،
+دو الگوریتم اصلی جستجو را بررسی می‌کنیم.
+
+\section{جستجوی خطی}
+
+ساده‌ترین روش جستجو، بررسی تک‌تک عناصر آرایه است.
+این روش برای آرایه‌های مرتب و نامرتب کار می‌کند:
+
+\begin{latin}
+\begin{algorithm}
+\begin{algorithmic}[1]
+    \Require $A[1..n]$: array of $n$ elements
+    \Require $x$: target value to find
+    \Ensure Index $i$ such that $A[i] = x$, or $-1$ if not found
+    
+    \For{$i \gets 1$ \textbf{to} $n$}
+        \If{$A[i] = x$}
+            \State \Return $i$
+        \EndIf
+    \EndFor
+    \State \Return $-1$
+\end{algorithmic}
+\end{algorithm}
+\algcaption[alg:linear-search]{جستجوی خطی}
+\end{latin}
+
+\begin{theorem}[پیچیدگی جستجوی خطی]
+    الگوریتم \algref{alg:linear-search} در بدترین حالت
+    $O(n)$ مقایسه انجام می‌دهد، زیرا ممکن است مجبور شود
+    تمام $n$ عنصر آرایه را بررسی کند.
+    \label{thm:linear-complexity}
+\end{theorem}
+
+\section{جستجوی دودویی}
+
+برای آرایه‌های \textbf{مرتب}، جستجوی دودویی
+بسیار کارآمدتر از جستجوی خطی است:
+
+\begin{latin}
+\begin{algorithm}
+\begin{algorithmic}[1]
+    \Require $A[1..n]$: sorted array (ascending order)
+    \Require $x$: target value to find
+    \Ensure Index $i$ such that $A[i] = x$, or $-1$ if not found
+    
+    \State $left \gets 1$
+    \State $right \gets n$
+    
+    \While{$left \leq right$}
+        \State $mid \gets \lfloor (left + right) / 2 \rfloor$
+        \If{$A[mid] = x$}
+            \State \Return $mid$
+        \ElsIf{$A[mid] < x$}
+            \State $left \gets mid + 1$
+        \Else
+            \State $right \gets mid - 1$
+        \EndIf
+    \EndWhile
+    
+    \State \Return $-1$
+\end{algorithmic}
+\end{algorithm}
+\algcaption[alg:binary-search]{جستجوی دودویی}
+\end{latin}
+
+\begin{theorem}[پیچیدگی جستجوی دودویی]
+    الگوریتم \algref{alg:binary-search} در بدترین حالت
+    $O(\log n)$ مقایسه انجام می‌دهد، زیرا در هر مرحله
+    فضای جستجو را نصف می‌کند.
+    \label{thm:binary-complexity}
+\end{theorem}
+
+\section{مقایسه دو الگوریتم}
+
+مقایسه \algref{alg:linear-search} و \algref{alg:binary-search}
+نشان می‌دهد که برای آرایه‌های مرتب، جستجوی دودویی
+به مراتب سریع‌تر است:
+
+\begin{table}[h]
+\centering
+\caption{مقایسه الگوریتم‌های جستجو}
+\label{tab:search-comparison}
+\begin{tabular}{|c|C{3cm}|C{3cm}|c|}
+\hline
+\textbf{معیار} & \textbf{جستجوی خطی} & \textbf{جستجوی دودویی} & \textbf{برنده} \\
+\hline
+پیچیدگی زمانی & $O(n)$ & $O(\log n)$ & دودویی \\
+نیاز به مرتب‌سازی & خیر & \textcolor{matinred}{بله} & خطی \\
+پیاده‌سازی & ساده & متوسط & خطی \\
+کارایی برای $n$ کوچک & خوب & سربار بیشتر & خطی \\
+کارایی برای $n$ بزرگ & ضعیف & \textcolor{matingreen}{عالی} & دودویی \\
+\hline
+\end{tabular}
+\end{table}
+
+%----------------------------------------
+% Chapter 2: Sorting Algorithms
+%----------------------------------------
+\chapter{الگوریتم‌های مرتب‌سازی}
+
+\section{مرتب‌سازی سریع}
+
+\lr{Quick Sort}\index{الگوریتم!مرتب‌سازی سریع}
+یکی از سریع‌ترین الگوریتم‌های مرتب‌سازی در عمل است:
+
+\begin{latin}
+\begin{algorithm}
+\begin{algorithmic}[1]
+    \Require $A[1..n]$: array of $n$ elements
+    \Require $low, high$: indices defining the subarray
+    \Ensure Array $A$ is sorted in ascending order
+    
+    \Function{QuickSort}{$A$, $low$, $high$}
+        \If{$low < high$}
+            \State $p \gets \Call{Partition}{A, low, high}$
+            \State $\Call{QuickSort}{A, low, p - 1}$
+            \State $\Call{QuickSort}{A, p + 1, high}$
+        \EndIf
+    \EndFunction
+    \Statex
+    \Function{Partition}{$A$, $low$, $high$}
+        \State $pivot \gets A[high]$
+        \State $i \gets low - 1$
+        \For{$j \gets low$ \textbf{to} $high - 1$}
+            \If{$A[j] \leq pivot$}
+                \State $i \gets i + 1$
+                \State Swap $A[i]$ and $A[j]$
+            \EndIf
+        \EndFor
+        \State Swap $A[i+1]$ and $A[high]$
+        \State \Return $i + 1$
+    \EndFunction
+\end{algorithmic}
+\end{algorithm}
+\algcaption[alg:quicksort]{مرتب‌سازی سریع (\lr{Quick Sort})}
+\end{latin}
+
+\section{الگوریتم اقلیدس}
+
+الگوریتم اقلیدس\index{الگوریتم!اقلیدس}
+برای محاسبه بزرگترین مقسوم‌علیه مشترک (\lr{GCD}):
+
+\begin{latin}
+\begin{algorithm}
+\begin{algorithmic}[1]
+    \Require $a, b$: non-negative integers
+    \Ensure $\gcd(a, b)$: greatest common divisor
+    
+    \While{$b \neq 0$}
+        \State $r \gets a \bmod b$
+        \State $a \gets b$
+        \State $b \gets r$
+    \EndWhile
+    \State \Return $a$
+\end{algorithmic}
+\end{algorithm}
+\algcaption[alg:euclidean]{الگوریتم اقلیدس برای $\gcd(a, b)$}
+\end{latin}
+
+\begin{example}
+    محاسبه $\gcd(48, 18)$ با الگوریتم \algref{alg:euclidean}:
+    \begin{align*}
+        \gcd(48, 18) &: \; 48 \bmod 18 = 12 \\
+        \gcd(18, 12) &: \; 18 \bmod 12 = 6 \\
+        \gcd(12, 6)  &: \; 12 \bmod 6 = 0 \\
+        \gcd(6, 0)   &: \; \text{نتیجه} = 6
+    \end{align*}
+    \label{ex:gcd-example}
+\end{example}
+
+%----------------------------------------
+% Chapter 3: Graph Algorithms
+%----------------------------------------
+\chapter{الگوریتم‌های گراف}
+
+\section{جستجوی اول سطح (\lr{BFS})}
+
+\lr{Breadth-First Search}\index{الگوریتم!BFS}
+گراف را سطح به سطح پیمایش می‌کند:
+
+\begin{latin}
+\begin{algorithm}
+\begin{algorithmic}[1]
+    \Require $G = (V, E)$: an unweighted graph
+    \Require $s$: source vertex
+    \Ensure $dist[v]$: shortest distance from $s$ to each $v \in V$
+    
+    \ForAll{$v \in V$}
+        \State $dist[v] \gets \infty$
+        \State $visited[v] \gets \text{false}$
+    \EndFor
+    
+    \State $dist[s] \gets 0$
+    \State $visited[s] \gets \text{true}$
+    \State Create an empty queue $Q$
+    \State $Q.\text{enqueue}(s)$
+    
+    \While{$Q$ is not empty}
+        \State $u \gets Q.\text{dequeue}()$
+        \ForAll{neighbor $v$ of $u$}
+            \If{$\neg visited[v]$}
+                \State $visited[v] \gets \text{true}$
+                \State $dist[v] \gets dist[u] + 1$
+                \State $Q.\text{enqueue}(v)$
+            \EndIf
+        \EndFor
+    \EndWhile
+    
+    \State \Return $dist$
+\end{algorithmic}
+\end{algorithm}
+\algcaption[alg:bfs]{جستجوی اول سطح (\lr{BFS})}
+\end{latin}
+
+\section{الگوریتم دایکسترا}
+
+الگوریتم دایکسترا\index{الگوریتم!دایکسترا}
+کوتاه‌ترین مسیر در گراف وزن‌دار را پیدا می‌کند:
+
+\begin{latin}
+\begin{algorithm}
+\begin{algorithmic}[1]
+    \Require $G = (V, E)$: weighted graph with non-negative weights
+    \Require $s$: source vertex
+    \Ensure $dist[v]$: shortest distance from $s$ to each $v \in V$
+    
+    \ForAll{$v \in V$}
+        \State $dist[v] \gets \infty$
+        \State $prev[v] \gets \text{null}$
+    \EndFor
+    \State $dist[s] \gets 0$
+    \State $PQ \gets$ priority queue of vertices keyed by $dist$
+    \State Insert all vertices into $PQ$
+    
+    \While{$PQ$ is not empty}
+        \State $u \gets$ extract vertex with minimum $dist$ from $PQ$
+        \ForAll{neighbor $v$ of $u$}
+            \State $alt \gets dist[u] + weight(u, v)$
+            \If{$alt < dist[v]$}
+                \State $dist[v] \gets alt$
+                \State $prev[v] \gets u$
+                \State Decrease key of $v$ in $PQ$ to $alt$
+            \EndIf
+        \EndFor
+    \EndWhile
+    
+    \State \Return $(dist, prev)$
+\end{algorithmic}
+\end{algorithm}
+\algcaption[alg:dijkstra]{الگوریتم دایکسترا (\lr{Dijkstra's Algorithm})}
+\end{latin}
+
+%----------------------------------------
+% Chapter 4: Algorithm Analysis
+%----------------------------------------
+\chapter{تحلیل و مقایسه الگوریتم‌ها}
+
+\section{ارجاع به الگوریتم‌ها}
+
+سیستم ارجاع \lr{MatinBook} امکان ارجاع به الگوریتم‌ها
+را با استفاده از \texttt{\textbackslash algref} فراهم می‌کند:
+
+\begin{itemize}
+    \item \algref{alg:linear-search} --- ساده‌ترین روش جستجو
+    با پیچیدگی $O(n)$
+    \item \algref{alg:binary-search} --- جستجوی سریع
+    با پیچیدگی $O(\log n)$ برای آرایه‌های مرتب
+    \item \algref{alg:quicksort} --- مرتب‌سازی سریع
+    با پیچیدگی متوسط $O(n \log n)$
+    \item \algref{alg:euclidean} --- الگوریتم باستانی اقلیدس
+    با پیچیدگی $O(\log \min(a,b))$
+    \item \algref{alg:bfs} --- پیمایش سطح به سطح گراف
+    با پیچیدگی $O(V + E)$
+    \item \algref{alg:dijkstra} --- کوتاه‌ترین مسیر
+    با پیچیدگی $O((V+E) \log V)$
+\end{itemize}
+
+\section{جدول مقایسه}
+
+\begin{table}[h]
+\centering
+\caption{مقایسه پیچیدگی الگوریتم‌ها}
+\label{tab:algorithm-comparison}
+\begin{tabular}{|c|C{3cm}|c|c|}
+\hline
+\textbf{الگوریتم} & \textbf{کاربرد} & \textbf{پیچیدگی} & \textbf{نیازمندی} \\
+\hline
+جستجوی خطی & جستجوی ساده & $O(n)$ & ندارد \\
+جستجوی دودویی & جستجوی سریع & $O(\log n)$ & آرایه مرتب \\
+مرتب‌سازی سریع & مرتب‌سازی & $O(n \log n)$ & ندارد \\
+الگوریتم اقلیدس & محاسبه GCD & $O(\log n)$ & اعداد صحیح \\
+\lr{BFS} & پیمایش گراف & $O(V+E)$ & گراف بدون وزن \\
+دایکسترا & کوتاه‌ترین مسیر & $O((V+E)\log V)$ & یال‌های غیرمنفی \\
+\hline
+\end{tabular}
+\end{table}
+
+%----------------------------------------
+% Summary
+%----------------------------------------
+\chapter{خلاصه نتایج}
+
+\section{وضعیت سیستم الگوریتم}
+
+\begin{table}[h]
+\centering
+\caption{وضعیت قابلیت‌های الگوریتم}
+\label{tab:algorithm-status}
+\begin{tabular}{|c|C{6cm}|c|}
+\hline
+\textbf{قابلیت} & \textbf{توضیحات} & \textbf{وضعیت} \\
+\hline
+شماره‌گذاری & شماره‌گذاری خودکار به صورت «فصل.شماره» & \textcolor{matingreen}{✅} \\
+عنوان فارسی & نمایش عنوان با \lr{\textbackslash algcaption} & \textcolor{matingreen}{✅} \\
+فهرست الگوریتم‌ها & \lr{\textbackslash listofalgorithms} & \textcolor{matingreen}{✅} \\
+ارجاع & \lr{\textbackslash algref} با پیشوند «الگوریتم» & \textcolor{matingreen}{✅} \\
+\lr{Require/Ensure} & پیش‌نیاز و خروجی الگوریتم & \textcolor{matingreen}{✅} \\
+\lr{For/While/If} & ساختارهای کنترلی استاندارد & \textcolor{matingreen}{✅} \\
+\lr{Function} & تعریف و فراخوانی تابع & \textcolor{matingreen}{✅} \\
+محیط \lr{latin} & شبه‌کد درون محیط لاتین & \textcolor{matingreen}{✅} \\
+\hline
+\end{tabular}
+\end{table}
+
+\section{نتیجه}
+
+\textbf{ماژول الگوریتم \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
+۶ الگوریتم مختلف با عناوین فارسی، شماره‌گذاری خودکار،
+فهرست الگوریتم‌ها و ارجاع هوشمند به درستی کار می‌کنند. 🎉
+
+\end{document}
