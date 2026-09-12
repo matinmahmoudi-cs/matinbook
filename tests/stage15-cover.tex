@@ -1,0 +1,484 @@
+%========================================
+% MatinBook - Stage 15: Cover Test
+% Test: Front Cover + Back Cover + Full Book Integration
+% Purpose: Validate cover design and complete book assembly
+%========================================
+
+% Add parent directory to search path
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+
+\documentclass{matinbook}
+
+\title{هنر برنامه‌نویسی}
+\author{تیم توسعه MatinBook}
+\date{تابستان ۱۴۰۵}
+
+\begin{document}
+    
+    %========================================
+    % FRONT COVER
+    %========================================
+    \makecover
+    {هنر برنامه‌نویسی}
+    {از ایده تا اجرا}
+    {تیم توسعه MatinBook}
+    {تابستان ۱۴۰۵}
+    
+    %========================================
+    % BACK COVER
+    %========================================
+    \makebackcover{%
+        \textbf{هنر برنامه‌نویسی} کتابی جامع برای
+        یادگیری اصول برنامه‌نویسی و الگوریتم است.
+        
+        \textbf{در این کتاب می‌آموزید:}
+        \begin{itemize}
+            \item مفاهیم پایه برنامه‌نویسی با پایتون
+            \item الگوریتم‌های جستجو و مرتب‌سازی
+            \item ساختمان داده‌های پرکاربرد
+            \item تحلیل پیچیدگی و بهینه‌سازی
+            \item برنامه‌نویسی شیءگرا
+        \end{itemize}
+        
+        \textbf{ویژگی‌های کتاب:}
+        \begin{itemize}
+            \item بیش از ۵۰ مثال کاربردی
+            \item تمرین‌های متنوع با پاسخ تشریحی
+            \item نمودارها و شبه‌کدهای استاندارد
+            \item نمایه جامع واژگان
+        \end{itemize}
+        
+        \vspace{0.5cm}
+        \textbf{ساخته شده با \lr{MatinBook} نسخه ۱}
+    }
+    
+    %========================================
+    % TITLE PAGE
+    %========================================
+    \maketitle
+    
+    %========================================
+    % COPYRIGHT
+    %========================================
+    \thispagestyle{empty}
+    \vspace*{5cm}
+    \begin{center}
+        {\large\textbf{حقوق نشر}}\\[1cm]
+        تمامی حقوق این کتاب محفوظ است.\\[0.5cm]
+        نسخه ۱.۰ --- تابستان ۱۴۰۵\\[1cm]
+        \lr{Copyright \copyright\ 2026 MatinBook Project}\\
+        \lr{Licensed under MIT License}\\[0.5cm]
+        \textit{این کتاب با استفاده از کلاس \lr{MatinBook} نسخه ۱}
+        \textit{حروف‌چینی شده است.}
+    \end{center}
+    \clearpage
+    
+    %========================================
+    % DEDICATION
+    %========================================
+    \thispagestyle{empty}
+    \vfill
+    \begin{flushright}
+        {\Large\itshape
+            به تمام کسانی که\\
+            با شوق می‌آموزند\\
+            و با عشق می‌آموزانند
+        }
+    \end{flushright}
+    \clearpage
+    \frontmatter
+    
+    %========================================
+    % PREFACE
+    %========================================
+    \chapter*{پیشگفتار}
+    \addcontentsline{toc}{chapter}{پیشگفتار}
+    
+    این کتاب برای کسانی نوشته شده که می‌خواهند
+    برنامه‌نویسی را به صورت اصولی بیاموزند.
+    مطالب از سطح پایه شروع شده و به تدریج
+    به مباحث پیشرفته می‌رسد.
+    
+    امیدواریم این کتاب بتواند سهمی هرچند کوچک
+    در ارتقای دانش برنامه‌نویسی فارسی‌زبانان
+    داشته باشد.
+    
+    \vspace{1cm}
+    \begin{flushleft}
+        \textbf{تیم توسعه MatinBook}\\
+        تابستان ۱۴۰۵
+    \end{flushleft}
+    
+    \clearpage
+    
+    %========================================
+    % TABLE OF CONTENTS
+    %========================================
+    \tableofcontents
+    \clearpage
+    \mainmatter
+    
+    %========================================
+    % Chapter 1: Introduction
+    %========================================
+    \chapter{مقدمه}
+    
+    \section{چرا برنامه‌نویسی؟}
+    
+    برنامه‌نویسی\index{برنامه‌نویسی} مهارتی است
+    که در دنیای امروز به اندازه خواندن و نوشتن
+    اهمیت دارد. از تلفن‌های همراه گرفته
+    تا خودروهای خودران، همه با کد کار می‌کنند.
+    
+    \begin{definition}[برنامه‌نویسی]
+        برنامه‌نویسی فرایند طراحی، نوشتن،
+        آزمایش و نگهداری کدهای کامپیوتری است
+        که به ماشین می‌گویند چه کاری انجام دهد.
+        \label{def:programming}
+    \end{definition}
+    
+    \section{انتخاب زبان برنامه‌نویسی}
+    
+    برای شروع، پایتون\index{پایتون}
+    بهترین انتخاب است. دلایل:
+    
+    \begin{itemize}
+        \item نحو ساده و خوانا
+        \item جامعه کاربری بزرگ
+        \item کتابخانه‌های فراوان
+        \item کاربرد در حوزه‌های مختلف
+    \end{itemize}
+    
+    \begin{example}[اولین برنامه]
+        ساده‌ترین برنامه در پایتون:
+        \begin{latin}
+            \begin{minted}{python}
+                print("Hello, World!")
+            \end{minted}
+        \end{latin}
+        \label{ex:hello-world}
+    \end{example}
+    
+    %========================================
+    % Chapter 2: Basics
+    %========================================
+    \chapter{مفاهیم پایه}
+    
+    \section{متغیرها}
+    
+    متغیر\index{متغیر} محلی برای ذخیره داده است.
+    در پایتون، متغیرها نیاز به اعلان نوع ندارند:
+    
+    \begin{latin}
+        \begin{minted}{python}
+            # Variables in Python
+            name = "Ali"           # String
+            age = 25               # Integer
+            pi = 3.14              # Float
+            is_active = True       # Boolean
+            
+            print(f"{name} is {age} years old")
+        \end{minted}
+    \end{latin}
+    \codecaption{تعریف متغیر در پایتون}
+    \label{code:variables}
+    
+    \section{عملگرها}
+    
+    عملگرها\index{عملگر} عملیات روی داده‌ها
+    را انجام می‌دهند:
+    
+    \begin{table}[h]
+        \centering
+        \caption{عملگرهای پایه در پایتون}
+        \label{tab:operators}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{نوع} & \textbf{عملگر} & \textbf{مثال} \\
+            \hline
+            محاسباتی & \lr{+, -, *, /, //, \%, **} & \lr{5 + 3 = 8} \\
+            مقایسه‌ای & \lr{==, !=, <, >, <=, >=} & \lr{5 > 3 = True} \\
+            منطقی & \lr{and, or, not} & \lr{True and False = False} \\
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    %========================================
+    % Chapter 3: Control Flow
+    %========================================
+    \chapter{کنترل جریان}
+    
+    \section{دستورات شرطی}
+    
+    \begin{latin}
+        \begin{minted}{python}
+            score = 85
+            
+            if score >= 90:
+            grade = "A"
+            elif score >= 80:
+            grade = "B"
+            elif score >= 70:
+            grade = "C"
+            else:
+            grade = "F"
+            
+            print(f"Score: {score}, Grade: {grade}")
+        \end{minted}
+    \end{latin}
+    \codecaption{دستور شرطی در پایتون}
+    \label{code:if-else}
+    
+    \section{حلقه‌ها}
+    
+    \begin{latin}
+        \begin{minted}{python}
+            # For loop
+            for i in range(5):
+            print(f"Iteration {i}")
+            
+            # While loop
+            count = 0
+            while count < 5:
+            print(f"Count: {count}")
+            count += 1
+        \end{minted}
+    \end{latin}
+    \codecaption{حلقه‌های \lr{for} و \lr{while}}
+    \label{code:loops}
+    
+    %========================================
+    % Chapter 4: Functions
+    %========================================
+    \chapter{توابع}
+    
+    \section{تعریف و استفاده}
+    
+    تابع\index{تابع} بلوکی از کد است که
+    یک وظیفه مشخص را انجام می‌دهد:
+    
+    \begin{latin}
+        \begin{minted}{python}
+            def greet(name: str) -> str:
+            """Return a greeting message."""
+            return f"Hello, {name}!"
+            
+            def add(a: int, b: int) -> int:
+            """Return the sum of two numbers."""
+            return a + b
+            
+            # Using functions
+            print(greet("Ali"))
+            print(f"3 + 4 = {add(3, 4)}")
+        \end{minted}
+    \end{latin}
+    \codecaption{تعریف و استفاده از توابع}
+    \label{code:functions}
+    
+    \begin{exercise}
+        تابعی بنویسید که یک عدد دریافت کند
+        و فاکتوریل آن را محاسبه کند.
+        \label{exc:factorial}
+    \end{exercise}
+    
+    \begin{solution}
+        \begin{latin}
+            \begin{minted}{python}
+                def factorial(n: int) -> int:
+                """Calculate factorial recursively."""
+                if n <= 1:
+                return 1
+                return n * factorial(n - 1)
+                
+                print(factorial(5))  # 120
+            \end{minted}
+        \end{latin}
+    \end{solution}
+    
+    %========================================
+    % Chapter 5: Data Structures
+    %========================================
+    \chapter{ساختمان داده‌ها}
+    
+    \section{لیست}
+    
+    لیست\index{لیست} پرکاربردترین ساختمان داده
+    در پایتون است:
+    
+    \begin{latin}
+        \begin{minted}{python}
+            # Create and manipulate lists
+            numbers = [1, 2, 3, 4, 5]
+            numbers.append(6)        # Add to end
+            numbers.insert(0, 0)     # Insert at index
+            numbers.remove(3)        # Remove by value
+            
+            print(f"List: {numbers}")
+            print(f"Length: {len(numbers)}")
+            print(f"Sum: {sum(numbers)}")
+        \end{minted}
+    \end{latin}
+    \codecaption{کار با لیست در پایتون}
+    \label{code:lists}
+    
+    \section{دیکشنری}
+    
+    دیکشنری\index{دیکشنری} داده‌ها را به صورت
+    کلید-مقدار\index{کلید-مقدار} ذخیره می‌کند:
+    
+    \begin{latin}
+        \begin{minted}{python}
+            # Create a dictionary
+            student = {
+                "name": "Ali",
+                "age": 25,
+                "grades": [18, 17, 20],
+                "is_active": True
+            }
+            
+            # Access and modify
+            print(student["name"])
+            student["age"] = 26
+            student["major"] = "Computer Science"
+            
+            for key, value in student.items():
+            print(f"{key}: {value}")
+        \end{minted}
+    \end{latin}
+    \codecaption{کار با دیکشنری}
+    \label{code:dictionary}
+    
+    %========================================
+    % Chapter 6: Algorithms
+    %========================================
+    \chapter{الگوریتم‌ها}
+    
+    \section{جستجوی دودویی}
+    
+    \begin{latin}
+        \begin{algorithm}
+            \begin{algorithmic}[1]
+                \Require Sorted array $A$, target $x$
+                \Ensure Index of $x$ or $-1$
+                \State $left \gets 0$, $right \gets n-1$
+                \While{$left \leq right$}
+                \State $mid \gets (left + right) // 2$
+                \If{$A[mid] = x$}
+                \State \Return $mid$
+                \ElsIf{$A[mid] < x$}
+                \State $left \gets mid + 1$
+                \Else
+                \State $right \gets mid - 1$
+                \EndIf
+                \EndWhile
+                \State \Return $-1$
+            \end{algorithmic}
+        \end{algorithm}
+        \algcaption[alg:binary]{جستجوی دودویی}
+    \end{latin}
+    
+    \begin{theorem}
+        جستجوی دودویی (\algref{alg:binary})
+        در بدترین حالت $O(\log n)$ مقایسه انجام می‌دهد.
+        \label{thm:binary}
+    \end{theorem}
+    
+    %========================================
+    % Chapter 7: Visualization
+    %========================================
+    \chapter{مصورسازی}
+    
+    \section{نمودار تابع}
+    
+    \begin{figure}[h]
+        \centering
+        \begin{latin}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    width=12cm, height=6cm,
+                    xlabel={$x$},
+                    ylabel={$f(x)$},
+                    title={Common Functions},
+                    grid=major,
+                    legend pos=north west,
+                    domain=-2:2,
+                    samples=100
+                    ]
+                    \addplot[matinblue, thick] {x^2};
+                    \addlegendentry{$x^2$}
+                    \addplot[matinred, thick] {x^3};
+                    \addlegendentry{$x^3$}
+                \end{axis}
+            \end{tikzpicture}
+        \end{latin}
+        \caption{نمودار $x^{2}$ و $x^{3}$}
+        \label{fig:functions}
+    \end{figure}
+    
+    \section{فلوچارت}
+    
+    \begin{figure}[h]
+        \centering
+        \begin{latin}
+            \begin{tikzpicture}[
+                node distance=2cm,
+                arrow/.style={thick,->,>=stealth}
+                ]
+                \node[block] (start) {Start};
+                \node[block, below of=start] (input) {Read Input};
+                \node[decision, below of=input] (check) {Valid?};
+                \node[block, right of=check, xshift=3cm] (process) {Process};
+                \node[block, below of=check, yshift=-1.5cm] (error) {Error};
+                \node[block, below of=process] (end) {End};
+                
+                \draw[arrow] (start) -- (input);
+                \draw[arrow] (input) -- (check);
+                \draw[arrow] (check) -- node[anchor=south] {Yes} (process);
+                \draw[arrow] (check) -- node[anchor=east] {No} (error);
+                \draw[arrow] (process) -- (end);
+            \end{tikzpicture}
+        \end{latin}
+        \caption{فلوچارت ساده}
+        \label{fig:flowchart}
+    \end{figure}
+    
+    %========================================
+    % CONCLUSION
+    %========================================
+    \chapter{جمع‌بندی}
+    \label{chap:conclusion}
+    
+    این کتاب نقطه شروعی برای یادگیری برنامه‌نویسی
+    و الگوریتم بود. مفاهیمی که آموختید:
+    
+    \begin{itemize}
+        \item مبانی پایتون (\chref{chap:python} در کتاب اصلی)
+        \item الگوریتم‌های جستجو و مرتب‌سازی
+        \item ساختمان داده‌های پایه
+        \item توابع و ماژول‌ها
+    \end{itemize}
+    
+    برای ادامه مسیر، منابع زیر توصیه می‌شوند:
+    \cite{knuth1984,cormen2009}.
+    
+    \vspace{1cm}
+    \begin{flushleft}
+        \textbf{پایان}\\
+        تابستان ۱۴۰۵
+    \end{flushleft}
+    
+    %========================================
+    % BIBLIOGRAPHY
+    %========================================
+    \begin{latin}
+        \printbibliography[title={منابع و مراجع}]
+    \end{latin}
+    
+    %========================================
+    % INDEX
+    %========================================
+    \printindex
+    
+\end{document}
