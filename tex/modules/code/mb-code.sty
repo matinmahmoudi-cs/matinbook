@@ -1,0 +1,49 @@
+%----------------------------------------
+% mb-code.sty - Code Listing Configuration for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/code/mb-code}[2025/01/01 v1.0 MatinBook Code System]
+
+%----------------------------------------
+% Global Minted Settings
+%----------------------------------------
+\setminted{
+    fontsize=\small,
+    linenos=true,
+    numbersep=8pt,
+    frame=single,
+    framesep=10pt,
+    rulecolor=\color{matinbordergray},
+    bgcolor=matinlightgray!20,
+    breaklines=true,
+    breakanywhere=true,
+    autogobble=true,
+    tabsize=4,
+    python3=true
+}
+
+%----------------------------------------
+% Inline Code
+%----------------------------------------
+\newcommand{\inlcode}[1]{\lr{\mintinline{text}{#1}}}
+
+%----------------------------------------
+% Code Caption with Numbering
+%----------------------------------------
+\newcounter{codecounter}[chapter]
+\renewcommand{\thecodecounter}{\thechapter.\arabic{codecounter}}
+
+\newcommand{\codecaption}[1]{%
+    \refstepcounter{codecounter}%
+    \vspace{5pt}%
+    \begin{center}%
+        \small\textbf{\codename\space\thecodecounter:} #1%
+    \end{center}%
+    \vspace{10pt}%
+}
+
+% For referencing codes
+\newcommand{\coderef}[1]{\codename\space\ref{#1}}
+
+\endinput
