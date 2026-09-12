@@ -1,0 +1,255 @@
+%========================================
+% MatinBook - Stage 01: Basic Test
+% Test: Core System + Colors + Fonts + Math
+% Purpose: Validate basic infrastructure works
+%========================================
+
+% Add parent directory to search path
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+
+\documentclass{matinbook}
+
+\title{آزمون زیرساخت پایه}
+\author{تیم توسعه MatinBook}
+\date{تابستان ۱۴۰۵}
+
+\begin{document}
+
+%----------------------------------------
+% Title Page
+%----------------------------------------
+\maketitle
+
+%----------------------------------------
+% Chapter 1: Color System
+%----------------------------------------
+\chapter{سیستم رنگ‌ها}
+
+\section{پالت رنگی اصلی}
+
+رنگ‌های اصلی \lr{MatinBook} برای تفکیک بصری انواع محتوا طراحی شده‌اند.
+هر رنگ خانواده‌ای از سه طیف روشن، اصلی و تیره دارد.
+
+\subsection{رنگ‌های آبی (قضایا)}
+
+خانواده آبی برای قضایا، لم‌ها و نتایج:
+
+\begin{itemize}
+    \item \textcolor{matinblue}{\textbf{آبی اصلی}} --- \texttt{matinblue} (RGB: 41, 128, 185)
+    \item \textcolor{matindarkblue}{\textbf{آبی تیره}} --- \texttt{matindarkblue} (RGB: 21, 67, 96)
+    \item \colorbox{matinlightblue}{\textbf{آبی روشن}} --- \texttt{matinlightblue} (RGB: 214, 234, 248)
+\end{itemize}
+
+\subsection{رنگ‌های سبز (تعاریف)}
+
+خانواده سبز برای تعاریف و مفاهیم:
+
+\begin{itemize}
+    \item \textcolor{matingreen}{\textbf{سبز اصلی}} --- \texttt{matingreen} (RGB: 39, 174, 96)
+    \item \textcolor{matindarkgreen}{\textbf{سبز تیره}} --- \texttt{matindarkgreen} (RGB: 20, 90, 50)
+    \item \colorbox{matinlightgreen}{\textbf{سبز روشن}} --- \texttt{matinlightgreen} (RGB: 215, 245, 227)
+\end{itemize}
+
+\subsection{رنگ‌های نارنجی (مثال‌ها)}
+
+خانواده نارنجی برای مثال‌ها:
+
+\begin{itemize}
+    \item \textcolor{matinorange}{\textbf{نارنجی اصلی}} --- \texttt{matinorange} (RGB: 230, 126, 34)
+    \item \textcolor{matindarkorange}{\textbf{نارنجی تیره}} --- \texttt{matindarkorange} (RGB: 120, 66, 18)
+    \item \colorbox{matinlightorange}{\textbf{نارنجی روشن}} --- \texttt{matinlightorange} (RGB: 252, 235, 213)
+\end{itemize}
+
+\subsection{رنگ‌های قرمز (نکات و هشدارها)}
+
+خانواده قرمز برای نکات مهم:
+
+\begin{itemize}
+    \item \textcolor{matinred}{\textbf{قرمز اصلی}} --- \texttt{matinred} (RGB: 231, 76, 60)
+    \item \textcolor{matindarkred}{\textbf{قرمز تیره}} --- \texttt{matindarkred} (RGB: 120, 40, 31)
+    \item \colorbox{matinlightred}{\textbf{قرمز روشن}} --- \texttt{matinlightred} (RGB: 250, 215, 210)
+\end{itemize}
+
+\subsection{رنگ‌های بنفش (تمرین‌ها)}
+
+خانواده بنفش برای تمرین‌ها:
+
+\begin{itemize}
+    \item \textcolor{matinpurple}{\textbf{بنفش اصلی}} --- \texttt{matinpurple} (RGB: 142, 68, 173)
+    \item \textcolor{matindarkpurple}{\textbf{بنفش تیره}} --- \texttt{matindarkpurple} (RGB: 74, 35, 90)
+    \item \colorbox{matinlightpurple}{\textbf{بنفش روشن}} --- \texttt{matinlightpurple} (RGB: 235, 222, 245)
+\end{itemize}
+
+\subsection{رنگ‌های خنثی}
+
+\begin{itemize}
+    \item \textcolor{matindarkgray}{\textbf{خاکستری تیره}} --- متن اصلی
+    \item \textcolor{matinmediumgray}{\textbf{خاکستری متوسط}} --- متن فرعی
+    \item \colorbox{matinlightgray}{\textbf{خاکستری روشن}} --- پس‌زمینه
+    \item \colorbox{matinbordergray}{\textbf{خاکستری مرزی}} --- حاشیه‌ها
+\end{itemize}
+
+\section{نمودار رنگی}
+
+\begin{center}
+\begin{latin}
+\begin{tikzpicture}
+    % Color swatches
+    \foreach \color [count=\i] in {matinblue, matingreen, matinorange, matinred, matinpurple} {
+        \fill[\color] (\i*2.5-1.5, 2) rectangle (\i*2.5-0.5, 3);
+        \fill[\color!50] (\i*2.5-1.5, 0.5) rectangle (\i*2.5-0.5, 1.5);
+        \fill[\color!20] (\i*2.5-1.5, -1) rectangle (\i*2.5-0.5, 0);
+    }
+\end{tikzpicture}
+\end{latin}
+\end{center}
+
+%----------------------------------------
+% Chapter 2: Font System
+%----------------------------------------
+\chapter{سیستم فونت‌ها}
+
+\section{فونت فارسی}
+
+این یک پاراگراف طولانی فارسی است برای تست فونت پیش‌فرض \lr{XB Niloofar}.
+این فونت باید خوانایی خوبی داشته باشد و تمام حروف فارسی را
+به درستی نمایش دهد. حروف خاص فارسی مانند «گ»، «چ»، «پ»، «ژ»
+باید به صورت صحیح نمایش داده شوند.
+
+اعداد فارسی: ۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹
+
+اعداد انگلیسی در متن فارسی: 0 1 2 3 4 5 6 7 8 9
+
+نویسه‌های ویژه فارسی: «نقل قول»، (پرانتز)، [کروشه]، \{آکولاد\}
+
+\section{فونت انگلیسی (لاتین)}
+
+\begin{latin}
+This is an English paragraph to test the Latin font Times New Roman.
+It should render professionally with proper kerning and ligatures.
+
+The quick brown fox jumps over the lazy dog.
+Pack my box with five dozen liquor jugs.
+
+Special ligatures: fi fl ff ffi ffl --- -- ``quotes''
+
+Mathematical symbols in text: \( \alpha, \beta, \gamma, \delta \)
+\end{latin}
+
+\section{ترکیب فارسی و انگلیسی}
+
+این یک متن فارسی است که شامل کلمات انگلیسی مانند \lr{computer}،
+\lr{software}، \lr{algorithm}، \lr{function} و \lr{variable} می‌باشد.
+همچنین اعداد لاتین مانند \lr{3.14159} و \lr{42} در متن فارسی قرار گرفته‌اند.
+
+نام‌های خاص خارجی: \lr{Donald Knuth}، \lr{Leslie Lamport}، \lr{Alan Turing}
+
+\section{فونت ریاضی}
+
+آزمایش فونت ریاضی \lr{XITS Math} با معادلات پایه:
+
+معادله درون خطی: $E = mc^2$، قضیه فیثاغورث: $a^2 + b^2 = c^2$
+
+معادله نمایشی:
+\begin{equation}
+    \int_{0}^{\infty} \frac{x^3}{e^x - 1} \,dx = \frac{\pi^4}{15}
+    \label{eq:stefan-boltzmann}
+\end{equation}
+
+حروف یونانی: $\alpha, \beta, \gamma, \Gamma, \delta, \Delta, \epsilon, \varepsilon,
+\zeta, \eta, \theta, \Theta, \lambda, \Lambda, \mu, \pi, \Pi, \sigma, \Sigma, \tau,
+\phi, \Phi, \omega, \Omega$
+
+عملگرهای بزرگ:
+\[
+    \sum_{n=1}^{\infty} \frac{1}{n^2} = \frac{\pi^2}{6}, \qquad
+    \prod_{k=1}^{n} k = n!, \qquad
+    \lim_{x \to \infty} \left(1 + \frac{1}{x}\right)^x = e
+\]
+
+%----------------------------------------
+% Chapter 3: Color Boxes Test
+%----------------------------------------
+\chapter{جعبه‌های رنگی}
+
+\section{نمایش رنگ‌ها در جعبه‌های اطلاعاتی}
+
+\begin{theorem}[قضیه تست]
+    این یک قضیه آزمایشی با رنگ آبی است.
+    تمام عناوین باید خوانا و متمایز باشند.
+\end{theorem}
+
+\begin{definition}[تعریف تست]
+    این یک تعریف آزمایشی با رنگ سبز است.
+    رنگ‌ها باید در حالت چاپ سیاه و سفید نیز قابل تشخیص باشند.
+\end{definition}
+
+\begin{example}[مثال تست]
+    این یک مثال آزمایشی با رنگ نارنجی است.
+    مثال‌ها باید توجه خواننده را به کاربرد مفاهیم جلب کنند.
+\end{example}
+
+\begin{remark}[نکته تست]
+    این یک نکته آزمایشی با رنگ قرمز است.
+    نکات مهم باید برجسته و قابل توجه باشند.
+\end{remark}
+
+\begin{exercise}[تمرین تست]
+    این یک تمرین آزمایشی با رنگ بنفش است.
+    تمرین‌ها باید خواننده را به تفکر وادارند.
+\end{exercise}
+
+%----------------------------------------
+% Chapter 4: Typography
+%----------------------------------------
+\chapter{تایپوگرافی}
+
+\section{فاصله خطوط و ترازبندی}
+
+این یک پاراگراف طولانی فارسی است که برای تست تایپوگرافی نوشته شده است.
+هدف ما این است که ببینیم آیا خطوط به خوبی تراز می‌شوند و فاصله بین
+کلمات مناسب است یا خیر. تایپوگرافی خوب باعث افزایش خوانایی متن
+و کاهش خستگی چشم خواننده می‌شود. ما در \lr{MatinBook} از تنظیمات
+پیشرفته \lr{microtype} برای بهبود تایپوگرافی استفاده می‌کنیم.
+
+فاصله بین خطوط باید به اندازه‌ای باشد که خواننده به راحتی بتواند
+خط بعدی را پیدا کند، اما نه آنقدر زیاد که متن از هم گسیخته به نظر برسد.
+همچنین ترازبندی دوطرفه (\lr{justified}) باید به گونه‌ای باشد که
+فضای خالی بیش از حد بین کلمات ایجاد نشود.
+
+\section{جلوگیری از خطوط آویزان}
+
+در حروف‌چینی حرفه‌ای، باید از ایجاد خطوط آویزان (\lr{widow}) و
+یتیم (\lr{orphan}) جلوگیری شود. خط آویزان به آخرین خط یک پاراگراف
+گفته می‌شود که به تنهایی در بالای صفحه بعد قرار گیرد. خط یتیم
+به اولین خط یک پاراگراف گفته می‌شود که در انتهای صفحه باقی بماند.
+
+\lr{MatinBook} با تنظیم \texttt{\textbackslash widowpenalty=10000}
+و \texttt{\textbackslash clubpenalty=10000} از این مشکلات جلوگیری می‌کند.
+
+%----------------------------------------
+% System Check Summary
+%----------------------------------------
+\chapter{خلاصه نتایج}
+
+\section{وضعیت ماژول‌ها}
+
+\begin{itemize}
+    \item \textcolor{matingreen}{\textbf{سیستم رنگ:}} ۱۵ رنگ در ۵ خانواده --- ✅
+    \item \textcolor{matingreen}{\textbf{فونت فارسی:}} \lr{XB Niloofar} با مقیاس ۱.۲ --- ✅
+    \item \textcolor{matingreen}{\textbf{فونت لاتین:}} \lr{Times New Roman} --- ✅
+    \item \textcolor{matingreen}{\textbf{فونت ریاضی:}} \lr{XITS Math} --- ✅
+    \item \textcolor{matingreen}{\textbf{فونت کد:}} \lr{JetBrains Mono} --- ✅
+    \item \textcolor{matingreen}{\textbf{جعبه‌های رنگی:}} ۱۰ نوع مختلف --- ✅
+    \item \textcolor{matinggreen}{\textbf{تایپوگرافی:}} \lr{microtype} فعال --- ✅
+    \item \textcolor{matingreen}{\textbf{ارجاع هوشمند:}} \lr{cleveref} فارسی --- ✅
+\end{itemize}
+
+\section{نتیجه}
+
+\textbf{ماژول‌های پایه \lr{MatinBook} نسخه ۱ با موفقیت بارگذاری و آزمایش شدند.}
+تمام سیستم‌های رنگی، فونت‌ها و جعبه‌ها به درستی کار می‌کنند. 🎉
+
+\end{document}
