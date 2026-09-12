@@ -1,0 +1,75 @@
+%----------------------------------------
+% mb-options.sty - Class Options for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/core/mb-options}[2025/01/01 v1.0 MatinBook Options System]
+
+%----------------------------------------
+% Internal Switches
+%----------------------------------------
+
+% Draft mode
+\newif\if@matin@draft
+\@matin@draftfalse
+
+% Font options
+\newif\if@matin@vazirmatn
+\newif\if@matin@sahel
+\newif\if@matin@irlotus
+\newif\if@matin@niloofar
+
+% Default: XB Niloofar
+\@matin@niloofartrue
+
+%----------------------------------------
+% Option Declarations
+%----------------------------------------
+
+% Draft/Final
+\DeclareOption{draft}{%
+    \@matin@drafttrue
+    \PassOptionsToClass{draft}{book}
+}
+\DeclareOption{final}{%
+    \@matin@draftfalse
+    \PassOptionsToClass{final}{book}
+}
+
+% Font options
+\DeclareOption{vazirmatn}{%
+    \@matin@vazirmatntrue
+    \@matin@niloofarfalse
+}
+\DeclareOption{sahel}{%
+    \@matin@saheltrue
+    \@matin@niloofarfalse
+}
+\DeclareOption{irlotus}{%
+    \@matin@irlotustrue
+    \@matin@niloofarfalse
+}
+\DeclareOption{niloofar}{%
+    \@matin@niloofartrue
+}
+
+% Pass all unknown options to book class
+\DeclareOption*{\PassOptionsToClass{\CurrentOption}{book}}
+
+% Process all options
+\ProcessOptions\relax
+
+%----------------------------------------
+% Font Name Helper
+%----------------------------------------
+\newcommand{\matin@fontname}{%
+    \if@matin@vazirmatn Vazirmatn\fi
+    \if@matin@sahel Sahel\fi
+    \if@matin@irlotus IR Lotus\fi
+    \if@matin@niloofar XB Niloofar\fi
+}
+
+% Log selected font
+\typeout{MatinBook: Selected Persian font: \matin@fontname}
+
+\endinput
