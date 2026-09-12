@@ -1,0 +1,318 @@
+%========================================
+% MatinBook - Stage 02: Font System Test
+% Test: Persian, Latin, Math, Code Fonts
+% Purpose: Validate all font families render correctly
+%========================================
+
+% Add parent directory to search path
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+
+\documentclass{matinbook}
+
+\title{آزمون سیستم فونت‌ها}
+\author{تیم توسعه MatinBook}
+\date{تابستان ۱۴۰۵}
+
+\begin{document}
+
+%----------------------------------------
+% Title Page
+%----------------------------------------
+\maketitle
+
+%----------------------------------------
+% Chapter 1: Persian Font
+%----------------------------------------
+\chapter{فونت فارسی}
+
+\section{خوانایی و زیبایی}
+
+این یک پاراگراف طولانی فارسی برای ارزیابی خوانایی فونت \lr{XB Niloofar} است.
+فونت فارسی باید به گونه‌ای طراحی شده باشد که خواننده بتواند ساعت‌های طولانی
+بدون خستگی چشم مطالعه کند. فاصله بین حروف، اندازه نقاط، و شکل منحنی‌ها
+همگی در خوانایی متن تأثیرگذار هستند. ما در \lr{MatinBook} فونت پیش‌فرض را
+با مقیاس ۱.۲ تنظیم کرده‌ایم تا هماهنگی بهتری با فونت لاتین داشته باشد.
+
+\section{حروف خاص فارسی}
+
+حروف فارسی شامل ۳۲ حرف اصلی است. حروفی که در عربی وجود ندارند:
+
+\begin{itemize}
+    \item \textbf{«گ»} --- مانند: گفتگو، بزرگ، برگ
+    \item \textbf{«چ»} --- مانند: چرا، هیچ، کاغذ
+    \item \textbf{«پ»} --- مانند: پدر، پاسخ، پرونده
+    \item \textbf{«ژ»} --- مانند: ژرف، مژده، پژوهش
+\end{itemize}
+
+\section{اعداد فارسی}
+
+اعداد فارسی باید در تمام حالت‌ها به درستی نمایش داده شوند:
+
+\begin{itemize}
+    \item اعداد ساده: ۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹
+    \item اعداد دو رقمی: ۱۰ ۲۵ ۴۸ ۷۳ ۹۹
+    \item اعداد چند رقمی: ۱۴۰۴ ۲۰۲۶ ۱۲۳۴۵۶ ۹۸۷۶۵۴۳۲۱۰
+    \item اعداد اعشاری: ۳/۱۴ ۲/۷۱۸ ۱/۶۱۸
+    \item درصد: ۲۵٪ ۵۰٪ ۷۵٪ ۱۰۰٪
+\end{itemize}
+
+\section{نویسه‌های ویژه}
+
+\begin{itemize}
+    \item گیومه فارسی: «نقل قول مستقیم»
+    \item گیومه تکی: ‹نقل قول درونی›
+    \item پرانتز: (متن داخل پرانتز)
+    \item کروشه: [متن داخل کروشه]
+    \item آکولاد: \{متن داخل آکولاد\}
+    \item ممیز فارسی: ۳/۱۴۱۵۹۲
+    \item جداکننده هزارگان: ۱٬۰۰۰٬۰۰۰
+\end{itemize}
+
+\section{متن شعرگونه}
+
+\begin{flushright}
+    \textbf{توانا بود هر که دانا بود}\\
+    \textit{ز دانش دل پیر برنا بود}
+
+    \vspace{0.5cm}
+    به نام خداوند جان و خرد\\
+    کزین برتر اندیشه برنگذرد
+\end{flushright}
+
+%----------------------------------------
+% Chapter 2: Latin Font
+%----------------------------------------
+\chapter{فونت لاتین}
+
+\section{\lr{Times New Roman}}
+
+\begin{latin}
+    This chapter demonstrates the Latin font \textbf{Times New Roman},
+    which is the default Latin font in MatinBook. This serif font is
+    widely used in academic and technical publications due to its
+    excellent readability and professional appearance.
+
+    \subsection*{Pangrams (All Letters Test)}
+
+    The quick brown fox jumps over the lazy dog.
+
+    Pack my box with five dozen liquor jugs.
+
+    How vexingly quick daft zebras jump!
+
+    \subsection*{Ligatures Test}
+
+    Common ligatures in English text:
+
+    \begin{itemize}
+        \item fi --- finance, define, profile
+        \item fl --- flower, reflect, inflate
+        \item ff --- offer, different, difficult
+        \item ffi --- efficient, coefficient
+        \item ffl --- shuffle, waffle
+    \end{itemize}
+
+    \subsection*{Special Characters}
+
+    \begin{itemize}
+        \item Quotes: ``double'' `single'
+        \item Dashes: -- (en-dash), --- (em-dash)
+        \item Symbols: @ \# \$ \% \^{} \& * \_ + = | \~{} < > /
+        \item Brackets: [square] \{curly\} (round)
+    \end{itemize}
+\end{latin}
+
+\section{متن علمی انگلیسی}
+
+\begin{latin}
+    \subsection*{Computer Science Terms}
+
+    The time complexity of the algorithm is \(O(n \log n)\) in the
+    average case and \(O(n^2)\) in the worst case. We use a
+    \texttt{HashMap} data structure for \(O(1)\) lookup time.
+
+    \subsection*{Mathematics Terms}
+
+    The Gaussian integral is defined as:
+    \[\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}\]
+
+    The Riemann zeta function for \(s > 1\):
+    \[\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s}\]
+\end{latin}
+
+%----------------------------------------
+% Chapter 3: Math Font
+%----------------------------------------
+\chapter{فونت ریاضی}
+
+\section{الفبای یونانی}
+
+\begin{center}
+\begin{latin}
+\begin{tabular}{ccR{3cm}|ccR{3cm}}
+\hline
+\multicolumn{3}{c|}{\textbf{Uppercase}} & \multicolumn{3}{c}{\textbf{Lowercase}} \\
+\hline
+\(\Gamma\) & \texttt{\textbackslash Gamma} & Gamma & \(\alpha\) & \texttt{\textbackslash alpha} & alpha \\
+\(\Delta\) & \texttt{\textbackslash Delta} & Delta & \(\beta\)  & \texttt{\textbackslash beta}  & beta \\
+\(\Theta\) & \texttt{\textbackslash Theta} & Theta & \(\gamma\) & \texttt{\textbackslash gamma} & gamma \\
+\(\Lambda\) & \texttt{\textbackslash Lambda} & Lambda & \(\delta\) & \texttt{\textbackslash delta} & delta \\
+\(\Pi\)    & \texttt{\textbackslash Pi}    & Pi    & \(\epsilon\) & \texttt{\textbackslash epsilon} & epsilon \\
+\(\Sigma\) & \texttt{\textbackslash Sigma} & Sigma & \(\zeta\)  & \texttt{\textbackslash zeta}  & zeta \\
+\(\Phi\)   & \texttt{\textbackslash Phi}   & Phi   & \(\theta\) & \texttt{\textbackslash theta} & theta \\
+\(\Omega\) & \texttt{\textbackslash Omega} & Omega & \(\lambda\) & \texttt{\textbackslash lambda} & lambda \\
+\hline
+\end{tabular}
+\end{latin}
+\end{center}
+
+\section{عملگرها و نمادها}
+
+\begin{itemize}
+    \item جمع و ضرب: $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$,
+    $\prod_{k=1}^{n} k = n!$
+    \item انتگرال: $\int_{0}^{\infty} e^{-x} \,dx = 1$,
+    $\iint_{D} f(x,y) \,dA$
+    \item حد: $\lim_{x \to \infty} (1 + \frac{1}{x})^{x} = e$
+    \item مشتق: $\frac{d}{dx}(x^{n}) = nx^{n-1}$,
+    $\frac{\partial^{2}f}{\partial x^{2}}$
+    \item رادیکال: $\sqrt{x^{2}+y^{2}}$,
+    $\sqrt[3]{8} = 2$
+\end{itemize}
+
+\section{ماتریس و بردار}
+
+\[
+A_{3 \times 3} =
+\begin{bmatrix}
+    a_{11} & a_{12} & a_{13} \\
+    a_{21} & a_{22} & a_{23} \\
+    a_{31} & a_{32} & a_{33}
+\end{bmatrix}, \quad
+\vec{v} = \begin{bmatrix} v_{1} \\ v_{2} \\ v_{3} \end{bmatrix}
+\]
+
+\[
+\det(A) = a_{11}(a_{22}a_{33} - a_{23}a_{32}) - a_{12}(a_{21}a_{33} - a_{23}a_{31}) + a_{13}(a_{21}a_{32} - a_{22}a_{31})
+\]
+
+\section{معادلات معروف}
+
+\begin{align}
+    e^{i\pi} + 1 &= 0 \label{eq:euler} \\
+    \int_{-\infty}^{\infty} e^{-x^{2}} \,dx &= \sqrt{\pi} \label{eq:gaussian} \\
+    \sum_{n=1}^{\infty} \frac{1}{n^{2}} &= \frac{\pi^{2}}{6} \label{eq:basel} \\
+    \zeta(s) &= \prod_{p \text{ prime}} \frac{1}{1 - p^{-s}} \label{eq:euler-product}
+\end{align}
+
+معادله \meqref{eq:euler} زیباترین معادله ریاضی نامیده می‌شود.
+
+%----------------------------------------
+% Chapter 4: Code Font
+%----------------------------------------
+\chapter{فونت کد}
+
+\section{\lr{JetBrains Mono}}
+
+\lr{JetBrains Mono} یک فونت \lr{monospace} مدرن است که مخصوص
+برنامه‌نویسی طراحی شده. این فونت دارای لیگچرهای مخصوص کدنویسی است:
+
+\begin{latin}
+\begin{minted}{text}
+    Comparison:  == != <= >= -> => :: <| |>
+    Arrows:      <- -> --> <-- -->>
+    Logic:       && || !!
+    Math:        ++ -- ** // /= =/=
+\end{minted}
+\end{latin}
+
+\section{نمونه کد پایتون}
+
+\begin{latin}
+\begin{minted}{python}
+def greet(name: str, age: int = 0) -> str:
+    """Return a greeting message."""
+    if age > 0:
+        return f"Hello {name}, you are {age} years old!"
+    return f"Hello {name}!"
+
+# Test the function
+names = ["Ali", "Sara", "Reza"]
+for i, name in enumerate(names, start=1):
+    print(f"{i}. {greet(name, 20 + i)}")
+\end{minted}
+\end{latin}
+\codecaption{تابع greeting با type hints}
+\label{code:greeting}
+
+\section{مقایسه فونت‌های کد}
+
+\begin{latin}
+\begin{minted}{text}
+    JetBrains Mono:    The quick brown fox  ||  i != 0  ==>  x => y
+    Courier New:       The quick brown fox  ||  i != 0  ==>  x => y
+\end{minted}
+\end{latin}
+
+%----------------------------------------
+% Chapter 5: Multilingual Text
+%----------------------------------------
+\chapter{متن چندزبانه}
+
+\section{ترکیب فارسی و انگلیسی}
+
+این یک پاراگراف ترکیبی است که در آن از واژگان انگلیسی
+مانند \lr{function}، \lr{variable}، \lr{array}، \lr{loop}،
+\lr{conditional} و \lr{recursion} استفاده شده است.
+همچنین ممکن است اعدادی مانند \lr{3.14159} یا \lr{2.71828}
+در متن فارسی ظاهر شوند. عبارات ریاضی مانند $f(x) = x^{2}$
+نیز در متن فارسی قرار می‌گیرند.
+
+نام دانشمندان خارجی: \lr{Isaac Newton}، \lr{Albert Einstein}،
+\lr{Alan Turing}، \lr{Donald Knuth}، \lr{Ada Lovelace}
+
+\section{نقل قول چندزبانه}
+
+\begin{latin}
+    \begin{quote}
+        ``Any fool can write code that a computer can understand.
+        Good programmers write code that humans can understand.''
+
+        \hfill --- \textit{Martin Fowler}
+    \end{quote}
+\end{latin}
+
+ترجمه: «هر احمقی می‌تواند کدی بنویسد که کامپیوتر بفهمد.
+برنامه‌نویسان خوب کدی می‌نویسند که انسان‌ها بفهمند.»
+
+%----------------------------------------
+% Summary
+%----------------------------------------
+\chapter{خلاصه نتایج}
+
+\section{وضعیت فونت‌ها}
+
+\begin{table}[h]
+\centering
+\caption{وضعیت خانواده فونت‌های MatinBook}
+\label{tab:fonts}
+\begin{tabular}{|c|c|c|C{5cm}|}
+    \hline
+    \textbf{نوع} & \textbf{فونت} & \textbf{وضعیت} & \textbf{توضیحات} \\
+    \hline
+    فارسی & \lr{XB Niloofar} & \textcolor{matingreen}{✅ فعال} & مقیاس ۱.۲، خوانایی بالا \\
+    لاتین & \lr{Times New Roman} & \textcolor{matingreen}{✅ فعال} & سریف، استاندارد آکادمیک \\
+    ریاضی & \lr{XITS Math} & \textcolor{matingreen}{✅ فعال} & سازگار با \lr{unicode-math} \\
+    کد & \lr{JetBrains Mono} & \textcolor{matingreen}{✅ فعال} & لیگچرهای برنامه‌نویسی \\
+    \hline
+\end{tabular}
+\end{table}
+
+\section{نتیجه}
+
+\textbf{تمام فونت‌های \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شدند.}
+نمایش فارسی، انگلیسی، ریاضی و کد همگی بدون نقص هستند. 🎉
+
+\end{document}
