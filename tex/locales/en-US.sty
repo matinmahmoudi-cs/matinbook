@@ -1,0 +1,98 @@
+%----------------------------------------
+% en-US.sty - English (US) Locale for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/locales/en-US}[2025/01/01 v1.0 MatinBook English Locale]
+
+%----------------------------------------
+% Document Structure Names
+%----------------------------------------
+\renewcommand{\contentsname}{Contents}
+\renewcommand{\listfigurename}{List of Figures}
+\renewcommand{\listtablename}{List of Tables}
+\renewcommand{\bibname}{Bibliography}
+\renewcommand{\indexname}{Index}
+\renewcommand{\chaptername}{Chapter}
+\renewcommand{\appendixname}{Appendix}
+\renewcommand{\abstractname}{Abstract}
+
+%----------------------------------------
+% Float Names
+%----------------------------------------
+\renewcommand{\figurename}{Figure}
+\renewcommand{\tablename}{Table}
+
+%----------------------------------------
+% Algorithm Names
+%----------------------------------------
+\floatname{algorithm}{Algorithm}
+\renewcommand{\listalgorithmname}{List of Algorithms}
+
+%----------------------------------------
+% Index Names
+%----------------------------------------
+\renewcommand{\seename}{see}
+\renewcommand{\alsoname}{see also}
+
+%----------------------------------------
+% Cleveref Translations
+%----------------------------------------
+\crefname{equation}{Equation}{Equations}
+\crefname{chapter}{Chapter}{Chapters}
+\crefname{section}{Section}{Sections}
+\crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+\crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{corollary}{Corollary}{Corollaries}
+\crefname{definition}{Definition}{Definitions}
+\crefname{example}{Example}{Examples}
+\crefname{remark}{Remark}{Remarks}
+
+\crefrangeformat{equation}{Equations~#3#1#4~to~#5#2#6}
+\crefrangeformat{figure}{Figures~#3#1#4~to~#5#2#6}
+\crefrangeformat{table}{Tables~#3#1#4~to~#5#2#6}
+
+%----------------------------------------
+% Section Headings
+%----------------------------------------
+\providecommand{\sectionname}{Section}
+\providecommand{\pagename}{Page}
+
+%----------------------------------------
+% Theorem Names
+%----------------------------------------
+\newcommand{\theoremname}{Theorem}
+\newcommand{\lemmaname}{Lemma}
+\newcommand{\corollaryname}{Corollary}
+\newcommand{\propositionname}{Proposition}
+\newcommand{\definitionname}{Definition}
+\newcommand{\examplename}{Example}
+\newcommand{\remarkname}{Remark}
+\newcommand{\exercisename}{Exercise}
+\newcommand{\solutionname}{Solution}
+
+%----------------------------------------
+% Code & Algorithm Names
+%----------------------------------------
+\newcommand{\codename}{Code}
+\newcommand{\algorithmname}{Algorithm}
+
+%----------------------------------------
+% Cover Names
+%----------------------------------------
+\newcommand{\coverpublisher}{Publisher}
+\newcommand{\coveredition}{Edition}
+\newcommand{\coverisbn}{ISBN}
+\newcommand{\covertag}{Programming and Mathematics}
+\newcommand{\coverabout}{About This Book}
+\newcommand{\coversource}{View Source Code}
+
+%----------------------------------------
+% Log
+%----------------------------------------
+\typeout{MatinBook: English locale loaded (en-US)}
+
+\endinput
