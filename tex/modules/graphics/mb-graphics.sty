@@ -1,0 +1,172 @@
+%----------------------------------------
+% mb-graphics.sty - Graphics & Drawings for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/graphics/mb-graphics}[2025/01/01 v1.0 MatinBook Graphics System]
+
+%----------------------------------------
+% Graphics Packages
+%----------------------------------------
+% graphicx is already loaded in mb-core.sty
+% Here we add advanced graphics configuration
+
+% TikZ - Drawing package
+\RequirePackage{tikz}
+
+% PGFPlots - Plotting package
+\RequirePackage{pgfplots}
+\pgfplotsset{compat=1.18}
+
+%----------------------------------------
+% TikZ Libraries
+%----------------------------------------
+\usetikzlibrary{
+    shapes,
+    arrows,
+    positioning,
+    calc,
+    patterns,
+    decorations.pathreplacing,
+    decorations.pathmorphing,
+    decorations.markings,
+    backgrounds,
+    fit,
+    matrix,
+    mindmap,
+    trees,
+    shadows,
+    arrows.meta,
+    quotes,
+    graphs,
+    graphs.standard
+}
+
+%----------------------------------------
+% PGFPlots Global Settings
+%----------------------------------------
+\pgfplotsset{
+    % Default style for all plots
+    every axis/.style={
+        grid=major,
+        grid style={dashed, gray!30},
+        axis lines=center,
+        axis line style={-stealth, thick},
+        xlabel style={anchor=west},
+        ylabel style={anchor=south},
+        legend style={
+            draw=none,
+            fill=matinlightgray!30,
+            rounded corners=3pt
+        },
+        title style={
+            font=\bfseries
+        },
+        label style={
+            font=\small
+        },
+        tick label style={
+            font=\footnotesize
+        }
+    },
+    % Bar chart defaults
+    ybar/.style={
+        bar width=15pt,
+        ymajorgrids=true,
+        nodes near coords,
+        nodes near coords align={vertical}
+    }
+}
+
+%----------------------------------------
+% Custom TikZ Styles
+%----------------------------------------
+
+% Flowchart blocks
+\tikzset{
+    % Standard block
+    block/.style={
+        rectangle,
+        draw=matindarkblue,
+        fill=matinlightblue!20,
+        text width=6em,
+        text centered,
+        rounded corners,
+        minimum height=3em,
+        font=\small
+    },
+    % Decision diamond
+    decision/.style={
+        diamond,
+        draw=matinorange,
+        fill=matinlightorange!20,
+        text width=3em,
+        text centered,
+        inner sep=0pt,
+        font=\small
+    },
+    % Arrow
+    arrow/.style={
+        thick,
+        ->,
+        >=stealth
+    },
+    % Node with shadow
+    shadowed/.style={
+        draw,
+        fill=white,
+        drop shadow
+    }
+}
+
+%----------------------------------------
+% Graph Drawing Presets
+%----------------------------------------
+
+% Binary tree node style
+\tikzset{
+    treenode/.style={
+        circle,
+        draw=matinblue,
+        fill=matinlightblue!30,
+        minimum size=0.8cm,
+        font=\small
+    }
+}
+
+%----------------------------------------
+% Plot Color Palette
+%----------------------------------------
+\pgfplotscreateplotcyclelist{matinbook}{
+    {matinblue, thick},
+    {matingreen, thick},
+    {matinorange, thick},
+    {matinred, thick},
+    {matinpurple, thick},
+    {matindarkblue, thick},
+    {matindarkgreen, thick},
+    {matindarkorange, thick}
+}
+
+% Set default cycle list
+\pgfplotsset{
+    cycle list name=matinbook
+}
+
+%----------------------------------------
+% Graphics Path
+%----------------------------------------
+% Add common image directories
+\graphicspath{
+    {assets/images/}
+    {assets/cover/}
+    {images/}
+    {figures/}
+}
+
+%----------------------------------------
+% Log
+%----------------------------------------
+\typeout{MatinBook: Graphics system loaded (TikZ + PGFPlots)}
+
+\endinput
