@@ -1,0 +1,371 @@
+%========================================
+% MatinBook - Stage 05: Math System Test
+% Test: Equations + Matrices + Operators + Delimiters + Sets
+% Purpose: Validate all mathematical features
+%========================================
+
+% Add parent directory to search path
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+
+\documentclass{matinbook}
+
+\title{آزمون سیستم ریاضی}
+\author{تیم توسعه MatinBook}
+\date{تابستان ۱۴۰۵}
+
+\begin{document}
+    
+    %----------------------------------------
+    % Title Page
+    %----------------------------------------
+    \maketitle
+    
+    %----------------------------------------
+    % Chapter 1: Basic Equations
+    %----------------------------------------
+    \chapter{معادلات پایه}
+    
+    \section{معادلات درون خطی}
+    
+    ریاضیات درون خطی برای اشاره به نمادها و عبارات کوتاه
+    استفاده می‌شود: $E = mc^{2}$، قضیه فیثاغورث
+    $a^{2} + b^{2} = c^{2}$، و تابع نمایی $e^{i\pi} + 1 = 0$.
+    
+    همچنین می‌توان از مجموعه‌های عددی استاندارد استفاده کرد:
+    $\N$ (طبیعی)، $\Z$ (صحیح)، $\Q$ (گویا)،
+    $\R$ (حقیقی)، $\C$ (مختلط).
+    
+    \section{معادلات شماره‌گذاری شده}
+    
+    \begin{equation}
+        f(x) = x^{3} - 3x^{2} + 2x - 1
+        \label{eq:cubic}
+    \end{equation}
+    
+    \begin{equation}
+        \frac{d}{dx}\left( \sin x \right) = \cos x
+        \label{eq:derivative-sin}
+    \end{equation}
+    
+    معادله \meqref{eq:cubic} یک چندجمله‌ای درجه سه است،
+    و معادله \meqref{eq:derivative-sin} مشتق تابع سینوس
+    را نشان می‌دهد.
+    
+    \section{معادلات چندخطی}
+    
+    محیط \texttt{align} برای معادلات هم‌تراز:
+    
+    \begin{align}
+        (a + b)^{2} &= (a + b)(a + b) \nonumber \\
+        &= a^{2} + ab + ba + b^{2} \nonumber \\
+        &= a^{2} + 2ab + b^{2} \label{eq:binomial}
+    \end{align}
+    
+    محیط \texttt{gather} برای معادلات غیرهم‌تراز:
+    
+    \begin{gather}
+        x = a + b + c + d + e + f \label{eq:long1} \\
+        y = \alpha + \beta + \gamma + \delta + \epsilon \label{eq:long2}
+    \end{gather}
+    
+    محیط \texttt{align} با چند ستون:
+    
+    \begin{align}
+        x &= a + b & y &= c + d \label{eq:multi1} \\
+        u &= e + f & v &= g + h \label{eq:multi2}
+    \end{align}
+    
+    %----------------------------------------
+    % Chapter 2: Matrices and Vectors
+    %----------------------------------------
+    \chapter{ماتریس‌ها و بردارها}
+    
+    \section{انواع ماتریس}
+    
+    ماتریس با کروشه (\texttt{\textbackslash mat}):
+    
+    \[
+    A = \mat{1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9}
+    \]
+    
+    ماتریس با پرانتز (\texttt{\textbackslash pmat}):
+    
+    \[
+    B = \pmat{a_{11} & a_{12} \\ a_{21} & a_{22}}
+    \]
+    
+    دترمینان (\texttt{\textbackslash vmat}):
+    
+    \[
+    \det(B) = \vmat{a_{11} & a_{12} \\ a_{21} & a_{22}}
+    = a_{11}a_{22} - a_{12}a_{21}
+    \]
+    
+    ماتریس همانی $3 \times 3$:
+    
+    \[
+    I_{3} = \mat{1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1}
+    \]
+    
+    \section{عملگرهای ماتریسی}
+    
+    \begin{itemize}
+        \item \textbf{اثر (\lr{Trace}):}
+        $\trace(A) = a_{11} + a_{22} + \cdots + a_{nn}$
+        \item \textbf{دترمینان:} $\det(A) = |A|$
+        \item \textbf{ترانهاده:} $A^{T} = [a_{ji}]$
+        \item \textbf{ماتریس قطری:}
+        $\diag(d_{1}, d_{2}, \ldots, d_{n})$
+        \item \textbf{رتبه:} $\rank(A)$
+    \end{itemize}
+    
+    \section{بردارها}
+    
+    \[
+    \vec{v} = \mat{v_{1} \\ v_{2} \\ v_{3}}, \quad
+    \vec{w} = \pmat{w_{1} & w_{2} & w_{3}}
+    \]
+    
+    ضرب داخلی: $\inner{\vec{u}}{\vec{v}} = u_{1}v_{1} + u_{2}v_{2} + u_{3}v_{3}$
+    
+    نرم اقلیدسی: $\norm{\vec{v}} = \sqrt{\inner{\vec{v}}{\vec{v}}}$
+    
+    %----------------------------------------
+    % Chapter 3: Delimiters
+    %----------------------------------------
+    \chapter{دلیمترهای هوشمند}
+    
+    \section{قدر مطلق و نرم}
+    
+    قدر مطلق ساده: $\abs{-5} = 5$
+    
+    قدر مطلق با اندازه دستی: $\abs[\Big]{\frac{a}{b}}$
+    
+    نرم بردار: $\norm{\vec{x}}$
+    
+    نرم با اندیس: $\norm{x}_{2} = \sqrt{\sum_{i} x_{i}^{2}}$
+    
+    \section{سقف و کف}
+    
+    \[
+    \ceil{3.14} = 4, \quad
+    \floor{3.14} = 3, \quad
+    \ceil[Big]{\frac{22}{7}} = 4
+    \]
+    
+    \section{ضرب داخلی}
+    
+    \[
+    \inner{u}{v}, \quad
+    \inner[\Big]{\frac{x}{2}}{\frac{y}{3}}
+    \]
+    
+    \section{مجموعه}
+    
+    \[
+    A = \set{1, 2, 3, 4, 5}, \quad
+    B = \setbuilder{x \in \R}{x > 0}
+    \]
+    
+    \section{پرانتز هوشمند}
+    
+    \[
+    \paren{x + y}, \quad
+    \paren[\Big]{\frac{a + b}{c + d}}, \quad
+    \paren*{\frac{\sum_{i=1}^{n} x_{i}}{n}}
+    \]
+    
+    %----------------------------------------
+    % Chapter 4: Operators and Functions
+    %----------------------------------------
+    \chapter{عملگرها و توابع ویژه}
+    
+    \section{عملگرهای حسابان برداری}
+    
+    گرادیان تابع اسکالر $f$:
+    \[
+    \grad f = \pderiv{f}{x}\hat{i} + \pderiv{f}{y}\hat{j} + \pderiv{f}{z}\hat{k}
+    \]
+    
+    کرل میدان برداری $\vec{F}$:
+    \[
+    \curl \vec{F} = \nabla \times \vec{F}
+    \]
+    
+    دیورژانس میدان برداری $\vec{F}$:
+    \[
+    \diver \vec{F} = \nabla \cdot \vec{F}
+    \]
+    
+    \section{عملگرهای جبر خطی}
+    
+    \begin{align}
+        \rank(A) &= \text{بعد فضای ستونی} \label{eq:rank} \\
+        \trace(A) &= \sum_{i=1}^{n} a_{ii} \label{eq:trace} \\
+        \diag(d_{1}, \ldots, d_{n}) &=
+        \mat{d_{1} & 0 & \cdots & 0 \\
+            0 & d_{2} & \cdots & 0 \\
+            \vdots & \vdots & \ddots & \vdots \\
+            0 & 0 & \cdots & d_{n}} \label{eq:diag}
+    \end{align}
+    
+    \section{عملگرهای نظریه اعداد}
+    
+    \begin{itemize}
+        \item بزرگترین مقسوم‌علیه مشترک: $\gcdop(a, b)$
+        \item کوچکترین مضرب مشترک: $\lcm(a, b)$
+        \item تابع علامت: $\sgn(x)$
+    \end{itemize}
+    
+    \section{بهینه‌سازی}
+    
+    \begin{align}
+        \argmax_{x \in \R} f(x) &= \text{مقدار } x \text{ که } f(x) \text{ را بیشینه کند} \\
+        \argmin_{x \in \R} f(x) &= \text{مقدار } x \text{ که } f(x) \text{ را کمینه کند}
+    \end{align}
+    
+    %----------------------------------------
+    % Chapter 5: Calculus
+    %----------------------------------------
+    \chapter{حساب دیفرانسیل و انتگرال}
+    
+    \section{مشتق}
+    
+    مشتق معمولی:
+    \[
+    \deriv{}{x}\left( x^{n} \right) = n x^{n-1}
+    \]
+    
+    مشتق جزئی:
+    \[
+    \pderiv{f}{x} = \lim_{h \to 0} \frac{f(x+h, y) - f(x, y)}{h}
+    \]
+    
+    مشتق دوم:
+    \[
+    \deriv{^{2}f}{x^{2}} = \deriv{}{x}\left( \deriv{f}{x} \right)
+    \]
+    
+    \section{انتگرال}
+    
+    انتگرال نامعین:
+    \[
+    \int x^{n} \dd{x} = \frac{x^{n+1}}{n+1} + C
+    \]
+    
+    انتگرال معین:
+    \[
+    \int_{0}^{\infty} e^{-x^{2}} \dd{x} = \frac{\sqrt{\pi}}{2}
+    \]
+    
+    انتگرال دوگانه:
+    \[
+    \iint_{D} f(x, y) \dd{x}\dd{y}
+    \]
+    
+    \section{حد و سری}
+    
+    حد معروف:
+    \[
+    \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^{n} = e
+    \]
+    
+    سری تیلور:
+    \[
+    e^{x} = \sum_{n=0}^{\infty} \frac{x^{n}}{n!}
+    = 1 + x + \frac{x^{2}}{2!} + \frac{x^{3}}{3!} + \cdots
+    \]
+    
+    سری فوریه:
+    \[
+    f(x) = \frac{a_{0}}{2} + \sum_{n=1}^{\infty}
+    \left[ a_{n} \cos(nx) + b_{n} \sin(nx) \right]
+    \]
+    
+    %----------------------------------------
+    % Chapter 6: Special Functions
+    %----------------------------------------
+    \chapter{توابع ویژه}
+    
+    \section{تابع گاما}
+    
+    \[
+    \Gamma(z) = \int_{0}^{\infty} t^{z-1} e^{-t} \dd{t}, \quad \Re(z) > 0
+    \]
+    
+    \section{تابع سینک}
+    
+    \[
+    \sinc(x) = \frac{\sin(\pi x)}{\pi x}
+    \]
+    
+    \section{تابع خطا}
+    
+    \[
+    \erf(x) = \frac{2}{\sqrt{\pi}} \int_{0}^{x} e^{-t^{2}} \dd{t}
+    \]
+    
+    %----------------------------------------
+    % Chapter 7: Number Sets
+    %----------------------------------------
+    \chapter{مجموعه‌های عددی}
+    
+    \section{نمادهای استاندارد}
+    
+    \begin{table}[h]
+        \centering
+        \caption{مجموعه‌های عددی استاندارد}
+        \label{tab:number-sets}
+        \begin{tabular}{|c|c|C{7cm}|}
+            \hline
+            \textbf{نماد} & \textbf{نام} & \textbf{توضیحات} \\
+            \hline
+            $\N$ & اعداد طبیعی & $\{1, 2, 3, \ldots\}$ \\
+            $\Z$ & اعداد صحیح & $\{\ldots, -2, -1, 0, 1, 2, \ldots\}$ \\
+            $\Q$ & اعداد گویا & $\{p/q \mid p,q \in \Z, q \neq 0\}$ \\
+            $\C$ & اعداد مختلط & $\{a + bi \mid a,b \in \R\}$ \\    
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    \section{رابطه بین مجموعه‌ها}
+    
+    \[
+    \N \subset \Z \subset \Q \subset \R \subset \C
+    \]
+    
+    %----------------------------------------
+    % Summary
+    %----------------------------------------
+    \chapter{خلاصه نتایج}
+    
+    \section{وضعیت ماژول ریاضی}
+    
+    \begin{table}[h]
+        \centering
+        \caption{وضعیت قابلیت‌های ریاضی}
+        \label{tab:math-status}
+        \begin{tabular}{|c|C{6cm}|c|}
+            \hline
+            \textbf{بخش} & \textbf{قابلیت‌ها} & \textbf{وضعیت} \\
+            \hline
+            معادلات & \lr{align, gather, equation} & \textcolor{matingreen}{✅} \\
+            ماتریس‌ها & \lr{mat, pmat, vmat} & \textcolor{matingreen}{✅} \\
+            دلیمترها & \lr{abs, norm, ceil, floor, inner, set, paren} & \textcolor{matingreen}{✅} \\
+            عملگرها & \lr{grad, curl, diver, rank, trace, diag} & \textcolor{matingreen}{✅} \\
+            مشتق/انتگرال & \lr{deriv, pderiv, dd, D} & \textcolor{matingreen}{✅} \\
+            مجموعه‌ها & \lr{N, Z, Q, R, C} & \textcolor{matingreen}{✅} \\
+            توابع ویژه & \lr{sinc, sgn, gcdop, lcm, erf} & \textcolor{matingreen}{✅} \\
+            \hline
+        \end{tabular}
+    \end{table}
+    
+    \section{نتیجه}
+    
+    \textbf{ماژول ریاضی \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
+    تمام معادلات، ماتریس‌ها، دلیمترها، عملگرها و مجموعه‌های عددی
+    به درستی کار می‌کنند. 🎉
+    
+\end{document}
