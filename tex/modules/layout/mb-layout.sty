@@ -1,0 +1,130 @@
+%----------------------------------------
+% mb-layout.sty - Layout Configuration for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/layout/mb-layout}[2025/01/01 v1.0 MatinBook Layout System]
+
+%----------------------------------------
+% Page Geometry
+%----------------------------------------
+\geometry{
+    a4paper,
+    left=2.5cm,        % Outer margin
+    right=2.5cm,       % Inner margin
+    top=2.5cm,         % Top margin
+    bottom=2.5cm,      % Bottom margin
+    headheight=18pt,   % Header height (increased to avoid warning)
+    headsep=10pt,      % Header separation from text
+    footskip=30pt,     % Footer separation from text
+    bindingoffset=1cm, % Extra space for binding
+    marginparwidth=0pt,
+    marginparsep=0pt
+}
+
+%----------------------------------------
+% Header and Footer Setup
+%----------------------------------------
+\pagestyle{fancy}
+
+% Clear default styles
+\fancyhf{}
+
+% For twoside documents
+\fancyhead[RO,LE]{%
+    \thepage%
+}
+
+\fancyhead[RE]{%
+    \ifnum\c@chapter>0
+    \small\textbf{\rightmark}
+    \fi
+}
+
+\fancyhead[LO]{%
+    \ifnum\c@chapter>0
+    \small\textbf{\leftmark}
+    \fi
+}
+
+% Footer settings
+\fancyfoot[RO,LE]{%
+    \ifnum\c@chapter>0
+    \rule[2pt]{\textwidth}{0.4pt}\\
+    \vspace{3pt}
+    \small\lr{\textbf{MatinBook}}
+    \fi
+}
+
+\fancyfoot[RE,LO]{%
+    \ifnum\c@chapter>0
+    \rule[2pt]{\textwidth}{0.4pt}\\
+    \vspace{3pt}
+    \small\textbf{\thepage}
+    \fi
+}
+
+% Header and footer line widths
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Plain page style (for chapter pages)
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \fancyfoot[RO,LE]{%
+        \rule[2pt]{\textwidth}{0.4pt}\\
+        \vspace{3pt}
+        \small\lr{\textbf{MatinBook}}
+    }
+    \fancyfoot[RE,LO]{%
+        \rule[2pt]{\textwidth}{0.4pt}\\
+        \vspace{3pt}
+        \small\textbf{\thepage}
+    }
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+}
+
+%----------------------------------------
+% Line Spacing
+%----------------------------------------
+\setstretch{1.15}
+
+%----------------------------------------
+% Paragraph Settings
+%----------------------------------------
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt plus 1pt}
+
+
+%----------------------------------------
+% Caption Settings
+%----------------------------------------
+\captionsetup{
+    font=small,
+    labelfont=bf,
+    skip=10pt,
+    justification=centering
+}
+
+%----------------------------------------
+% Footnote Settings
+%----------------------------------------
+\setlength{\footnotesep}{8pt}
+\renewcommand{\footnoterule}{%
+    \kern-3pt
+    \hrule width 0.3\textwidth height 0.4pt
+    \kern2.6pt
+}
+
+
+%----------------------------------------
+% Watermark for draft mode
+%----------------------------------------
+\if@matin@draft
+\SetWatermarkText{\lr{DRAFT}}
+\SetWatermarkScale{1.5}
+\SetWatermarkColor[gray]{0.9}
+\fi
+
+\endinput
