@@ -1,0 +1,111 @@
+# ============================================
+# LaTeX build artifacts
+# ============================================
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.bbl
+*.blg
+*.run.xml
+*.bcf
+*.idx
+*.ind
+*.ilg
+*.glo
+*.gls
+*.glg
+*.ist
+*.acn
+*.acr
+*.alg
+*.xdy
+*.nav
+*.snm
+*.vrb
+*.xdv
+*.upa
+*.upb
+*.spl
+*.brf
+*.loa
+*.lol
+
+# ============================================
+# LaTeX auxiliary directories
+# ============================================
+latex.out/
+auto/
+
+# ============================================
+# PDFs
+# ============================================
+# Ignore all PDFs by default
+*.pdf
+
+# But keep example PDFs (they're reference documents)
+!examples/**/*.pdf
+
+# ============================================
+# Editor / IDE
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# ============================================
+# OS
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Build directories
+# ============================================
+build/
+out/
+dist/
+
+# ============================================
+# Python (for test scripts)
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# ============================================
+# Node (if any JS tooling later)
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ============================================
+# Misc
+# ============================================
+*.bak
+*.tmp
+*.temp
+.cache/
