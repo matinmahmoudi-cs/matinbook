@@ -1,0 +1,67 @@
+%----------------------------------------
+% mb-index.sty - Index System for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/index/mb-index}[2025/01/01 v1.0 MatinBook Index System]
+
+%----------------------------------------
+% Index Setup
+%----------------------------------------
+% imakeidx is already loaded in mb-core.sty
+% Here we configure index settings
+
+% Create main index (appears in table of contents)
+\makeindex[intoc]
+
+%----------------------------------------
+% Index Formatting
+%----------------------------------------
+% These settings improve the appearance of Persian indexes
+\renewcommand{\subitem}{~~~}
+\renewcommand{\subsubitem}{~~~~~~}
+
+%----------------------------------------
+% Multiple Index Support (Optional)
+%----------------------------------------
+% Uncomment to enable multiple specialized indexes
+% \makeindex[name=subjects, title=نمایه موضوعی]
+% \makeindex[name=authors, title=نمایه نویسندگان]
+
+%----------------------------------------
+% Index Entry Helpers
+%----------------------------------------
+
+% Bold index entry
+\newcommand{\idxbold}[1]{\index{#1|textbf}}
+
+% Italic index entry
+\newcommand{\idxitalic}[1]{\index{#1|textit}}
+
+% See reference
+\newcommand{\idxsee}[2]{\index{#1|see{#2}}}
+
+% See also reference
+\newcommand{\idxseealso}[2]{\index{#1|seealso{#2}}}
+
+% Primary entry with subentry
+\newcommand{\idxsub}[2]{\index{#1!#2}}
+
+% Primary entry with sub-subentry
+\newcommand{\idxsubsub}[3]{\index{#1!#2!#3}}
+
+%----------------------------------------
+% Process All Indexes Helper
+%----------------------------------------
+% Print all defined indexes in order
+\newcommand{\printallindexes}{%
+    \printindex
+    % Add more \printindex[name=xxx] if using multiple indexes
+}
+
+%----------------------------------------
+% Log
+%----------------------------------------
+\typeout{MatinBook: Index system loaded}
+
+\endinput
