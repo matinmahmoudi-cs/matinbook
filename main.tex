@@ -1,0 +1,137 @@
+%----------------------------------------
+% Main Book File
+% MatinBook - Professional Persian Book
+% Modular Version with 20 Modules
+%----------------------------------------
+
+\documentclass{matinbook}
+
+%----------------------------------------
+% Bibliography
+%----------------------------------------
+\addbibresource{references.bib}
+
+%----------------------------------------
+% Book Metadata
+%----------------------------------------
+\title{عنوان کتاب}
+\author{نام نویسنده}
+\date{تابستان ۱۴۰۴}
+
+%----------------------------------------
+% Begin Document
+%----------------------------------------
+
+\begin{document}
+    
+    %----------------------------------------
+    % Cover
+    %----------------------------------------
+    \makecover
+    {عنوان کتاب}
+    {زیرعنوان کتاب}
+    {نام نویسنده}
+    {تابستان ۱۴۰۴}
+    
+    \makebackcover{%
+        توضیحات پشت جلد کتاب را اینجا بنویسید...
+    }
+    
+    %----------------------------------------
+    % Title Page
+    %----------------------------------------
+    \maketitle
+    
+    %----------------------------------------
+    % Copyright
+    %----------------------------------------
+    \thispagestyle{empty}
+    \vfill
+    \begin{center}
+        {\large\textbf{حقوق نشر}}
+        
+        \vspace{1cm}
+        تمامی حقوق این کتاب محفوظ است.
+        
+        \vspace{1cm}
+        نسخه ۱.۰ - تابستان ۱۴۰۴
+        
+        \vspace{0.5cm}
+        {\small ساخته شده با \lr{MatinBook} نسخه ۱}
+    \end{center}
+    \clearpage
+    
+    %----------------------------------------
+    % Dedication (Optional)
+    %----------------------------------------
+    \thispagestyle{empty}
+    \vfill
+    \begin{flushright}
+        {\Large\itshape
+            تقدیم به...
+        }
+    \end{flushright}
+    \clearpage
+    \frontmatter
+    %----------------------------------------
+    % Preface
+    %----------------------------------------
+    \chapter*{پیشگفتار}
+    \addcontentsline{toc}{chapter}{پیشگفتار}
+    
+    پیشگفتار کتاب را اینجا بنویسید...
+    
+    \clearpage
+    
+    %----------------------------------------
+    % Table of Contents
+    %----------------------------------------
+    \tableofcontents
+    \clearpage
+    
+    %----------------------------------------
+    % List of Figures
+    %----------------------------------------
+    \listoffigures
+    \clearpage
+    
+    %----------------------------------------
+    % List of Tables
+    %----------------------------------------
+    \listoftables
+    \clearpage
+    
+    %----------------------------------------
+    % List of Algorithms
+    %----------------------------------------
+    \listofalgorithms
+    \clearpage
+    \mainmatter
+    %----------------------------------------
+    % Chapters
+    %----------------------------------------
+    %\input{chapters/chapter-01}
+    %\input{chapters/chapter-02}
+    %\input{chapters/chapter-03}
+    %\input{chapters/chapter-04}
+    %\input{chapters/chapter-05}
+    %\input{chapters/chapter-06}
+    %\input{chapters/chapter-07}
+    %\input{chapters/chapter-08}
+    
+    %----------------------------------------
+    % Bibliography
+    %----------------------------------------
+    \begin{latin}
+        \printbibliography[title={منابع و مراجع}]
+    \end{latin}
+    
+    %----------------------------------------
+    % Index
+    %----------------------------------------
+    \printindex
+    
+    %----------------------------------------
+    % End
+    %----------------------------------------
+\end{document}
