@@ -1,0 +1,56 @@
+%----------------------------------------
+% mb-references.sty - References & Links for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/references/mb-references}[2025/01/01 v1.0 MatinBook References System]
+
+%----------------------------------------
+% Hyperref Setup
+%----------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue,
+    bookmarksopen=true,
+    bookmarksnumbered=true,
+    pdfcreator={MatinBook LaTeX Class},
+    pdfproducer={XeLaTeX with MatinBook}
+}
+
+%----------------------------------------
+% Reference Helpers
+%----------------------------------------
+
+% Quick reference to equation
+\newcommand{\meqref}[1]{معادله~\ref{#1}}
+
+% Quick reference to figure
+\newcommand{\figref}[1]{\figurename~\ref{#1}}
+
+% Quick reference to table
+\newcommand{\tabref}[1]{\tablename~\ref{#1}}
+
+% Quick reference to chapter
+\newcommand{\chref}[1]{\chaptername~\ref{#1}}
+
+% Quick reference to section
+\newcommand{\secref}[1]{\sectionname~\ref{#1}}
+
+%----------------------------------------
+% URL and Hyperlink Helpers
+%----------------------------------------
+
+% Display URL in monospace font
+\newcommand{\urlcode}[1]{\texttt{#1}}
+
+% Email link
+\newcommand{\email}[1]{\href{mailto:#1}{\texttt{#1}}}
+
+%----------------------------------------
+% Log
+%----------------------------------------
+\typeout{MatinBook: References system loaded}
+
+\endinput
