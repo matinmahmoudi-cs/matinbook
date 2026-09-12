@@ -1,0 +1,34 @@
+%----------------------------------------
+% mb-utils.sty - Utility Macros for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/core/mb-utils}[2025/01/01 v1.0 MatinBook Utilities]
+
+%----------------------------------------
+% Persian/Latin Title-Author Commands
+%----------------------------------------
+\def\latintitle#1{\def\@latintitle{#1}}
+\def\latinauthor#1{\def\@latinauthor{#1}}
+
+%----------------------------------------
+% Helper: Check if command exists
+%----------------------------------------
+\newcommand{\matin@ifcmd}[1]{%
+    \ifcsname #1\endcsname
+    \expandafter\@firstoftwo
+    \else
+    \expandafter\@secondoftwo
+    \fi
+}
+
+%----------------------------------------
+% Version Info
+%----------------------------------------
+\newcommand{\matinbookversion}{1.0}
+\newcommand{\matinbookdate}{2025/01/01}
+
+% Print version info to log
+\typeout{MatinBook Utilities loaded (v\matinbookversion)}
+
+\endinput
