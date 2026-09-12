@@ -1,0 +1,67 @@
+%----------------------------------------
+% mb-typography.sty - Typography Configuration for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/typography/mb-typography}[2025/01/01 v1.0 MatinBook Typography]
+
+%----------------------------------------
+% Microtype Settings (XeTeX Compatible)
+%----------------------------------------
+% XeTeX only supports protrusion, NOT expansion
+\microtypesetup{
+    activate={true,nocompatibility},
+    protrusion=true,
+    expansion=false,
+    tracking=false,
+    kerning=false,
+    spacing=false,
+    final,
+    verbose=silent
+}
+
+% Basic protrusion settings for improved margins
+\SetProtrusion{encoding={T1,OT1,TU},family={rm,sf,tt}}{
+    \textquotedblleft = {1000, },
+    \textquotedblright = { ,1000},
+    .  = { ,700},
+    ,  = { ,700},
+    :  = { ,500},
+    ;  = { ,500}
+}
+
+%----------------------------------------
+% Line Breaking Settings
+%----------------------------------------
+% Allow more flexibility in line breaking
+\emergencystretch=3em
+\hbadness=3000
+\tolerance=3000
+
+% Prevent widow and orphan lines
+\widowpenalty=10000
+\clubpenalty=10000
+
+% Display overfull boxes only in draft mode
+\if@matin@draft
+\overfullrule=5pt
+\else
+\overfullrule=0pt
+\fi
+
+%----------------------------------------
+% Hyphenation Settings
+%----------------------------------------
+\hyphenpenalty=750
+\exhyphenpenalty=750
+\doublehyphendemerits=1000000
+\finalhyphendemerits=0
+
+%----------------------------------------
+% Math Mode Spacing
+%----------------------------------------
+\thinmuskip=3mu
+\medmuskip=4mu plus 2mu minus 4mu
+\thickmuskip=5mu plus 5mu
+
+\endinput
