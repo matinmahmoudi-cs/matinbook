@@ -1,0 +1,134 @@
+%----------------------------------------
+% mb-boxes.sty - TColorBox Styles for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/modules/boxes/mb-boxes}[2025/01/01 v1.0 MatinBook Box System]
+
+%----------------------------------------
+% Base Style - Minimal with Colored Title
+%----------------------------------------
+\tcbset{
+    matinbox/.style={
+        enhanced,
+        breakable,
+        colback=white,
+        boxrule=0.8pt,
+        arc=3pt,
+        outer arc=3pt,
+        left=10pt,
+        right=10pt,
+        top=8pt,
+        bottom=8pt,
+        toptitle=4pt,
+        bottomtitle=4pt,
+        fonttitle=\bfseries\small,
+        coltitle=white,
+        titlerule=0pt,
+        before skip=10pt,
+        after skip=10pt,
+        parbox=false
+    }
+}
+
+%----------------------------------------
+% Theorem Box
+%----------------------------------------
+\newtcolorbox{theorembox}[1]{
+    matinbox,
+    colframe=matinblue!80,
+    colbacktitle=matinblue,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Lemma Box
+%----------------------------------------
+\newtcolorbox{lemmabox}[1]{
+    matinbox,
+    colframe=matinblue!60,
+    colbacktitle=matinblue!70,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Corollary Box
+%----------------------------------------
+\newtcolorbox{corollarybox}[1]{
+    matinbox,
+    colframe=matinblue!40,
+    colbacktitle=matinblue!50,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Proposition Box
+%----------------------------------------
+\newtcolorbox{propositionbox}[1]{
+    matinbox,
+    colframe=matindarkblue!80,
+    colbacktitle=matindarkblue,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Definition Box
+%----------------------------------------
+\newtcolorbox{definitionbox}[1]{
+    matinbox,
+    colframe=matingreen!80,
+    colbacktitle=matingreen,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Example Box
+%----------------------------------------
+\newtcolorbox{examplebox}[1]{
+    matinbox,
+    colframe=matinorange!80,
+    colbacktitle=matinorange,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Remark Box
+%----------------------------------------
+\newtcolorbox{remarkbox}[1]{
+    matinbox,
+    colframe=matinred!80,
+    colbacktitle=matinred,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Exercise Box
+%----------------------------------------
+\newtcolorbox{exercisebox}[1]{
+    matinbox,
+    colframe=matinpurple!80,
+    colbacktitle=matinpurple,
+    title={\textbf{ } #1}
+}
+
+%----------------------------------------
+% Solution Box
+%----------------------------------------
+\newtcolorbox{solutionbox}{
+    matinbox,
+    colframe=matingreen!50,
+    colbacktitle=matingreen!60,
+    title={\textbf{\solutionname}}
+}
+
+%----------------------------------------
+% Proof Environment Box
+%----------------------------------------
+\newtcolorbox{proofbox}{
+    matinbox,
+    colframe=matinblue!30,
+    colbacktitle=matinblue!40,
+    title={\textbf{\proofname}}
+}
+
+\endinput
