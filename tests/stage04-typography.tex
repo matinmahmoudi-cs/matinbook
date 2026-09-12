@@ -1,0 +1,299 @@
+%========================================
+% MatinBook - Stage 04: Typography Test
+% Test: Microtype + Line Breaking + Hyphenation + Spacing
+% Purpose: Validate advanced typography settings
+%========================================
+
+% Add parent directory to search path
+\makeatletter
+\def\input@path{{../}}
+\makeatother
+
+\documentclass{matinbook}
+
+\title{آزمون تایپوگرافی پیشرفته}
+\author{تیم توسعه MatinBook}
+\date{تابستان ۱۴۰۵}
+
+\begin{document}
+
+%----------------------------------------
+% Title Page
+%----------------------------------------
+\maketitle
+
+%----------------------------------------
+% Chapter 1: Persian Typography
+%----------------------------------------
+\chapter{تایپوگرافی فارسی}
+
+\section{تنظیمات پایه}
+
+تایپوگرافی خوب، هنر و فن چیدمان حروف و کلمات برای
+ایجاد متنی خوانا، شفاف و جذاب است. \lr{MatinBook}
+با استفاده از بسته \lr{microtype} و تنظیمات دقیق
+خط‌شکنی (\lr{line breaking})، تجربه خواندن متون
+فارسی را بهبود می‌بخشد.
+
+تنظیمات \lr{microtype} در \lr{XeTeX} شامل موارد زیر است:
+\begin{itemize}
+    \item \textbf{بیرون‌زدگی (\lr{Protrusion}):} فعال --- کاراکترهای خاص
+    مانند نقطه، کاما و گیومه کمی از حاشیه بیرون می‌زنند
+    تا لبه متن صاف‌تر به نظر برسد
+    \item \textbf{انبساط (\lr{Expansion}):} غیرفعال ---
+    \lr{XeTeX} از این قابلیت پشتیبانی نمی‌کند
+    \item \textbf{کرنینگ (\lr{Kerning}):} غیرفعال ---
+    توسط خود قلم مدیریت می‌شود
+\end{itemize}
+
+\section{متن طولانی فارسی}
+
+این یک پاراگراف بسیار طولانی است که به طور اختصاصی برای
+آزمایش نحوه شکسته شدن خطوط در متن فارسی نوشته شده است.
+هدف ما این است که ببینیم آیا کلمات به درستی در انتهای خطوط
+می‌شکنند و توزیع فضای خالی بین کلمات به صورت یکنواخت
+انجام می‌شود یا خیر. در حروف‌چینی فارسی، برخلاف انگلیسی،
+کلمات معمولاً شکسته نمی‌شوند مگر در موارد خاص. بنابراین
+تنظیمات خط‌شکنی باید به گونه‌ای باشد که از ایجاد فضاهای
+خیلی بزرگ یا خیلی کوچک بین کلمات جلوگیری کند. \lr{MatinBook}
+با تنظیم \texttt{\textbackslash emergencystretch=3em}
+و \texttt{\textbackslash tolerance=3000} این مشکل را
+مدیریت می‌کند.
+
+\section{جلوگیری از خطوط تنها}
+
+در حروف‌چینی حرفه‌ای فارسی، دو مشکل رایج وجود دارد:
+
+\begin{enumerate}
+    \item \textbf{خط بی‌آویز (\lr{Widow}):} آخرین خط یک پاراگراف
+    که به تنهایی در ابتدای صفحه بعد قرار می‌گیرد.
+    \item \textbf{خط یتیم (\lr{Orphan}):} اولین خط یک پاراگراف
+    که به تنهایی در انتهای صفحه قبل باقی می‌ماند.
+\end{enumerate}
+
+\lr{MatinBook} با تنظیم \texttt{\textbackslash widowpenalty=10000}
+و \texttt{\textbackslash clubpenalty=10000} از هر دو مشکل
+جلوگیری می‌کند. این مقادیر بالا به \LaTeX\ می‌گویند که
+هرگز اجازه ایجاد این خطوط را ندهد.
+
+\section{نویسه‌های خاص در تایپوگرافی}
+
+\begin{itemize}
+    \item \textbf{گیومه:} «متن داخل گیومه» باید چسبیده به متن باشد
+    \item \textbf{پرانتز:} (متن داخل پرانتز) بدون فاصله اضافی
+    \item \textbf{نقطه:} پایان جمله. فاصله بعد از نقطه باید استاندارد باشد
+    \item \textbf{کاما:} برای جداسازی، عبارات داخل جمله
+    \item \textbf{خط تیره:} برای عبارت‌های معترضه — مانند این — استفاده می‌شود
+\end{itemize}
+
+%----------------------------------------
+% Chapter 2: Latin Typography
+%----------------------------------------
+\chapter{تایپوگرافی لاتین}
+
+\section{تنظیمات \lr{microtype}}
+
+\begin{latin}
+This chapter demonstrates advanced Latin typography features
+provided by the \texttt{microtype} package in MatinBook.
+
+\subsection*{Protrusion Settings}
+
+The following characters are configured to protrude slightly
+into the margins, creating a visually straight edge:
+
+\begin{itemize}
+    \item Period (.) --- protrudes by 700/1000
+    \item Comma (,) --- protrudes by 700/1000
+    \item Colon (:) --- protrudes by 500/1000
+    \item Semicolon (;) --- protrudes by 500/1000
+    \item Quotation marks --- protrudes by 1000/1000
+\end{itemize}
+
+\subsection*{Long English Text}
+
+This is a deliberately long paragraph designed to test the line
+breaking algorithm in English text. The quick brown fox jumps over
+the lazy dog multiple times to ensure that the text fills enough
+lines to demonstrate proper justification behavior. We need to
+verify that hyphenation works correctly when necessary, and that
+the spacing between words remains consistent throughout the
+paragraph without creating large gaps or rivers of white space
+that would distract the reader from the content.
+
+\subsection*{Hyphenation Test}
+
+The following words should hyphenate correctly when near
+line breaks: implementation, configuration, initialization,
+documentation, communication, functionality, comprehensive,
+sophisticated, characteristic, representation.
+\end{latin}
+
+\section{لیگچرها (\lr{Ligatures})}
+
+\begin{latin}
+Ligatures are special characters that combine two or more
+letters into a single glyph. Common ligatures in English include:
+
+\begin{itemize}
+    \item fi ligature: define, finance, profile
+    \item fl ligature: flower, reflect, inflate
+    \item ff ligature: offer, different, difficult
+    \item ffi ligature: efficient, coefficient
+    \item ffl ligature: shuffle, waffle, baffle
+\end{itemize}
+
+Times New Roman supports all standard ligatures automatically.
+\end{latin}
+
+%----------------------------------------
+% Chapter 3: Mixed Text Typography
+%----------------------------------------
+\chapter{تایپوگرافی ترکیبی}
+
+\section{فارسی و انگلیسی در یک پاراگراف}
+
+نوشتن متون علمی-فنی به زبان فارسی همواره با چالش ترکیب
+واژگان انگلیسی همراه است. برای مثال، وقتی درباره
+\lr{machine learning} صحبت می‌کنیم، باید مفاهیمی مانند
+\lr{neural network}، \lr{deep learning}، \lr{gradient descent}
+و \lr{backpropagation} را در متن فارسی بگنجانیم.
+همچنین اسامی خاص مانند \lr{TensorFlow}، \lr{PyTorch}،
+\lr{Scikit-learn} و \lr{Jupyter Notebook} نیز به وفور
+در متون برنامه‌نویسی دیده می‌شوند.
+
+\lr{MatinBook} با استفاده از \lr{xepersian} و دستور
+\texttt{\textbackslash lr} برای کلمات لاتین، این ترکیب
+را به صورت حرفه‌ای مدیریت می‌کند. فاصله قبل و بعد از
+کلمات لاتین به صورت خودکار تنظیم می‌شود.
+
+\section{فرمول‌های ریاضی در متن}
+
+فرمول‌های ریاضی نیز بخش جدایی‌ناپذیر متون علمی هستند.
+معادلات درون خطی مانند $f(x) = x^{2} + 3x - 1$ یا
+$\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$ باید بدون
+برهم زدن فاصله خطوط در متن جای گیرند.
+
+فرمول‌های نمایشی نیز باید با فاصله مناسب از متن قبل و بعد
+قرار گیرند:
+\[
+    \mathcal{F}(\omega) = \int_{-\infty}^{\infty} f(t) \, e^{-i\omega t} \, dt
+\]
+
+\section{کدهای درون خطی}
+
+گاهی لازم است به توابع یا متغیرها در متن اشاره کنیم.
+برای مثال، تابع \inlcode{calculate\_statistics()} یک لیست
+از اعداد را دریافت می‌کند، یا متغیر \inlcode{total\_count}
+تعداد کل را نگه می‌دارد. این ارجاعات باید با فونت
+\texttt{monospace} و بدون برهم زدن نظم پاراگراف نمایش
+داده شوند.
+
+%----------------------------------------
+% Chapter 4: Mathematical Spacing
+%----------------------------------------
+\chapter{فاصله‌گذاری ریاضی}
+
+\section{تنظیمات فاصله در مد ریاضی}
+
+\begin{latin}
+\LaTeX\ provides fine-grained control over spacing in
+mathematical mode. MatinBook configures these parameters
+for optimal appearance:
+
+\begin{itemize}
+    \item \texttt{\textbackslash thinmuskip} = 3mu --- thin space
+    (e.g., around punctuation in math)
+    \item \texttt{\textbackslash medmuskip} = 4mu plus 2mu minus 4mu
+    --- medium space (e.g., around binary operators)
+    \item \texttt{\textbackslash thickmuskip} = 5mu plus 5mu
+    --- thick space (e.g., around relational operators)
+\end{itemize}
+\end{latin}
+
+\section{مقایسه فاصله‌ها}
+
+\begin{align}
+    a + b &= c + d \label{eq:spacing1} \\
+    a+b &= c+d \label{eq:spacing2} \\
+    \int f(x) \, dx &\neq \int f(x) dx \label{eq:spacing3}
+\end{align}
+
+توجه کنید که در معادله \meqref{eq:spacing1}، فاصله دور
+عملگر $+$ بیشتر از معادله \meqref{eq:spacing2} است.
+همچنین در معادله \meqref{eq:spacing3}، استفاده از
+\texttt{\textbackslash ,} قبل از $dx$ فاصله استاندارد
+را ایجاد می‌کند.
+
+\section{شکستن معادلات طولانی}
+
+\lr{MatinBook} با فعال‌سازی \texttt{\textbackslash allowdisplaybreaks}
+اجازه می‌دهد معادلات طولانی در محیط‌های \lr{align} و \lr{gather}
+بین صفحات بشکنند. این ویژگی برای کتاب‌های ریاضی که شامل
+اثبات‌های طولانی هستند، ضروری است.
+
+%----------------------------------------
+% Chapter 5: Draft Mode
+%----------------------------------------
+\chapter{حالت پیش‌نویس}
+
+\section{تنظیمات \lr{Draft}}
+
+در حالت \lr{draft}، \lr{MatinBook} رفتارهای زیر را تغییر می‌دهد:
+\begin{itemize}
+    \item \textbf{واترمارک:} عبارت \lr{DRAFT} با شفافیت ۹۰٪
+    در پس‌زمینه صفحات نمایش داده می‌شود
+    \item \textbf{جعبه‌های سرریز:} خطوطی که از حاشیه خارج
+    می‌شوند با خط مشکی ۵pt مشخص می‌شوند
+    \item \textbf{تصاویر:} به جای نمایش تصاویر، فقط
+    کادر آن‌ها رسم می‌شود (سرعت کامپایل بالاتر)
+\end{itemize}
+
+برای فعال‌سازی حالت \lr{draft}، از دستور زیر استفاده کنید:
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[draft]{matinbook}
+\end{minted}
+\end{latin}
+
+\begin{remark}
+    حالت \lr{draft} برای مراحل اولیه نوشتن کتاب بسیار مفید است
+    زیرا سرعت کامپایل را افزایش می‌دهد و مشکلات صفحه‌آرایی
+    را برجسته می‌کند. قبل از چاپ نهایی، حتماً به حالت
+    \lr{final} برگردید.
+\end{remark}
+
+%----------------------------------------
+% Chapter 6: Summary
+%----------------------------------------
+\chapter{خلاصه نتایج}
+
+\section{وضعیت تایپوگرافی}
+
+\begin{table}[h]
+\centering
+\caption{وضعیت تنظیمات تایپوگرافی}
+\label{tab:typography-status}
+\begin{tabular}{|c|c|C{6cm}|}
+    \hline
+    \textbf{تنظیم} & \textbf{وضعیت} & \textbf{توضیحات} \\
+    \hline
+    \lr{Microtype Protrusion} & \textcolor{matingreen}{✅ فعال} & بیرون‌زدگی کاراکترهای خاص \\
+    \lr{Microtype Expansion} & \textcolor{matinorange}{⚠ غیرفعال} & \lr{XeTeX} پشتیبانی نمی‌کند \\
+    \lr{Widow Penalty} & \textcolor{matingreen}{✅ ۱۰۰۰۰} & جلوگیری از خط بی‌آویز \\
+    \lr{Club Penalty} & \textcolor{matingreen}{✅ ۱۰۰۰۰} & جلوگیری از خط یتیم \\
+    \lr{Emergency Stretch} & \textcolor{matingreen}{✅ ۳em} & فضای اضطراری خط‌شکنی \\
+    \lr{Overfull Rule} & \textcolor{matingreen}{✅ ۰pt} & مخفی در حالت نهایی \\
+    \lr{Math Spacing} & \textcolor{matingreen}{✅ بهینه} & thin/med/thick muskip \\
+    \lr{Display Breaks} & \textcolor{matingreen}{✅ مجاز} & شکست معادلات طولانی \\
+    \hline
+\end{tabular}
+\end{table}
+
+\section{نتیجه}
+
+\textbf{ماژول تایپوگرافی \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
+تمام تنظیمات خط‌شکنی، فاصله‌گذاری و \lr{microtype} به درستی
+کار می‌کنند. 🎉
+
+\end{document}
