@@ -1,0 +1,102 @@
+%----------------------------------------
+% fa-IR.sty - Persian (Iran) Locale for MatinBook
+% Version: 1.0
+%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{tex/locales/fa-IR}[2025/01/01 v1.0 MatinBook Persian Locale]
+
+%----------------------------------------
+% Document Structure Names
+%----------------------------------------
+\renewcommand{\contentsname}{فهرست مطالب}
+\renewcommand{\listfigurename}{فهرست تصاویر}
+\renewcommand{\listtablename}{فهرست جداول}
+\renewcommand{\bibname}{منابع و مراجع}
+\renewcommand{\indexname}{نمایه}
+\renewcommand{\chaptername}{فصل}
+\renewcommand{\appendixname}{پیوست}
+\renewcommand{\proofname}{اثبات}
+
+% Only redefine if defined (book class doesn't have \abstractname)
+\providecommand{\abstractname}{چکیده}
+
+%----------------------------------------
+% Float Names
+%----------------------------------------
+\renewcommand{\figurename}{شکل}
+\renewcommand{\tablename}{جدول}
+
+%----------------------------------------
+% Algorithm Names
+%----------------------------------------
+\floatname{algorithm}{الگوریتم}
+\renewcommand{\listalgorithmname}{فهرست الگوریتم‌ها}
+
+%----------------------------------------
+% Index Names
+%----------------------------------------
+\renewcommand{\seename}{نگاه کنید به}
+\renewcommand{\alsoname}{همچنین نگاه کنید به}
+
+%----------------------------------------
+% Cleveref Translations
+%----------------------------------------
+\crefname{equation}{معادله}{معادلات}
+\crefname{chapter}{فصل}{فصول}
+\crefname{section}{بخش}{بخش‌ها}
+\crefname{figure}{شکل}{اشکال}
+\crefname{table}{جدول}{جداول}
+\crefname{algorithm}{الگوریتم}{الگوریتم‌ها}
+\crefname{theorem}{قضیه}{قضایا}
+\crefname{lemma}{لم}{لم‌ها}
+\crefname{corollary}{نتیجه}{نتایج}
+\crefname{definition}{تعریف}{تعاریف}
+\crefname{example}{مثال}{مثال‌ها}
+\crefname{remark}{نکته}{نکات}
+
+\crefrangeformat{equation}{معادلات~#3#1#4~تا~#5#2#6}
+\crefrangeformat{figure}{اشکال~#3#1#4~تا~#5#2#6}
+\crefrangeformat{table}{جداول~#3#1#4~تا~#5#2#6}
+
+%----------------------------------------
+% Section Headings (xepersian already does most)
+%----------------------------------------
+% These are fallbacks in case xepersian doesn't set them
+\providecommand{\sectionname}{بخش}
+\providecommand{\pagename}{صفحه}
+
+%----------------------------------------
+% Theorem Names
+%----------------------------------------
+% Used in theorem environments
+\newcommand{\theoremname}{قضیه}
+\newcommand{\lemmaname}{لم}
+\newcommand{\corollaryname}{نتیجه}
+\newcommand{\propositionname}{گزاره}
+\newcommand{\definitionname}{تعریف}
+\newcommand{\examplename}{مثال}
+\newcommand{\remarkname}{نکته}
+\newcommand{\exercisename}{تمرین}
+\newcommand{\solutionname}{راه حل}
+
+%----------------------------------------
+% Code & Algorithm Names
+%----------------------------------------
+\newcommand{\codename}{کد}
+\newcommand{\algorithmname}{الگوریتم}
+
+%----------------------------------------
+% Cover Names
+%----------------------------------------
+\newcommand{\coverpublisher}{ناشر}
+\newcommand{\coveredition}{نسخه}
+\newcommand{\coverisbn}{شابک}
+\newcommand{\covertag}{آموزش برنامه‌نویسی و ریاضیات}
+\newcommand{\coverabout}{درباره این کتاب}
+\newcommand{\coversource}{مشاهده سورس کد}
+%----------------------------------------
+% Log
+%----------------------------------------
+\typeout{MatinBook: Persian locale loaded (fa-IR)}
+
+\endinput
