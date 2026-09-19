@@ -15,6 +15,10 @@
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
 \ProvidesClass{matinbook}[2026/01/01 v1.1 MatinBook - Professional Persian Technical Book Class]
+% Version Information (defined here so it is available
+% for the welcome message and for all modules)
+\def\matinbookversion{1.1}
+\def\matinbookdate{2026/01/01}
 
 %========================================================================
 % MATINBOOK CLASS — BOOTSTRAP SEQUENCE
