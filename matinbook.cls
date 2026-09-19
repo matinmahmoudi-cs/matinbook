@@ -63,6 +63,7 @@
 % Default values
 \def\matin@fontname{XBNiloofar}
 \def\matin@mode{final}
+\def\matin@booktitle{کتاب من}
 
 \DeclareKeys{
     % Mode
@@ -94,6 +95,9 @@
 }
 
 \ProcessKeyOptions
+
+% Book title command (used by mb-layout for even-page headers)
+\newcommand{\booktitle}[1]{\gdef\matin@booktitle{#1}}
 
 % Backward compatibility flags (used by mb-core, mb-layout)
 \newif\if@matin@draft

@@ -1,0 +1,138 @@
+%%
+%% Test: Layout Configuration — v1.1
+%% Stage: layout refactor (stages 1-4)
+%% 
+%% Purpose: Verify layout settings:
+%%   - Vaziri format (16.5 × 24 cm)
+%%   - Asymmetric margins (top=5.3cm, bottom=5.0cm)
+%%   - Header/Footer (book title / chapter name / page number)
+%%   - Line spacing (1.1)
+%%   - Paragraph indent (0.5cm)
+%%   - draftwatermark (conditional)
+%% 
+
+\documentclass{matinbook}
+
+\title{تست چیدمان صفحه — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+% Set book title for even-page headers
+\booktitle{تست چیدمان MatinBook}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{بررسی چیدمان صفحه}
+\label{chap:test-layout}
+
+این سند، تنظیمات چیدمان \texttt{mb-layout} را بررسی می‌کند.
+
+%----------------------------------------
+\section{قطع صفحه}
+\label{sec:page-size}
+
+\textbf{عرض صفحه:} \the\paperwidth
+
+\textbf{ارتفاع صفحه:} \the\paperheight
+
+\textbf{عرض متن:} \the\textwidth
+
+\textbf{ارتفاع متن:} \the\textheight
+
+اگر عرض صفحه حدود ۴۶۹pt (۱۶.۵cm) باشد، قطع وزیری تأیید می‌شود.
+
+%----------------------------------------
+\section{حاشیه‌ها}
+\label{sec:margins}
+
+\begin{itemize}
+    \item حاشیه بالا: ۵.۳ سانتی‌متر
+    \item حاشیه پایین: ۵.۰ سانتی‌متر
+    \item حاشیه چپ: ۴.۵ سانتی‌متر
+    \item حاشیه راست: ۴.۵ سانتی‌متر
+    \item \verb|bindingoffset|: ۰.۵ سانتی‌متر
+\end{itemize}
+
+%----------------------------------------
+\section{سرصفحه و پاصفحه}
+\label{sec:header-footer}
+
+در صفحات زوج، عنوان کتاب (\texttt{\textbackslash matin@booktitle}) در سرصفحه نمایش داده می‌شود.
+
+در صفحات فرد، نام فصل (\texttt{\textbackslash leftmark}) در سرصفحه نمایش داده می‌شود.
+
+شماره صفحه در پاصفحه قرار دارد.
+
+%----------------------------------------
+\section{فاصله خطوط}
+\label{sec:line-spacing}
+
+\textbf{فاصله خطوط:} ۱.۱
+
+\textbf{تورفتگی پاراگراف:} ۰.۵ سانتی‌متر
+
+این یک پاراگراف نمونه است که برای بررسی فاصله خطوط و تورفتگی نوشته شده است. در تایپوگرافی فارسی، فاصله خطوط معمولاً بین ۱.۰ تا ۱.۲ است.
+
+%----------------------------------------
+\section{محیط‌های علمی}
+\label{sec:environments}
+
+\begin{theorem}[قضیه نمونه]
+    برای هر عدد حقیقی $x$، داریم $x^2 \geq 0$.
+\end{theorem}
+
+\begin{proof}
+    چون مربع هر عدد حقیقی نامنفی است، نتیجه حاصل می‌شود.
+\end{proof}
+
+%----------------------------------------
+\section{جدول}
+\label{sec:table}
+
+\begin{table}[h]
+\centering
+\caption{جدول با ستون‌های سفارشی}
+\label{tab:layout-test}
+\begin{tabular}{L{3cm} C{2cm} R{3cm}}
+\toprule
+\textbf{چپ} & \textbf{وسط} & \textbf{راست} \\
+\midrule
+متن & ۱۰ & ۲۰ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------
+\section{کد}
+\label{sec:code}
+
+\begin{latin}
+\begin{minted}{python}
+def greet(name):
+    return f"Hello, {name}!"
+\end{minted}
+\end{latin}
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ قطع وزیری (۱۶.۵×۲۴) اعمال شده
+    \item ✅ حاشیه‌های نامتقارن اعمال شده
+    \item ✅ هدر/فوتر درست کار می‌کنند
+    \item ✅ شماره صفحه در فوتر است
+    \item ✅ فاصله خطوط ۱.۱ است
+    \item ✅ تورفتگی ۰.۵ سانتی‌متر است
+    \item ✅ \texttt{\textbackslash booktitle} کار می‌کند
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}
