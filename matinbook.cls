@@ -126,12 +126,12 @@
 \RequirePackage{mb-code}
 \RequirePackage{mb-algorithm}
 \RequirePackage{mb-layout}
+\RequirePackage{mb-theme-colors}
 \RequirePackage{mb-headings}
 \RequirePackage{mb-references}
 \RequirePackage{mb-graphics}
 \RequirePackage{mb-index}
 \RequirePackage{mb-utils}
-\RequirePackage{mb-theme-colors}
 \RequirePackage{mb-theme-cover}
 
 

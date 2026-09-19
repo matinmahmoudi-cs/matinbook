@@ -1,38 +1,67 @@
-%----------------------------------------
-% mb-headings.sty - Chapter/Section Styles for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mb-headings}[2025/01/01 v1.0 MatinBook Heading Styles]
+%%
+%% This is file `mb-headings.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-headings}[2026/01/01 v1.1 MatinBook Heading Styles]
+
+%========================================================================
+% MB-HEADINGS — CHAPTER/SECTION STYLES
+%========================================================================
+%
+% Purpose:
+%   Define chapter, section, subsection styles for MatinBook.
+%
+% Design:
+%   - Chapter number: 36pt colored digit (not 72pt)
+%   - Chapter title: \LARGE (not \Huge)
+%   - Section: colored box with number
+%   - ToC: colored chapter/section names
+%
+% Note:
+%   This module uses colors from mb-theme-colors, which MUST be
+%   loaded BEFORE this module in matinbook.cls.
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
 % Chapter Number Format
-%----------------------------------------
-\renewcommand{\thechapter}{\arabic{chapter}}
+%------------------------------------------------------------------------
+% NOTE: We do NOT redefine \thechapter. The book class handles
+%       \appendix correctly by switching to alphabetic numbering.
+% \renewcommand{\thechapter}{\arabic{chapter}}  % REMOVED
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Chapter Style
-%----------------------------------------
+%------------------------------------------------------------------------
 \titleformat{\chapter}[display]
 {\normalfont\bfseries\color{matindarkgray}}
 {%
-    \color{matinblue!20}\fontsize{72}{86}\selectfont\thechapter
+    \color{matinblue!20}\fontsize{36}{42}\selectfont\thechapter
 }
-{-20pt}
+{10pt}
 {%
-    \Huge
+    \LARGE
 }
-[\vspace{-15pt}\noindent\textcolor{matinblue}{\rule{\textwidth}{2pt}}]
+[\vspace{5pt}\noindent\textcolor{matinblue}{\rule{\textwidth}{1.5pt}}]
 
-% Space around chapter
+% Space around chapter (positive values only)
 \titlespacing*{\chapter}
 {0pt}
-{-30pt}
-{50pt}
+{20pt}
+{30pt}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Section Style
-%----------------------------------------
+%------------------------------------------------------------------------
 \titleformat{\section}
 {\normalfont\Large\bfseries\color{matindarkgray}}
 {%
@@ -46,9 +75,10 @@
 {20pt}
 {10pt}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Subsection Style
-%----------------------------------------
+%------------------------------------------------------------------------
 \titleformat{\subsection}
 {\normalfont\large\bfseries\color{matindarkgray}}
 {\color{matinblue!70}\thesubsection}
@@ -60,9 +90,10 @@
 {15pt}
 {8pt}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Subsubsection Style
-%----------------------------------------
+%------------------------------------------------------------------------
 \titleformat{\subsubsection}
 {\normalfont\normalsize\bfseries\color{matindarkgray}}
 {\color{matinblue!50}\thesubsubsection}
@@ -74,18 +105,20 @@
 {12pt}
 {6pt}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Running Headers
-%----------------------------------------
-% Show chapter name in header
+%------------------------------------------------------------------------
+% Use \markboth for both marks to ensure consistency in twoside.
+% Format: chapter name only (no "Chapter N:" prefix).
 \renewcommand{\chaptermark}[1]{%
     \markboth{%
         \ifnum\c@chapter>0
-        \small\bfseries \chaptername\space\thechapter: #1%
+            \small\bfseries #1%
         \fi
     }{%
         \ifnum\c@chapter>0
-        \small\bfseries \chaptername\space\thechapter: #1%
+            \small\bfseries #1%
         \fi
     }%
 }
@@ -93,22 +126,23 @@
 \renewcommand{\sectionmark}[1]{%
     \markright{%
         \ifnum\c@chapter>0
-        \small\bfseries #1%
+            \small\bfseries #1%
         \fi
     }%
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Table of Contents Style
-%----------------------------------------
+%------------------------------------------------------------------------
 \renewcommand{\cftchapfont}{\bfseries\color{matindarkgray}}
 \renewcommand{\cftchappagefont}{\bfseries\color{matinblue}}
 \renewcommand{\cftsecfont}{\color{matindarkgray}}
 \renewcommand{\cftsubsecfont}{\color{matinmediumgray}}
 \renewcommand{\cftsubsubsecfont}{\color{matinmediumgray!70}}
 
-% Dots in ToC
-\renewcommand{\cftdotsep}{0.5}
+% Dots in ToC (4.5 is the LaTeX default — sparse, readable)
+\renewcommand{\cftdotsep}{4.5}
 \renewcommand{\cftdot}{%
     \textcolor{matinblue!30}{.}%
 }
@@ -120,5 +154,11 @@
 % Space before chapter in ToC
 \setlength{\cftbeforechapskip}{8pt}
 \setlength{\cftbeforesecskip}{4pt}
+
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-headings}{Heading styles loaded}
 
 \endinput
