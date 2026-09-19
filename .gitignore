@@ -107,3 +107,6 @@ yarn-error.log*
 *.tmp
 *.temp
 .cache/
+
+
+tex.backup-20260919-231402
