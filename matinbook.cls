@@ -124,7 +124,6 @@
 \RequirePackage{mb-boxes}
 \RequirePackage{mb-theorem}
 \RequirePackage{mb-code}
-\RequirePackage{mb-algorithm}
 \RequirePackage{mb-layout}
 \RequirePackage{mb-theme-colors}
 \RequirePackage{mb-headings}
