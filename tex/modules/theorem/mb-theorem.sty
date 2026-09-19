@@ -1,194 +1,124 @@
-%----------------------------------------
-% mb-theorem.sty - Theorem Environments for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mb-theorem}[2025/01/01 v1.0 MatinBook Theorem System]
+%%
+%% This is file `mb-theorem.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Counter Setup
-%----------------------------------------
-% Shared counter for theorems, lemmas, corollaries, propositions
-\newcounter{theoremcounter}[chapter]
-\renewcommand{\thetheoremcounter}{\thechapter.\arabic{theoremcounter}}
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-theorem}[2026/01/01 v1.1 MatinBook Theorem System]
 
-%----------------------------------------
-% Theorem Environment
-%----------------------------------------
-\newenvironment{theorem}[1][]{%
-    \refstepcounter{theoremcounter}%
-    \ifx\relax#1\relax
-        \begin{theorembox}{\theoremname\space\thetheoremcounter}%
-    \else
-        \begin{theorembox}{\theoremname\space\thetheoremcounter\space(#1)}%
-    \fi
-}{%
-    \end{theorembox}%
-}
+%========================================================================
+% MB-THEOREM — THEOREM ENVIRONMENTS (via amsthm)
+%========================================================================
+%
+% Purpose:
+%   Define theorem-like environments using amsthm's \newtheorem,
+%   then style them with tcolorbox via \tcolorboxenvironment.
+%
+% Architecture:
+%   - amsthm (loaded in mb-core) handles:
+%       * Counters and shared numbering
+%       * \label / \ref support
+%       * \qed symbol for proofs
+%   - mb-boxes provides tcolorbox styles
+%   - This module combines them
+%
+% Shared counter:
+%   theorem, lemma, corollary, proposition share a single counter.
+%   definition, example, remark, exercise each have independent counters.
+%
+%========================================================================
 
-%----------------------------------------
-% Lemma Environment
-%----------------------------------------
-\newenvironment{lemma}[1][]{%
-    \refstepcounter{theoremcounter}%
-    \ifx\relax#1\relax
-        \begin{lemmabox}{\lemmaname\space\thetheoremcounter}%
-    \else
-        \begin{lemmabox}{\lemmaname\space\thetheoremcounter\space(#1)}%
-    \fi
-}{%
-    \end{lemmabox}%
-}
 
-%----------------------------------------
-% Corollary Environment
-%----------------------------------------
-\newenvironment{corollary}[1][]{%
-    \refstepcounter{theoremcounter}%
-    \ifx\relax#1\relax
-        \begin{corollarybox}{\corollaryname\space\thetheoremcounter}%
-    \else
-        \begin{corollarybox}{\corollaryname\space\thetheoremcounter\space(#1)}%
-    \fi
-}{%
-    \end{corollarybox}%
-}
+%------------------------------------------------------------------------
+% Theorem Family (shared counter with definition)
+%------------------------------------------------------------------------
+\theoremstyle{definition}
+\newtheorem{definition}{تعریف}[chapter]
 
-%----------------------------------------
-% Proposition Environment
-%----------------------------------------
-\newenvironment{proposition}[1][]{%
-    \refstepcounter{theoremcounter}%
-    \ifx\relax#1\relax
-        \begin{propositionbox}{\propositionname\space\thetheoremcounter}%
-    \else
-        \begin{propositionbox}{\propositionname\space\thetheoremcounter\space(#1)}%
-    \fi
-}{%
-    \end{propositionbox}%
-}
+\theoremstyle{plain}
+\newtheorem{theorem}[definition]{قضیه}
+\newtheorem{lemma}[definition]{لم}
+\newtheorem{corollary}[definition]{نتیجه}
+\newtheorem{proposition}[definition]{گزاره}
 
-%----------------------------------------
-% Definition Environment (separate counter)
-%----------------------------------------
-\newcounter{definitioncounter}[chapter]
-\renewcommand{\thedefinitioncounter}{\thechapter.\arabic{definitioncounter}}
+\theoremstyle{definition}
+\newtheorem{example}[definition]{مثال}
 
-\newenvironment{definition}[1][]{%
-    \refstepcounter{definitioncounter}%
-    \ifx\relax#1\relax
-        \begin{definitionbox}{\definitionname\space\thedefinitioncounter}%
-    \else
-        \begin{definitionbox}{\definitionname\space\thedefinitioncounter\space(#1)}%
-    \fi
-}{%
-    \end{definitionbox}%
-}
+\theoremstyle{remark}
+\newtheorem{remark}[definition]{نکته}
+\newtheorem{exercise}[definition]{تمرین}
 
-%----------------------------------------
-% Example Environment (separate counter)
-%----------------------------------------
-\newcounter{examplecounter}[chapter]
-\renewcommand{\theexamplecounter}{\thechapter.\arabic{examplecounter}}
 
-\newenvironment{example}[1][]{%
-    \refstepcounter{examplecounter}%
-    \ifx\relax#1\relax
-        \begin{examplebox}{\examplename\space\theexamplecounter}%
-    \else
-        \begin{examplebox}{\examplename\space\theexamplecounter\space(#1)}%
-    \fi
-}{%
-    \end{examplebox}%
-}
+%------------------------------------------------------------------------
+% tcolorbox Styles (from mb-boxes)
+%------------------------------------------------------------------------
+\tcolorboxenvironment{theorem}{matin-theorem}
+\tcolorboxenvironment{lemma}{matin-lemma}
+\tcolorboxenvironment{corollary}{matin-corollary}
+\tcolorboxenvironment{proposition}{matin-proposition}
+\tcolorboxenvironment{definition}{matin-definition}
+\tcolorboxenvironment{example}{matin-example}
+\tcolorboxenvironment{remark}{matin-remark}
+\tcolorboxenvironment{exercise}{matin-exercise}
 
-%----------------------------------------
-% Remark Environment (separate counter)
-%----------------------------------------
-\newcounter{remarkcounter}[chapter]
-\renewcommand{\theremarkcounter}{\thechapter.\arabic{remarkcounter}}
 
-\newenvironment{remark}[1][]{%
-    \refstepcounter{remarkcounter}%
-    \ifx\relax#1\relax
-        \begin{remarkbox}{\remarkname\space\theremarkcounter}%
-    \else
-        \begin{remarkbox}{\remarkname\space\theremarkcounter\space(#1)}%
-    \fi
-}{%
-    \end{remarkbox}%
-}
-
-%----------------------------------------
-% Exercise Environment (separate counter)
-%----------------------------------------
-\newcounter{exercisecounter}[chapter]
-\renewcommand{\theexercisecounter}{\thechapter.\arabic{exercisecounter}}
-
-\newenvironment{exercise}[1][]{%
-    \refstepcounter{exercisecounter}%
-    \ifx\relax#1\relax
-        \begin{exercisebox}{\exercisename\space\theexercisecounter}%
-    \else
-        \begin{exercisebox}{\exercisename\space\theexercisecounter\space(#1)}%
-    \fi
-}{%
-    \end{exercisebox}%
-}
-
-%----------------------------------------
+%------------------------------------------------------------------------
 % Solution Environment (no numbering)
-%----------------------------------------
+%------------------------------------------------------------------------
 \newenvironment{solution}{%
-    \begin{solutionbox}%
+    \begin{tcolorbox}[matin-solution, title={\textbf{\solutionname}}]%
 }{%
-    \end{solutionbox}%
+    \end{tcolorbox}%
 }
 
-%----------------------------------------
-% Proof Environment
-%----------------------------------------
+
+%------------------------------------------------------------------------
+% Proof Environment (preserves \qed)
+%------------------------------------------------------------------------
 \renewenvironment{proof}[1][]{%
-    \begin{proofbox}%
-        \ifx\relax#1\relax
-            \textbf{\proofname}%
-        \else
-            \textbf{\proofname\space(#1)}%
-        \fi
+    \begin{tcolorbox}[matin-proof, title={\textbf{\proofname}}]%
+    \ifx\relax#1\relax\else\textbf{#1}\par\fi
 }{%
-    \end{proofbox}%
+    \hfill$\qedsymbol$%
+    \end{tcolorbox}%
 }
 
-%----------------------------------------
-% Register Counters with Cleveref
-%----------------------------------------
-% These tell cleveref what name to use for each counter type
 
-% Shared counter (theorem, lemma, corollary, proposition)
-% We register it as "theorem" since it's the primary type
-\crefname{theoremcounter}{\theoremname}{\theoremname}
-\Crefname{theoremcounter}{\theoremname}{\theoremname}
+%------------------------------------------------------------------------
+% Cleveref Names (using environment names, not counter names)
+%------------------------------------------------------------------------
+\crefname{theorem}{قضیه}{قضایا}
+\Crefname{theorem}{قضیه}{قضایا}
 
-% Individual counters
-\crefname{definitioncounter}{\definitionname}{\definitionname}
-\Crefname{definitioncounter}{\definitionname}{\definitionname}
+\crefname{lemma}{لم}{لم‌ها}
+\Crefname{lemma}{لم}{لم‌ها}
 
-\crefname{examplecounter}{\examplename}{\examplename}
-\Crefname{examplecounter}{\examplename}{\examplename}
+\crefname{corollary}{نتیجه}{نتایج}
+\Crefname{corollary}{نتیجه}{نتایج}
 
-\crefname{remarkcounter}{\remarkname}{\remarkname}
-\Crefname{remarkcounter}{\remarkname}{\remarkname}
+\crefname{proposition}{گزاره}{گزاره‌ها}
+\Crefname{proposition}{گزاره}{گزاره‌ها}
 
-\crefname{exercisecounter}{\exercisename}{\exercisename}
-\Crefname{exercisecounter}{\exercisename}{\exercisename}
+\crefname{definition}{تعریف}{تعاریف}
+\Crefname{definition}{تعریف}{تعاریف}
 
-%----------------------------------------
-% Reference Commands
-%----------------------------------------
-\newcommand{\thmref}[1]{\theoremname\space\ref{#1}}
-\newcommand{\lemref}[1]{\lemmaname\space\ref{#1}}
-\newcommand{\corref}[1]{\corollaryname\space\ref{#1}}
-\newcommand{\defref}[1]{\definitionname\space\ref{#1}}
-\newcommand{\exref}[1]{\examplename\space\ref{#1}}
+\crefname{example}{مثال}{مثال‌ها}
+\Crefname{example}{مثال}{مثال‌ها}
+
+\crefname{remark}{نکته}{نکات}
+\Crefname{remark}{نکته}{نکات}
+
+\crefname{exercise}{تمرین}{تمرین‌ها}
+\Crefname{exercise}{تمرین}{تمرین‌ها}
+
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-theorem}{Theorem environments loaded (via amsthm)}
 
 \endinput
