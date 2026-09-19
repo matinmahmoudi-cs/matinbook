@@ -39,13 +39,13 @@
 %------------------------------------------------------------------------
 % 1. Engine Detection
 %------------------------------------------------------------------------
-\input{tex/core/mb-engine.sty}
+\RequirePackage{mb-engine}
 
 
 %------------------------------------------------------------------------
 % 2. Options System
 %------------------------------------------------------------------------
-\input{tex/core/mb-options.sty}
+\RequirePackage{mb-options}
 
 
 %------------------------------------------------------------------------
@@ -61,54 +61,54 @@
 %------------------------------------------------------------------------
 % 4. Core Packages
 %------------------------------------------------------------------------
-\input{tex/core/mb-core.sty}
+\RequirePackage{mb-core}
 
 
 %------------------------------------------------------------------------
 % 5. RTL / Bidi Support
 %------------------------------------------------------------------------
-\input{tex/modules/typography/mb-rtl.sty}
+\RequirePackage{mb-rtl}
 
 
 %------------------------------------------------------------------------
 % 6. Feature Modules
 %------------------------------------------------------------------------
-\input{tex/modules/color/mb-colors.sty}
-\input{tex/modules/typography/mb-fonts.sty}
-\input{tex/modules/typography/mb-typography.sty}
-\input{tex/modules/layout/mb-layout.sty}
-\input{tex/modules/layout/mb-headings.sty}
-\input{tex/modules/math/mb-math.sty}
-\input{tex/modules/boxes/mb-boxes.sty}
-\input{tex/modules/theorem/mb-theorem.sty}
-\input{tex/modules/code/mb-code.sty}
-\input{tex/modules/algorithm/mb-algorithm.sty}
+\RequirePackage{mb-colors}
+\RequirePackage{mb-fonts}
+\RequirePackage{mb-typography}
+\RequirePackage{mb-layout}
+\RequirePackage{mb-headings}
+\RequirePackage{mb-math}
+\RequirePackage{mb-boxes}
+\RequirePackage{mb-theorem}
+\RequirePackage{mb-code}
+\RequirePackage{mb-algorithm}
 
 
 %------------------------------------------------------------------------
 % 7. Locale (after environments are defined)
 %------------------------------------------------------------------------
-\input{tex/locales/fa-IR.sty}
+\RequirePackage{fa-IR}
 
 
 %------------------------------------------------------------------------
 % 8. Systems
 %------------------------------------------------------------------------
-\input{tex/modules/references/mb-references.sty}
-\input{tex/modules/graphics/mb-graphics.sty}
-\input{tex/modules/index/mb-index.sty}
+\RequirePackage{mb-references}
+\RequirePackage{mb-graphics}
+\RequirePackage{mb-index}
 
 
 %------------------------------------------------------------------------
 % 9. Utilities
 %------------------------------------------------------------------------
-\input{tex/core/mb-utils.sty}
+\RequirePackage{mb-utils}
 
 
 %------------------------------------------------------------------------
 % 10. Theme
 %------------------------------------------------------------------------
-\input{tex/themes/default/theme.sty}
+\RequirePackage{mb-theme-default}
 
 
 %========================================================================
