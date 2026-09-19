@@ -1,27 +1,42 @@
-%----------------------------------------
-% mb-typography.sty - Typography Configuration for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mb-typography}[2025/01/01 v1.0 MatinBook Typography]
+%%
+%% This is file `mb-typography.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-typography}[2026/01/01 v1.1 MatinBook Typography]
+
+%========================================================================
+% MB-TYPOGRAPHY — TYPOGRAPHY CONFIGURATION
+%========================================================================
+%
+% Purpose:
+%   Fine-tune typography settings for Persian technical books.
+%
+% Notes:
+%   - Kashida (Persian letter stretching) is disabled by default
+%     because it produces unnatural spacing in technical books.
+%   - Persian text will use standard inter-word spacing.
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
 % Microtype Settings (XeTeX Compatible)
-%----------------------------------------
-% XeTeX only supports protrusion, NOT expansion
+%------------------------------------------------------------------------
 \microtypesetup{
     activate={true,nocompatibility},
     protrusion=true,
     expansion=false,
-    tracking=false,
-    kerning=false,
-    spacing=false,
     final,
     verbose=silent
 }
 
-% Basic protrusion settings for improved margins
-\SetProtrusion{encoding={T1,OT1,TU},family={rm,sf,tt}}{
+\SetProtrusion{encoding={TU,EU1,EU2}}{
     \textquotedblleft = {1000, },
     \textquotedblright = { ,1000},
     .  = { ,700},
@@ -30,38 +45,63 @@
     ;  = { ,500}
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
+% Kashida (Persian Letter Stretching) — DISABLED
+%------------------------------------------------------------------------
+% Kashida is disabled by default because it produces unnatural
+% spacing in technical books. Users who want it can enable it
+% by passing Kashida=on as a class option (future feature).
+%
+\IfFileExists{xepersian-hm.sty}{%
+    \RequirePackage[%
+        Kashida=off
+    ]{xepersian-hm}%
+}{%
+    \PackageWarning{mb-typography}{%
+        xepersian-hm not found.\MessageBreak
+        Install it with: tlmgr install xepersian-hm%
+    }%
+}
+
+
+%------------------------------------------------------------------------
 % Line Breaking Settings
-%----------------------------------------
-% Allow more flexibility in line breaking
-\emergencystretch=3em
+%------------------------------------------------------------------------
+\emergencystretch=1em
 \hbadness=3000
 \tolerance=3000
 
-% Prevent widow and orphan lines
 \widowpenalty=10000
 \clubpenalty=10000
 
-% Display overfull boxes only in draft mode
 \if@matin@draft
-\overfullrule=5pt
+    \overfullrule=5pt
 \else
-\overfullrule=0pt
+    \overfullrule=0pt
 \fi
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Hyphenation Settings
-%----------------------------------------
+%------------------------------------------------------------------------
 \hyphenpenalty=750
 \exhyphenpenalty=750
 \doublehyphendemerits=1000000
 \finalhyphendemerits=0
 
-%----------------------------------------
-% Math Mode Spacing
-%----------------------------------------
-\thinmuskip=3mu
-\medmuskip=4mu plus 2mu minus 4mu
-\thickmuskip=5mu plus 5mu
+
+%------------------------------------------------------------------------
+% Custom Column Types for Tables
+%------------------------------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-typography}{Typography settings loaded (Kashida disabled)}
 
 \endinput
