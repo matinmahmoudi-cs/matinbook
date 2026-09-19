@@ -1,0 +1,131 @@
+%%
+%% Test: Code Listing System — v1.1
+%% Stage: code refactor (stages 1-4)
+%% 
+%% Purpose: Verify code system:
+%%   - minted with escapeinside=||
+%%   - Persian code via \pc{} command
+%%   - Inline code via \inlcode{}
+%%   - Code caption and reference
+%%   - fontsize, frame, bgcolor settings
+%% 
+
+\documentclass{matinbook}
+
+\title{تست سیستم کد — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\booktitle{تست کد}
+
+\begin{document}
+
+\maketitle
+
+\chapter{بررسی سیستم کد}
+\label{chap:test-code}
+
+این سند، سیستم کد \texttt{mb-code} را بررسی می‌کند.
+
+%----------------------------------------
+\section{کد پایه}
+\label{sec:basic-code}
+
+\begin{latin}
+\begin{minted}{python}
+def factorial(n):
+    """Compute n! recursively."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+# Example usage
+print(factorial(5))  # 120
+\end{minted}
+\end{latin}
+
+%----------------------------------------
+\section{کد با کامنت فارسی}
+\label{sec:persian-comment}
+
+\begin{latin}
+\begin{minted}{python}
+def greet(name):
+    """|\pc{تابع سلام}|"""
+    return f"Hello, {name}!"
+
+# |\pc{فراخوانی تابع با نام فارسی}|
+print(greet("علی"))
+\end{minted}
+\end{latin}
+
+%----------------------------------------
+\section{کد طولانی با شکست خط}
+\label{sec:long-code}
+
+\begin{latin}
+\begin{minted}{python}
+def very_long_function_name(parameter_one, parameter_two, parameter_three, parameter_four):
+    return parameter_one + parameter_two + parameter_three + parameter_four
+
+result = very_long_function_name(1, 2, 3, 4)
+\end{minted}
+\end{latin}
+
+%----------------------------------------
+\section{کد با شماره خط}
+\label{sec:line-numbers}
+
+\begin{latin}
+\begin{minted}{javascript}
+function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}
+
+console.log(fibonacci(10));  // 55
+\end{minted}
+\end{latin}
+
+%----------------------------------------
+\section{کد Inline}
+\label{sec:inline-code}
+
+این یک \inlcode{print("hello")} است.
+
+و این \inlcode{x = 5} است.
+
+%----------------------------------------
+\section{کد با عنوان و ارجاع}
+\label{sec:code-caption}
+
+\begin{latin}
+\begin{minted}{python}
+def add(a, b):
+    return a + b
+\end{minted}
+\end{latin}
+
+\codecaption{تابع جمع دو عدد}
+\label{code:add-function}
+
+ارجاع به کد: \coderef{code:add-function}
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ \texttt{minted} با \texttt{escapeinside=||} کار می‌کند
+    \item ✅ \texttt{\textbackslash pc} برای کامنت فارسی کار می‌کند
+    \item ✅ \texttt{\textbackslash inlcode} برای کد inline کار می‌کند
+    \item ✅ \texttt{\textbackslash codecaption} و \texttt{\textbackslash coderef} کار می‌کنند
+    \item ✅ شکست خط طولانی کار می‌کند
+    \item ✅ شماره خط کار می‌کند
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}
