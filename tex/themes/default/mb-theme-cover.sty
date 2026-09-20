@@ -1,26 +1,57 @@
-%----------------------------------------
-% cover.sty - Cover Style for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mb-theme-cover}[2025/01/01 v1.0 MatinBook Cover System]
+%%
+%% This is file `mb-theme-cover.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Cover Colors
-%----------------------------------------
-\definecolor{coverbg}{RGB}{255, 255, 255}        % White
-\definecolor{coverprimary}{RGB}{22, 33, 50}       % Dark navy
-\definecolor{coveraccent}{RGB}{0, 185, 165}        % Teal (terminal green)
-\definecolor{coveraccent2}{RGB}{255, 107, 85}     % Coral (warm)
-\definecolor{coveraccent3}{RGB}{100, 140, 255}    % Blue (math)
-\definecolor{covergray}{RGB}{100, 115, 130}        % Gray
-\definecolor{coverlight}{RGB}{243, 246, 250}      % Light blue-gray
-\definecolor{coverdark}{RGB}{15, 23, 38}           % Very dark
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-theme-cover}[2026/01/01 v1.1 MatinBook Cover System]
 
-%----------------------------------------
+%========================================================================
+% MB-THEME-COVER — COVER DESIGN
+%========================================================================
+%
+% Purpose:
+%   Provide front and back cover designs for MatinBook books.
+%
+% IMPORTANT: This cover uses `remember picture, overlay` (TikZ),
+%            which requires at least TWO compilation passes.
+%            Run xelatex twice (or use the compile.sh script).
+%
+% Color mapping:
+%   The cover uses the main MatinBook color palette (matin*) via
+%   \colorlet aliases, so it inherits the CMYK definitions.
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
+% Color Aliases (mapped to MatinBook palette)
+%------------------------------------------------------------------------
+\colorlet{coverbg}{matincream}         % off-white background
+\colorlet{coverprimary}{matindarkblue} % dark navy
+\colorlet{coveraccent}{matingreen}     % teal green
+\colorlet{coveraccent2}{matinorange}   % warm orange
+\colorlet{coveraccent3}{matinblue}     % blue
+\colorlet{covergray}{matinmediumgray}  % gray
+\colorlet{coverlight}{matinlightgray}  % light gray
+\colorlet{coverdark}{matindarkgray}    % dark gray
+
+
+%------------------------------------------------------------------------
+% Repository Info
+%------------------------------------------------------------------------
+\providecommand{\matin@repository}{github.com/matinbook}
+\providecommand{\repository}{github.com/matinbook}
+
+
+%------------------------------------------------------------------------
 % Decorative Elements
-%----------------------------------------
-\newcommand{\covergeometric}{
+%------------------------------------------------------------------------
+\newcommand{\covergeometric}{%
     \begin{tikzpicture}[remember picture,overlay]
         
         % Large circle top right
@@ -36,46 +67,55 @@
         ([xshift=-5cm,yshift=-8cm]current page.north east) circle (2cm);
         
         % Code brackets decoration (left side)
-        \node[font=\ttfamily\fontsize{40}{48}\selectfont, color=coveraccent!10, anchor=west]
-        at ([xshift=1cm,yshift=-10cm]current page.north west) {\{};
+        \node[font=\ttfamily, color=coveraccent!10, anchor=west]
+        at ([xshift=1cm,yshift=-10cm]current page.north west) 
+        {\fontsize{40}{48}\selectfont \{};
         
-        \node[font=\ttfamily\fontsize{40}{48}\selectfont, color=coveraccent!10, anchor=west]
-        at ([xshift=1cm,yshift=-22cm]current page.north west) {\}};
+        \node[font=\ttfamily, color=coveraccent!10, anchor=west]
+        at ([xshift=1cm,yshift=-22cm]current page.north west) 
+        {\fontsize{40}{48}\selectfont \}};
         
-        % Lambda symbol faint
-        \node[font=\fontsize{60}{72}\selectfont, color=coveraccent3!6]
-        at ([xshift=-3cm,yshift=-15cm]current page.north east) {$\lambda$};
+        % Lambda symbol faint (LTR to avoid RTL issues)
+        \node[color=coveraccent3!6]
+        at ([xshift=-3cm,yshift=-15cm]current page.north east) 
+        {\fontsize{60}{72}\selectfont $\lambda$};
         
-        % Sigma faint
-        \node[font=\fontsize{50}{60}\selectfont, color=coveraccent3!5]
-        at ([xshift=-8cm,yshift=-20cm]current page.north east) {$\Sigma$};
+        % Sigma faint (LTR)
+        \node[color=coveraccent3!5]
+        at ([xshift=-8cm,yshift=-20cm]current page.north east) 
+        {\fontsize{50}{60}\selectfont $\Sigma$};
         
         % Dot grid pattern (graph paper feel)
         \foreach \x in {0.5,1.5,2.5,3.5} {
             \foreach \y in {1,2,3,4,5,6} {
                 \fill[covergray!10] 
-                ([xshift=\x cm,yshift=-\y cm]current page.north west) circle (0.5pt);
+                ([xshift=\x cm,yshift=-\y cm]current page.north west) 
+                circle (0.5pt);
             }
         }
         
         % Binary numbers faint
-        \node[font=\ttfamily\fontsize{7}{9}\selectfont, color=coveraccent!8, anchor=west]
-        at ([xshift=0.3cm,yshift=-18cm]current page.north west) {01101000};
+        \node[font=\ttfamily, color=coveraccent!8, anchor=west]
+        at ([xshift=0.3cm,yshift=-18cm]current page.north west) 
+        {\fontsize{7}{9}\selectfont 01101000};
         
-        % Math symbols
-        \node[font=\fontsize{30}{36}\selectfont, color=coveraccent3!6]
-        at ([xshift=-6cm,yshift=-8cm]current page.north east) {$\pi$};
+        % Math symbols (LTR)
+        \node[color=coveraccent3!6]
+        at ([xshift=-6cm,yshift=-8cm]current page.north east) 
+        {\fontsize{30}{36}\selectfont $\pi$};
         
-        \node[font=\fontsize{25}{30}\selectfont, color=coveraccent3!5]
-        at ([xshift=-2cm,yshift=-18cm]current page.north east) {$\infty$};
+        \node[color=coveraccent3!5]
+        at ([xshift=-2cm,yshift=-18cm]current page.north east) 
+        {\fontsize{25}{30}\selectfont $\infty$};
         
-    \end{tikzpicture}
+    \end{tikzpicture}%
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Front Cover
-%----------------------------------------
-\newcommand{\makecover}[4]{
+%------------------------------------------------------------------------
+\newcommand{\makecover}[4]{%
     \begin{titlepage}
         \thispagestyle{empty}
         
@@ -89,17 +129,17 @@
             \fill[coveraccent] (1.2,0.25) circle (3pt);
             \fill[coveraccent3] (1.9,0.25) circle (3pt);
             % Terminal prompt
-            \node[font=\ttfamily\fontsize{8}{10}\selectfont, color=coveraccent, anchor=west]
-            at (2.8,0.25) {\$ cd /book};
+            \node[font=\ttfamily, color=coveraccent, anchor=west]
+            at (2.8,0.25) {\fontsize{8}{10}\selectfont \$ cd /book};
         \end{tikzpicture}
         
         \vspace{3cm}
         
         % Tag
         \begin{flushright}
-            \colorbox{coveraccent!15}{
+            \colorbox{coveraccent!15}{%
                 \color{coverprimary}\fontsize{10}{14}\selectfont\bfseries
-                \hspace{0.3cm} \covertag \hspace{0.3cm}
+                \hspace{0.3cm} \covertag \hspace{0.3cm}%
             }
         \end{flushright}
         
@@ -113,8 +153,8 @@
         
         \vspace{0.8cm}
         
-        % Subtitle
-        \ifx\relax#2\relax\else
+        % Subtitle (optional)
+        \if\relax\detokenize{#2}\relax\else
         \begin{flushright}
             \color{covergray}\fontsize{15}{22}\selectfont
             #2
@@ -128,8 +168,8 @@
             \begin{tikzpicture}
                 \draw[coveraccent, line width=1.5pt] (0,0) -- (4,0);
                 \fill[coveraccent] (4.5,0) circle (3pt);
-                \node[font=\ttfamily\fontsize{8}{10}\selectfont, color=covergray!50, anchor=west]
-                at (5,0) {main()};
+                \node[font=\ttfamily, color=covergray!50, anchor=west]
+                at (5,0) {\fontsize{8}{10}\selectfont main()};
             \end{tikzpicture}
         \end{flushleft}
         
@@ -137,7 +177,7 @@
         
         % Author
         \begin{flushright}
-            \colorbox{coverlight}{
+            \colorbox{coverlight}{%
                 \begin{minipage}{0.5\textwidth}
                     \vspace{0.6cm}
                     \begin{flushright}
@@ -147,7 +187,7 @@
                         \texttt{//} #4
                     \end{flushright}
                     \vspace{0.6cm}
-                \end{minipage}
+                \end{minipage}%
             }
         \end{flushright}
         
@@ -159,33 +199,34 @@
             \fill[coverprimary] (0,0) rectangle (\textwidth,0.06cm);
             
             % Left: Logo with code bracket
-            \node[font=\ttfamily\fontsize{10}{12}\selectfont, color=coveraccent, anchor=west]
-            at (0.3,1.3) {<};
-            \node[font=\fontsize{10}{12}\selectfont, color=coverprimary!70, anchor=west]
-            at (0.9,1.3) {MatinBook};
-            \node[font=\ttfamily\fontsize{10}{12}\selectfont, color=coveraccent, anchor=west]
-            at (3.7,1.3) {/>};
+            \node[font=\ttfamily, color=coveraccent, anchor=west]
+            at (0.3,1.3) {\fontsize{10}{12}\selectfont <};
+            \node[color=coverprimary!70, anchor=west]
+            at (0.9,1.3) {\fontsize{10}{12}\selectfont MatinBook};
+            \node[font=\ttfamily, color=coveraccent, anchor=west]
+            at (3.7,1.3) {\fontsize{10}{12}\selectfont />};
             
-            % Center: GitHub
-            \node[font=\ttfamily\fontsize{8}{10}\selectfont, color=covergray, anchor=center]
-            at (\textwidth/2,1.3) {github.com/matinbook};
+            % Center: Repository
+            \node[font=\ttfamily, color=covergray, anchor=center]
+            at (\textwidth/2,1.3) {\fontsize{8}{10}\selectfont \matin@repository};
             
-            % Right: Version with math
-            \node[font=\fontsize{9}{11}\selectfont, color=covergray, anchor=east]
-            at (\textwidth-0.5,1.3) {v1.0.0};
+            % Right: Version
+            \node[color=covergray, anchor=east]
+            at (\textwidth-0.5,1.3) {\fontsize{9}{11}\selectfont v\matinbookversion};
             
             % Decorative equation in footer
-            \node[font=\fontsize{7}{9}\selectfont, color=covergray!30]
-            at (\textwidth/2,0.6) {$f(x) = \displaystyle\sum_{n=0}^{\infty} a_n x^n$};
+            \node[color=covergray!30]
+            at (\textwidth/2,0.6) {\fontsize{7}{9}\selectfont $f(x) = \displaystyle\sum_{n=0}^{\infty} a_n x^n$};
         \end{tikzpicture}
         
-    \end{titlepage}
+    \end{titlepage}%
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Back Cover
-%----------------------------------------
-\newcommand{\makebackcover}[1]{
+%------------------------------------------------------------------------
+\newcommand{\makebackcover}[1]{%
     \clearpage
     \thispagestyle{empty}
     
@@ -209,7 +250,7 @@
     
     % Content
     \begin{center}
-        \colorbox{coverlight}{
+        \colorbox{coverlight}{%
             \begin{minipage}{0.75\textwidth}
                 \vspace{1.2cm}
                 \begin{flushright}
@@ -217,25 +258,25 @@
                     #1
                 \end{flushright}
                 \vspace{1.2cm}
-            \end{minipage}
+            \end{minipage}%
         }
     \end{center}
     
     \vspace{2cm}
     
-    % QR / Link box
+    % Repository box
     \begin{center}
-        \colorbox{coverprimary}{
+        \colorbox{coverprimary}{%
             \begin{minipage}{5cm}
                 \vspace{0.5cm}
                 \begin{center}
                     \color{white}\fontsize{9}{12}\selectfont
                     \textbf{\coversource}\\[0.3cm]
                     \color{coveraccent}\ttfamily\fontsize{8}{10}\selectfont
-                    github.com/matinbook
+                    \matin@repository
                 \end{center}
                 \vspace{0.5cm}
-            \end{minipage}
+            \end{minipage}%
         }
     \end{center}
     
@@ -253,9 +294,15 @@
     \noindent\begin{tikzpicture}
         \fill[coverprimary] (0,0) rectangle (\textwidth,0.5cm);
         \fill[coveraccent] (0,0) rectangle (3,0.5cm);
-        \node[font=\ttfamily\fontsize{8}{10}\selectfont, color=white, anchor=west]
-        at (0.3,0.25) {\$ exit};
-    \end{tikzpicture}
+        \node[font=\ttfamily, color=white, anchor=west]
+        at (0.3,0.25) {\fontsize{8}{10}\selectfont \$ exit};
+    \end{tikzpicture}%
 }
+
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-theme-cover}{Cover system loaded (requires 2 passes)}
 
 \endinput
