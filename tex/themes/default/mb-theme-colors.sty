@@ -1,50 +1,90 @@
-%----------------------------------------
-% colors.sty - Default Theme Colors
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{mb-theme-colors}[2025/01/01 v1.0 MatinBook Default Colors]
+%%
+%% This is file `mb-theme-colors.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Primary Colors
-%----------------------------------------
-\definecolor{matinblue}{RGB}{41, 128, 185}     % Blue for theorems
-\definecolor{matindarkblue}{RGB}{21, 67, 96}   % Dark blue for headers
-\definecolor{matinlightblue}{RGB}{214, 234, 248} % Light blue for backgrounds
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-theme-colors}[2026/01/01 v1.1 MatinBook Default Colors]
 
-%----------------------------------------
-% Secondary Colors
-%----------------------------------------
-\definecolor{matingreen}{RGB}{39, 174, 96}      % Green for definitions
-\definecolor{matindarkgreen}{RGB}{20, 90, 50}   % Dark green
-\definecolor{matinlightgreen}{RGB}{215, 245, 227} % Light green
+%========================================================================
+% MB-THEME-COLORS — DEFAULT THEME COLOR PALETTE
+%========================================================================
+%
+% Purpose:
+%   Define the color palette for the default MatinBook theme.
+%
+% Color model:
+%   All colors are defined in CMYK (per Iranian educational
+%   publishing standard ز/۱-۴). Percentages are multiples of 5 or 10.
+%
+% Load order:
+%   This module MUST be loaded BEFORE any module that uses colors
+%   (mb-layout, mb-headings, mb-boxes, mb-code, mb-graphics).
+%
+% Dominant color:
+%   matinblue is the dominant color. All other colors are either
+%   tints/shades of blue or functional accents (orange, green, red).
+%
+%========================================================================
 
-%----------------------------------------
-% Accent Colors
-%----------------------------------------
-\definecolor{matinorange}{RGB}{230, 126, 34}    % Orange for examples
-\definecolor{matindarkorange}{RGB}{120, 66, 18} % Dark orange
-\definecolor{matinlightorange}{RGB}{252, 235, 213} % Light orange
 
-\definecolor{matinred}{RGB}{231, 76, 60}        % Red for remarks/alerts
-\definecolor{matindarkred}{RGB}{120, 40, 31}    % Dark red
-\definecolor{matinlightred}{RGB}{250, 215, 210} % Light red
+%------------------------------------------------------------------------
+% Primary Color Family (Blue — dominant)
+%------------------------------------------------------------------------
+\providecolor{matinblue}{cmyk}{0.80, 0.30, 0.00, 0.30}
+\providecolor{matindarkblue}{cmyk}{0.80, 0.30, 0.00, 0.60}
+\providecolor{matinlightblue}{cmyk}{0.15, 0.05, 0.00, 0.05}
 
-\definecolor{matinpurple}{RGB}{142, 68, 173}    % Purple for exercises
-\definecolor{matindarkpurple}{RGB}{74, 35, 90}  % Dark purple
-\definecolor{matinlightpurple}{RGB}{235, 222, 245} % Light purple
 
-%----------------------------------------
+%------------------------------------------------------------------------
+% Secondary Color Family (Green — for definitions/solutions)
+%------------------------------------------------------------------------
+\providecolor{matingreen}{cmyk}{0.80, 0.00, 0.45, 0.30}
+\providecolor{matindarkgreen}{cmyk}{0.80, 0.00, 0.45, 0.65}
+\providecolor{matinlightgreen}{cmyk}{0.10, 0.00, 0.05, 0.05}
+
+
+%------------------------------------------------------------------------
+% Accent Color Family (Orange — for examples/remarks)
+%------------------------------------------------------------------------
+\providecolor{matinorange}{cmyk}{0.00, 0.45, 0.85, 0.10}
+\providecolor{matindarkorange}{cmyk}{0.00, 0.45, 0.85, 0.55}
+\providecolor{matinlightorange}{cmyk}{0.00, 0.05, 0.15, 0.00}
+
+
+%------------------------------------------------------------------------
+% Alert Color Family (Red — for remarks/alerts)
+%------------------------------------------------------------------------
+\providecolor{matinred}{cmyk}{0.00, 0.65, 0.75, 0.10}
+\providecolor{matindarkred}{cmyk}{0.00, 0.65, 0.75, 0.55}
+\providecolor{matinlightred}{cmyk}{0.00, 0.15, 0.15, 0.00}
+
+
+%------------------------------------------------------------------------
+% Exercise Color Family (Purple — for exercises)
+%------------------------------------------------------------------------
+\providecolor{matinpurple}{cmyk}{0.20, 0.60, 0.00, 0.30}
+\providecolor{matindarkpurple}{cmyk}{0.20, 0.60, 0.00, 0.65}
+\providecolor{matinlightpurple}{cmyk}{0.05, 0.10, 0.00, 0.05}
+
+
+%------------------------------------------------------------------------
 % Neutral Colors
-%----------------------------------------
-\definecolor{matindarkgray}{RGB}{44, 62, 80}    % Dark gray for text
-\definecolor{matinmediumgray}{RGB}{149, 165, 166} % Medium gray
-\definecolor{matinlightgray}{RGB}{236, 240, 241} % Light gray for backgrounds
-\definecolor{matinbordergray}{RGB}{189, 195, 199}
+%------------------------------------------------------------------------
+\providecolor{matindarkgray}{cmyk}{0.45, 0.25, 0.00, 0.70}
+\providecolor{matinmediumgray}{cmyk}{0.10, 0.00, 0.00, 0.35}
+\providecolor{matinlightgray}{cmyk}{0.00, 0.00, 0.00, 0.05}
+\providecolor{matinbordergray}{cmyk}{0.05, 0.00, 0.00, 0.20}
+\providecolor{matincream}{cmyk}{0.00, 0.00, 0.00, 0.00}
 
-% Cream background for boxes (off-white)
-\definecolor{matincream}{HTML}{FDFBF7} % Border gray
 
-\typeout{MatinBook: Default theme colors loaded}
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-theme-colors}{Default theme colors loaded (CMYK)}
 
 \endinput

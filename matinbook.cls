@@ -119,13 +119,12 @@
 %========================================================================
 
 \RequirePackage{mb-core}
-\RequirePackage{mb-colors}
+\RequirePackage{mb-theme-colors}
 \RequirePackage{mb-math}
 \RequirePackage{mb-boxes}
 \RequirePackage{mb-theorem}
 \RequirePackage{mb-code}
 \RequirePackage{mb-layout}
-\RequirePackage{mb-theme-colors}
 \RequirePackage{mb-headings}
 \RequirePackage{mb-references}
 \RequirePackage{mb-graphics}
