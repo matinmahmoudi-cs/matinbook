@@ -52,28 +52,27 @@
 \pagestyle{fancy}
 \fancyhf{}
 
-% Even pages (left side in twoside): book title
+% Even pages (left in twoside): chapter name
 \fancyhead[LE]{%
     \ifnum\c@chapter>0
-        \small\textbf{\matin@booktitle}%
+        \footnotesize\textbf{\leftmark}%
     \fi
 }
 
-% Odd pages (right side in twoside): chapter name
+% Odd pages (right in twoside): chapter name
 \fancyhead[RO]{%
     \ifnum\c@chapter>0
-        \small\textbf{\leftmark}%
+        \footnotesize\textbf{\leftmark}%
     \fi
 }
 
-% Page number in footer (both sides)
+% Page number in footer (both outer sides)
 \fancyfoot[LE,RO]{%
     \ifnum\c@chapter>0
-        \small\textbf{\thepage}%
+        \footnotesize\textbf{\thepage}%
     \fi
 }
 
-% Header/footer rules
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
 
@@ -81,7 +80,7 @@
 \fancypagestyle{plain}{%
     \fancyhf{}
     \fancyfoot[LE,RO]{%
-        \small\textbf{\thepage}%
+        \footnotesize\textbf{\thepage}%
     }
     \renewcommand{\headrulewidth}{0pt}
     \renewcommand{\footrulewidth}{0pt}
