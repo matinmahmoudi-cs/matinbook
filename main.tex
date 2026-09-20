@@ -1,137 +1,181 @@
-%----------------------------------------
-% Main Book File
-% MatinBook - Professional Persian Book
-% Modular Version with 20 Modules
-%----------------------------------------
+%%
+%% main.tex — MatinBook Template
+%% 
+%% This is the main entry point for a MatinBook book.
+%% It demonstrates the recommended structure and order of a
+%% Persian technical book according to Iranian publishing standards.
+%%
+%% IMPORTANT:
+%%   - This template uses \makecover (TikZ), which requires
+%%     AT LEAST 2 compilation passes.
+%%   - For a full build (with bibliography and index), use:
+%%       xelatex -shell-escape main.tex
+%%       biber main
+%%       xelatex -shell-escape main.tex
+%%       xelatex -shell-escape main.tex
+%%     Or use latexmk:
+%%       latexmk -xelatex -shell-escape main.tex
+%%
 
 \documentclass{matinbook}
 
-%----------------------------------------
-% Bibliography
-%----------------------------------------
+%========================================================================
+% BIBLIOGRAPHY
+%========================================================================
 \addbibresource{references.bib}
 
-%----------------------------------------
-% Book Metadata
-%----------------------------------------
+%========================================================================
+% BOOK METADATA
+%========================================================================
+% These are used by \maketitle. \makecover uses its own arguments.
+% Keep them in sync to avoid inconsistencies.
 \title{عنوان کتاب}
 \author{نام نویسنده}
 \date{تابستان ۱۴۰۴}
 
-%----------------------------------------
-% Begin Document
-%----------------------------------------
+% Repository (shown on cover)
+\renewcommand{\repository}{github.com/your-username/your-book}
 
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
-    
-    %----------------------------------------
-    % Cover
-    %----------------------------------------
-    \makecover
+
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+% \makecover{title}{subtitle}{author}{date}
+\makecover
     {عنوان کتاب}
     {زیرعنوان کتاب}
     {نام نویسنده}
     {تابستان ۱۴۰۴}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (Persian letter numbering: الف، ب، ج، ...)
+%------------------------------------------------------------------------
+\frontmatter
+
+% Title page (uses \title, \author, \date)
+\maketitle
+
+% Copyright page
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{حقوق نشر}}
     
-    \makebackcover{%
-        توضیحات پشت جلد کتاب را اینجا بنویسید...
+    \vspace{1cm}
+    تمامی حقوق این کتاب محفوظ است.
+    
+    \vspace{1cm}
+    \textbf{شناسنامه کتاب}
+    
+    \vspace{0.5cm}
+    \begin{tabular}{rl}
+        عنوان: & عنوان کتاب \\
+        نویسنده: & نام نویسنده \\
+        ناشر: & نام ناشر \\
+        نوبت چاپ: & اول \\
+        تیراژ: & ۱۰۰۰ نسخه \\
+        شابک: & ۹۷۸-XXX-XXX-XXX-X \\
+        قیمت: & XXX,XXX ریال \\
+    \end{tabular}
+    
+    \vspace{1cm}
+    {\small نسخه \matinbookversion\ — \matinbookdate}
+\end{center}
+\clearpage
+
+% Dedication (optional)
+\thispagestyle{empty}
+\vfill
+\begin{flushright}
+    {\Large\itshape
+        تقدیم به...
     }
-    
-    %----------------------------------------
-    % Title Page
-    %----------------------------------------
-    \maketitle
-    
-    %----------------------------------------
-    % Copyright
-    %----------------------------------------
-    \thispagestyle{empty}
-    \vfill
-    \begin{center}
-        {\large\textbf{حقوق نشر}}
-        
-        \vspace{1cm}
-        تمامی حقوق این کتاب محفوظ است.
-        
-        \vspace{1cm}
-        نسخه ۱.۰ - تابستان ۱۴۰۴
-        
-        \vspace{0.5cm}
-        {\small ساخته شده با \lr{MatinBook} نسخه ۱}
-    \end{center}
-    \clearpage
-    
-    %----------------------------------------
-    % Dedication (Optional)
-    %----------------------------------------
-    \thispagestyle{empty}
-    \vfill
-    \begin{flushright}
-        {\Large\itshape
-            تقدیم به...
-        }
-    \end{flushright}
-    \clearpage
-    \frontmatter
-    %----------------------------------------
-    % Preface
-    %----------------------------------------
-    \chapter*{پیشگفتار}
-    \addcontentsline{toc}{chapter}{پیشگفتار}
-    
-    پیشگفتار کتاب را اینجا بنویسید...
-    
-    \clearpage
-    
-    %----------------------------------------
-    % Table of Contents
-    %----------------------------------------
-    \tableofcontents
-    \clearpage
-    
-    %----------------------------------------
-    % List of Figures
-    %----------------------------------------
-    \listoffigures
-    \clearpage
-    
-    %----------------------------------------
-    % List of Tables
-    %----------------------------------------
-    \listoftables
-    \clearpage
-    
-    %----------------------------------------
-    % List of Algorithms
-    %----------------------------------------
-    \listofalgorithms
-    \clearpage
-    \mainmatter
-    %----------------------------------------
-    % Chapters
-    %----------------------------------------
-    %\input{chapters/chapter-01}
-    %\input{chapters/chapter-02}
-    %\input{chapters/chapter-03}
-    %\input{chapters/chapter-04}
-    %\input{chapters/chapter-05}
-    %\input{chapters/chapter-06}
-    %\input{chapters/chapter-07}
-    %\input{chapters/chapter-08}
-    
-    %----------------------------------------
-    % Bibliography
-    %----------------------------------------
-    \begin{latin}
-        \printbibliography[title={منابع و مراجع}]
-    \end{latin}
-    
-    %----------------------------------------
-    % Index
-    %----------------------------------------
-    \printindex
-    
-    %----------------------------------------
-    % End
-    %----------------------------------------
+\end{flushright}
+\clearpage
+
+% Bismillah page (optional)
+% Uncomment to enable:
+% \thispagestyle{empty}
+% \vfill
+% \begin{center}
+%     {\Huge\bfseries بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ}
+% \end{center}
+% \vfill
+% \clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+پیشگفتار کتاب را اینجا بنویسید...
+
+\clearpage
+
+% Table of contents
+\tableofcontents
+\clearpage
+
+% List of figures
+\listoffigures
+\clearpage
+
+% List of tables
+\listoftables
+\clearpage
+
+% List of algorithms
+% Uncomment ONLY if you use algorithm environments:
+% \listofalgorithms
+% \clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (Arabic numbering: 1, 2, 3, ...)
+%------------------------------------------------------------------------
+\mainmatter
+
+% Chapters
+% \input{chapters/chapter-01}
+% \input{chapters/chapter-02}
+% \input{chapters/chapter-03}
+% \input{chapters/chapter-04}
+% \input{chapters/chapter-05}
+% \input{chapters/chapter-06}
+% \input{chapters/chapter-07}
+% \input{chapters/chapter-08}
+
+%------------------------------------------------------------------------
+% BACK MATTER
+%------------------------------------------------------------------------
+\backmatter
+
+% Bibliography
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+% Latin title page (optional)
+% Uncomment to enable:
+% \clearpage
+% \thispagestyle{empty}
+% \begin{latin}
+% \begin{center}
+%     \vspace*{3cm}
+%     {\Huge\bfseries \latintitle} \\
+%     \vspace{1cm}
+%     {\Large \latinauthor}
+% \end{center}
+% \end{latin}
+
+%------------------------------------------------------------------------
+% BACK COVER (must be at the very end)
+%------------------------------------------------------------------------
+\makebackcover{%
+    توضیحات پشت جلد کتاب را اینجا بنویسید...
+}
+
 \end{document}
