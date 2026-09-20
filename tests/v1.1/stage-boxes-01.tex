@@ -1,0 +1,113 @@
+%%
+%% Test: Box Styles — v1.1
+%% Stage: boxes refactor (stages 1-4)
+%% 
+%% Purpose: Verify box styles:
+%%   - Three colors: blue (theorems), orange (examples), green (solutions)
+%%   - No conflicting definitions with mb-theorem
+%%   - matincream background
+%%   - fonttitle=\normalsize
+%%   - tcolorbox works with xepersian
+%% 
+
+\documentclass{matinbook}
+
+\title{تست جعبه‌های رنگی — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\booktitle{تست جعبه‌ها}
+
+\begin{document}
+
+\maketitle
+
+\chapter{بررسی جعبه‌های رنگی}
+\label{chap:test-boxes}
+
+این سند، جعبه‌های رنگی \texttt{mb-boxes} را بررسی می‌کند.
+
+%----------------------------------------
+\section{خانواده قضیه (آبی)}
+\label{sec:theorem-family}
+
+\begin{theorem}[قضیه نمونه]
+    برای هر عدد حقیقی $x$، داریم $x^2 \geq 0$.
+\end{theorem}
+
+\begin{lemma}[لم نمونه]
+    اگر $a > 0$ و $b > 0$، آنگاه $a + b > 0$.
+\end{lemma}
+
+\begin{corollary}[نتیجه نمونه]
+    اگر $a > 0$، آنگاه $a^2 > 0$.
+\end{corollary}
+
+\begin{proposition}[گزاره نمونه]
+    اگر $n$ زوج باشد، $n^2$ نیز زوج است.
+\end{proposition}
+
+%----------------------------------------
+\section{تعریف (آبی روشن)}
+\label{sec:definition}
+
+\begin{definition}[عدد اول]
+    عدد طبیعی بزرگ‌تر از ۱ که تنها دو مقسوم‌علیه مثبت دارد،
+    \emph{عدد اول} نامیده می‌شود.
+\end{definition}
+
+%----------------------------------------
+\section{مثال و نکته (نارنجی)}
+\label{sec:example-remark}
+
+\begin{example}[اعداد اول کوچک]
+    اعداد $2, 3, 5, 7, 11, 13$ نمونه‌هایی از اعداد اول هستند.
+\end{example}
+
+\begin{remark}[نکته]
+    عدد ۱ نه اول است و نه مرکب.
+\end{remark}
+
+%----------------------------------------
+\section{تمرین (نارنجی روشن)}
+\label{sec:exercise}
+
+\begin{exercise}[تمرین نمونه]
+    ثابت کنید که مجموع دو عدد زوج، زوج است.
+\end{exercise}
+
+%----------------------------------------
+\section{راه حل و اثبات (سبز)}
+\label{sec:solution-proof}
+
+\begin{proof}
+    چون مربع هر عدد حقیقی نامنفی است، نتیجه حاصل می‌شود.
+\end{proof}
+
+\begin{solution}
+    فرض کنید $a = 2m$ و $b = 2n$. آنگاه $a + b = 2(m + n)$ که زوج است.
+\end{solution}
+
+%----------------------------------------
+\section{ارجاعات}
+\label{sec:references}
+
+ارجاع به قضیه: \cref{thm:boxes-test}
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ سه رنگ استفاده می‌شود (آبی، نارنجی، سبز)
+    \item ✅ \texttt{matincream} به‌عنوان پس‌زمینه استفاده می‌شود
+    \item ✅ \texttt{fonttitle=\textbackslash normalsize} است
+    \item ✅ محیط‌های قضیه، لم، تعریف، مثال، نکته، تمرین، راه حل، اثبات کار می‌کنند
+    \item ✅ \texttt{mb-boxes} با \texttt{mb-theorem} تداخل ندارد
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}

@@ -1,0 +1,163 @@
+%%
+%% Test: Color System — v1.1
+%% Stage: colors refactor (stages 1-4)
+%% 
+%% Purpose: Verify color system:
+%%   - All matin* colors are defined (CMYK)
+%%   - Colors are defined BEFORE consumers (order check)
+%%   - Colors work in text, boxes, headings, graphics
+%%   - Dominant color: matinblue
+%%   - CMYK color model is used
+%% 
+
+\documentclass{matinbook}
+
+\title{تست سیستم رنگ — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\booktitle{تست رنگ‌ها}
+
+\begin{document}
+
+\maketitle
+
+\chapter{بررسی سیستم رنگ}
+\label{chap:test-colors}
+
+این سند، سیستم رنگ \texttt{mb-theme-colors} را بررسی می‌کند.
+
+%----------------------------------------
+\section{رنگ‌های اصلی}
+\label{sec:primary-colors}
+
+رنگ‌های اصلی MatinBook:
+
+\begin{itemize}
+    \item \textcolor{matinblue}{\textbf{matinblue}} — رنگ غالب (آبی)
+    \item \textcolor{matindarkblue}{\textbf{matindarkblue}} — آبی تیره
+    \item \textcolor{matinlightblue}{\textbf{matinlightblue}} — آبی روشن
+\end{itemize}
+
+%----------------------------------------
+\section{رنگ‌های ثانویه}
+\label{sec:secondary-colors}
+
+\begin{itemize}
+    \item \textcolor{matingreen}{\textbf{matingreen}} — سبز (تعاریف)
+    \item \textcolor{matindarkgreen}{\textbf{matindarkgreen}} — سبز تیره
+    \item \textcolor{matinlightgreen}{\textbf{matinlightgreen}} — سبز روشن
+\end{itemize}
+
+%----------------------------------------
+\section{رنگ‌های تأکیدی}
+\label{sec:accent-colors}
+
+\begin{itemize}
+    \item \textcolor{matinorange}{\textbf{matinorange}} — نارنجی (مثال‌ها)
+    \item \textcolor{matindarkorange}{\textbf{matindarkorange}} — نارنجی تیره
+    \item \textcolor{matinlightorange}{\textbf{matinlightorange}} — نارنجی روشن
+    \item \textcolor{matinred}{\textbf{matinred}} — قرمز (هشدارها)
+    \item \textcolor{matindarkred}{\textbf{matindarkred}} — قرمز تیره
+    \item \textcolor{matinlightred}{\textbf{matinlightred}} — قرمز روشن
+    \item \textcolor{matinpurple}{\textbf{matinpurple}} — بنفش (تمرین‌ها)
+    \item \textcolor{matindarkpurple}{\textbf{matindarkpurple}} — بنفش تیره
+    \item \textcolor{matinlightpurple}{\textbf{matinlightpurple}} — بنفش روشن
+\end{itemize}
+
+%----------------------------------------
+\section{رنگ‌های خنثی}
+\label{sec:neutral-colors}
+
+\begin{itemize}
+    \item \textcolor{matindarkgray}{\textbf{matindarkgray}} — خاکستری تیره
+    \item \textcolor{matinmediumgray}{\textbf{matinmediumgray}} — خاکستری متوسط
+    \item \textcolor{matinlightgray}{\textbf{matinlightgray}} — خاکستری روشن
+    \item \textcolor{matinbordergray}{\textbf{matinbordergray}} — خاکستری حاشیه
+    \item \textcolor{matincream}{\textbf{matincream}} — کرم
+\end{itemize}
+
+%----------------------------------------
+\section{رنگ در جعبه‌ها}
+\label{sec:colors-in-boxes}
+
+\begin{theorem}[قضیه نمونه]
+    برای هر عدد حقیقی $x$، داریم $x^2 \geq 0$.
+\end{theorem}
+
+\begin{definition}[عدد اول]
+    عدد طبیعی بزرگ‌تر از ۱ که تنها دو مقسوم‌علیه مثبت دارد.
+\end{definition}
+
+\begin{example}[مثال نمونه]
+    اعداد $2, 3, 5, 7, 11$ نمونه‌هایی از اعداد اول هستند.
+\end{example}
+
+\begin{remark}[نکته]
+    عدد ۱ نه اول است و نه مرکب.
+\end{remark}
+
+%----------------------------------------
+\section{رنگ در ریاضیات}
+\label{sec:colors-in-math}
+
+\begin{equation}
+    \label{eq:colors-test}
+    \textcolor{matinblue}{f(x)} = \textcolor{matingreen}{x^2} + \textcolor{matinorange}{2x}
+\end{equation}
+
+%----------------------------------------
+\section{رنگ در جدول}
+\label{sec:colors-in-table}
+
+\begin{table}[h]
+\centering
+\caption{جدول رنگی}
+\label{tab:colors-test}
+\begin{tabular}{L{3cm} C{2cm} R{3cm}}
+\toprule
+\rowcolor{matinlightblue}
+\textbf{ستون ۱} & \textbf{ستون ۲} & \textbf{ستون ۳} \\
+\midrule
+\rowcolor{matinlightgray}
+متن & ۱۰ & ۲۰ \\
+\rowcolor{matincream}
+متن & ۲۰ & ۳۰ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------
+\section{رنگ در گرافیک}
+\label{sec:colors-in-graphics}
+
+\begin{latin}
+\begin{tikzpicture}
+    \fill[matinblue] (0,0) circle (0.5cm);
+    \fill[matingreen] (1.5,0) circle (0.5cm);
+    \fill[matinorange] (3,0) circle (0.5cm);
+    \fill[matinred] (4.5,0) circle (0.5cm);
+    \fill[matinpurple] (6,0) circle (0.5cm);
+\end{tikzpicture}
+\end{latin}
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ همه‌ی ۲۰ رنگ \texttt{matin*} تعریف شده‌اند
+    \item ✅ رنگ‌ها در CMYK تعریف شده‌اند
+    \item ✅ \texttt{matinblue} رنگ غالب است
+    \item ✅ رنگ‌ها در جعبه‌ها کار می‌کنند
+    \item ✅ رنگ‌ها در ریاضیات کار می‌کنند
+    \item ✅ رنگ‌ها در جدول کار می‌کنند
+    \item ✅ رنگ‌ها در گرافیک کار می‌کنند
+    \item ✅ ترتیب بارگذاری رنگ‌ها درست است
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}

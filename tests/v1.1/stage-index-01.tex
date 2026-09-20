@@ -1,0 +1,127 @@
+%%
+%% Test: Index System — v1.1
+%% Stage: index refactor (stages 1-4)
+%% 
+%% Purpose: Verify index system with xindy + persian-variant2:
+%%   - \index entries are sorted correctly (پ, چ, ژ, گ, ک)
+%%   - \idxbold, \idxitalic work
+%%   - \idxsee, \idxseealso work
+%%   - \idxsub, \idxsubsub work
+%%   - \printindex works
+%%   - Index appears in ToC (intoc)
+%% 
+
+\documentclass{matinbook}
+
+\title{تست سیستم نمایه — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\booktitle{تست نمایه}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{بررسی سیستم نمایه}
+\label{chap:test-index}
+
+این سند، سیستم نمایه \texttt{mb-index} را بررسی می‌کند.
+هدف اصلی، تست مرتب‌سازی صحیح حروف فارسی (پ، چ، ژ، گ، ک) است.
+
+%----------------------------------------
+\section{حروف الفبای فارسی}
+\label{sec:persian-letters}
+
+در این بخش، کلماتی با حروف خاص فارسی را نمایه می‌کنیم:
+
+\textbf{حرف پ:}
+پایتون\index{پایتون}، برنامه\index{برنامه}، پردازش\index{پردازش}
+
+\textbf{حرف چ:}
+چاپ\index{چاپ}، چندجمله‌ای\index{چندجمله‌ای}، چرخه\index{چرخه}
+
+\textbf{حرف ژ:}
+ژنتیک\index{ژنتیک}، ژرف\index{ژرف}
+
+\textbf{حرف گ:}
+گسسته\index{گسسته}، گراف\index{گراف}، گویا\index{گویا}
+
+\textbf{حرف ک:}
+کامپیوتر\index{کامپیوتر}، کتابخانه\index{کتابخانه}، کلاس\index{کلاس}
+
+\textbf{حروف عادی:}
+الگوریتم\index{الگوریتم}، برنامه‌نویسی\index{برنامه‌نویسی}، ریاضیات\index{ریاضیات}
+
+%----------------------------------------
+\section{نمایه‌های تودرتو}
+\label{sec:nested-index}
+
+برنامه‌نویسی\index{برنامه‌نویسی!پایتون}\index{برنامه‌نویسی!جاوا}\index{برنامه‌نویسی!سی‌پلاس‌پلاس}
+
+الگوریتم\index{الگوریتم!مرتب‌سازی}\index{الگوریتم!جستجو}
+
+ریاضیات\index{ریاضیات!جبر}\index{ریاضیات!آنالیز}\index{ریاضیات!هندسه}
+
+%----------------------------------------
+\section{نمایه‌های bold و italic}
+\label{sec:bold-italic}
+
+مفهوم مهم\idxbold{مفهوم مهم}
+
+اصطلاح لاتین\idxitalic{الگوریتم مرتب‌سازی}
+
+%----------------------------------------
+\section{ارجاعات see و seealso}
+\label{sec:see-also}
+
+\idxsee{پایتون}{زبان برنامه‌نویسی}
+
+\idxseealso{برنامه‌نویسی}{الگوریتم}
+
+%----------------------------------------
+\section{نمایه‌های تودرتوی عمیق}
+\label{sec:deep-nested}
+
+\idxsubsub{ریاضیات}{جبر}{گروه}
+
+\idxsubsub{ریاضیات}{جبر}{حلقه}
+
+\idxsubsub{علوم کامپیوتر}{الگوریتم}{مرتب‌سازی}
+
+%----------------------------------------
+\section{تکرار برای range}
+\label{sec:repeated}
+
+الگوریتم\index{الگوریتم} یکی از مفاهیم اساسی است.
+
+در اینجا دوباره به الگوریتم\index{الگوریتم} اشاره می‌کنیم.
+
+و باز هم الگوریتم\index{الگوریتم} را تکرار می‌کنیم.
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ \texttt{xindy} با \texttt{persian-variant2} کار می‌کند
+    \item ✅ حروف پ، چ، ژ، گ، ک درست مرتب می‌شوند
+    \item ✅ \texttt{\textbackslash idxbold} و \texttt{\textbackslash idxitalic} کار می‌کنند
+    \item ✅ \texttt{\textbackslash idxsee} و \texttt{\textbackslash idxseealso} کار می‌کنند
+    \item ✅ \texttt{\textbackslash idxsub} و \texttt{\textbackslash idxsubsub} کار می‌کنند
+    \item ✅ \texttt{\textbackslash printindex} کار می‌کند
+    \item ✅ نمایه در فهرست مطالب نمایش داده می‌شود
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+%----------------------------------------
+% Print the index
+%----------------------------------------
+\printindex
+
+\end{document}

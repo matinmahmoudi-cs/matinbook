@@ -2,7 +2,7 @@
 %% This is file `matinbook.cls',
 %% generated with the MatinBook project.
 %% 
-%% Copyright (C) 2025 MatinBook Project
+%% Copyright (C) 2025-2026 MatinBook Project
 %% 
 %% MatinBook is a professional LaTeX class for Persian technical books
 %% in programming and mathematics.
@@ -10,82 +10,232 @@
 %% It may be distributed and/or modified under the conditions of
 %% the MIT License.
 %% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{matinbook}[2025/01/01 v1.0 MatinBook - Professional Persian Technical Book Class]
+\NeedsTeXFormat{LaTeX2e}[2023/06/01]
+\ProvidesClass{matinbook}[2026/01/01 v1.1 MatinBook - Professional Persian Technical Book Class]
 
-%----------------------------------------
-% Bootstrap: Load Core Modules
-%----------------------------------------
+% Version Information
+\def\matinbookversion{1.1}
+\def\matinbookdate{2026/01/01}
 
-% 1. Engine Detection (XeTeX check)
-\RequirePackage{tex/core/mb-engine}
+%========================================================================
+% MATINBOOK CLASS — BOOTSTRAP SEQUENCE
+%========================================================================
+%
+% The loading order below is CRITICAL and must not be changed:
+%
+%   Phase 1 — Base packages (BEFORE xepersian)
+%   Phase 2 — xepersian (MUST be the last package)
+%   Phase 3 — Persian-specific settings (AFTER xepersian)
+%
+% Reference:
+%   xepersian documentation states: "xepersian should be the last
+%   package that you load, because otherwise you are certainly going
+%   to overwrite bidi and XePersian package's definitions."
+%
+%========================================================================
 
-% 2. Options System (draft, fonts, ...)
-\RequirePackage{tex/core/mb-options}
 
-% 3. Base Class (MUST be in .cls file)
+%------------------------------------------------------------------------
+% Engine Detection
+%------------------------------------------------------------------------
+\RequirePackage{iftex}
+
+\ifpdftex
+    \ClassError{matinbook}{%
+        MatinBook requires XeLaTeX\MessageBreak
+        Please use: xelatex yourfile.tex%
+    }{%
+        pdfTeX cannot process Persian fonts correctly.%
+    }
+\fi
+
+\RequireXeTeX
+
+
+%------------------------------------------------------------------------
+% Options (LaTeX 2023 key-value system)
+%------------------------------------------------------------------------
+\RequirePackage{etoolbox}
+
+% Default values
+\def\matin@fontname{XBNiloofar}
+\def\matin@mode{final}
+\def\matin@booktitle{کتاب من}
+
+\DeclareKeys{
+    % Mode
+    draft   .code = \def\matin@mode{draft},
+    final   .code = \def\matin@mode{final},
+
+    % Font (choice)
+    font            .choice:,
+    font/bnazanin   .code = \def\matin@fontname{BNazanin},
+    font/vazirmatn  .code = \def\matin@fontname{Vazirmatn},
+    font/sahel      .code = \def\matin@fontname{Sahel},
+    font/irlotus    .code = \def\matin@fontname{IRLotus},
+    font/niloofar   .code = \def\matin@fontname{XBNiloofar},
+
+    % Shorthand font options
+    bnazanin        .code = \def\matin@fontname{BNazanin},
+    vazirmatn       .code = \def\matin@fontname{Vazirmatn},
+    sahel           .code = \def\matin@fontname{Sahel},
+    irlotus         .code = \def\matin@fontname{IRLotus},
+    niloofar        .code = \def\matin@fontname{XBNiloofar},
+
+    % Layout
+    twoside .code = \PassOptionsToClass{twoside}{book},
+    oneside .code = \PassOptionsToClass{oneside}{book},
+}
+
+\DeclareUnknownKeyHandler{%
+    \PassOptionsToClass{\CurrentOption}{book}%
+}
+
+\ProcessKeyOptions
+
+% Book title command (used by mb-layout for even-page headers)
+\newcommand{\booktitle}[1]{\gdef\matin@booktitle{#1}}
+
+% Backward compatibility flags (used by mb-core, mb-layout)
+\newif\if@matin@draft
+\expandafter\ifstrequal\expandafter{\matin@mode}{draft}{%
+    \@matin@drafttrue
+}{%
+    \@matin@draftfalse
+}
+
+
+%------------------------------------------------------------------------
+% Base Class
+%------------------------------------------------------------------------
 \LoadClass[12pt,a4paper,twoside]{book}
 
-% 4. Core Packages (all required LaTeX packages)
-\RequirePackage{tex/core/mb-core}
 
-% 5. RTL/Bidi Support (xepersian + Persian settings)
-\RequirePackage{tex/modules/typography/mb-rtl}
+%========================================================================
+% PHASE 1 — BASE PACKAGES (BEFORE xepersian)
+%========================================================================
 
-% 6. Load Feature Modules (BEFORE locale to define environments)
-\RequirePackage{tex/modules/color/mb-colors}
-\RequirePackage{tex/modules/typography/mb-fonts}
-\RequirePackage{tex/modules/typography/mb-typography}
-\RequirePackage{tex/modules/layout/mb-layout}
-\RequirePackage{tex/modules/layout/mb-headings}
-\RequirePackage{tex/modules/math/mb-math}
-\RequirePackage{tex/modules/boxes/mb-boxes}
-\RequirePackage{tex/modules/theorem/mb-theorem}
-\RequirePackage{tex/modules/code/mb-code}
-\RequirePackage{tex/modules/algorithm/mb-algorithm}
+\RequirePackage{mb-core}
+\RequirePackage{mb-theme-colors}
+\RequirePackage{mb-math}
+\RequirePackage{mb-boxes}
+\RequirePackage{mb-theorem}
+\RequirePackage{mb-code}
+\RequirePackage{mb-layout}
+\RequirePackage{mb-headings}
+\RequirePackage{mb-references}
+\RequirePackage{mb-graphics}
+\RequirePackage{mb-index}
+\RequirePackage{mb-utils}
+\RequirePackage{mb-theme-cover}
 
-% 7. Locale (NOW after theorem environments are defined)
-\RequirePackage{tex/locales/fa-IR}
 
-% 8. References System (hyperref, cleveref, biblatex config)
-\RequirePackage{tex/modules/references/mb-references}
+%========================================================================
+% PHASE 2 — XEPERSIAN (MUST BE THE LAST PACKAGE)
+%========================================================================
+\RequirePackage{xepersian}
 
-% 9. Graphics System (TikZ, PGFPlots, styles)
-\RequirePackage{tex/modules/graphics/mb-graphics}
 
-% 10. Index System (imakeidx configuration)
-\RequirePackage{tex/modules/index/mb-index}
+%========================================================================
+% PHASE 3 — PERSIAN-SPECIFIC SETTINGS (AFTER xepersian)
+%========================================================================
 
-% 11. Utilities (helpers, version info)
-\RequirePackage{tex/core/mb-utils}
+%------------------------------------------------------------------------
+% Font Configuration
+%------------------------------------------------------------------------
+\defaultfontfeatures{Mapping=tex-text}
 
-%----------------------------------------
-% Theme System
-%----------------------------------------
+% Persian body font (dispatched via \matin@fontname)
+\ifdefstring{\matin@fontname}{XBNiloofar}{%
+    \settextfont[Script=Arabic,Scale=1.2]{XB Niloofar}%
+}{%
+\ifdefstring{\matin@fontname}{Vazirmatn}{%
+    \settextfont[Script=Arabic,Scale=1.2]{Vazirmatn}%
+}{%
+\ifdefstring{\matin@fontname}{Sahel}{%
+    \settextfont[Script=Arabic,Scale=1.2]{Sahel}%
+}{%
+\ifdefstring{\matin@fontname}{IRLotus}{%
+    \settextfont[Script=Arabic,Scale=1.2]{IR Lotus}%
+}{%
+\ifdefstring{\matin@fontname}{BNazanin}{%
+    \settextfont[Script=Arabic,Scale=1.0]{B Nazanin}%
+}{%
+    \PackageWarning{matinbook}{Unknown font '\matin@fontname'.\MessageBreak
+        Using XB Niloofar as fallback}%
+    \settextfont[Script=Arabic,Scale=1.2]{XB Niloofar}%
+}}}}}
 
-% Default theme (always loaded)
-\RequirePackage{tex/themes/default/theme}
+% Latin font
+\IfFontExistsTF{Times New Roman}{%
+    \setlatintextfont{Times New Roman}%
+}{%
+    \setlatintextfont{TeX Gyre Termes}%
+    \PackageWarning{matinbook}{Times New Roman not found. Using TeX Gyre Termes}%
+}
 
-% Uncomment to use minimal theme instead:
-% \RequirePackage{tex/themes/minimal/theme}
+% Math font
+\IfFontExistsTF{XITS Math}{%
+    \setmathfont{XITS Math}%
+}{%
+    \IfFontExistsTF{XITSMath-Regular.otf}{%
+        \setmathfont{XITSMath-Regular.otf}%
+    }{%
+        \IfFontExistsTF{Latin Modern Math}{%
+            \setmathfont{Latin Modern Math}%
+        }{%
+            \PackageWarning{matinbook}{No math font found}%
+        }%
+    }%
+}
 
-%----------------------------------------
-% Welcome Message
-%----------------------------------------
-\typeout{========================================}
-\typeout{MatinBook v\matinbookversion\space loaded successfully!}
-\typeout{Theme: Default (Professional)}
-\typeout{Core (4): Engine, Options, Core, Utils}
-\typeout{System (4): RTL, Locale, References, Index}
-\typeout{Features (9): Colors, Fonts, Typography,}
-\typeout{                 Layout, Headings, Math,}
-\typeout{                 Boxes, Theorems, Code}
-\typeout{Content (3): Algorithms, Graphics, Cover}
-\typeout{Total: 20 modules + Theme system}
-\typeout{========================================}
+% Monospace font
+\IfFontExistsTF{DejaVu Sans Mono}{%
+    \setmonofont{DejaVu Sans Mono}[Scale=0.9]%
+}{%
+    \IfFontExistsTF{Courier New}{%
+        \setmonofont{Courier New}[Scale=0.9]%
+    }{%
+        \PackageWarning{matinbook}{No monospace font found}%
+    }%
+}
 
-%----------------------------------------
-% End of Class
-%----------------------------------------
+% Code font (for minted)
+\IfFontExistsTF{JetBrains Mono}{%
+    \newfontfamily\codefont{JetBrains Mono}[Scale=0.9,Ligatures=TeX]%
+}{%
+    \IfFontExistsTF{DejaVu Sans Mono}{%
+        \newfontfamily\codefont{DejaVu Sans Mono}[Scale=0.9,Ligatures=TeX]%
+    }{%
+        \newfontfamily\codefont{Courier New}[Scale=0.9]%
+    }%
+}
+
+%------------------------------------------------------------------------
+% Typography (after xepersian)
+%------------------------------------------------------------------------
+\RequirePackage{mb-typography}
+
+%------------------------------------------------------------------------
+% Locale (after xepersian)
+%------------------------------------------------------------------------
+\RequirePackage{fa-IR}
+
+
+%========================================================================
+% WELCOME MESSAGE
+%========================================================================
+\ClassInfo{matinbook}{========================================}
+\ClassInfo{matinbook}{MatinBook v\matinbookversion}
+\ClassInfo{matinbook}{Professional Persian Technical Book Class}
+\ClassInfo{matinbook}{----------------------------------------}
+\ClassInfo{matinbook}{Font: \matin@fontname}
+\ClassInfo{matinbook}{Mode: \matin@mode}
+\ClassInfo{matinbook}{----------------------------------------}
+\ClassInfo{matinbook}{Total: 18 modules + Theme system}
+\ClassInfo{matinbook}{========================================}
+
 \endinput

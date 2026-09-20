@@ -1,18 +1,44 @@
-%----------------------------------------
-% mb-boxes.sty - TColorBox Styles for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/modules/boxes/mb-boxes}[2025/01/01 v1.0 MatinBook Box System]
+%%
+%% This is file `mb-boxes.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Base Style - Minimal with Colored Title
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-boxes}[2026/01/01 v1.1 MatinBook Box Styles]
+
+%========================================================================
+% MB-BOXES — TCOLORBOX STYLES
+%========================================================================
+%
+% Purpose:
+%   Provide tcolorbox STYLES for use with \tcolorboxenvironment.
+%   This module does NOT define any environments — only styles.
+%
+% Usage (in mb-theorem.sty):
+%   \tcolorboxenvironment{theorem}{matin-theorem}
+%   \tcolorboxenvironment{lemma}{matin-lemma}
+%   ...
+%
+% Color philosophy (Iranian educational publishing standards):
+%   - Blue:   theorems, lemmas, definitions (calming)
+%   - Orange: examples, remarks, exercises (attention)
+%   - Green:  solutions, proofs (success)
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
+% Base Style
+%------------------------------------------------------------------------
 \tcbset{
     matinbox/.style={
         enhanced,
         breakable,
-        colback=white,
+        colback=matincream,
         boxrule=0.8pt,
         arc=3pt,
         outer arc=3pt,
@@ -20,9 +46,9 @@
         right=10pt,
         top=8pt,
         bottom=8pt,
-        toptitle=4pt,
+        toptitle=6pt,
         bottomtitle=4pt,
-        fonttitle=\bfseries\small,
+        fonttitle=\bfseries\normalsize,
         coltitle=white,
         titlerule=0pt,
         before skip=10pt,
@@ -31,104 +57,88 @@
     }
 }
 
-%----------------------------------------
-% Theorem Box
-%----------------------------------------
-\newtcolorbox{theorembox}[1]{
-    matinbox,
-    colframe=matinblue!80,
-    colbacktitle=matinblue,
-    title={\textbf{ } #1}
+
+%------------------------------------------------------------------------
+% Theorem Family Styles (blue)
+%------------------------------------------------------------------------
+\tcbset{
+    matin-theorem/.style={
+        matinbox,
+        colframe=matinblue!80,
+        colbacktitle=matinblue!90
+    },
+    matin-lemma/.style={
+        matinbox,
+        colframe=matinblue!70,
+        colbacktitle=matinblue!80
+    },
+    matin-corollary/.style={
+        matinbox,
+        colframe=matinblue!60,
+        colbacktitle=matinblue!70
+    },
+    matin-proposition/.style={
+        matinbox,
+        colframe=matinblue!75,
+        colbacktitle=matinblue!85
+    }
 }
 
-%----------------------------------------
-% Lemma Box
-%----------------------------------------
-\newtcolorbox{lemmabox}[1]{
-    matinbox,
-    colframe=matinblue!60,
-    colbacktitle=matinblue!70,
-    title={\textbf{ } #1}
+
+%------------------------------------------------------------------------
+% Definition Style (lighter blue)
+%------------------------------------------------------------------------
+\tcbset{
+    matin-definition/.style={
+        matinbox,
+        colframe=matinblue!50,
+        colbacktitle=matinblue!60
+    }
 }
 
-%----------------------------------------
-% Corollary Box
-%----------------------------------------
-\newtcolorbox{corollarybox}[1]{
-    matinbox,
-    colframe=matinblue!40,
-    colbacktitle=matinblue!50,
-    title={\textbf{ } #1}
+
+%------------------------------------------------------------------------
+% Example Family Styles (orange)
+%------------------------------------------------------------------------
+\tcbset{
+    matin-example/.style={
+        matinbox,
+        colframe=matinorange!80,
+        colbacktitle=matinorange!90
+    },
+    matin-remark/.style={
+        matinbox,
+        colframe=matinorange!70,
+        colbacktitle=matinorange!80
+    },
+    matin-exercise/.style={
+        matinbox,
+        colframe=matinorange!60,
+        colbacktitle=matinorange!70
+    }
 }
 
-%----------------------------------------
-% Proposition Box
-%----------------------------------------
-\newtcolorbox{propositionbox}[1]{
-    matinbox,
-    colframe=matindarkblue!80,
-    colbacktitle=matindarkblue,
-    title={\textbf{ } #1}
+
+%------------------------------------------------------------------------
+% Solution / Proof Styles (green)
+%------------------------------------------------------------------------
+\tcbset{
+    matin-solution/.style={
+        matinbox,
+        colframe=matingreen!70,
+        colbacktitle=matingreen!80
+    },
+    matin-proof/.style={
+        matinbox,
+        colframe=matingreen!50,
+        colbacktitle=matingreen!60
+    }
 }
 
-%----------------------------------------
-% Definition Box
-%----------------------------------------
-\newtcolorbox{definitionbox}[1]{
-    matinbox,
-    colframe=matingreen!80,
-    colbacktitle=matingreen,
-    title={\textbf{ } #1}
-}
 
-%----------------------------------------
-% Example Box
-%----------------------------------------
-\newtcolorbox{examplebox}[1]{
-    matinbox,
-    colframe=matinorange!80,
-    colbacktitle=matinorange,
-    title={\textbf{ } #1}
-}
-
-%----------------------------------------
-% Remark Box
-%----------------------------------------
-\newtcolorbox{remarkbox}[1]{
-    matinbox,
-    colframe=matinred!80,
-    colbacktitle=matinred,
-    title={\textbf{ } #1}
-}
-
-%----------------------------------------
-% Exercise Box
-%----------------------------------------
-\newtcolorbox{exercisebox}[1]{
-    matinbox,
-    colframe=matinpurple!80,
-    colbacktitle=matinpurple,
-    title={\textbf{ } #1}
-}
-
-%----------------------------------------
-% Solution Box
-%----------------------------------------
-\newtcolorbox{solutionbox}{
-    matinbox,
-    colframe=matingreen!50,
-    colbacktitle=matingreen!60,
-    title={\textbf{\solutionname}}
-}
-
-%----------------------------------------
-% Proof Environment Box
-%----------------------------------------
-\newtcolorbox{proofbox}{
-    matinbox,
-    colframe=matinblue!30,
-    colbacktitle=matinblue!40,
-    title={\textbf{\proofname}}
-}
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-boxes}{Box styles loaded (3 colors: blue, orange, green)}
 
 \endinput

@@ -1,0 +1,47 @@
+%%
+%% This is file `mb-theme-default.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
+
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-theme-default}[2026/01/01 v1.1 MatinBook Default Theme]
+
+%========================================================================
+% MB-THEME-DEFAULT — DEFAULT THEME LOADER
+%========================================================================
+%
+% Purpose:
+%   Load all components of the default theme.
+%
+% Components:
+%   - mb-theme-colors: loaded by matinbook.cls (before consumers)
+%   - mb-theme-cover:  loaded here
+%
+% Note on colors:
+%   mb-theme-colors is NOT loaded here because it is loaded directly
+%   by matinbook.cls immediately after mb-core, so that all consumer
+%   modules (mb-boxes, mb-code, mb-layout, mb-headings, mb-graphics)
+%   have access to the colors.
+%
+% Note on fonts:
+%   Fonts are configured directly in matinbook.cls AFTER xepersian
+%   is loaded (per xepersian documentation: xepersian must be the
+%   last package, and \settextfont must come after it).
+%
+%========================================================================
+
+%------------------------------------------------------------------------
+% Load theme components
+%------------------------------------------------------------------------
+\RequirePackage{mb-theme-cover}
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-theme-default}{Default theme loaded}
+
+\endinput

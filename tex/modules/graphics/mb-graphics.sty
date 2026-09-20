@@ -1,26 +1,50 @@
-%----------------------------------------
-% mb-graphics.sty - Graphics & Drawings for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/modules/graphics/mb-graphics}[2025/01/01 v1.0 MatinBook Graphics System]
+%%
+%% This is file `mb-graphics.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-graphics}[2026/01/01 v1.1 MatinBook Graphics System]
+
+%========================================================================
+% MB-GRAPHICS — GRAPHICS & DRAWINGS
+%========================================================================
+%
+% Purpose:
+%   Provide TikZ and PGFPlots configuration for MatinBook.
+%
+% Loading:
+%   This module must be loaded AFTER mb-theme-colors (for colors)
+%   and BEFORE xepersian (so tikz/pgfplots load in LTR context).
+%
+% Known limitation:
+%   Due to a LaTeX kernel change (Tagging97, 2024-07-10),
+%   lstlisting/minted cannot be placed inside TikZ nodes.
+%   Workaround: wrap in \hbox{...} or avoid.
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
 % Graphics Packages
-%----------------------------------------
-% graphicx is already loaded in mb-core.sty
-% Here we add advanced graphics configuration
-
-% TikZ - Drawing package
+%------------------------------------------------------------------------
+% NOTE: pgfplots loads tikz automatically, so explicit \RequirePackage{tikz}
+%       is not strictly necessary. We include it for clarity.
 \RequirePackage{tikz}
-
-% PGFPlots - Plotting package
 \RequirePackage{pgfplots}
 \pgfplotsset{compat=1.18}
 
-%----------------------------------------
+% PGF Pie — for pie charts
+\RequirePackage{pgf-pie}
+
+
+%------------------------------------------------------------------------
 % TikZ Libraries
-%----------------------------------------
+%------------------------------------------------------------------------
 \usetikzlibrary{
     shapes,
     arrows,
@@ -42,11 +66,11 @@
     graphs.standard
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % PGFPlots Global Settings
-%----------------------------------------
+%------------------------------------------------------------------------
 \pgfplotsset{
-    % Default style for all plots
     every axis/.style={
         grid=major,
         grid style={dashed, gray!30},
@@ -69,7 +93,6 @@
             font=\footnotesize
         }
     },
-    % Bar chart defaults
     ybar/.style={
         bar width=15pt,
         ymajorgrids=true,
@@ -78,13 +101,13 @@
     }
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Custom TikZ Styles
-%----------------------------------------
+%------------------------------------------------------------------------
 
 % Flowchart blocks
 \tikzset{
-    % Standard block
     block/.style={
         rectangle,
         draw=matindarkblue,
@@ -95,7 +118,6 @@
         minimum height=3em,
         font=\small
     },
-    % Decision diamond
     decision/.style={
         diamond,
         draw=matinorange,
@@ -105,26 +127,16 @@
         inner sep=0pt,
         font=\small
     },
-    % Arrow
     arrow/.style={
         thick,
         ->,
         >=stealth
     },
-    % Node with shadow
     shadowed/.style={
         draw,
         fill=white,
         drop shadow
-    }
-}
-
-%----------------------------------------
-% Graph Drawing Presets
-%----------------------------------------
-
-% Binary tree node style
-\tikzset{
+    },
     treenode/.style={
         circle,
         draw=matinblue,
@@ -134,9 +146,10 @@
     }
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Plot Color Palette
-%----------------------------------------
+%------------------------------------------------------------------------
 \pgfplotscreateplotcyclelist{matinbook}{
     {matinblue, thick},
     {matingreen, thick},
@@ -148,15 +161,14 @@
     {matindarkorange, thick}
 }
 
-% Set default cycle list
 \pgfplotsset{
     cycle list name=matinbook
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Graphics Path
-%----------------------------------------
-% Add common image directories
+%------------------------------------------------------------------------
 \graphicspath{
     {assets/images/}
     {assets/cover/}
@@ -164,9 +176,10 @@
     {figures/}
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Log
-%----------------------------------------
-\typeout{MatinBook: Graphics system loaded (TikZ + PGFPlots)}
+%------------------------------------------------------------------------
+\PackageInfo{mb-graphics}{Graphics system loaded (TikZ + PGFPlots + pgf-pie)}
 
 \endinput

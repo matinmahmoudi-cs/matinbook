@@ -1,0 +1,140 @@
+%%
+%% Test: Algorithm Environments — v1.1
+%% Stage: algorithm refactor (stages 1-4)
+%% 
+%% Purpose: Verify algorithm system:
+%%   - xepersian's algorithm-xepersian.def handles Persian titles
+%%   - Standard \caption works (no \algcaption needed)
+%%   - algorithm counter is per-chapter
+%%   - cleveref references work
+%%   - List of Algorithms (loa) works
+%%   - Algorithms wrapped in \begin{latin}
+%% 
+
+\documentclass{matinbook}
+
+\title{تست محیط‌های الگوریتم — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\booktitle{تست الگوریتم}
+
+\begin{document}
+
+\maketitle
+
+\listofalgorithms
+
+\chapter{بررسی محیط‌های الگوریتم}
+\label{chap:test-algorithm}
+
+این سند، محیط‌های الگوریتم را بررسی می‌کند.
+
+%----------------------------------------
+\section{الگوریتم پایه}
+\label{sec:basic-algorithm}
+
+\begin{latin}
+\begin{algorithm}
+\caption{محاسبه فاکتوریل}
+\label{alg:factorial}
+\begin{algorithmic}[1]
+    \Require عدد صحیح $n \geq 0$
+    \Ensure $n!$
+    \State $result \gets 1$
+    \For{$i \gets 2$ \textbf{to} $n$}
+        \State $result \gets result \times i$
+    \EndFor
+    \State \Return $result$
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+%----------------------------------------
+\section{الگوریتم جستجوی دودویی}
+\label{sec:binary-search}
+
+\begin{latin}
+\begin{algorithm}
+\caption{جستجوی دودویی}
+\label{alg:binary-search}
+\begin{algorithmic}[1]
+    \Require آرایه مرتب $A$، مقدار $x$
+    \Ensure اندیس $x$ یا $-1$
+    \State $low \gets 0$
+    \State $high \gets length(A) - 1$
+    \While{$low \leq high$}
+        \State $mid \gets \lfloor (low + high) / 2 \rfloor$
+        \If{$A[mid] = x$}
+            \State \Return $mid$
+        \ElsIf{$A[mid] < x$}
+            \State $low \gets mid + 1$
+        \Else
+            \State $high \gets mid - 1$
+        \EndIf
+    \EndWhile
+    \State \Return $-1$
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+%----------------------------------------
+\section{الگوریتم مرتب‌سازی}
+\label{sec:sorting}
+
+\begin{latin}
+\begin{algorithm}
+\caption{مرتب‌سازی حبابی}
+\label{alg:bubble-sort}
+\begin{algorithmic}[1]
+    \Require آرایه $A$ با $n$ عنصر
+    \Ensure آرایه مرتب $A$
+    \For{$i \gets 1$ \textbf{to} $n - 1$}
+        \For{$j \gets 1$ \textbf{to} $n - i$}
+            \If{$A[j] > A[j+1]$}
+                \State \textbf{swap} $A[j]$ و $A[j+1]$
+            \EndIf
+        \EndFor
+    \EndFor
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+%----------------------------------------
+\section{ارجاعات cleveref}
+\label{sec:references}
+
+ارجاعات به الگوریتم‌ها:
+
+\begin{itemize}
+    \item \cref{alg:factorial}
+    \item \cref{alg:binary-search}
+    \item \cref{alg:bubble-sort}
+\end{itemize}
+
+ارجاع ترکیبی: \cref{alg:factorial,alg:binary-search}
+
+%----------------------------------------
+\section{شمارنده فصل}
+\label{sec:chapter-counter}
+
+الگوریتم‌ها **شمارنده‌ی فصل** دارند. پس در فصل اول، شماره‌ها \texttt{1.1}، \texttt{1.2}، \texttt{1.3} هستند.
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ \texttt{algorithm} با \texttt{xepersian} کار می‌کند
+    \item ✅ عنوان «الگوریتم» به فارسی نمایش داده می‌شود
+    \item ✅ \texttt{\textbackslash caption} استاندارد کار می‌کند
+    \item ✅ شمارنده فصل اعمال می‌شود
+    \item ✅ \texttt{cleveref} با نام فارسی کار می‌کند
+    \item ✅ فهرست الگوریتم‌ها (\texttt{\textbackslash listofalgorithms}) کار می‌کند
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}

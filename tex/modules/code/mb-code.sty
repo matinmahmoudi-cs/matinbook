@@ -1,49 +1,113 @@
-%----------------------------------------
-% mb-code.sty - Code Listing Configuration for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/modules/code/mb-code}[2025/01/01 v1.0 MatinBook Code System]
+%%
+%% This is file `mb-code.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-code}[2026/01/01 v1.1 MatinBook Code System]
+
+%========================================================================
+% MB-CODE — CODE LISTING CONFIGURATION (minted)
+%========================================================================
+%
+% Purpose:
+%   Configure minted for code listings in Persian technical books.
+%
+% Compatibility:
+%   This configuration targets TeX Live 2023 (Debian) which ships
+%   minted v2.6+ and fvextra v1.x.
+%
+%   - bgcolorpadding is NOT available in fvextra v1.x (only v1.8+).
+%     In v1.x, bgcolor already includes internal padding.
+%   - python3 option is NOT used (it was a v2 option that is
+%     obsolete in v3 and ignored in v2).
+%
+% Features:
+%   - escapeinside=|| for Persian comments (via \pc command)
+%   - frame=lines (not single) for clean line breaks
+%   - fontsize=\footnotesize (smaller than body text)
+%   - style=friendly for syntax highlighting
+%
+% Persian code:
+%   Use \pc{متن فارسی} inside |...| to embed Persian text:
+%     |\pc{این یک توضیح است}|
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
 % Global Minted Settings
-%----------------------------------------
+%------------------------------------------------------------------------
 \setminted{
-    fontsize=\small,
+    fontsize=\footnotesize,
     linenos=true,
     numbersep=8pt,
-    frame=single,
+    frame=lines,
     framesep=10pt,
     rulecolor=\color{matinbordergray},
-    bgcolor=matinlightgray!20,
+    bgcolor=matinlightgray!30,
     breaklines=true,
-    breakanywhere=true,
+    breakanywhere=false,
     autogobble=true,
     tabsize=4,
-    python3=true
+    escapeinside=||,
+    baselinestretch=0.95,
+    style=friendly
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
+% Persian Code Font (defined AFTER xepersian is loaded)
+%------------------------------------------------------------------------
+% DejaVu Sans Mono is available on all Linux systems and supports
+% Persian characters with proper Arabic script shaping.
+%
+% NOTE: \defpersianfont is defined by xepersian. Since mb-code is
+% loaded BEFORE xepersian in matinbook.cls, we use \AtBeginDocument
+% to defer the definition until xepersian is available.
+%
+\AtBeginDocument{%
+    \defpersianfont\persiancodingfont{DejaVu Sans Mono}[Script=Arabic,Scale=0.9]%
+    \newcommand{\pc}[1]{\rl{\persiancodingfont #1}}%
+}
+
+
+%------------------------------------------------------------------------
 % Inline Code
-%----------------------------------------
+%------------------------------------------------------------------------
 \newcommand{\inlcode}[1]{\lr{\mintinline{text}{#1}}}
 
-%----------------------------------------
-% Code Caption with Numbering
-%----------------------------------------
-\newcounter{codecounter}[chapter]
-\renewcommand{\thecodecounter}{\thechapter.\arabic{codecounter}}
+
+%------------------------------------------------------------------------
+% Code Listing Counter
+%------------------------------------------------------------------------
+\newcounter{listingcounter}[chapter]
+\renewcommand{\thelistingcounter}{\thechapter.\arabic{listingcounter}}
 
 \newcommand{\codecaption}[1]{%
-    \refstepcounter{codecounter}%
-    \vspace{5pt}%
-    \begin{center}%
-        \small\textbf{\codename\space\thecodecounter:} #1%
-    \end{center}%
-    \vspace{10pt}%
+    \refstepcounter{listingcounter}%
+    \par\vspace{5pt}%
+    \noindent\textbf{\codename\space\thelistingcounter:} #1%
+    \par\vspace{5pt}%
 }
 
-% For referencing codes
 \newcommand{\coderef}[1]{\codename\space\ref{#1}}
+
+
+%------------------------------------------------------------------------
+% Cleveref
+%------------------------------------------------------------------------
+\crefname{listingcounter}{\codename}{\codename}
+\Crefname{listingcounter}{\codename}{\codename}
+
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-code}{Code system loaded (minted v2, Persian support)}
 
 \endinput

@@ -1,49 +1,73 @@
-%----------------------------------------
-% mb-core.sty - Core Package Loader for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/core/mb-core}[2025/01/01 v1.0 MatinBook Core Packages]
+%%
+%% This is file `mb-core.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Essential Packages (load order matters!)
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-core}[2026/01/01 v1.1 MatinBook Core Packages]
 
-% Graphics and Colors (load first, before bidi)
+%========================================================================
+% MB-CORE — CORE PACKAGE LOADER
+%========================================================================
+
+%------------------------------------------------------------------------
+% 1. Graphics and Colors
+%------------------------------------------------------------------------
 \RequirePackage{graphicx}
-\RequirePackage{pgf-pie}
-\RequirePackage{xcolor}
+\RequirePackage[table]{xcolor}
 
-% Font system
+%------------------------------------------------------------------------
+% 2. Font System
+%------------------------------------------------------------------------
 \RequirePackage{fontspec}
 
-% Typography (before xepersian)
+%------------------------------------------------------------------------
+% 3. Typography
+%------------------------------------------------------------------------
 \RequirePackage{microtype}
 
-% Mathematics (mathtools before unicode-math)
-\RequirePackage{mathtools}
+%------------------------------------------------------------------------
+% 4. Mathematics
+%------------------------------------------------------------------------
 \RequirePackage{amsmath}
-\RequirePackage{amssymb}
+\RequirePackage{mathtools}
 \RequirePackage{amsthm}
 \RequirePackage{unicode-math}
 
-% Algorithms (before xepersian)
-\RequirePackage{algorithm}
+%------------------------------------------------------------------------
+% 5. Algorithms
+%------------------------------------------------------------------------
+\RequirePackage[chapter]{algorithm}
 \RequirePackage{algpseudocode}
 
-% Boxes - tcolorbox (before xepersian)
+%------------------------------------------------------------------------
+% 6. Boxes
+%------------------------------------------------------------------------
 \RequirePackage[most]{tcolorbox}
+\tcbuselibrary{minted}
 
-% Code - minted (before xepersian)
+%------------------------------------------------------------------------
+% 7. Code
+%------------------------------------------------------------------------
 \RequirePackage{minted}
 
-% Bibliography (before xepersian)
+%------------------------------------------------------------------------
+% 8. Bibliography
+%------------------------------------------------------------------------
 \RequirePackage[backend=biber,style=numeric,sorting=none]{biblatex}
 
-% Index (before xepersian)
+%------------------------------------------------------------------------
+% 9. Index
+%------------------------------------------------------------------------
 \RequirePackage{imakeidx}
 
-% Layout (before xepersian)
+%------------------------------------------------------------------------
+% 10. Layout
+%------------------------------------------------------------------------
 \RequirePackage{geometry}
 \RequirePackage{fancyhdr}
 \RequirePackage{titlesec}
@@ -52,30 +76,36 @@
 \RequirePackage{caption}
 \RequirePackage[bottom]{footmisc}
 
-% Professional Tables
+%------------------------------------------------------------------------
+% 11. Tables
+%------------------------------------------------------------------------
 \RequirePackage{booktabs}
 \RequirePackage{array}
 \RequirePackage{multirow}
 
-% Enhanced column types for Persian tables
-\newcolumntype{L}{>{\raggedright\arraybackslash}p}
-\newcolumntype{R}{>{\raggedleft\arraybackslash}p}
-\newcolumntype{C}{>{\centering\arraybackslash}p}
+% TODO: move to mb-typography
 
-% Draft watermark (conditional)
+%------------------------------------------------------------------------
+% 12. Draft Watermark (conditional)
+%------------------------------------------------------------------------
+% TODO: move to mb-layout
 \if@matin@draft
 \RequirePackage{draftwatermark}
 \fi
 
-%----------------------------------------
-% Hyperref & Cleveref (before xepersian)
-%----------------------------------------
+%------------------------------------------------------------------------
+% 13. Hyperref (before xepersian)
+%------------------------------------------------------------------------
 \RequirePackage[bookmarks]{hyperref}
+
+%------------------------------------------------------------------------
+% 14. Cleveref (must be after hyperref, needed by mb-theorem)
+%------------------------------------------------------------------------
 \RequirePackage{cleveref}
 
-%----------------------------------------
+%------------------------------------------------------------------------
 % Log
-%----------------------------------------
-\typeout{MatinBook: Core packages loaded successfully (v1.0)}
+%------------------------------------------------------------------------
+\PackageInfo{mb-core}{Core packages loaded successfully}
 
 \endinput

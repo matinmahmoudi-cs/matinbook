@@ -1,36 +1,65 @@
-%----------------------------------------
-% mb-index.sty - Index System for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/modules/index/mb-index}[2025/01/01 v1.0 MatinBook Index System]
+%%
+%% This is file `mb-index.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Index Setup
-%----------------------------------------
-% imakeidx is already loaded in mb-core.sty
-% Here we configure index settings
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-index}[2026/01/01 v1.1 MatinBook Index System]
 
-% Create main index (appears in table of contents)
-\makeindex[intoc]
+%========================================================================
+% MB-INDEX — INDEX SYSTEM (xindy + Persian)
+%========================================================================
+%
+% Purpose:
+%   Configure index generation for Persian technical books.
+%
+% Critical:
+%   makeindex CANNOT sort Persian correctly. It fails to order
+%   the Persian-specific letters پ, چ, ژ, گ, ک correctly.
+%   We MUST use xindy with the persian-variant2 language module.
+%
+% Requirements:
+%   - xindy and texindy must be installed
+%   - xindy-persian (variant2) must be available
+%   - Compilation requires -shell-escape
+%
+% Compilation:
+%   xelatex -shell-escape document.tex
+%   (xindy is called automatically by imakeidx via shell-escape)
+%
+%========================================================================
 
-%----------------------------------------
-% Index Formatting
-%----------------------------------------
-% These settings improve the appearance of Persian indexes
-\renewcommand{\subitem}{~~~}
-\renewcommand{\subsubitem}{~~~~~~}
 
-%----------------------------------------
-% Multiple Index Support (Optional)
-%----------------------------------------
-% Uncomment to enable multiple specialized indexes
-% \makeindex[name=subjects, title=نمایه موضوعی]
-% \makeindex[name=authors, title=نمایه نویسندگان]
+%------------------------------------------------------------------------
+% Index Setup (xindy + Persian variant2)
+%------------------------------------------------------------------------
+\makeindex[
+    intoc,
+    program=xindy,
+    options={-L persian-variant2 -C utf8 -M texindy -M page-ranges}
+]
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
+% Index Formatting (xepersian customization)
+%------------------------------------------------------------------------
+% xepersian provides these commands for customizing index appearance.
+% Uncomment and adjust to change the look.
+%
+% \indexFormat{...}         % format of the index title
+% \indexEntryFormat{...}    % format of each index entry
+% \indexEntryPageTxt{...}   % text that goes before page numbers
+% \indexEntryPageFormat{...}% format of page numbers
+% \indexEntrySeparator{...} % separator between entries
+
+
+%------------------------------------------------------------------------
 % Index Entry Helpers
-%----------------------------------------
+%------------------------------------------------------------------------
 
 % Bold index entry
 \newcommand{\idxbold}[1]{\index{#1|textbf}}
@@ -38,10 +67,10 @@
 % Italic index entry
 \newcommand{\idxitalic}[1]{\index{#1|textit}}
 
-% See reference
+% See reference (xindy-compatible)
 \newcommand{\idxsee}[2]{\index{#1|see{#2}}}
 
-% See also reference
+% See also reference (xindy-compatible)
 \newcommand{\idxseealso}[2]{\index{#1|seealso{#2}}}
 
 % Primary entry with subentry
@@ -50,18 +79,18 @@
 % Primary entry with sub-subentry
 \newcommand{\idxsubsub}[3]{\index{#1!#2!#3}}
 
-%----------------------------------------
-% Process All Indexes Helper
-%----------------------------------------
-% Print all defined indexes in order
+
+%------------------------------------------------------------------------
+% Process Index
+%------------------------------------------------------------------------
 \newcommand{\printallindexes}{%
     \printindex
-    % Add more \printindex[name=xxx] if using multiple indexes
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Log
-%----------------------------------------
-\typeout{MatinBook: Index system loaded}
+%------------------------------------------------------------------------
+\PackageInfo{mb-index}{Index system loaded (xindy + persian-variant2)}
 
 \endinput

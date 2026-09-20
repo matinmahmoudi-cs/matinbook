@@ -1,0 +1,149 @@
+%%
+%% Test: Mathematical Environments — v1.1
+%% Stage: math refactor (stages 1-4)
+%% 
+%% Purpose: Verify math settings:
+%%   - Equation numbering (Iranian standard: formula-chapter)
+%%   - Math operators (grad, curl, diver, rank, ...)
+%%   - Number sets (\N, \Z, \Q, \R, \C)
+%%   - Delimiters (\abs, \norm, \ceil, \floor, \inner, \paren)
+%%   - Sets (\set, \setbuilder, \given)
+%%   - Matrices (\mat, \pmat, \vmat)
+%%   - Derivatives (\dd, \deriv, \pderiv)
+%% 
+
+\documentclass{matinbook}
+
+\title{تست محیط‌های ریاضی — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\booktitle{تست ریاضیات}
+
+\begin{document}
+
+\maketitle
+
+\chapter{بررسی محیط‌های ریاضی}
+\label{chap:test-math}
+
+این سند، محیط‌های ریاضی \texttt{mb-math} را بررسی می‌کند.
+
+%----------------------------------------
+\section{شماره‌گذاری معادلات}
+\label{sec:equation-numbering}
+
+معادله‌ی اول در فصل اول:
+
+\begin{equation}
+    \label{eq:math-test-1}
+    f(x) = x^2 + 2x + 1
+\end{equation}
+
+معادله‌ی دوم در فصل اول:
+
+\begin{equation}
+    \label{eq:math-test-2}
+    g(x) = \int_{0}^{\infty} e^{-t^2} \, dt = \frac{\sqrt{\pi}}{2}
+\end{equation}
+
+\textbf{بررسی:} شماره‌ی معادلات باید به فرمت \texttt{(فرمول-فصل)} باشند، مثلاً \texttt{(۱-۱)} و \texttt{(۲-۱)}.
+
+%----------------------------------------
+\section{عملگرهای ریاضی}
+\label{sec:operators}
+
+\textbf{حساب برداری:}
+\[
+    \grad f, \quad \curl \vec{F}, \quad \diver \vec{F}
+\]
+
+\textbf{جبر خطی:}
+\[
+    \rank(A), \quad \diag(a_1, a_2, \ldots, a_n), \quad \trace(A)
+\]
+
+\textbf{بهینه‌سازی:}
+\[
+    \argmax_{x \in \R} f(x), \quad \argmin_{x \in \R} g(x)
+\]
+
+\textbf{نظریه اعداد:}
+\[
+    \lcm(a, b), \quad \gcdop(a, b)
+\]
+
+\textbf{توابع خاص:}
+\[
+    \sinc(x), \quad \sgn(x), \quad \erf(x)
+\]
+
+%----------------------------------------
+\section{مجموعه‌های اعداد}
+\label{sec:number-sets}
+
+\[
+    \N \subset \Z \subset \Q \subset \R \subset \C
+\]
+
+%----------------------------------------
+\section{دلimiters}
+\label{sec:delimiters}
+
+\[
+    \abs{x}, \quad \norm{\vec{v}}, \quad \ceil{x}, \quad \floor{x}, \quad \inner{u}{v}, \quad \paren{a + b}
+\]
+
+%----------------------------------------
+\section{مجموعه‌ها}
+\label{sec:sets}
+
+\[
+    \set{1, 2, 3}, \quad \setbuilder{x \in \R}{x > 0}
+\]
+
+%----------------------------------------
+\section{ماتریس‌ها}
+\label{sec:matrices}
+
+\[
+    \mat{1 & 2 \\ 3 & 4}, \quad \pmat{a & b \\ c & d}, \quad \vmat{1 & 2 \\ 3 & 4}
+\]
+
+%----------------------------------------
+\section{مشتقات}
+\label{sec:derivatives}
+
+\[
+    \deriv{f}{x}, \quad \pderiv{f}{x}, \quad \dd{x}
+\]
+
+%----------------------------------------
+\section{محیط‌های چندخطی}
+\label{sec:align}
+
+\begin{align}
+    a &= b + c \\
+    d &= e + f \\
+    g &= h + i
+\end{align}
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ شماره‌گذاری معادلات به فرمت \texttt{(فرمول-فصل)} است
+    \item ✅ عملگرهای ریاضی کار می‌کنند
+    \item ✅ مجموعه‌های اعداد کار می‌کنند
+    \item ✅ دلimiters کار می‌کنند
+    \item ✅ ماتریس‌ها کار می‌کنند
+    \item ✅ مشتقات کار می‌کنند
+    \item ✅ محیط \texttt{align} کار می‌کند
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}

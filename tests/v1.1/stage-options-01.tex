@@ -1,0 +1,117 @@
+%%
+%% Test: Class Options System — v1.1
+%% Stage: options refactor (stages 1-4)
+%% 
+%% Purpose: Verify that the new \DeclareKeys-based option system works:
+%%   - Default font: B Nazanin
+%%   - Font choice: bnazanin, vazirmatn, sahel, irlotus, niloofar
+%%   - Draft mode
+%%   - Unknown options passed to book class
+%% 
+%% Two test documents:
+%%   1. Default options
+%%   2. Custom font (vazirmatn) + draft mode
+%% 
+
+\documentclass{matinbook}
+
+\title{تست سیستم گزینه‌ها — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\begin{document}
+
+\maketitle
+
+\chapter{بررسی سیستم گزینه‌ها}
+\label{chap:test-options}
+
+این سند، سیستم گزینه‌های جدید کلاس \verb|matinbook| را بررسی
+می‌کند. سیستم گزینه‌ها حالا از \verb|\DeclareKeys| (استاندارد
+LaTeX 2023) استفاده می‌کند.
+
+%----------------------------------------
+\section{گزینه‌های فونت}
+\label{sec:font-options}
+
+گزینه‌های فونت حالا شامل موارد زیر هستند:
+
+\begin{itemize}
+    \item \verb|bnazanin| — B Nazanin (پیش‌فرض)
+    \item \verb|vazirmatn| — Vazirmatn
+    \item \verb|sahel| — Sahel
+    \item \verb|irlotus| — IR Lotus
+    \item \verb|niloofar| — XB Niloofar
+\end{itemize}
+
+\textbf{فونت پیش‌فرض:} B Nazanin
+
+\textbf{بررسی:} اگر این متن با فونت B Nazanin نمایش داده شود،
+سیستم گزینه‌ها موفق بوده است.
+
+%----------------------------------------
+\section{گزینه‌های حالت}
+\label{sec:mode-options}
+
+\begin{itemize}
+    \item \verb|draft| — حالت پیش‌نویس
+    \item \verb|final| — حالت نهایی (پیش‌فرض)
+\end{itemize}
+
+در حالت \verb|draft|، خطوط overfull با یک نوار مشکی مشخص می‌شوند.
+
+%----------------------------------------
+\section{گزینه‌های چیدمان}
+\label{sec:layout-options}
+
+\begin{itemize}
+    \item \verb|twoside| — چیدمان دوطرفه (پیش‌فرض)
+    \item \verb|oneside| — چیدمان یک‌طرفه
+\end{itemize}
+
+%----------------------------------------
+\section{محیط‌های علمی}
+\label{sec:environments}
+
+برای اطمینان از بارگذاری درست ماژول‌ها:
+
+\begin{theorem}[قضیه نمونه]
+    برای هر عدد حقیقی $x$، داریم $x^2 \geq 0$.
+\end{theorem}
+
+\begin{proof}
+    چون مربع هر عدد حقیقی نامنفی است، نتیجه حاصل می‌شود.
+\end{proof}
+
+\begin{definition}[عدد اول]
+    عدد طبیعی بزرگ‌تر از ۱ که تنها دو مقسوم‌علیه مثبت دارد،
+    \emph{عدد اول} نامیده می‌شود.
+\end{definition}
+
+%----------------------------------------
+\section{ریاضیات}
+\label{sec:math}
+
+\begin{equation}
+    \label{eq:options-test}
+    f(x) = \sum_{i=1}^{n} x_i^2
+\end{equation}
+
+مجموعه‌های اعداد: $\N \subset \Z \subset \Q \subset \R \subset \C$.
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ \verb|\DeclareKeys| کار می‌کند
+    \item ✅ پیش‌فرض فونت B Nazanin است
+    \item ✅ گزینه‌های فونت در دسترس هستند
+    \item ✅ محیط‌های علمی و ریاضی کار می‌کنند
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}

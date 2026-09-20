@@ -1,53 +1,88 @@
-%----------------------------------------
-% mb-math.sty - Mathematical Environments for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/modules/math/mb-math}[2025/01/01 v1.0 MatinBook Math System]
+%%
+%% This is file `mb-math.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Equation Numbering
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-math}[2026/01/01 v1.1 MatinBook Math System]
+
+%========================================================================
+% MB-MATH — MATHEMATICAL ENVIRONMENTS AND SYMBOLS
+%========================================================================
+%
+% Purpose:
+%   Define mathematical operators, number sets, delimiters, and
+%   equation numbering for MatinBook.
+%
+% Notes:
+%   - All \DeclareMathOperator commands are wrapped in \AtBeginDocument
+%     because unicode-math overrides them at \begin{document}.
+%   - \N, \Z, \Q, \R, \C use \providecommand to avoid conflicts with
+%     unicode-math's \mathbb mechanism.
+%   - Equation numbering follows Iranian standard: (formula-chapter).
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
+% Equation Numbering (Iranian standard: formula-chapter)
+%------------------------------------------------------------------------
+% \numberwithin resets equation counter at each chapter.
+% \theequation is redefined to produce "formula-chapter" format.
+% Example: (5-1) means formula 5 of chapter 1.
 \numberwithin{equation}{chapter}
+\renewcommand{\theequation}{\arabic{equation}-\thechapter}
 
-%----------------------------------------
-% Math Operators
-%----------------------------------------
-% Vector Calculus
-\DeclareMathOperator{\grad}{grad}
-\DeclareMathOperator{\curl}{curl}
-\DeclareMathOperator{\diver}{div}
 
-% Linear Algebra
-\DeclareMathOperator{\rank}{rank}
-\DeclareMathOperator{\diag}{diag}
-\DeclareMathOperator{\trace}{trace}
+%------------------------------------------------------------------------
+% Math Operators (wrapped in \AtBeginDocument)
+%------------------------------------------------------------------------
+% unicode-math reassigns math operators at \begin{document}.
+% We must define ours at the same time to avoid being overridden.
+%
+\AtBeginDocument{%
+    % Vector Calculus
+    \DeclareMathOperator{\grad}{grad}%
+    \DeclareMathOperator{\curl}{curl}%
+    \DeclareMathOperator{\diver}{div}%
+    %
+    % Linear Algebra
+    \DeclareMathOperator{\rank}{rank}%
+    \DeclareMathOperator{\diag}{diag}%
+    \DeclareMathOperator{\trace}{trace}%
+    %
+    % Optimization
+    \DeclareMathOperator{\argmax}{argmax}%
+    \DeclareMathOperator{\argmin}{argmin}%
+    %
+    % Number Theory
+    \DeclareMathOperator{\lcm}{lcm}%
+    \DeclareMathOperator{\gcdop}{gcd}%
+    %
+    % Special Functions
+    \DeclareMathOperator{\sinc}{sinc}%
+    \DeclareMathOperator{\sgn}{sgn}%
+    \DeclareMathOperator{\erf}{erf}%
+}
 
-% Optimization
-\DeclareMathOperator{\argmax}{argmax}
-\DeclareMathOperator{\argmin}{argmin}
 
-% Number Theory
-\DeclareMathOperator{\lcm}{lcm}
-\DeclareMathOperator{\gcdop}{gcd}
+%------------------------------------------------------------------------
+% Number Sets (using \providecommand to avoid conflicts)
+%------------------------------------------------------------------------
+\providecommand{\N}{\mathbb{N}}
+\providecommand{\Z}{\mathbb{Z}}
+\providecommand{\Q}{\mathbb{Q}}
+\providecommand{\R}{\mathbb{R}}
+\providecommand{\C}{\mathbb{C}}
 
-% Special Functions
-\DeclareMathOperator{\sinc}{sinc}
-\DeclareMathOperator{\sgn}{sgn}
-\DeclareMathOperator{\erf}{erf}
 
-%----------------------------------------
-% Number Sets
-%----------------------------------------
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
-
-%----------------------------------------
-% Delimiters
-%----------------------------------------
+%------------------------------------------------------------------------
+% Delimiters (mathtools)
+%------------------------------------------------------------------------
 \DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
 \DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
 \DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
@@ -55,44 +90,42 @@
 \DeclarePairedDelimiter{\inner}{\langle}{\rangle}
 \DeclarePairedDelimiter{\paren}{(}{)}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Sets
-%----------------------------------------
-% Simple set: \set{1, 2, 3}
+%------------------------------------------------------------------------
 \newcommand{\set}[1]{\{#1\}}
-
-% Set builder: \setbuilder{x \in \R}{x > 0}
 \newcommand{\setbuilder}[2]{\{\, #1 \mid #2 \,\}}
-
-% Manual \given for \{...\given ...\}
 \newcommand{\given}{\;\middle|\;}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Matrix Commands
-%----------------------------------------
+%------------------------------------------------------------------------
 \newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
 \newcommand{\pmat}[1]{\begin{pmatrix}#1\end{pmatrix}}
 \newcommand{\vmat}[1]{\begin{vmatrix}#1\end{vmatrix}}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Derivatives and Integrals
-%----------------------------------------
+%------------------------------------------------------------------------
 \newcommand{\dd}[1]{\mathrm{d}#1}
-\newcommand{\D}{\mathrm{d}}
+\providecommand{\D}{\mathrm{d}}
 
 \newcommand{\deriv}[2]{\frac{\dd{#1}}{\dd{#2}}}
 \newcommand{\pderiv}[2]{\frac{\partial #1}{\partial #2}}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Equation Array Settings
-%----------------------------------------
+%------------------------------------------------------------------------
 \allowdisplaybreaks
 
-%----------------------------------------
-% Math Spacing
-%----------------------------------------
-\thickmuskip=5mu plus 5mu
-\medmuskip=4mu plus 2mu minus 4mu
-\thinmuskip=3mu
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-math}{Math system loaded}
 
 \endinput

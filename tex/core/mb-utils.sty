@@ -1,34 +1,52 @@
-%----------------------------------------
-% mb-utils.sty - Utility Macros for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/core/mb-utils}[2025/01/01 v1.0 MatinBook Utilities]
+%%
+%% This is file `mb-utils.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Persian/Latin Title-Author Commands
-%----------------------------------------
-\def\latintitle#1{\def\@latintitle{#1}}
-\def\latinauthor#1{\def\@latinauthor{#1}}
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-utils}[2026/01/01 v1.1 MatinBook Utilities]
 
-%----------------------------------------
-% Helper: Check if command exists
-%----------------------------------------
-\newcommand{\matin@ifcmd}[1]{%
+%========================================================================
+% MB-UTILS — UTILITY MACROS
+%========================================================================
+
+\makeatletter
+
+%------------------------------------------------------------------------
+% Latin Title / Author
+%------------------------------------------------------------------------
+\providecommand{\@latintitle}{}
+\providecommand{\@latinauthor}{}
+
+\newcommand{\latintitle}[1]{\gdef\@latintitle{#1}}
+\newcommand{\latinauthor}[1]{\gdef\@latinauthor{#1}}
+
+
+%------------------------------------------------------------------------
+% Helper: Safe Command Check
+%------------------------------------------------------------------------
+% Returns #2 if command #1 is defined, #3 otherwise.
+% Usage: \matin@ifcmd{somecommand}{true code}{false code}
+%------------------------------------------------------------------------
+\newcommand{\matin@ifcmd}[3]{%
     \ifcsname #1\endcsname
-    \expandafter\@firstoftwo
+        \expandafter\@firstoftwo
     \else
-    \expandafter\@secondoftwo
+        \expandafter\@secondoftwo
     \fi
+    {#2}{#3}%
 }
 
-%----------------------------------------
-% Version Info
-%----------------------------------------
-\newcommand{\matinbookversion}{1.0}
-\newcommand{\matinbookdate}{2025/01/01}
+\makeatother
 
-% Print version info to log
-\typeout{MatinBook Utilities loaded (v\matinbookversion)}
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-utils}{MatinBook Utilities loaded}
 
 \endinput

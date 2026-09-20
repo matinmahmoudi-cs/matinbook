@@ -1,105 +1,109 @@
-%----------------------------------------
-% mb-layout.sty - Layout Configuration for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/modules/layout/mb-layout}[2025/01/01 v1.0 MatinBook Layout System]
+%%
+%% This is file `mb-layout.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
-% Page Geometry
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{mb-layout}[2026/01/01 v1.1 MatinBook Layout System]
+
+%========================================================================
+% MB-LAYOUT — PAGE LAYOUT CONFIGURATION
+%========================================================================
+%
+% Standard: O'Reilly Media (Vaziri adaptation)
+%   - Page size: 16.5 × 24 cm
+%   - Margins: top=2.0cm, bottom=2.5cm, inner/outer=2.0cm
+%   - Binding offset: 0.5cm
+%
+% Header/Footer:
+%   - Even pages (left): book title
+%   - Odd pages (right): chapter name
+%   - Page number: in footer
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
+% Page Geometry (Vaziri format, O'Reilly standard)
+%------------------------------------------------------------------------
 \geometry{
-    a4paper,
-    left=2.5cm,        % Outer margin
-    right=2.5cm,       % Inner margin
-    top=2.5cm,         % Top margin
-    bottom=2.5cm,      % Bottom margin
-    headheight=18pt,   % Header height (increased to avoid warning)
-    headsep=10pt,      % Header separation from text
-    footskip=30pt,     % Footer separation from text
-    bindingoffset=1cm, % Extra space for binding
+    paperwidth=16.5cm,
+    paperheight=24cm,
+    top=2.0cm,
+    bottom=2.5cm,
+    inner=2.0cm,
+    outer=2.0cm,
+    headheight=15pt,
+    headsep=8pt,
+    footskip=25pt,
+    bindingoffset=0.5cm,
     marginparwidth=0pt,
     marginparsep=0pt
 }
 
-%----------------------------------------
-% Header and Footer Setup
-%----------------------------------------
-\pagestyle{fancy}
 
-% Clear default styles
+%------------------------------------------------------------------------
+% Header and Footer Setup
+%------------------------------------------------------------------------
+\pagestyle{fancy}
 \fancyhf{}
 
-% For twoside documents
-\fancyhead[RO,LE]{%
-    \thepage%
-}
-
-\fancyhead[RE]{%
+% Even pages (left side in twoside): book title
+\fancyhead[LE]{%
     \ifnum\c@chapter>0
-    \small\textbf{\rightmark}
+        \small\textbf{\matin@booktitle}%
     \fi
 }
 
-\fancyhead[LO]{%
+% Odd pages (right side in twoside): chapter name
+\fancyhead[RO]{%
     \ifnum\c@chapter>0
-    \small\textbf{\leftmark}
+        \small\textbf{\leftmark}%
     \fi
 }
 
-% Footer settings
-\fancyfoot[RO,LE]{%
+% Page number in footer (both sides)
+\fancyfoot[LE,RO]{%
     \ifnum\c@chapter>0
-    \rule[2pt]{\textwidth}{0.4pt}\\
-    \vspace{3pt}
-    \small\lr{\textbf{MatinBook}}
+        \small\textbf{\thepage}%
     \fi
 }
 
-\fancyfoot[RE,LO]{%
-    \ifnum\c@chapter>0
-    \rule[2pt]{\textwidth}{0.4pt}\\
-    \vspace{3pt}
-    \small\textbf{\thepage}
-    \fi
-}
-
-% Header and footer line widths
+% Header/footer rules
 \renewcommand{\headrulewidth}{0.4pt}
-\renewcommand{\footrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
 
-% Plain page style (for chapter pages)
+% Plain page style (for chapter opening pages)
 \fancypagestyle{plain}{%
     \fancyhf{}
-    \fancyfoot[RO,LE]{%
-        \rule[2pt]{\textwidth}{0.4pt}\\
-        \vspace{3pt}
-        \small\lr{\textbf{MatinBook}}
-    }
-    \fancyfoot[RE,LO]{%
-        \rule[2pt]{\textwidth}{0.4pt}\\
-        \vspace{3pt}
-        \small\textbf{\thepage}
+    \fancyfoot[LE,RO]{%
+        \small\textbf{\thepage}%
     }
     \renewcommand{\headrulewidth}{0pt}
-    \renewcommand{\footrulewidth}{0.4pt}
+    \renewcommand{\footrulewidth}{0pt}
 }
 
-%----------------------------------------
-% Line Spacing
-%----------------------------------------
-\setstretch{1.15}
 
-%----------------------------------------
+%------------------------------------------------------------------------
+% Line Spacing
+%------------------------------------------------------------------------
+\setstretch{1.1}
+
+
+%------------------------------------------------------------------------
 % Paragraph Settings
-%----------------------------------------
-\setlength{\parindent}{1em}
+%------------------------------------------------------------------------
+\setlength{\parindent}{0.5cm}
 \setlength{\parskip}{0pt plus 1pt}
 
 
-%----------------------------------------
+%------------------------------------------------------------------------
 % Caption Settings
-%----------------------------------------
+%------------------------------------------------------------------------
 \captionsetup{
     font=small,
     labelfont=bf,
@@ -107,9 +111,10 @@
     justification=centering
 }
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Footnote Settings
-%----------------------------------------
+%------------------------------------------------------------------------
 \setlength{\footnotesep}{8pt}
 \renewcommand{\footnoterule}{%
     \kern-3pt
@@ -118,13 +123,20 @@
 }
 
 
-%----------------------------------------
-% Watermark for draft mode
-%----------------------------------------
+%------------------------------------------------------------------------
+% Draft Watermark
+%------------------------------------------------------------------------
 \if@matin@draft
-\SetWatermarkText{\lr{DRAFT}}
-\SetWatermarkScale{1.5}
-\SetWatermarkColor[gray]{0.9}
+    \RequirePackage{draftwatermark}
+    \SetWatermarkText{\lr{DRAFT}}
+    \SetWatermarkScale{1.5}
+    \SetWatermarkColor[gray]{0.9}
 \fi
+
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-layout}{Layout loaded (Vaziri format, O'Reilly standard)}
 
 \endinput

@@ -1,13 +1,32 @@
-%----------------------------------------
-% en-US.sty - English (US) Locale for MatinBook
-% Version: 1.0
-%----------------------------------------
-\NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{tex/locales/en-US}[2025/01/01 v1.0 MatinBook English Locale]
+%%
+%% This is file `en-US.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 MatinBook Project
+%% 
+%% Repository: https://github.com/matinbook/matinbook
+%% 
 
-%----------------------------------------
+\NeedsTeXFormat{LaTeX2e}[2020/10/01]
+\ProvidesPackage{en-US}[2026/01/01 v1.1 MatinBook English Locale]
+
+%========================================================================
+% EN-US — ENGLISH (US) LOCALE
+%========================================================================
+%
+% Purpose:
+%   Localize LaTeX names and cleveref references to English.
+%
+% Note:
+%   This file mirrors fa-IR.sty for symmetry.
+%   It is loaded AFTER xepersian in matinbook.cls.
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
 % Document Structure Names
-%----------------------------------------
+%------------------------------------------------------------------------
 \renewcommand{\contentsname}{Contents}
 \renewcommand{\listfigurename}{List of Figures}
 \renewcommand{\listtablename}{List of Tables}
@@ -15,32 +34,45 @@
 \renewcommand{\indexname}{Index}
 \renewcommand{\chaptername}{Chapter}
 \renewcommand{\appendixname}{Appendix}
-\renewcommand{\abstractname}{Abstract}
+\renewcommand{\proofname}{Proof}
+\providecommand{\abstractname}{Abstract}
+\renewcommand{\partname}{Part}
+\providecommand{\refname}{References}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Float Names
-%----------------------------------------
+%------------------------------------------------------------------------
 \renewcommand{\figurename}{Figure}
 \renewcommand{\tablename}{Table}
 
-%----------------------------------------
-% Algorithm Names
-%----------------------------------------
-\floatname{algorithm}{Algorithm}
-\renewcommand{\listalgorithmname}{List of Algorithms}
 
-%----------------------------------------
+%------------------------------------------------------------------------
+% Algorithm Names
+%------------------------------------------------------------------------
+% NOTE: xepersian's algorithm-xepersian.def already defines
+% \ALG@name and \listalgorithmname. We only override if needed.
+\providecommand{\listalgorithmname}{List of Algorithms}
+
+
+%------------------------------------------------------------------------
 % Index Names
-%----------------------------------------
+%------------------------------------------------------------------------
 \renewcommand{\seename}{see}
 \renewcommand{\alsoname}{see also}
 
-%----------------------------------------
+
+%------------------------------------------------------------------------
 % Cleveref Translations
-%----------------------------------------
+%------------------------------------------------------------------------
+% Must be loaded AFTER cleveref. Since cleveref is in mb-core
+% (before xepersian) and this file is loaded after xepersian,
+% the order is correct.
+%------------------------------------------------------------------------
 \crefname{equation}{Equation}{Equations}
 \crefname{chapter}{Chapter}{Chapters}
 \crefname{section}{Section}{Sections}
+\crefname{subsection}{Subsection}{Subsections}
 \crefname{figure}{Figure}{Figures}
 \crefname{table}{Table}{Tables}
 \crefname{algorithm}{Algorithm}{Algorithms}
@@ -50,49 +82,67 @@
 \crefname{definition}{Definition}{Definitions}
 \crefname{example}{Example}{Examples}
 \crefname{remark}{Remark}{Remarks}
+\crefname{exercise}{Exercise}{Exercises}
+\crefname{proposition}{Proposition}{Propositions}
 
+% Range formats
 \crefrangeformat{equation}{Equations~#3#1#4~to~#5#2#6}
 \crefrangeformat{figure}{Figures~#3#1#4~to~#5#2#6}
 \crefrangeformat{table}{Tables~#3#1#4~to~#5#2#6}
+\crefrangeformat{theorem}{Theorems~#3#1#4~to~#5#2#6}
 
-%----------------------------------------
-% Section Headings
-%----------------------------------------
+% Conjunctions — must be set AFTER cleveref is loaded.
+% Use \AtBeginDocument to ensure cleveref is loaded first.
+\AtBeginDocument{%
+    \renewcommand{\crefpairconjunction}{\,and\,}%
+    \renewcommand{\crefrangeconjunction}{\,to\,}%
+    \renewcommand{\crefmiddleconjunction}{\,,\,}%
+    \renewcommand{\creflastconjunction}{\,and\,}%
+}
+
+
+%------------------------------------------------------------------------
+% Section Headings (fallbacks)
+%------------------------------------------------------------------------
 \providecommand{\sectionname}{Section}
 \providecommand{\pagename}{Page}
 
-%----------------------------------------
-% Theorem Names
-%----------------------------------------
-\newcommand{\theoremname}{Theorem}
-\newcommand{\lemmaname}{Lemma}
-\newcommand{\corollaryname}{Corollary}
-\newcommand{\propositionname}{Proposition}
-\newcommand{\definitionname}{Definition}
-\newcommand{\examplename}{Example}
-\newcommand{\remarkname}{Remark}
-\newcommand{\exercisename}{Exercise}
-\newcommand{\solutionname}{Solution}
 
-%----------------------------------------
+%------------------------------------------------------------------------
+% Theorem Names (used by mb-theorem)
+%------------------------------------------------------------------------
+\providecommand{\theoremname}{Theorem}
+\providecommand{\lemmaname}{Lemma}
+\providecommand{\corollaryname}{Corollary}
+\providecommand{\propositionname}{Proposition}
+\providecommand{\definitionname}{Definition}
+\providecommand{\examplename}{Example}
+\providecommand{\remarkname}{Remark}
+\providecommand{\exercisename}{Exercise}
+\providecommand{\solutionname}{Solution}
+
+
+%------------------------------------------------------------------------
 % Code & Algorithm Names
-%----------------------------------------
-\newcommand{\codename}{Code}
-\newcommand{\algorithmname}{Algorithm}
+%------------------------------------------------------------------------
+\providecommand{\codename}{Code}
+\providecommand{\algorithmname}{Algorithm}
 
-%----------------------------------------
-% Cover Names
-%----------------------------------------
-\newcommand{\coverpublisher}{Publisher}
-\newcommand{\coveredition}{Edition}
-\newcommand{\coverisbn}{ISBN}
-\newcommand{\covertag}{Programming and Mathematics}
-\newcommand{\coverabout}{About This Book}
-\newcommand{\coversource}{View Source Code}
 
-%----------------------------------------
+%------------------------------------------------------------------------
+% Cover Names (used by mb-theme-cover)
+%------------------------------------------------------------------------
+\providecommand{\coverpublisher}{Publisher}
+\providecommand{\coveredition}{Edition}
+\providecommand{\coverisbn}{ISBN}
+\providecommand{\covertag}{Programming and Mathematics}
+\providecommand{\coverabout}{About This Book}
+\providecommand{\coversource}{View Source Code}
+
+
+%------------------------------------------------------------------------
 % Log
-%----------------------------------------
-\typeout{MatinBook: English locale loaded (en-US)}
+%------------------------------------------------------------------------
+\PackageInfo{en-US}{English locale loaded}
 
 \endinput

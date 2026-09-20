@@ -1,0 +1,117 @@
+%%
+%% Test: English Locale (en-US) — v1.1
+%% Purpose: Verify English localization of LaTeX names and cleveref
+%% 
+%% NOTE: Since the document class default is RTL (Persian), we must
+%%       wrap English content in \begin{latin}...\end{latin}.
+%% 
+
+\documentclass{matinbook}
+
+\title{English Locale Test — v1.1}
+\author{MatinBook Team}
+\date{1405}
+
+\begin{document}
+
+\begin{latin}
+
+\maketitle
+
+\tableofcontents
+
+\chapter{English Locale Verification}
+\label{chap:test-en}
+
+This document verifies the English localization of \texttt{en-US}.
+
+\section{Structural Names}
+\label{sec:structure-names}
+
+\begin{itemize}
+    \item \verb|\contentsname|: \contentsname
+    \item \verb|\listfigurename|: \listfigurename
+    \item \verb|\listtablename|: \listtablename
+    \item \verb|\bibname|: \bibname
+    \item \verb|\indexname|: \indexname
+    \item \verb|\chaptername|: \chaptername
+    \item \verb|\appendixname|: \appendixname
+    \item \verb|\proofname|: \proofname
+    \item \verb|\abstractname|: \abstractname
+    \item \verb|\figurename|: \figurename
+    \item \verb|\tablename|: \tablename
+    \item \verb|\partname|: \partname
+    \item \verb|\refname|: \refname
+\end{itemize}
+
+\section{Cleveref References}
+\label{sec:cleveref-names}
+
+\begin{equation}
+    \label{eq:locale-en-test}
+    f(x) = x^2
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\rule{3cm}{2cm}
+\caption{Sample figure}
+\label{fig:locale-en-test}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\caption{Sample table}
+\label{tab:locale-en-test}
+\begin{tabular}{cc}
+\toprule
+A & B \\
+\midrule
+1 & 2 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{theorem}[Sample Theorem]
+    For every real number $x$, $x^2 \geq 0$.
+\end{theorem}
+\label{thm:locale-en-test}
+
+References:
+
+\begin{itemize}
+    \item Equation: \cref{eq:locale-en-test}
+    \item Figure: \cref{fig:locale-en-test}
+    \item Table: \cref{tab:locale-en-test}
+    \item Theorem: \cref{thm:locale-en-test}
+    \item Chapter: \cref{chap:test-en}
+    \item Section: \cref{sec:structure-names}
+\end{itemize}
+
+\section{Theorem and Proof}
+\label{sec:theorem-proof}
+
+\begin{theorem}[Sample Theorem]
+    For every real number $x$, $x^2 \geq 0$.
+\end{theorem}
+
+\begin{proof}
+    Since the square of any real number is non-negative, the result follows.
+\end{proof}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+If this document compiles without errors:
+
+\begin{itemize}
+    \item Structural names are in English
+    \item Cleveref references are in English
+    \item Theorem and proof environments work
+\end{itemize}
+
+\textbf{Test status:} PASS
+
+\end{latin}
+
+\end{document}

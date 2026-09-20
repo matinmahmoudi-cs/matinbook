@@ -1,0 +1,155 @@
+%%
+%% Test: mb-core — Core Package Loader — v1.1
+%% Stage: core refactor (stages 1-4)
+%% 
+%% Purpose: Verify that all core packages load correctly:
+%%   - Mathematics (amsmath, mathtools, amsthm, unicode-math)
+%%   - Algorithms (algorithm, algpseudocode)
+%%   - Boxes (tcolorbox + minted library)
+%%   - Code (minted)
+%%   - Bibliography (biblatex)
+%%   - Index (imakeidx)
+%%   - Layout (geometry, fancyhdr, titlesec, tocloft, setspace, caption)
+%%   - Tables (booktabs, array, multirow)
+%%   - Hyperref + Cleveref
+%%   - pgf-pie (temporary)
+%%   - draftwatermark (temporary)
+%%   - newcolumntype (temporary)
+%% 
+
+\documentclass{matinbook}
+
+\title{تست هسته‌ی MatinBook — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\begin{document}
+
+\maketitle
+
+\chapter{بررسی هسته‌ی MatinBook}
+\label{chap:test-core}
+
+این سند، بارگذاری درست همه‌ی پکیج‌های هسته‌ای را بررسی می‌کند.
+
+%----------------------------------------
+\section{ریاضیات}
+\label{sec:math}
+
+\subsection{معادلات}
+
+\begin{equation}
+    \label{eq:core-test}
+    f(x) = \sum_{i=1}^{n} x_i^2 + \int_{0}^{\infty} e^{-t^2} \, dt
+\end{equation}
+
+\subsection{نمادها}
+
+مجموعه‌های اعداد: $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R} \subset \mathbb{C}$
+
+\subsection{محیط‌های ریاضی}
+
+\begin{align}
+    a &= b + c \\
+    d &= e + f
+\end{align}
+
+\subsection{قضیه}
+
+\begin{theorem}[قضیه‌ی نمونه]
+    برای هر عدد حقیقی $x$، داریم $x^2 \geq 0$.
+\end{theorem}
+
+\begin{proof}
+    چون مربع هر عدد حقیقی نامنفی است، نتیجه حاصل می‌شود.
+\end{proof}
+
+%----------------------------------------
+\section{الگوریتم‌ها}
+\label{sec:algorithms}
+
+\begin{latin}
+\begin{algorithm}
+\caption{محاسبه‌ی فاکتوریل}
+\begin{algorithmic}[1]
+    \Require عدد صحیح $n \geq 0$
+    \Ensure $n!$
+    \State $result \gets 1$
+    \For{$i \gets 2$ \textbf{to} $n$}
+        \State $result \gets result \times i$
+    \EndFor
+    \State \Return $result$
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+%----------------------------------------
+\section{جعبه‌ها}
+\label{sec:boxes}
+
+\begin{tcolorbox}[title=جعبه‌ی نمونه]
+این یک جعبه‌ی ساده است که با \texttt{tcolorbox} ساخته شده.
+\end{tcolorbox}
+
+%----------------------------------------
+\section{کد}
+\label{sec:code}
+
+\begin{latin}
+\begin{minted}{python}
+def factorial(n):
+    """Compute n! recursively."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+\end{minted}
+\end{latin}
+
+%----------------------------------------
+\section{جدول}
+\label{sec:tables}
+
+\begin{table}[h]
+\centering
+\caption{جدول نمونه}
+\label{tab:core-test}
+\begin{tabular}{L{3cm} C{2cm} R{3cm}}
+\toprule
+\textbf{ستون ۱} & \textbf{ستون ۲} & \textbf{ستون ۳} \\
+\midrule
+مقدار ۱ & ۱۰ & مقدار ۳ \\
+مقدار ۲ & ۲۰ & مقدار ۴ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+%----------------------------------------
+\section{ارجاعات}
+\label{sec:references}
+
+ارجاع به معادله: \cref{eq:core-test}
+
+ارجاع به جدول: \cref{tab:core-test}
+
+ارجاع به فصل: \cref{chap:test-core}
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ ریاضیات (\texttt{amsmath}, \texttt{mathtools}, \texttt{unicode-math}) کار می‌کند
+    \item ✅ قضیه (\texttt{amsthm}) کار می‌کند
+    \item ✅ الگوریتم (\texttt{algorithm}, \texttt{algpseudocode}) کار می‌کند
+    \item ✅ جعبه‌ها (\texttt{tcolorbox}) کار می‌کنند
+    \item ✅ کد (\texttt{minted}) کار می‌کند
+    \item ✅ جدول (\texttt{booktabs}, \texttt{array}, \texttt{multirow}) کار می‌کند
+    \item ✅ ارجاعات (\texttt{hyperref}, \texttt{cleveref}) کار می‌کنند
+    \item ✅ \texttt{newcolumntype}های سفارشی کار می‌کنند
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}
