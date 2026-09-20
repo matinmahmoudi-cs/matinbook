@@ -18,10 +18,16 @@
 %   Load all components of the default theme.
 %
 % Components:
-%   - mb-theme-colors: color palette
-%   - mb-theme-cover:  cover design
+%   - mb-theme-colors: loaded by matinbook.cls (before consumers)
+%   - mb-theme-cover:  loaded here
 %
-% Note:
+% Note on colors:
+%   mb-theme-colors is NOT loaded here because it is loaded directly
+%   by matinbook.cls immediately after mb-core, so that all consumer
+%   modules (mb-boxes, mb-code, mb-layout, mb-headings, mb-graphics)
+%   have access to the colors.
+%
+% Note on fonts:
 %   Fonts are configured directly in matinbook.cls AFTER xepersian
 %   is loaded (per xepersian documentation: xepersian must be the
 %   last package, and \settextfont must come after it).
@@ -31,7 +37,6 @@
 %------------------------------------------------------------------------
 % Load theme components
 %------------------------------------------------------------------------
-\RequirePackage{mb-theme-colors}
 \RequirePackage{mb-theme-cover}
 
 %------------------------------------------------------------------------

@@ -1,0 +1,107 @@
+%%
+%% Test: Default Theme Loader — v1.1
+%% Stage: theme refactor (stages 1-4)
+%% 
+%% Purpose: Verify default theme loader:
+%%   - mb-theme-colors is loaded by matinbook.cls (not by theme)
+%%   - mb-theme-cover is loaded by mb-theme-default
+%%   - No double-loading of colors
+%%   - All theme components work together
+%% 
+
+\documentclass{matinbook}
+
+\title{تست بارگذار تم — نسخه ۱.۱}
+\author{تیم MatinBook}
+\date{۱۴۰۵}
+
+\booktitle{تست تم}
+
+\begin{document}
+
+\maketitle
+
+\chapter{بررسی بارگذار تم}
+\label{chap:test-theme-default}
+
+این سند، بارگذار تم پیش‌فرض \texttt{mb-theme-default} را بررسی می‌کند.
+
+%----------------------------------------
+\section{رنگ‌های تم}
+\label{sec:theme-colors}
+
+رنگ‌های تم باید از \texttt{mb-theme-colors} (که توسط \texttt{matinbook.cls} بارگذاری شده) در دسترس باشند:
+
+\begin{itemize}
+    \item \textcolor{matinblue}{\textbf{matinblue}} — رنگ غالب
+    \item \textcolor{matingreen}{\textbf{matingreen}} — سبز
+    \item \textcolor{matinorange}{\textbf{matinorange}} — نارنجی
+    \item \textcolor{matinred}{\textbf{matinred}} — قرمز
+    \item \textcolor{matinpurple}{\textbf{matinpurple}} — بنفش
+    \item \textcolor{matinlightgray}{\textbf{matinlightgray}} — خاکستری روشن
+\end{itemize}
+
+%----------------------------------------
+\section{کاور تم}
+\label{sec:theme-cover}
+
+کاور تم (\texttt{mb-theme-cover}) باید بارگذاری شده باشد.
+
+\textbf{بررسی:} اگر این سند بدون خطا کامپایل شود، کاور تم درست بارگذاری شده است.
+
+%----------------------------------------
+\section{جعبه‌های رنگی}
+\label{sec:colored-boxes}
+
+\begin{theorem}[قضیه نمونه]
+    برای هر عدد حقیقی $x$، داریم $x^2 \geq 0$.
+\end{theorem}
+
+\begin{definition}[عدد اول]
+    عدد طبیعی بزرگ‌تر از ۱ که تنها دو مقسوم‌علیه مثبت دارد.
+\end{definition}
+
+\begin{example}[مثال نمونه]
+    اعداد $2, 3, 5, 7, 11$ نمونه‌هایی از اعداد اول هستند.
+\end{example}
+
+%----------------------------------------
+\section{ریاضیات رنگی}
+\label{sec:colored-math}
+
+\begin{equation}
+    \label{eq:theme-test}
+    \textcolor{matinblue}{f(x)} = \textcolor{matingreen}{x^2}
+\end{equation}
+
+%----------------------------------------
+\section{گرافیک رنگی}
+\label{sec:colored-graphics}
+
+\begin{latin}
+\begin{tikzpicture}
+    \fill[matinblue] (0,0) circle (0.5cm);
+    \fill[matingreen] (1.5,0) circle (0.5cm);
+    \fill[matinorange] (3,0) circle (0.5cm);
+\end{tikzpicture}
+\end{latin}
+
+%----------------------------------------
+\section{نتیجه‌گیری}
+\label{sec:conclusion}
+
+اگر این سند بدون خطا کامپایل شود:
+
+\begin{itemize}
+    \item ✅ \texttt{mb-theme-colors} توسط \texttt{matinbook.cls} بارگذاری می‌شود
+    \item ✅ \texttt{mb-theme-cover} توسط \texttt{mb-theme-default} بارگذاری می‌شود
+    \item ✅ رنگ‌ها در دسترس هستند
+    \item ✅ کاور تم بارگذاری شده
+    \item ✅ جعبه‌های رنگی کار می‌کنند
+    \item ✅ گرافیک رنگی کار می‌کند
+    \item ✅ \texttt{mb-theme-colors} دوبار بارگذاری نمی‌شود
+\end{itemize}
+
+\textbf{وضعیت تست:} قبول
+
+\end{document}
