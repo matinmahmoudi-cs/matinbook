@@ -14,37 +14,62 @@
 % MB-LAYOUT — PAGE LAYOUT CONFIGURATION
 %========================================================================
 %
-% Standard: O'Reilly Media (Vaziri adaptation)
-%   - Page size: 16.5 × 24 cm
-%   - Margins: top=2.0cm, bottom=2.5cm, inner/outer=2.0cm
-%   - Binding offset: 0.5cm
+% Page format:
+%   - Paper size: 17.8 × 25.4 cm (7 × 10 in, O'Reilly/Boyer standard)
+%   - Inner margin: 1.5cm
+%   - Outer margin: 4.5cm (wide — for margin notes)
+%   - marginparwidth: 3.5cm
+%   - marginparsep: 0.3cm
 %
-% Header/Footer:
-%   - Even pages (left): book title
-%   - Odd pages (right): chapter name
-%   - Page number: in footer
+% Margin notes:
+%   Uses sidenotesplus, which correctly handles:
+%     - twoside (odd/even pages)
+%     - RTL (bidi/xepersian)
+%     - tcolorbox and float environments
+%
+%   \sidenote{...}      — plain margin note
+%   \marginfigure       — figure + caption in margin
 %
 %========================================================================
 
 
 %------------------------------------------------------------------------
-% Page Geometry (Vaziri format, O'Reilly standard)
+% Page Geometry (wide margin for notes)
 %------------------------------------------------------------------------
 \geometry{
     paperwidth=17.8cm,
     paperheight=25.4cm,
     top=1.7cm,
     bottom=1.7cm,
-    inner=1.4cm,
-    outer=1.4cm,
-    headheight=13pt,
+    inner=1.5cm,
+    outer=4.5cm,
+    marginparwidth=3.5cm,
+    marginparsep=0.3cm,
+    headheight=15pt,
     headsep=5pt,
     footskip=18pt,
-    bindingoffset=0.4cm,
-    marginparwidth=0pt,
-    marginparsep=0pt
+    bindingoffset=0.4cm
 }
 
+
+%------------------------------------------------------------------------
+% Margin Notes (sidenotesplus, RTL-aware)
+%------------------------------------------------------------------------
+\RequirePackage{sidenotesplus}
+
+% NOTE: We do NOT use \reversemarginpar here.
+%       sidenotesplus already handles RTL correctly under bidi/xepersian.
+%       Adding \reversemarginpar would double-reverse the direction.
+
+% Simple aliases for user convenience
+\newcommand{\mnote}[1]{\sidenote{#1}}
+
+\newcommand{\marginfig}[2]{%
+    \begin{marginfigure}%
+        \includegraphics[width=\marginparwidth]{#1}%
+        \caption{#2}%
+    \end{marginfigure}%
+}
 
 %------------------------------------------------------------------------
 % Header and Footer Setup
@@ -52,21 +77,18 @@
 \pagestyle{fancy}
 \fancyhf{}
 
-% Even pages (left in twoside): chapter name
 \fancyhead[LE]{%
     \ifnum\c@chapter>0
         \footnotesize\textbf{\leftmark}%
     \fi
 }
 
-% Odd pages (right in twoside): chapter name
 \fancyhead[RO]{%
     \ifnum\c@chapter>0
         \footnotesize\textbf{\leftmark}%
     \fi
 }
 
-% Page number in footer (both outer sides)
 \fancyfoot[LE,RO]{%
     \ifnum\c@chapter>0
         \footnotesize\textbf{\thepage}%
@@ -76,7 +98,6 @@
 \renewcommand{\headrulewidth}{0.4pt}
 \renewcommand{\footrulewidth}{0pt}
 
-% Plain page style (for chapter opening pages)
 \fancypagestyle{plain}{%
     \fancyhf{}
     \fancyfoot[LE,RO]{%
@@ -126,16 +147,18 @@
 % Draft Watermark
 %------------------------------------------------------------------------
 \if@matin@draft
-    \RequirePackage{draftwatermark}
-    \SetWatermarkText{\lr{DRAFT}}
-    \SetWatermarkScale{1.5}
-    \SetWatermarkColor[gray]{0.9}
+    \AtBeginDocument{%
+        \RequirePackage{draftwatermark}%
+        \SetWatermarkText{\lr{DRAFT}}%
+        \SetWatermarkScale{1.5}%
+        \SetWatermarkColor[gray]{0.9}%
+    }
 \fi
 
 
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-layout}{Layout loaded (Vaziri format, O'Reilly standard)}
+\PackageInfo{mb-layout}{Layout loaded (sidenotesplus, RTL-aware)}
 
 \endinput
