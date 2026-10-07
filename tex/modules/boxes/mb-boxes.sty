@@ -29,14 +29,25 @@
 %
 % Title font size:
 %   \normalsize (10pt) — same as body text, per AMS/Boyer standard.
-%   Bold weight and color differentiate the title from body text.
 %
 % RTL note:
-%   The vertical "margin" line is drawn on the RIGHT side (borderline east).
+%   In matin-outline, the vertical line is drawn on the RIGHT side.
 %
 % Color note:
 %   In matin-outline, the title text is BLACK (coltitle=black),
 %   while the border lines keep the style color (#1).
+%
+% Breakable handling (tcolorbox 6.x):
+%   The outline style uses underlay first/middle/last + overlay last
+%   to draw the vertical line on the CORRECT side of each broken
+%   piece:
+%     - first piece: right vertical line + horizontal rule under title
+%     - middle pieces: vertical line on the correct page side
+%     - last piece: vertical line on the correct page side
+%     - overlay last: horizontal rule at the bottom
+%
+%   This avoids the "line in the middle of the page" issue that
+%   \`borderline east\` alone would cause on broken boxes.
 %
 %========================================================================
 
@@ -45,6 +56,9 @@
 % FAMILY 1 — BOYER-STYLE BOXES (matinbox)
 %========================================================================
 
+%------------------------------------------------------------------------
+% Base Style
+%------------------------------------------------------------------------
 \tcbset{
     matinbox/.style={
         enhanced,
@@ -120,8 +134,8 @@
 % Features:
 %   - Right vertical line (2pt, colored)
 %   - Title WITHOUT background, BLACK bold text
-%   - Horizontal rule under title (2pt, colored)
-%   - Horizontal rule at bottom (2pt, colored)
+%   - Horizontal rule under title (1pt, colored)
+%   - Horizontal rule at bottom (1pt, colored)
 %   - No frame on left/top/bottom sides
 %   - White body
 %
@@ -146,16 +160,42 @@
         before skip=10pt,
         after skip=10pt,
         parbox=false,
-        % Right vertical line (RTL) — style color
-        borderline east={2pt}{0pt}{#1},
-        % Horizontal line under title — style color
-        underlay={%
-            \draw[#1, line width=2pt]
+        %---
+        % First piece:
+        %   - horizontal rule under title
+        %   - right vertical line
+        underlay first={%
+            \draw[#1, line width=1pt]
                 ([yshift=0pt]title.south west) -- ([yshift=0pt]title.south east);
-        },
-        % Horizontal line at bottom — style color
-        overlay={%
             \draw[#1, line width=2pt]
+                ([xshift=0pt]frame.north east) -- ([xshift=0pt]frame.south east);
+        },
+        %---
+        % Middle pieces: vertical line on the correct page side
+        underlay middle={%
+            \ifodd\value{page}%
+                \draw[#1, line width=2pt]
+                    ([xshift=0pt]frame.north east) -- ([xshift=0pt]frame.south east);
+            \else%
+                \draw[#1, line width=2pt]
+                    ([xshift=0pt]frame.north west) -- ([xshift=0pt]frame.south west);
+            \fi
+        },
+        %---
+        % Last piece: vertical line on the correct page side
+        underlay last={%
+            \ifodd\value{page}%
+                \draw[#1, line width=2pt]
+                    ([xshift=0pt]frame.north east) -- ([xshift=0pt]frame.south east);
+            \else%
+                \draw[#1, line width=2pt]
+                    ([xshift=0pt]frame.north west) -- ([xshift=0pt]frame.south west);
+            \fi
+        },
+        %---
+        % Last piece: horizontal rule at bottom
+        overlay last={%
+            \draw[#1, line width=1pt]
                 ([yshift=0pt]frame.south west) -- ([yshift=0pt]frame.south east);
         }
     }
@@ -164,9 +204,6 @@
 
 %------------------------------------------------------------------------
 % Outline Styles (for example, proof, solution)
-%------------------------------------------------------------------------
-% The color #1 is used ONLY for the border lines.
-% The title text is always black.
 %------------------------------------------------------------------------
 \tcbset{
     matin-example-outline/.style={matin-outline=matinorange!90!black},
@@ -178,6 +215,6 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-boxes}{Box styles loaded (title=\string\normalsize, AMS/Boyer)}
+\PackageInfo{mb-boxes}{Box styles loaded (2 families: matinbox, matin-outline RTL, breakable)}
 
 \endinput
