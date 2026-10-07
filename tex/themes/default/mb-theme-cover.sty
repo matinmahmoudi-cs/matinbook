@@ -1,308 +1,309 @@
-%%
-%% This is file `mb-theme-cover.sty',
-%% part of the MatinBook project.
-%% 
+%% mb-theme-cover.sty -- MatinBook print cover system
 %% Copyright (C) 2025-2026 MatinBook Project
-%% 
-%% Repository: https://github.com/matinbook/matinbook
-%% 
-
+%% Persian typesetting is provided by the document (XeLaTeX + XePersian).
 \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{mb-theme-cover}[2026/01/01 v1.1 MatinBook Cover System]
+\ProvidesPackage{mb-theme-cover}[2026/06/15 v3.1 MatinBook Covers]
 
-%========================================================================
-% MB-THEME-COVER — COVER DESIGN
-%========================================================================
-%
-% Purpose:
-%   Provide front and back cover designs for MatinBook books.
-%
-% IMPORTANT: This cover uses `remember picture, overlay` (TikZ),
-%            which requires at least TWO compilation passes.
-%            Run xelatex twice (or use the compile.sh script).
-%
-% Color mapping:
-%   The cover uses the main MatinBook color palette (matin*) via
-%   \colorlet aliases, so it inherits the CMYK definitions.
-%
-%========================================================================
+\RequirePackage{xcolor}
+\RequirePackage{tikz}
+\RequirePackage{amsmath}
+\usetikzlibrary{calc,positioning,arrows.meta}
 
+% Coordinated palette; respect colors supplied by the host project.
+\providecolor{matincrimson}{RGB}{166,25,46}
+\providecolor{matinnavy}{RGB}{30,42,58}
+\providecolor{matingold}{RGB}{201,162,39}
+\providecolor{matinivory}{RGB}{242,238,227}
+\providecolor{matinmediumgray}{RGB}{145,151,157}
+\colorlet{coverprimary}{matinnavy}
+\colorlet{coveraccent}{matincrimson}
+\colorlet{covergray}{matinmediumgray}
+\colorlet{covergold}{matingold}
+\colorlet{coverpaper}{matinivory}
 
-%------------------------------------------------------------------------
-% Color Aliases (mapped to MatinBook palette)
-%------------------------------------------------------------------------
-\colorlet{coverbg}{matincream}         % off-white background
-\colorlet{coverprimary}{matindarkblue} % dark navy
-\colorlet{coveraccent}{matingreen}     % teal green
-\colorlet{coveraccent2}{matinorange}   % warm orange
-\colorlet{coveraccent3}{matinblue}     % blue
-\colorlet{covergray}{matinmediumgray}  % gray
-\colorlet{coverlight}{matinlightgray}  % light gray
-\colorlet{coverdark}{matindarkgray}    % dark gray
-
-
-%------------------------------------------------------------------------
-% Repository Info
-%------------------------------------------------------------------------
-\providecommand{\matin@repository}{github.com/matinbook}
+% Public metadata hooks; projects may define these before loading this package.
 \providecommand{\repository}{github.com/matinbook}
+\providecommand{\coverabout}{درباره این کتاب}
+\providecommand{\coversource}{دریافت نسخهٔ دیجیتال}
+\providecommand{\isbn}{978-600-000000-0-0}
 
-
-%------------------------------------------------------------------------
-% Decorative Elements
-%------------------------------------------------------------------------
-\newcommand{\covergeometric}{%
-    \begin{tikzpicture}[remember picture,overlay]
-        
-        % Large circle top right
-        \fill[coveraccent!6] 
-        ([xshift=4cm,yshift=-4cm]current page.north east) circle (6cm);
-        
-        % Medium circle bottom left
-        \fill[coveraccent3!5] 
-        ([xshift=-3cm,yshift=3cm]current page.south west) circle (5cm);
-        
-        % Small coral circle
-        \fill[coveraccent2!8] 
-        ([xshift=-5cm,yshift=-8cm]current page.north east) circle (2cm);
-        
-        % Code brackets decoration (left side)
-        \node[font=\ttfamily, color=coveraccent!10, anchor=west]
-        at ([xshift=1cm,yshift=-10cm]current page.north west) 
-        {\fontsize{40}{48}\selectfont \{};
-        
-        \node[font=\ttfamily, color=coveraccent!10, anchor=west]
-        at ([xshift=1cm,yshift=-22cm]current page.north west) 
-        {\fontsize{40}{48}\selectfont \}};
-        
-        % Lambda symbol faint (LTR to avoid RTL issues)
-        \node[color=coveraccent3!6]
-        at ([xshift=-3cm,yshift=-15cm]current page.north east) 
-        {\fontsize{60}{72}\selectfont $\lambda$};
-        
-        % Sigma faint (LTR)
-        \node[color=coveraccent3!5]
-        at ([xshift=-8cm,yshift=-20cm]current page.north east) 
-        {\fontsize{50}{60}\selectfont $\Sigma$};
-        
-        % Dot grid pattern (graph paper feel)
-        \foreach \x in {0.5,1.5,2.5,3.5} {
-            \foreach \y in {1,2,3,4,5,6} {
-                \fill[covergray!10] 
-                ([xshift=\x cm,yshift=-\y cm]current page.north west) 
-                circle (0.5pt);
-            }
-        }
-        
-        % Binary numbers faint
-        \node[font=\ttfamily, color=coveraccent!8, anchor=west]
-        at ([xshift=0.3cm,yshift=-18cm]current page.north west) 
-        {\fontsize{7}{9}\selectfont 01101000};
-        
-        % Math symbols (LTR)
-        \node[color=coveraccent3!6]
-        at ([xshift=-6cm,yshift=-8cm]current page.north east) 
-        {\fontsize{30}{36}\selectfont $\pi$};
-        
-        \node[color=coveraccent3!5]
-        at ([xshift=-2cm,yshift=-18cm]current page.north east) 
-        {\fontsize{25}{30}\selectfont $\infty$};
-        
-    \end{tikzpicture}%
+% Full-bleed navy front, crimson wedge, preserved grid/orbit, and subtle math art.
+\newcommand{\mb@frontart}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[coverprimary] (current page.north west) rectangle (current page.south east);
+    \fill[coveraccent]
+      (current page.north west) --
+      ([xshift=10.2cm]current page.north west) --
+      ([xshift=6.4cm,yshift=-3.15cm]current page.north west) -- cycle;
+    \draw[white,opacity=.78,line width=.55pt]
+      ([xshift=.58cm,yshift=-.58cm]current page.north west) rectangle
+      ([xshift=-.58cm,yshift=.58cm]current page.south east);
+    % Low-contrast coordinate grid.
+    \foreach \x in {1,...,20}{%
+      \draw[white,opacity=.045,line width=.25pt]
+        ([xshift=\x cm]current page.north west) --
+        ([xshift=\x cm]current page.south west);}
+    \foreach \y in {1,...,28}{%
+      \draw[white,opacity=.045,line width=.25pt]
+        ([yshift=-\y cm]current page.north west) --
+        ([yshift=-\y cm]current page.north east);}
+    % Preserved large gold ellipse/orbit.
+    \begin{scope}[shift={([xshift=-5.5cm,yshift=-11.5cm]current page.north east)},rotate=-18]
+      \draw[covergold,opacity=.34,line width=.9pt]
+        (0,0) ellipse [x radius=4.25cm,y radius=2.25cm];
+    \end{scope}
+    % Damped oscillation and logarithmic growth; faintly layered over the grid.
+    \begin{scope}[shift={([xshift=11.2cm,yshift=-12.2cm]current page.north west)}]
+      \draw[covergold,opacity=.78,line width=1.05pt,smooth,domain=0:6,samples=100,variable=\x]
+        plot (\x,{1.25+0.78*exp(-0.3*\x)*sin(deg(2*\x))});
+      \draw[white,opacity=.42,line width=.75pt,smooth,domain=.15:5.7,samples=80,variable=\x]
+        plot (\x,{-.15+0.44*ln(\x+1)});
+      \draw[coveraccent,opacity=.8,line width=.7pt,-{Stealth[length=1.8mm]}]
+        (4.35,1.15) -- (4.95,1.36);
+      \draw[coveraccent,opacity=.8,line width=.7pt,-{Stealth[length=1.8mm]}]
+        (2.65,.47) -- (3.2,.27);
+    \end{scope}
+    % Semi-transparent IDE-style C++ specimen.
+    \node[anchor=north west,draw=covergold,draw opacity=.48,fill=white,fill opacity=.075,
+      rounded corners=2pt,line width=.65pt,inner sep=7pt,text=white!88,
+      text opacity=.92,align=left,font=\ttfamily\scriptsize]
+      at ([xshift=1.25cm,yshift=-14.65cm]current page.north west)
+      {\shortstack[l]{%
+        {\color{covergold}\texttt{// numerical methods}}\\[-1pt]
+        \texttt{template\textless typename T\textgreater}\\[-1pt]
+        \texttt{constexpr auto solve\_ode =}\\[-1pt]
+        \texttt{  [](auto f, auto y) \{}\\[-1pt]
+        \texttt{    auto [u, v] = y;}\\[-1pt]
+        \texttt{    return f(u, v);}}\\[-1pt]
+        \texttt{  \};}};
+    % Compact equations in fine gold typography.
+    \node[anchor=north west,text=white!84,align=left,font=\small]
+      at ([xshift=1.35cm,yshift=-19.1cm]current page.north west)
+      {$\displaystyle e^{i\pi}+1=0\qquad
+        \mathcal{F}\{f\}(\omega)=\int_{-\infty}^{\infty}f(t)e^{-i\omega t}\,dt$};
+    \node[anchor=north west,text=covergold!90,align=left,font=\small]
+      at ([xshift=1.35cm,yshift=-20.0cm]current page.north west)
+      {$\displaystyle \frac{d}{dt}\frac{\partial L}{\partial\dot q}
+        -\frac{\partial L}{\partial q}=0\qquad
+        y_{n+1}=y_n+h\sum_i b_i k_i$};
+    % Direction arrows and target nodes echo the reference artwork.
+    \draw[coveraccent,line width=.8pt,-{Stealth[length=2mm]}]
+      ([xshift=-1.35cm,yshift=-7.1cm]current page.north east) --
+      ([xshift=-4.0cm,yshift=-7.1cm]current page.north east);
+    \draw[coveraccent,line width=.8pt,-{Stealth[length=2mm]}]
+      ([xshift=-2.0cm,yshift=-8.15cm]current page.north east) --
+      ([xshift=-2.0cm,yshift=-5.9cm]current page.north east);
+    \fill[coveraccent] ([xshift=-4.0cm,yshift=-7.1cm]current page.north east) circle (1.25pt);
+    \fill[coveraccent] ([xshift=-2.0cm,yshift=-8.15cm]current page.north east) circle (1.25pt);
+    \draw[covergold,line width=1.15pt]
+      ([xshift=-1.15cm,yshift=1.15cm]current page.south east) --
+      ([xshift=-.58cm,yshift=1.15cm]current page.south east) --
+      ([xshift=-.58cm,yshift=1.72cm]current page.south east);
+  \end{tikzpicture}%
 }
 
-
-%------------------------------------------------------------------------
-% Front Cover
-%------------------------------------------------------------------------
+% Front cover API: #1 title, #2 subtitle, #3 author, #4 date or edition.
 \newcommand{\makecover}[4]{%
-    \begin{titlepage}
-        \thispagestyle{empty}
-        
-        \covergeometric
-        
-        % Top bar with code-style decoration
-        \noindent\begin{tikzpicture}
-            \fill[coverprimary] (0,0) rectangle (\textwidth,0.5cm);
-            % Three dots like window controls
-            \fill[coveraccent2] (0.5,0.25) circle (3pt);
-            \fill[coveraccent] (1.2,0.25) circle (3pt);
-            \fill[coveraccent3] (1.9,0.25) circle (3pt);
-            % Terminal prompt
-            \node[font=\ttfamily, color=coveraccent, anchor=west]
-            at (2.8,0.25) {\fontsize{8}{10}\selectfont \$ cd /book};
-        \end{tikzpicture}
-        
-        \vspace{3cm}
-        
-        % Tag
-        \begin{flushright}
-            \colorbox{coveraccent!15}{%
-                \color{coverprimary}\fontsize{10}{14}\selectfont\bfseries
-                \hspace{0.3cm} \covertag \hspace{0.3cm}%
-            }
-        \end{flushright}
-        
-        \vspace{1cm}
-        
-        % Title
-        \begin{flushright}
-            \color{coverprimary}\fontsize{34}{44}\selectfont\bfseries
-            #1
-        \end{flushright}
-        
-        \vspace{0.8cm}
-        
-        % Subtitle (optional)
-        \if\relax\detokenize{#2}\relax\else
-        \begin{flushright}
-            \color{covergray}\fontsize{15}{22}\selectfont
-            #2
-        \end{flushright}
-        \fi
-        
-        \vspace{2cm}
-        
-        % Decorative line with function notation
-        \begin{flushleft}
-            \begin{tikzpicture}
-                \draw[coveraccent, line width=1.5pt] (0,0) -- (4,0);
-                \fill[coveraccent] (4.5,0) circle (3pt);
-                \node[font=\ttfamily, color=covergray!50, anchor=west]
-                at (5,0) {\fontsize{8}{10}\selectfont main()};
-            \end{tikzpicture}
-        \end{flushleft}
-        
-        \vspace{2cm}
-        
-        % Author
-        \begin{flushright}
-            \colorbox{coverlight}{%
-                \begin{minipage}{0.5\textwidth}
-                    \vspace{0.6cm}
-                    \begin{flushright}
-                        \color{coverprimary}\fontsize{14}{18}\selectfont\bfseries
-                        #3 \\[0.3cm]
-                        \color{coveraccent}\fontsize{10}{14}\selectfont
-                        \texttt{//} #4
-                    \end{flushright}
-                    \vspace{0.6cm}
-                \end{minipage}%
-            }
-        \end{flushright}
-        
-        \vfill
-        
-        % Bottom bar
-        \noindent\begin{tikzpicture}
-            \fill[coverlight] (0,0) rectangle (\textwidth,1.8cm);
-            \fill[coverprimary] (0,0) rectangle (\textwidth,0.06cm);
-            
-            % Left: Logo with code bracket
-            \node[font=\ttfamily, color=coveraccent, anchor=west]
-            at (0.3,1.3) {\fontsize{10}{12}\selectfont <};
-            \node[color=coverprimary!70, anchor=west]
-            at (0.9,1.3) {\fontsize{10}{12}\selectfont MatinBook};
-            \node[font=\ttfamily, color=coveraccent, anchor=west]
-            at (3.7,1.3) {\fontsize{10}{12}\selectfont />};
-            
-            % Center: Repository
-            \node[font=\ttfamily, color=covergray, anchor=center]
-            at (\textwidth/2,1.3) {\fontsize{8}{10}\selectfont \matin@repository};
-            
-            % Right: Version
-            \node[color=covergray, anchor=east]
-            at (\textwidth-0.5,1.3) {\fontsize{9}{11}\selectfont v\matinbookversion};
-            
-            % Decorative equation in footer
-            \node[color=covergray!30]
-            at (\textwidth/2,0.6) {\fontsize{7}{9}\selectfont $f(x) = \displaystyle\sum_{n=0}^{\infty} a_n x^n$};
-        \end{tikzpicture}
-        
-    \end{titlepage}%
-}
-
-
-%------------------------------------------------------------------------
-% Back Cover
-%------------------------------------------------------------------------
-\newcommand{\makebackcover}[1]{%
-    \clearpage
-    \thispagestyle{empty}
-    
-    \covergeometric
-    
-    \vspace*{3cm}
-    
-    % Title with code style
-    \begin{center}
-        \color{coveraccent}\fontsize{18}{24}\selectfont\bfseries
-        \texttt{/**} \coverabout \texttt{*/}
-    \end{center}
-    
-    \vspace{0.5cm}
-    
-    \begin{center}
-        \color{coveraccent}\rule{3cm}{1.5pt}
-    \end{center}
-    
-    \vspace{1.5cm}
-    
-    % Content
-    \begin{center}
-        \colorbox{coverlight}{%
-            \begin{minipage}{0.75\textwidth}
-                \vspace{1.2cm}
-                \begin{flushright}
-                    \color{coverprimary}\fontsize{12}{20}\selectfont
-                    #1
-                \end{flushright}
-                \vspace{1.2cm}
-            \end{minipage}%
-        }
-    \end{center}
-    
-    \vspace{2cm}
-    
-    % Repository box
-    \begin{center}
-        \colorbox{coverprimary}{%
-            \begin{minipage}{5cm}
-                \vspace{0.5cm}
-                \begin{center}
-                    \color{white}\fontsize{9}{12}\selectfont
-                    \textbf{\coversource}\\[0.3cm]
-                    \color{coveraccent}\ttfamily\fontsize{8}{10}\selectfont
-                    \matin@repository
-                \end{center}
-                \vspace{0.5cm}
-            \end{minipage}%
-        }
-    \end{center}
-    
-    \vspace{1cm}
-    
-    % Code snippet decoration
-    \begin{center}
-        \color{covergray!30}\ttfamily\fontsize{7}{9}\selectfont
-        print("Made with MatinBook")
-    \end{center}
-    
+  \begin{titlepage}\thispagestyle{empty}
+    \mb@frontart
+    \vspace*{1.75cm}
+    \begin{flushright}
+      {\color{covergold}\fontsize{10}{14}\selectfont\bfseries
+        MATHEMATICS / COMPUTER SCIENCE\par}
+      \vspace{1.25cm}
+      {\color{white}\fontsize{34}{43}\selectfont\bfseries #1\par}
+      \vspace{.42cm}
+      \hfill{\color{covergold}\rule{3.6cm}{1.35pt}}\par
+      \vspace{.52cm}
+      \if\relax\detokenize{#2}\relax\else
+        {\color{white}\fontsize{17}{24}\selectfont #2\par}
+      \fi
+    \end{flushright}
     \vfill
-    
-    % Bottom
-    \noindent\begin{tikzpicture}
-        \fill[coverprimary] (0,0) rectangle (\textwidth,0.5cm);
-        \fill[coveraccent] (0,0) rectangle (3,0.5cm);
-        \node[font=\ttfamily, color=white, anchor=west]
-        at (0.3,0.25) {\fontsize{8}{10}\selectfont \$ exit};
-    \end{tikzpicture}%
+    \begin{flushright}
+      {\color{white}\fontsize{16}{21}\selectfont\bfseries #3\par}
+      \vspace{.22cm}
+      {\color{covergold}\fontsize{11}{15}\selectfont\bfseries ویرایش\enspace #4\par}
+    \end{flushright}
+    \vspace{1.0cm}
+    \noindent{\color{white}\fontsize{9}{12}\selectfont\bfseries MatinBook}%
+    \hfill{\color{white}\fontsize{9}{12}\selectfont\ttfamily\repository}\par
+    \vspace*{.2cm}
+  \end{titlepage}%
 }
 
+% Ivory reverse: structured mathematical elements with zero overlap on text/blurb.
+\newcommand{\mb@backart}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \fill[coverpaper] (current page.north west) rectangle (current page.south east);
+    
+    % Top margin line
+    \draw[coveraccent,line width=.85pt]
+      ([xshift=.65cm,yshift=-.62cm]current page.north west) --
+      ([xshift=-.65cm,yshift=-.62cm]current page.north east);
 
-%------------------------------------------------------------------------
-% Log
-%------------------------------------------------------------------------
-\PackageInfo{mb-theme-cover}{Cover system loaded (requires 2 passes)}
+    % ============================================================
+    % Top decorative zone: strictly kept above y = -6.4cm (clear of 7.0cm)
+    % ============================================================
+    \begin{scope}[shift={(current page.north west)}]
 
+      %========= ROW 1 (y ≈ -1.0 to -2.0): Wave dynamics =========
+      \draw[coveraccent, opacity=.45, line width=0.9pt, smooth, samples=100]
+        plot[domain=0.8:10.5, variable=\x]
+        (\x, {-1.4 + 0.38*sin(deg(1.6*\x))});
+      \draw[coveraccent, opacity=.25, line width=0.6pt, smooth, samples=100]
+        plot[domain=0.8:10.5, variable=\x]
+        (\x, {-1.4 + 0.38*sin(deg(1.6*\x) + 45)});
+      \draw[coveraccent, opacity=.15, line width=0.4pt, smooth, samples=100]
+        plot[domain=0.8:10.5, variable=\x]
+        (\x, {-1.4 + 0.38*sin(deg(1.6*\x) + 90)});
+
+      % Small coordinate mini-plot placed neatly at the top-right
+      \begin{scope}[shift={(11.2, -2.1)}, xscale=0.48, yscale=0.5]
+        \fill[white,opacity=.45] (0,0) rectangle (14.0,2.6);
+        \foreach \x in {0,2,...,14}{\draw[covergray,opacity=.2,line width=.25pt] (\x,0) -- (\x,2.6);}
+        \foreach \y in {0,0.8,1.6,2.4}{\draw[covergray,opacity=.2,line width=.25pt] (0,\y) -- (14.0,\y);}
+        \draw[coverprimary,opacity=.7,line width=.5pt,-{Stealth[length=1.4mm]}] (0.2,.3) -- (13.8,.3);
+        \draw[coverprimary,opacity=.7,line width=.5pt,-{Stealth[length=1.4mm]}] (.3,.1) -- (.3,2.4);
+        \draw[coveraccent,line width=.9pt,smooth,domain=.3:13.5,samples=80,variable=\x]
+          plot (\x,{1.3 + 0.7*sin(40*\x)*exp(-.05*\x)});
+        \node[anchor=south west,text=coverprimary,font=\tiny\bfseries]
+          at (0.4, 2.65) {$x(t), y(t)$};
+      \end{scope}
+
+      %========= ROW 2 (y ≈ -2.8 to -3.2): Discrete Math & Analysis =========
+      \node[text=covergold, font=\small, anchor=west]
+        at (0.8, -2.9) {$\displaystyle \int_a^b f(x)\,dx$};
+      \node[text=covergold, font=\small, anchor=west]
+        at (4.2, -2.9) {$\displaystyle \sum_{n=1}^{\infty} a_n$};
+      \node[text=covergold, font=\small, anchor=west]
+        at (7.6, -2.9) {$\displaystyle \frac{\partial f}{\partial x}$};
+      \node[text=covergold, font=\small, anchor=west]
+        at (11.0, -2.9) {$\displaystyle \nabla \cdot \vec{F}$};
+      \node[text=covergold, font=\small, anchor=west]
+        at (14.4, -2.9) {$\displaystyle \det(A - \lambda I) = 0$};
+
+      %========= ROW 3 (y ≈ -4.1 to -5.8): Deep Learning / Graph / Code =========
+
+      %--- Neural network representation (x = 0.8 to 2.8) ---
+      \begin{scope}[shift={(0.8, -5.2)}]
+        \foreach \x in {0, 0.9, 1.8} {
+          \foreach \y in {0, 0.45, 0.9} {
+            \fill[coverprimary] (\x, \y) circle (1.2pt);
+          }
+        }
+        \foreach \x in {0, 0.9} {
+          \foreach \y in {0, 0.45, 0.9} {
+            \foreach \yy in {0, 0.45, 0.9} {
+              \draw[coverprimary, opacity=.22, line width=0.25pt]
+                (\x, \y) -- (\x+0.9, \yy);
+            }
+          }
+        }
+      \end{scope}
+      \node[text=coverprimary, font=\tiny\ttfamily, anchor=west]
+        at (0.8, -5.7) {neural net};
+
+      %--- Graph structure (x = 4.2 to 7.0) ---
+      \begin{scope}[shift={(4.2, -5.0)}]
+        \draw[coveraccent, opacity=.7, line width=0.6pt]
+          (0,0) -- (0.5,0.3) -- (1.0,-0.1) -- (1.5,0.4) -- (2.0,0) -- (2.5,0.3);
+        \foreach \x/\y in {0/0, 0.5/0.3, 1.0/-0.1, 1.5/0.4, 2.0/0, 2.5/0.3} {
+          \fill[coveraccent] (\x, \y) circle (1.1pt);
+        }
+      \end{scope}
+      \node[text=coverprimary, font=\tiny\ttfamily, anchor=west]
+        at (4.2, -5.7) {graph model};
+
+      %--- Core identities (x = 8.2 to 11.5) ---
+      \node[text=covergold, opacity=.9, font=\footnotesize, anchor=west]
+        at (8.2, -4.5) {$e^{i\pi} + 1 = 0$};
+      \node[text=covergold, opacity=.9, font=\footnotesize, anchor=west]
+        at (8.2, -5.2) {$y' = f(x, y)$};
+
+      %--- Source constructs (x = 12.8 to 15.5) ---
+      \node[text=coveraccent, opacity=.8, font=\ttfamily\footnotesize, anchor=west]
+        at (12.8, -4.5) {<template>};
+      \node[text=coveraccent, opacity=.8, font=\ttfamily\footnotesize, anchor=west]
+        at (12.8, -5.2) {auto lambda};
+
+      % Ambient subtle glyphs in background
+      \node[text=coveraccent, opacity=.1, font=\LARGE, anchor=west]
+        at (16.2, -4.6) {$\sum$};
+      \node[text=coverprimary, opacity=.08, font=\LARGE, anchor=west]
+        at (16.2, -5.6) {$\int$};
+
+    \end{scope}
+
+    % ============================================================
+    % Compact Concept DAG (Left gutter layout: x = 0.8 to 2.6cm, y = -8.5 to -15.5cm)
+    % Keeps full clearance for Persian blurb on the right!
+    % ============================================================
+    \begin{scope}[shift={([xshift=0.9cm,yshift=-8.8cm]current page.north west)},
+      every node/.style={draw=coveraccent!90, fill=coverpaper, line width=.55pt,
+        rounded corners=2pt, minimum width=9mm, minimum height=4.5mm,
+        inner sep=1pt, text=coverprimary, font=\tiny\bfseries, align=center}]
+      
+      % Directed DAG hierarchy
+      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.6, 0.0) -- (0.2, -0.9);
+      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.6, 0.0) -- (1.1, -0.9);
+      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.2, -1.3) -- (0.2, -2.1);
+      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (1.1, -1.3) -- (1.1, -2.1);
+      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.2, -2.5) -- (0.6, -3.3);
+      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (1.1, -2.5) -- (0.6, -3.3);
+      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.6, -3.7) -- (0.6, -4.5);
+
+      \node at (0.6,  0.0) {A};
+      \node at (0.2, -1.1) {B};
+      \node at (1.1, -1.1) {C};
+      \node at (0.2, -2.3) {D};
+      \node at (1.1, -2.3) {E};
+      \node at (0.6, -3.5) {F};
+      \node at (0.6, -4.7) {G};
+    \end{scope}
+
+    % ============================================================
+    % Cleanly anchored barcode strip and ISBN (Bottom Right)
+    % ============================================================
+    \begin{scope}[shift={([xshift=-7.2cm,yshift=-25.0cm]current page.north east)}]
+      \draw[coverprimary,line width=.55pt] (0,0) rectangle (5.85,1.52);
+      \foreach \x/\w in {0.22/.04,0.38/.08,0.62/.035,0.78/.06,1.02/.04,1.25/.09,1.48/.035,1.67/.06,1.92/.04,2.16/.08,2.41/.035,2.58/.06,2.82/.04,3.06/.09,3.31/.035,3.48/.06,3.73/.04,3.98/.08,4.22/.035,4.4/.06,4.65/.04,4.9/.09,5.16/.035,5.34/.06}{%
+        \fill[coverprimary] (\x,.23) rectangle ({\x+\w},1.12);}
+      \node[anchor=north east,text=coverprimary,font=\small\ttfamily]
+        at (5.82,-.08) {ISBN: \isbn};
+    \end{scope}
+  \end{tikzpicture}%
+}
+
+% Back cover API: #1 is the description blurb.
+\newcommand{\makebackcover}[1]{%
+  \clearpage
+  \begin{titlepage}\thispagestyle{empty}
+    \mb@backart
+    \vspace*{7.0cm} % Clear zone: art sits entirely above this line
+    \begin{flushright}
+      {\color{coverprimary}\fontsize{22}{29}\selectfont\bfseries\coverabout\par}
+      \vspace{.32cm}
+      \noindent{\color{coveraccent}\rule{\linewidth}{.8pt}}\par
+    \end{flushright}
+    \vspace{.48cm}
+    \begin{flushright}
+      % Left margin reserved for the concept tree DAG (0.78 width prevents overlapping with gutter)
+      \begin{minipage}{.78\textwidth}
+        \raggedleft\color{coverprimary}\fontsize{12}{20}\selectfont #1\par
+      \end{minipage}
+    \end{flushright}
+    \vfill
+    \begin{flushright}
+      {\color{coverprimary}\fontsize{11}{15}\selectfont\bfseries MatinBook\par}
+      \vspace{.12cm}
+      {\color{coverprimary}\fontsize{9}{12}\selectfont\ttfamily\repository\par}
+      \vspace{.1cm}
+      {\color{covergold}\fontsize{10}{14}\selectfont\bfseries\coversource\par}
+    \end{flushright}
+    \vspace*{2.2cm}
+  \end{titlepage}%
+}
+
+\PackageInfo{mb-theme-cover}{Persian-first MatinBook v3.1 cover system loaded; compile with XeLaTeX and XePersian}
 \endinput
