@@ -2,7 +2,7 @@
 
 **MatinBook** is a modular, feature-rich LaTeX document class designed specifically for writing professional Persian books in programming, mathematics, and computer science. Built with XeLaTeX, it provides a complete typesetting solution with beautiful typography, intelligent cross-referencing, and extensive customization options.
 
-**Current version:** v1.1 (Spring 1405 / بهار ۱۴۰۵)
+**Current version:** v1.1 (Mehr 1405 / مهر ۱۴۰۵)
 
 ---
 
@@ -35,14 +35,20 @@
 - **Print-ready:** CMYK color palette per Iranian educational publishing standards
 
 ### Scientific Environments
-- **10 colored box types:** Theorems, lemmas, definitions, examples, remarks, exercises, solutions, proofs, and more
+- **Two box families:**
+  - **`matinbox`** (Boyer-style): solid colored title bar, white body, sharp corners — used by `theorem`, `lemma`, `corollary`, `proposition`, `definition`, `remark`, `exercise`.
+  - **`matin-outline`** (RTL outline): right vertical line + horizontal rules, white body, black bold title — used by `example`, `proof`, `solution`.
+- **Breakable boxes:** Long boxes span multiple pages; the outline family keeps its vertical line on the correct side of each broken piece.
 - **Mathematics:** Custom operators, smart delimiters, matrix commands, number sets (ℕ, ℤ, ℚ, ℝ, ℂ)
 - **Algorithms:** Pseudocode with Persian captions via `xepersian` (standard `algorithm` package)
 - **Code display:** Syntax highlighting for 300+ languages via `minted` with Persian comment support
 - **Graphics:** TikZ styles, PGFPlots presets, flowcharts, trees, and pie charts
 
 ### Document Structure
-- **Professional cover:** Front and back cover with modern design (requires 2 compilation passes)
+- **Professional cover:** Full-color front cover with math/code symbols and a fantasy math band on the back cover (requires 2 compilation passes)
+- **Wide margin layout:** 5.9cm outer margin with `\mnote{}` and `\marginfig{}{}` for RTL margin notes
+- **Frontmatter / mainmatter split:** Symmetric margins for frontmatter (copyright, preface, ToC) and wide margins for main chapters
+- **Boyer/Stewart heading scale:** 24/20pt chapter, 15pt section, 13pt subsection, 11pt subsubsection
 - **Table of contents:** Customizable with colored dotted lines
 - **Cross-references:** Intelligent referencing with `cleveref` (Persian + English)
 - **Bibliography:** Full `biblatex` support with Persian title
@@ -51,7 +57,7 @@
 ### Advanced Features
 - **Draft mode:** Watermark and overfull box highlighting
 - **Multiple fonts:** XB Niloofar (default), Vazirmatn, Sahel, IR Lotus, B Nazanin
-- **Responsive layout:** O'Reilly-standard margins with Vaziri page size (16.5 × 24 cm)
+- **Textbook leading:** 1.15 line spacing (Boyer/Stewart-style)
 - **Localization:** Persian (fa-IR) and English (en-US) locales
 
 ---
@@ -101,7 +107,6 @@ cd matinbook
 
 ```bash
 # Install XB Niloofar (if not already installed)
-# Download from https://github.com/rastikerdar or your preferred source
 cp fonts/niloofar/*.ttf ~/.local/share/fonts/
 fc-cache -fv
 
@@ -118,7 +123,6 @@ sudo apt install fonts-vazirmatn
 **On macOS:**
 
 ```bash
-# Copy fonts to ~/Library/Fonts/
 cp fonts/niloofar/*.ttf ~/Library/Fonts/
 ```
 
@@ -129,16 +133,11 @@ cp fonts/niloofar/*.ttf ~/Library/Fonts/
 ### 3. Install Python Dependencies
 
 ```bash
-# Install Pygments (for minted)
 pip install pygments
-
-# For minted v3+ (optional):
-pip install latexminted
+pip install latexminted  # optional, for minted v3+
 ```
 
 ### 4. Install the Class in texmf (Recommended)
-
-To use `\documentclass{matinbook}` without specifying paths:
 
 ```bash
 mkdir -p ~/texmf/tex/latex/matinbook
@@ -169,7 +168,7 @@ Create a file `my-book.tex`:
 
 \title{عنوان کتاب من}
 \author{نام نویسنده}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
 \begin{document}
 
@@ -177,14 +176,15 @@ Create a file `my-book.tex`:
     {عنوان کتاب من}
     {زیرعنوان}
     {نام نویسنده}
-    {تابستان ۱۴۰۵}
+    {مهر ۱۴۰۵}
 
 \frontmatter
+\frontmattergeometry          % ← symmetric margins (no wide margin)
 \maketitle
 \tableofcontents
 
 \mainmatter
-
+\mainmattergeometry           % ← wide margin for margin notes
 \chapter{فصل اول}
 
 این یک متن نمونه فارسی است.
@@ -197,7 +197,10 @@ Create a file `my-book.tex`:
     اثبات این قضیه ساده است.
 \end{proof}
 
+\mnote{این یک یادداشت حاشیه‌ای است.}
+
 \backmatter
+\frontmattergeometry
 \printbibliography[title={منابع و مراجع}]
 \printindex
 
@@ -236,39 +239,36 @@ matinbook/
 ├── README.md                    # This file
 │
 ├── tex/                         # Source modules
-│   ├── core/                    # Core modules (3)
+│   ├── core/                    # Core modules (2)
 │   │   ├── mb-core.sty          #   Package loader
-│   │   ├── mb-utils.sty         #   Utility commands
-│   │   └── (mb-engine.sty was removed in v1.1)
+│   │   └── mb-utils.sty         #   Utility commands
 │   │
 │   ├── locales/                 # Language files (2)
 │   │   ├── fa-IR.sty            #   Persian locale
 │   │   └── en-US.sty            #   English locale
 │   │
-│   ├── modules/                 # Feature modules (11)
-│   │   ├── algorithm/           #   (removed in v1.1 — xepersian handles it)
-│   │   ├── boxes/               #   Colored tcolorbox styles
+│   ├── modules/                 # Feature modules (9)
+│   │   ├── boxes/               #   Two box families (matinbox, matin-outline)
 │   │   ├── code/                #   Code listing (minted)
-│   │   ├── color/               #   (removed in v1.1 — see themes/)
 │   │   ├── graphics/            #   TikZ and PGFPlots
 │   │   ├── index/               #   Index configuration (xindy)
-│   │   ├── layout/              #   Page layout and headings
+│   │   ├── layout/              #   Page layout, headings, margin notes
 │   │   ├── math/                #   Math operators and delimiters
 │   │   ├── references/          #   Hyperref and cleveref
-│   │   ├── theorem/             #   Theorem environments
+│   │   ├── theorem/             #   Theorem environments (tcolorbox)
 │   │   └── typography/          #   Fonts and typography
 │   │
 │   └── themes/                  # Theme system (1)
 │       └── default/             #   Default professional theme
 │           ├── mb-theme-colors.sty   # Color palette (CMYK)
-│           ├── mb-theme-cover.sty    # Cover design
+│           ├── mb-theme-cover.sty    # Cover design (full-color)
 │           └── mb-theme-default.sty  # Theme loader
 │
 ├── assets/                      # Static assets
 │   ├── cover/                   #   Cover images
 │   └── images/                  #   Book images
 │
-├── tests/                       # Integration tests (15)
+├── tests/                       # Integration tests (24)
 │   ├── v1.1/                    #   v1.1-specific tests
 │   │   ├── compile.sh           #     Test compiler script
 │   │   ├── stage-cls-01.tex
@@ -292,7 +292,8 @@ matinbook/
 │   │   ├── stage-colors-01.tex
 │   │   ├── stage-theme-default-01.tex
 │   │   ├── stage-cover-01.tex
-│   │   └── stage-main-01.tex
+│   │   ├── stage-main-01.tex
+│   │   └── stage-margin-01.tex  # ← margin notes test
 │   └── (legacy stage01-15 tests)
 │
 └── examples/                    # Example books (2)
@@ -409,6 +410,31 @@ x = 5  # |\pc{مقدار متغیر}|
 \cref{lst:label}      % Code reference
 ```
 
+#### Margin Notes
+
+```latex
+\mnote{یادداشت حاشیه}                    % plain margin note (RTL, no number)
+\marginfig{figures/plot.png}{نمودار}     % figure + caption in the margin
+```
+
+#### Frontmatter / Mainmatter
+
+```latex
+\frontmatter
+\frontmattergeometry          % symmetric margins (no wide margin)
+\maketitle
+\tableofcontents
+
+\mainmatter
+\mainmattergeometry           % wide margin for margin notes
+\chapter{...}
+
+\backmatter
+\frontmattergeometry          % symmetric margins again
+\printbibliography
+\printindex
+```
+
 #### Index Entries
 
 ```latex
@@ -428,7 +454,7 @@ x = 5  # |\pc{مقدار متغیر}|
     {عنوان کتاب}
     {زیرعنوان}
     {نام نویسنده}
-    {تابستان ۱۴۰۵}
+    {مهر ۱۴۰۵}
 
 % Back cover (at the very end):
 \makebackcover{توضیحات پشت جلد...}
@@ -459,7 +485,7 @@ xelatex -shell-escape advanced-algorithms-book.tex
 
 ## Tests
 
-The project includes 22 incremental integration tests in `tests/v1.1/`. To run all tests:
+The project includes 24 incremental integration tests in `tests/v1.1/`. To run all tests:
 
 ```bash
 cd tests/v1.1
@@ -482,7 +508,7 @@ Each test validates a specific module or feature:
 | `stage-layout-01` | Layout | Page geometry, headers, footers |
 | `stage-headings-01` | Headings | Chapter/section styles |
 | `stage-math-01` | Math | Equations, matrices, delimiters |
-| `stage-boxes-01` | Boxes | Colored tcolorbox styles |
+| `stage-boxes-01` | Boxes | Two box families, breakable boxes |
 | `stage-theorem-01` | Theorem | All theorem environments |
 | `stage-code-01` | Code | Syntax highlighting (minted) |
 | `stage-algorithm-01` | Algorithm | Pseudocode with Persian captions |
@@ -492,6 +518,7 @@ Each test validates a specific module or feature:
 | `stage-theme-default-01` | Theme | Theme loader |
 | `stage-cover-01` | Cover | Front and back cover |
 | `stage-main-01` | Main | Full book structure |
+| **`stage-margin-01`** | **Layout** | **Margin notes, RTL direction, odd/even pages** |
 
 ---
 
@@ -512,7 +539,6 @@ xelatex -shell-escape document.tex
 biber document
 
 # Step 3: Generate index (xindy is called automatically via shell-escape)
-# (no manual step needed if imakeidx is configured)
 
 # Step 4: Second compilation (for references)
 xelatex -shell-escape document.tex
@@ -541,8 +567,8 @@ MatinBook uses a modular theme system with a single, comprehensive default theme
 
 **Default Theme** (active by default):
 - 20 CMYK colors organized in 5 families (blue, green, orange, red, purple)
-- Professional cover design (front and back)
-- Colored boxes for all environments
+- Full-color cover design (front and back)
+- Two box families for scientific environments
 - Optimized for print (CMYK) and digital output
 
 > **Note:** The color palette follows Iranian educational publishing standards (ز/۱-۴) using CMYK with 5/10 multiples.
@@ -550,7 +576,6 @@ MatinBook uses a modular theme system with a single, comprehensive default theme
 To activate the default theme, edit `matinbook.cls`:
 
 ```latex
-% Default theme (active):
 \RequirePackage{mb-theme-default}
 ```
 
@@ -580,21 +605,46 @@ Five Persian fonts are supported via class options:
 
 ### Layout Customization
 
-The default layout uses O'Reilly-standard margins with Vaziri page size:
+The default layout uses a **wide outer margin** for margin notes, with a symmetric geometry available for frontmatter:
 
+**Mainmatter (wide margin):**
 ```latex
 \geometry{
-    paperwidth=16.5cm,
-    paperheight=24cm,
-    top=3.0cm,
-    bottom=2.5cm,
-    inner=2.5cm,
-    outer=2.5cm,
-    bindingoffset=0.5cm
+    paperwidth=17.8cm,
+    paperheight=25.4cm,
+    top=1.7cm,
+    bottom=1.7cm,
+    inner=1.5cm,
+    outer=5.9cm,              % wide outer margin
+    marginparwidth=3.5cm,     % width of margin note area
+    marginparsep=0.6cm,       % gap between text and note
+    headheight=15pt,
+    headsep=5pt,
+    footskip=18pt,
+    bindingoffset=0.4cm
 }
 ```
 
-To customize, create `tex/modules/layout/mb-layout.sty` with your own `\geometry` settings.
+**Frontmatter (symmetric, no wide margin):**
+```latex
+\frontmattergeometry
+% → inner=1.5cm, outer=1.5cm, no marginparwidth
+```
+
+The line spacing is set to **1.15** (Boyer/Stewart-style textbook leading).
+
+To customize, edit `tex/modules/layout/mb-layout.sty`.
+
+### Margin Notes
+
+The wide outer margin (5.9cm) provides room for RTL margin notes:
+
+```latex
+\mnote{یادداشت حاشیه}                    % plain margin note (no number)
+\marginfig{figures/plot.png}{نمودار}     % figure + caption in the margin
+```
+
+Margin notes use the standard `\marginpar` with `\RL{}` (from xepersian) to ensure correct RTL direction on both odd and even pages.
 
 ---
 
@@ -650,7 +700,7 @@ We welcome contributions! Here's how you can help:
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
 
-### v1.1 (Spring 1405 / بهار ۱۴۰۵) — Current
+### v1.1 (Mehr 1405 / مهر ۱۴۰۵) — Current
 
 **Major changes:**
 - **Migrated to LaTeX 2023 key-value option system** (`\DeclareKeys`)
@@ -659,9 +709,17 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - **Added xepersian-hm** for Kashida support
 - **Removed 6 obsolete modules:** `mb-engine`, `mb-options`, `mb-fonts`, `mb-rtl`, `mb-algorithm`, `mb-colors`
 - **Fixed loading order** so colors are defined before consumers
+- **Added wide margin layout** (5.9cm outer) with `\mnote{}` and `\marginfig{}{}` for RTL margin notes
+- **Added `\frontmattergeometry` / `\mainmattergeometry`** to separate frontmatter and mainmatter geometries
+- **Adopted Boyer/Stewart heading scale:** 24/20pt chapter, 15pt section, 13pt subsection, 11pt subsubsection
+- **Two box families:** `matinbox` (Boyer-style) and `matin-outline` (RTL outline)
+- **Breakable outline boxes** with `underlay first/middle/last`
+- **Rewrote `mb-theorem`** using `\newtcolorbox`
+- **Redesigned cover** with full-color front and fantasy math band on the back
+- **Set line spacing to 1.15** (Boyer/Stewart textbook leading)
 - **Fixed cover design** (2-pass compilation, CMYK colors, LTR math symbols)
 - **Fixed main.tex structure** per Iranian publishing standards
-- **Added 22 integration tests**
+- **Added 24 integration tests** (was 22)
 
 ### v1.0 (Summer 1404 / تابستان ۱۴۰۴)
 
