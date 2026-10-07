@@ -16,6 +16,12 @@
 %%     Or use latexmk:
 %%       latexmk -xelatex -shell-escape main.tex
 %%
+%% Layout:
+%%   - Frontmatter (copyright, preface, ToC, ...): symmetric margins,
+%%     no wide margin. Activated by \frontmattergeometry.
+%%   - Mainmatter (chapters): wide outer margin for margin notes.
+%%     Activated by \mainmattergeometry.
+%%
 
 \documentclass{matinbook}
 
@@ -54,7 +60,10 @@
 %------------------------------------------------------------------------
 % FRONT MATTER (Persian letter numbering: الف، ب، ج، ...)
 %------------------------------------------------------------------------
+% No wide margin in frontmatter.
+%------------------------------------------------------------------------
 \frontmatter
+\frontmattergeometry
 
 % Title page (uses \title, \author, \date)
 \maketitle
@@ -135,7 +144,10 @@
 %------------------------------------------------------------------------
 % MAIN MATTER (Arabic numbering: 1, 2, 3, ...)
 %------------------------------------------------------------------------
+% Wide outer margin for margin notes.
+%------------------------------------------------------------------------
 \mainmatter
+\mainmattergeometry
 
 % Chapters
 % \input{chapters/chapter-01}
@@ -150,7 +162,10 @@
 %------------------------------------------------------------------------
 % BACK MATTER
 %------------------------------------------------------------------------
+% No wide margin in backmatter (same as frontmatter).
+%------------------------------------------------------------------------
 \backmatter
+\frontmattergeometry
 
 % Bibliography
 \printbibliography[title={منابع و مراجع}]

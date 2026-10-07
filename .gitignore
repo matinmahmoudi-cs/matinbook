@@ -114,3 +114,4 @@ yarn-error.log*
 *.tmp
 *.temp
 .cache/
+_minted-*/
