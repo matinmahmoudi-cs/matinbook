@@ -5,7 +5,7 @@
 **Version:** 1.1
 **Target:** Persian technical books in programming, mathematics, and computer science
 **Engine:** XeLaTeX (mandatory)
-**Last Updated:** 1405 / 2026
+**Last Updated:** Mehr 1405 / October 2026
 
 ---
 
@@ -22,6 +22,8 @@
 6. [Color System](#6-color-system)
 7. [Typography and Fonts](#7-typography-and-fonts)
 8. [Page Layout](#8-page-layout)
+8b. [Margin Notes (RTL)](#8b-margin-notes-rtl)
+8c. [Frontmatter / Mainmatter Split](#8c-frontmatter--mainmatter-split)
 9. [Mathematics](#9-mathematics)
 10. [Code Display](#10-code-display)
 11. [Algorithms and Pseudocode](#11-algorithms-and-pseudocode)
@@ -79,6 +81,8 @@ MatinBook follows three core principles inspired by top-tier academic publishers
 8. **Colors are defined in CMYK** (per Iranian educational publishing standard ز/۱-۴)
 9. **The cover requires at least 2 compilation passes** (TikZ `remember picture, overlay`)
 10. **The index requires `xindy`** (not `makeindex`) for correct Persian sorting
+11. **Margin notes use the wide outer margin** (5.9cm) with `\mnote{}` and `\marginfig{}{}`
+12. **Frontmatter and mainmatter use different geometries** — `\frontmattergeometry` and `\mainmattergeometry`
 
 ---
 
@@ -97,34 +101,34 @@ matinbook/
 ├── AI_GUIDE.md                      # This file
 │
 ├── tex/
-│   ├── core/                        # 3 core modules
+│   ├── core/                        # 2 core modules
 │   │   ├── mb-core.sty              # Package loader (order matters)
-│   │   └── mb-utils.sty             # Utility commands
-│   │   └── (mb-engine.sty, mb-options.sty were removed in v1.1)
+│   │   ├── mb-utils.sty             # Utility commands
+│   │   └── (mb-engine.sty, mb-options.sty removed in v1.1)
 │   │
 │   ├── locales/                     # 2 locale files
 │   │   ├── fa-IR.sty                # Persian translations
 │   │   └── en-US.sty                # English translations
 │   │
 │   ├── modules/                     # 9 feature modules
-│   │   ├── boxes/mb-boxes.sty       # tcolorbox STYLES (no environments)
+│   │   ├── boxes/mb-boxes.sty       # Two families: matinbox + matin-outline
 │   │   ├── code/mb-code.sty         # minted configuration
 │   │   ├── graphics/mb-graphics.sty # TikZ + PGFPlots
 │   │   ├── index/mb-index.sty       # xindy configuration
 │   │   ├── layout/
-│   │   │   ├── mb-layout.sty        # Page geometry (O'Reilly standard)
+│   │   │   ├── mb-layout.sty        # Page geometry (wide margin)
 │   │   │   └── mb-headings.sty      # Chapter/section styles
 │   │   ├── math/mb-math.sty         # Math operators and delimiters
 │   │   ├── references/mb-references.sty  # hyperref + cleveref
-│   │   ├── theorem/mb-theorem.sty   # Theorem environments (via amsthm)
+│   │   ├── theorem/mb-theorem.sty   # Theorem environments (tcolorbox)
 │   │   └── typography/
-│   │       └── mb-typography.sty    # Microtype + Kashida
-│   │       (mb-rtl.sty, mb-fonts.sty were removed in v1.1)
+│   │       ├── mb-typography.sty    # Microtype + Kashida
+│   │       └── (mb-rtl.sty, mb-fonts.sty removed in v1.1)
 │   │
 │   └── themes/                      # Theme system
 │       └── default/
 │           ├── mb-theme-colors.sty  # Color palette (CMYK)
-│           ├── mb-theme-cover.sty   # Cover design
+│           ├── mb-theme-cover.sty   # Cover design (full-color)
 │           └── mb-theme-default.sty # Theme loader
 │
 ├── assets/
@@ -139,7 +143,7 @@ matinbook/
 │   └── irlotus/
 │
 ├── tests/
-│   └── v1.1/                        # 22 integration tests
+│   └── v1.1/                        # 24 integration tests
 │       ├── compile.sh               # Test compiler script
 │       ├── stage-cls-01.tex
 │       ├── stage-packages-01.tex
@@ -162,7 +166,8 @@ matinbook/
 │       ├── stage-colors-01.tex
 │       ├── stage-theme-default-01.tex
 │       ├── stage-cover-01.tex
-│       └── stage-main-01.tex
+│       ├── stage-main-01.tex
+│       └── stage-margin-01.tex      # ← Margin notes test
 │
 └── examples/                        # 2 example books
     ├── matinbook-documentation.tex
@@ -175,17 +180,17 @@ matinbook/
 Phase 1 — Base packages (BEFORE xepersian):
  1.  mb-core          → Load ALL base packages
  2.  mb-theme-colors  → Color palette (CMYK)
- 3.  mb-boxes         → tcolorbox styles
+ 3.  mb-boxes         → tcolorbox styles (two families)
  4.  mb-code          → minted configuration
- 5.  mb-layout        → Page geometry
- 6.  mb-headings      → Chapter/section styles
+ 5.  mb-layout        → Page geometry (wide margin)
+ 6.  mb-headings      → Chapter/section styles (Boyer/Stewart)
  7.  mb-math          → Math operators
- 8.  mb-theorem       → Theorem environments
+ 8.  mb-theorem       → Theorem environments (tcolorbox)
  9.  mb-references    → hyperref + cleveref
 10.  mb-graphics      → TikZ + PGFPlots
 11.  mb-index         → xindy configuration
 12.  mb-utils         → Utility commands
-13.  mb-theme-cover   → Cover design
+13.  mb-theme-cover   → Cover design (full-color)
 
 Phase 2 — xepersian (MUST be the last package):
 14.  xepersian        → RTL/Bidi support
@@ -266,17 +271,17 @@ C{width}  → Center-aligned paragraph column
 |--------|------|
 | `mb-core` | Loads ALL base packages (order matters!) |
 | `mb-theme-colors` | Defines 20 CMYK colors in 5 families |
-| `mb-boxes` | Provides tcolorbox STYLES only (no environments) |
+| `mb-boxes` | **Two families:** `matinbox` (Boyer-style) + `matin-outline` (RTL outline) |
 | `mb-code` | Configures minted with Persian comment support |
-| `mb-layout` | Page geometry, headers, footers, watermark |
-| `mb-headings` | Chapter/section/subsection styles |
+| `mb-layout` | Page geometry (wide margin), headers, footers, margin notes, watermark |
+| `mb-headings` | Chapter/section/subsection styles (Boyer/Stewart scale) |
 | `mb-math` | Math operators, delimiters, equation numbering |
-| `mb-theorem` | Defines theorem environments via `\newtheorem` |
+| `mb-theorem` | Defines theorem environments via **`\newtcolorbox`** |
 | `mb-references` | Configures hyperref and cleveref |
 | `mb-graphics` | TikZ, PGFPlots, pgf-pie |
 | `mb-index` | Configures xindy with persian-variant2 |
 | `mb-utils` | `\latintitle`, `\latinauthor`, `\matin@ifcmd` |
-| `mb-theme-cover` | Front and back cover design |
+| `mb-theme-cover` | Front and back cover design (full-color) |
 | `mb-typography` | Microtype, Kashida, column types |
 | `fa-IR` | Persian translations for LaTeX names |
 | `mb-theme-default` | Loads `mb-theme-cover` (colors loaded separately) |
@@ -288,49 +293,60 @@ C{width}  → Center-aligned paragraph column
 
 ## 4. Available Environments
 
+### Box Families (v1.1)
+
+MatinBook v1.1 provides **two box families**:
+
+| Family | Style | Used by |
+|--------|-------|---------|
+| **`matinbox`** | Boyer-style: solid colored title bar, white body, sharp corners | `theorem`, `lemma`, `corollary`, `proposition`, `definition`, `remark`, `exercise` |
+| **`matin-outline`** | RTL outline: right vertical line (2pt), horizontal rule under title (1pt), horizontal rule at bottom (1pt), white body, black bold title | `example`, `proof`, `solution` |
+
+> **Note:** Both families are **breakable** — long boxes span multiple pages.
+> The `matin-outline` family keeps its vertical line on the **correct side**
+> of each broken piece (odd/even page) via `underlay first/middle/last`.
+
 ### Theorem Family (Blue Theme — shared counter)
 
 All theorem-family environments **share a single counter** (per Persian LaTeX community consensus, to help readers locate theorems faster).
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `theorem` | definition (shared) | matin-theorem (blue) | قضیه |
-| `lemma` | definition (shared) | matin-lemma (blue) | لم |
-| `corollary` | definition (shared) | matin-corollary (blue) | نتیجه |
-| `proposition` | definition (shared) | matin-proposition (blue) | گزاره |
+| `theorem` | matin@thmcounter (shared) | matin-theorem (blue) | قضیه |
+| `lemma` | matin@thmcounter (shared) | matin-lemma (blue) | لم |
+| `corollary` | matin@thmcounter (shared) | matin-corollary (blue) | نتیجه |
+| `proposition` | matin@thmcounter (shared) | matin-proposition (blue) | گزاره |
 
-### Definition Family (Lighter Blue)
-
-| Environment | Counter | Color | Persian Title |
-|-------------|---------|-------|---------------|
-| `definition` | definition (primary) | matin-definition | تعریف |
-
-> **Note:** `definition` **owns** the shared counter. All theorem-family environments inherit it.
-
-### Example Family (Orange)
+### Definition Family (Green)
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `example` | definition (shared) | matin-example | مثال |
+| `definition` | matin@thmcounter (shared) | matin-definition | تعریف |
 
-### Remark Family (Orange — lighter)
-
-| Environment | Counter | Color | Persian Title |
-|-------------|---------|-------|---------------|
-| `remark` | definition (shared) | matin-remark | نکته |
-
-### Exercise Family (Orange — lightest)
+### Example Family (Orange — outline style)
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `exercise` | definition (shared) | matin-exercise | تمرین |
-| `solution` | (none) | matin-solution (green) | راه حل |
+| `example` | matin@thmcounter (shared) | matin-example-outline | مثال |
 
-### Proof
+### Remark Family (Red)
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `proof` | (none) | matin-proof (green) | اثبات |
+| `remark` | matin@thmcounter (shared) | matin-remark | نکته |
+
+### Exercise Family (Purple)
+
+| Environment | Counter | Color | Persian Title |
+|-------------|---------|-------|---------------|
+| `exercise` | matin@thmcounter (shared) | matin-exercise | تمرین |
+
+### Solution / Proof (Green / Gray — outline style)
+
+| Environment | Counter | Color | Persian Title |
+|-------------|---------|-------|---------------|
+| `solution` | (none) | matin-solution-outline (green) | راه حل |
+| `proof` | (none) | matin-proof-outline (gray) | اثبات |
 
 > **Note:** The `proof` environment automatically adds `\qedsymbol` (□) at the end.
 
@@ -406,7 +422,7 @@ Labels MUST be placed INSIDE the environment, AFTER any optional title argument:
 
 ### IMPORTANT: Shared Counter Behavior
 
-Because all theorem-family environments share the `definition` counter, the numbering is **continuous**:
+Because all theorem-family environments share the `matin@thmcounter`, the numbering is **continuous**:
 
 ```latex
 \begin{definition}[Graph]  % Number 1.1
@@ -427,6 +443,15 @@ Because all theorem-family environments share the `definition` counter, the numb
 ```
 
 > 💡 **Tip:** This is **intentional** — Persian LaTeX community prefers shared numbering so readers don't have to search through multiple sequences.
+
+### Title Format
+
+The title of each box is built by `\matin@thmtitle`:
+
+```
+\begin{theorem}              → "قضیه ۱.۱"
+\begin{theorem}[قضیه اصلی]   → "قضیه ۱.۱: قضیه اصلی"
+```
 
 ---
 
@@ -450,12 +475,26 @@ Because all theorem-family environments share the `definition` counter, the numb
 | `\mainmatter` | (none) | Start main matter (Arabic numbering) |
 | `\backmatter` | (none) | Start back matter |
 
+### Geometry Commands (NEW in v1.1)
+
+| Command | Description |
+|---------|-------------|
+| `\frontmattergeometry` | Switch to symmetric margins (no wide margin) for frontmatter/backmatter |
+| `\mainmattergeometry` | Restore the wide-margin geometry for main chapters |
+
+### Margin Note Commands (NEW in v1.1)
+
+| Command | Arguments | Description |
+|---------|-----------|-------------|
+| `\mnote{text}` | Text | Plain margin note (RTL, no number) |
+| `\marginfig{file}{caption}` | File, Caption | Figure + caption in the margin |
+
 ### Cover Commands
 
 | Command | Usage | Description |
 |---------|-------|-------------|
-| `\makecover{...}` | 4 args | Front cover with TikZ decorations |
-| `\makebackcover{...}` | 1 arg | Back cover |
+| `\makecover{...}` | 4 args | Front cover with full-color background |
+| `\makebackcover{...}` | 1 arg | Back cover with math/code fantasy band |
 | `\repository` | Variable | Repository URL (shown on cover) |
 | `\booktitle{...}` | 1 arg | Book title for headers |
 
@@ -466,17 +505,18 @@ Because all theorem-family environments share the `definition` counter, the numb
 | Command | Usage | Description |
 |---------|-------|-------------|
 | `\lr{text}` | `\lr{computer}` | Inline Latin text in Persian |
-| `\rl{text}` | `\rl{متن فارسی}` | Inline Persian text in LTR (for TikZ nodes) |
+| `\rl{text}` | `\rl{متن فارسی}` | Inline Persian text in LTR (for TikZ nodes only) |
+| `\RL{text}` | `\RL{متن فارسی}` | Paragraph-level RTL group |
 | `\begin{latin}...\end{latin}` | Environment | Block of Latin text |
 
-### Cross-Reference Commands
+### Reference Commands (NEW in v1.1)
 
-MatinBook v1.1 uses **`cleveref`** as the **primary** cross-reference system. All references use `\cref{}`:
+All references use **`\cref{}`** and helper macros. The helpers delegate to `\cref`:
 
 | Command | Output Example | Notes |
 |---------|----------------|-------|
 | `\cref{eq:label}` | معادله ۱.۱ | Auto-detects type |
-| `\cref{thm:label}` | قضیه ۱.۱ | Uses shared counter |
+| `\cref{thm:label}` | قضیه ۱.۱ | Shared counter |
 | `\cref{lem:label}` | لم ۱.۱ | |
 | `\cref{cor:label}` | نتیجه ۱.۱ | |
 | `\cref{def:label}` | تعریف ۱.۱ | |
@@ -490,7 +530,22 @@ MatinBook v1.1 uses **`cleveref`** as the **primary** cross-reference system. Al
 | `\cref{sec:label}` | بخش ۱.۱ | |
 | `\Cref{...}` | Same as `\cref` (Persian has no case) | |
 
-> **Note:** In MatinBook v1.1, manual reference commands (`\thmref`, `\figref`, etc.) have been **removed**. Always use `\cref{}`.
+### Helper Reference Commands (v1.1)
+
+These helpers are provided by `mb-theorem.sty` and delegate to `\cref`:
+
+| Command | Delegates to |
+|---------|--------------|
+| `\thmref{label}` | `\cref{label}` |
+| `\lemref{label}` | `\cref{label}` |
+| `\corref{label}` | `\cref{label}` |
+| `\propref{label}` | `\cref{label}` |
+| `\defref{label}` | `\cref{label}` |
+| `\exref{label}` | `\cref{label}` |
+| `\remref{label}` | `\cref{label}` |
+| `\excref{label}` | `\cref{label}` |
+
+> **Note:** These helpers exist for semantic clarity. `\thmref{thm:main}` is equivalent to `\cref{thm:main}`.
 
 ### Multiple References
 
@@ -613,10 +668,6 @@ Use the standard `algorithm` + `algorithmic` environments:
 
 ---
 
-**End of Section 4-5**
-
-
-
 ## 6. Color System
 
 ### 20 Defined Colors (CMYK, 5 Families × 3 Shades + Neutrals)
@@ -673,19 +724,15 @@ matinbordergray  cmyk(0.05, 0.00, 0.00, 0.20)   % Borders
 matincream       cmyk(0.00, 0.00, 0.00, 0.00)   % Off-white background
 ```
 
-### Color Aliases (Cover)
+### Color Aliases (Cover, v1.1)
 
 The cover uses aliases mapped to the main palette:
 
 ```latex
-coverbg          → matincream
-coverprimary     → matindarkblue
-coveraccent      → matingreen
-coveraccent2     → matinorange
-coveraccent3     → matinblue
-covergray        → matinmediumgray
-coverlight       → matinlightgray
-coverdark        → matindarkgray
+coverprimary     → matindarkgreen   % dark green
+coveraccent      → matinorange      % warm orange
+covergray        → matinmediumgray  % gray
+coverlight       → matinlightgray   % light gray
 ```
 
 > **Note:** This ensures the cover uses the same CMYK palette as the rest of the book.
@@ -798,9 +845,9 @@ MatinBook v1.1 includes `xepersian-hm` for Kashida support:
 ### Typography Rules for Academic Writing
 
 1. **Line length:** 60-75 characters per line
-2. **Line spacing:** 1.1 (MatinBook default) — optimal for Persian script
-3. **Paragraph spacing:** `\parskip=0pt plus 1pt` — subtle, not distracting
-4. **First-line indent:** `\parindent=0.5cm` — Persian standard
+2. **Line spacing:** 1.15 (MatinBook default, Boyer/Stewart style) — optimal for Persian script
+3. **Paragraph spacing:** `\parskip=0pt` — no extra spacing
+4. **First-line indent:** `\parindent=1em` — Persian standard
 5. **No first-line indent after headings** — MatinBook handles this automatically
 
 ### When to Use `\lr{}` vs `\begin{latin}`
@@ -820,43 +867,71 @@ MatinBook v1.1 includes `xepersian-hm` for Kashida support:
 
 ## 8. Page Layout
 
-### Geometry (O'Reilly Standard with Vaziri Page Size)
+### Geometry (Mainmatter — Wide Margin for Notes)
 
 ```latex
 \geometry{
-    paperwidth=16.5cm,    % Vaziri format
-    paperheight=24cm,
-    top=3.0cm,
-    bottom=2.5cm,
-    inner=2.5cm,          % Toward binding
-    outer=2.5cm,          % Toward edge
+    paperwidth=17.8cm,    % 7 × 10 in (Boyer/Stewart)
+    paperheight=25.4cm,
+    top=1.7cm,
+    bottom=1.7cm,
+    inner=1.5cm,          % Toward binding
+    outer=5.9cm,          % Wide — for margin notes
+    marginparwidth=3.5cm, % Width of margin note area
+    marginparsep=0.6cm,   % Gap between text and note
     headheight=15pt,
-    headsep=8pt,
-    footskip=25pt,
-    bindingoffset=0.5cm
+    headsep=5pt,
+    footskip=18pt,
+    bindingoffset=0.4cm
 }
 ```
 
-### Page Layout Standards (Inspired by O'Reilly Media)
+### Frontmatter Geometry (Symmetric, No Wide Margin)
 
-| Element | Standard | MatinBook |
-|---------|----------|-----------|
-| Paper width | 16.5 cm (Vaziri) | ✓ |
-| Paper height | 24.0 cm (Vaziri) | ✓ |
-| Top margin | 3.0 cm | ✓ |
-| Bottom margin | 2.5 cm | ✓ |
-| Inner margin | 2.5 cm | ✓ |
-| Outer margin | 2.5 cm | ✓ |
-| Binding offset | 0.5 cm | ✓ |
-| Header height | 15 pt | ✓ |
-| Header separation | 8 pt | ✓ |
-| Footer skip | 25 pt | ✓ |
-| Text width | ~11.0 cm | ✓ |
-| Text height | ~18.5 cm | ✓ |
+```latex
+\frontmattergeometry
+% → inner=1.5cm, outer=1.5cm, no marginparwidth
+```
+
+Used in:
+- Copyright page
+- Dedication
+- Preface
+- Table of Contents / List of Figures / List of Tables
+- Bibliography
+- Index
+
+### Page Layout Standards
+
+| Element | Mainmatter | Frontmatter |
+|---------|------------|-------------|
+| Paper width | 17.8 cm | 17.8 cm |
+| Paper height | 25.4 cm | 25.4 cm |
+| Top margin | 1.7 cm | 1.7 cm |
+| Bottom margin | 1.7 cm | 1.7 cm |
+| Inner margin | 1.5 cm | 1.5 cm |
+| Outer margin | **5.9 cm** (wide) | **1.5 cm** (symmetric) |
+| Margin note width | 3.5 cm | — |
+| Margin note gap | 0.6 cm | — |
+| Binding offset | 0.4 cm | 0.4 cm |
+| Text width | ~10.3 cm | ~14.3 cm |
+
+### Line Spacing
+
+```latex
+\setstretch{1.15}   % Boyer/Stewart textbook leading
+```
+
+### Paragraph Settings
+
+```latex
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+```
 
 ### Header/Footer (twoside)
 
-- **Even pages (left side):** Book title (`\matin@booktitle`)
+- **Even pages (left side):** Chapter name (`\leftmark`)
 - **Odd pages (right side):** Chapter name (`\leftmark`)
 - **Page number:** In footer, no rule
 - **Chapter start pages:** Plain style (page number only in footer)
@@ -879,26 +954,13 @@ In `draft` mode, MatinBook adds a watermark:
 
 The watermark text is "DRAFT" at 1.5x scale with light gray color.
 
-### Line Spacing
-
-```latex
-\setstretch{1.1}   % 10% extra line spacing
-```
-
-### Paragraph Settings
-
-```latex
-\setlength{\parindent}{0.5cm}
-\setlength{\parskip}{0pt plus 1pt}
-```
-
 ### Caption Settings
 
 ```latex
 \captionsetup{
-    font=small,
+    font=footnotesize,
     labelfont=bf,
-    skip=10pt,
+    skip=8pt,
     justification=centering
 }
 ```
@@ -915,6 +977,110 @@ The watermark text is "DRAFT" at 1.5x scale with light gray color.
 ```
 
 ---
+
+## 8b. Margin Notes (RTL)
+
+### Overview
+
+MatinBook v1.1 adds a **wide outer margin** (5.9cm) with margin note support for RTL documents. This feature is inspired by classic textbook layouts (Boyer, Stewart) where the outer margin holds figures, formulas, or explanatory notes.
+
+### API
+
+| Command | Usage | Description |
+|---------|-------|-------------|
+| `\mnote{text}` | `\mnote{یادداشت}` | Plain margin note (RTL, no number) |
+| `\marginfig{file}{caption}` | `\marginfig{plot.png}{نمودار}` | Figure with caption in margin |
+
+### How It Works
+
+- Uses the standard `\marginpar` (LaTeX kernel-level) for odd/even placement.
+- Wraps content in `\RL{}` (from xepersian) to force RTL direction.
+- **Does NOT use `\reversemarginpar`** (would double-reverse the position).
+- Position: outer margin on both odd (right) and even (left) pages.
+
+### Direction Behavior
+
+| Page | Margin side | Note direction |
+|------|-------------|----------------|
+| Odd (recto) | Left | RTL (via `\RL{}`) |
+| Even (verso) | Right | RTL (via `\RL{}`) |
+
+### Usage Example
+
+```latex
+\chapter{فصل اول}
+
+این یک متن اصلی است.
+\mnote{این یک یادداشت حاشیه‌ای است.}
+و این ادامه‌ی متن اصلی است.
+
+\marginfig{figures/plot.png}{نمودار نمونه}
+```
+
+### Limitations
+
+- `\mnote` cannot be used inside `tcolorbox` or `figure` environments
+  (limitation of `\marginpar`).
+- Requires a wide outer margin, which reduces the main text width.
+- Needs at least 2 compilation passes for stable positioning.
+
+### Compilation
+
+```bash
+xelatex -shell-escape document.tex
+xelatex -shell-escape document.tex
+```
+
+---
+
+## 8c. Frontmatter / Mainmatter Split
+
+MatinBook v1.1 provides two geometry commands:
+
+| Command | Purpose |
+|---------|---------|
+| `\frontmattergeometry` | Symmetric margins (no wide margin) for frontmatter and backmatter |
+| `\mainmattergeometry` | Restore the wide-margin geometry for main chapters |
+
+### Usage
+
+```latex
+\frontmatter
+\frontmattergeometry          % symmetric margins
+
+\maketitle
+\tableofcontents
+
+\mainmatter
+\mainmattergeometry           % wide margin for margin notes
+
+\chapter{...}
+
+\backmatter
+\frontmattergeometry          % symmetric margins again
+\printbibliography
+\printindex
+```
+
+### Which pages use which geometry?
+
+| Section | Geometry |
+|---------|----------|
+| Cover (before `\frontmatter`) | Original wide-margin (but full page) |
+| Frontmatter | Symmetric (`\frontmattergeometry`) |
+| Mainmatter | Wide margin (`\mainmattergeometry`) |
+| Backmatter | Symmetric (`\frontmattergeometry`) |
+| Back cover | Original wide-margin (but full page) |
+
+### Why Split?
+
+- **Frontmatter** (copyright, preface, ToC) doesn't need margin notes — it uses the full width.
+- **Mainmatter** (chapters) needs the wide outer margin for `\mnote` and `\marginfig`.
+- **Backmatter** (bibliography, index) is reference material — no margin notes needed.
+
+### Technical Note
+
+`\newgeometry` (used inside `\frontmattergeometry`) **cannot change** `paperwidth` or `paperheight`. Those are only set once by `\geometry`. This is why `\frontmattergeometry` omits them.
 
 **End of Section 6-8**
 
@@ -1217,7 +1383,7 @@ All languages supported by Pygments (300+):
 5. **Docstrings for functions** — Google or NumPy style
 6. **No trailing whitespace** — clean code
 7. **Always introduce code with a sentence** before the block
-8. **Always reference code with `\coderef{}`** or `\cref{}`
+8. **Always reference code with `\cref{}`** or `\coderef{}`
 
 ### Code Length Guidelines
 
@@ -1323,7 +1489,7 @@ You just use the standard `\caption{}` inside the `algorithm` environment.
 Use `\cref{}`:
 
 ```latex
-Algorithm \cref{alg:binary-search} shows the binary search process.
+الگوریتم \cref{alg:binary-search} فرآیند جستجوی دودویی را نشان می‌دهد.
 ```
 
 Output: "الگوریتم ۱.۱ فرآیند جستجوی دودویی را نشان می‌دهد."
@@ -1339,10 +1505,6 @@ To include a list of algorithms, uncomment in `main.tex`:
 > ⚠️ **Warning:** Only include this if your book actually uses algorithms. Otherwise, it produces an empty list with a title.
 
 ---
-
-**End of Section 9-11**
-```
-
 
 ## 12. Graphics and Diagrams
 
@@ -1642,7 +1804,18 @@ MatinBook v1.1 uses **`cleveref`** as the primary cross-reference system. Persia
 | `\crefrange{label1}{label2}` | Range reference |
 | `\cref{a,b,c}` | Multiple references |
 
-> **Note:** In v1.1, manual commands like `\thmref`, `\figref`, `\meqref`, `\algref`, etc. have been **removed**. Always use `\cref{}`.
+### Helper Commands (v1.1)
+
+| Command | Equivalent |
+|---------|------------|
+| `\thmref{label}` | `\cref{label}` |
+| `\lemref{label}` | `\cref{label}` |
+| `\corref{label}` | `\cref{label}` |
+| `\propref{label}` | `\cref{label}` |
+| `\defref{label}` | `\cref{label}` |
+| `\exref{label}` | `\cref{label}` |
+| `\remref{label}` | `\cref{label}` |
+| `\excref{label}` | `\cref{label}` |
 
 ### Label Naming Convention
 
@@ -1682,10 +1855,6 @@ Use descriptive prefixes for labels:
 \cref{fig:plot-example} نمودار تابع را نشان می‌دهد.
 \cref{tab:comparison} نتایج را مقایسه می‌کند.
 ```
-
-### Capitalized References
-
-In Persian, `\cref` and `\Cref` produce the same output (Persian has no case distinction). However, `\Cref` is still provided for compatibility with English documents.
 
 ### Cleveref Configuration (in `fa-IR.sty`)
 
@@ -1825,9 +1994,6 @@ For Persian sources, use the `langid` field:
 
 ---
 
-**End of Section 12-14**
-```
-
 ## 15. Index Generation
 
 ### Configuration (in `mb-index.sty`)
@@ -1964,13 +2130,26 @@ xelatex -shell-escape document.tex
 
 ### Overview
 
-MatinBook v1.1 provides a professional front and back cover with:
+MatinBook v1.1 provides a **redesigned** professional front and back cover:
 
-- TikZ geometric decorations
-- Code-style elements (`{ }`, `$ cd /book`, `main()`)
-- Math symbols (`λ`, `Σ`, `π`, `∞`)
-- Dot grid pattern
-- Repository and version info
+**Front cover:**
+- Full-color dark green background
+- Math symbols (`∑ ∫ ∂ π ∞ √ ∇ λ θ ε Σ Ω Δ`)
+- Math formulas and programming keywords
+  (`def`, `class`, `while`, `return`, `import`, `lambda`)
+- Code symbols (`<\ />`, `{ }`, `[ ]`, `=>`, `===`, `!=`)
+
+**Back cover:**
+- Full-color dark green background
+- **Fantasy math band (0–7cm)**: three rows of
+  - Row 1: three parallel sine waves (orange, faded)
+  - Row 2: five math formulas (`∫`, `∑`, `∂`, `∇`, `lim`)
+  - Row 3: neural network, dotted graph, small formulas,
+    code symbols, and large faint symbols
+- **Mini-plot**: aligned with "درباره این کتاب" heading at 7cm,
+  width scaled ×0.75, height scaled ×1.5
+- **Concept tree**: 7 nodes, English labels (A–G), bottom-left
+- Barcode strip + ISBN at the bottom
 
 > ⚠️ **CRITICAL:** The cover uses `remember picture, overlay` (TikZ), which **requires at least 2 compilation passes**.
 
@@ -1981,7 +2160,7 @@ MatinBook v1.1 provides a professional front and back cover with:
     {عنوان کتاب}
     {زیرعنوان کتاب}
     {نام نویسنده}
-    {تابستان ۱۴۰۵}
+    {مهر ۱۴۰۵}
 ```
 
 **Parameters:**
@@ -1991,7 +2170,7 @@ MatinBook v1.1 provides a professional front and back cover with:
 | 1 | Title | عنوان کتاب |
 | 2 | Subtitle | زیرعنوان کتاب |
 | 3 | Author | نام نویسنده |
-| 4 | Date | تابستان ۱۴۰۵ |
+| 4 | Date | مهر ۱۴۰۵ |
 
 ### Back Cover
 
@@ -2019,7 +2198,7 @@ The cover shows `v\matinbookversion`. This is defined in `matinbook.cls`:
 
 ```latex
 \def\matinbookversion{1.1}
-\def\matinbookdate{2026/01/01}
+\def\matinbookdate{2026/10/08}
 ```
 
 ### Cover Colors
@@ -2028,14 +2207,10 @@ The cover uses **aliases** mapped to the main CMYK palette:
 
 | Cover Alias | Maps To |
 |-------------|---------|
-| `coverbg` | `matincream` |
-| `coverprimary` | `matindarkblue` |
-| `coveraccent` | `matingreen` |
-| `coveraccent2` | `matinorange` |
-| `coveraccent3` | `matinblue` |
+| `coverprimary` | `matindarkgreen` |
+| `coveraccent` | `matinorange` |
 | `covergray` | `matinmediumgray` |
 | `coverlight` | `matinlightgray` |
-| `coverdark` | `matindarkgray` |
 
 This ensures the cover uses the same CMYK palette as the rest of the book.
 
@@ -2051,7 +2226,6 @@ xelatex -shell-escape document.tex
 
 > 💡 **Tip:** If the cover appears misaligned or missing elements, run a third pass.
 
----
 
 ## 17. Theme System
 
@@ -2064,7 +2238,7 @@ MatinBook v1.1 has a **single** theme: `default`.
 | File | Purpose |
 |------|---------|
 | `mb-theme-colors.sty` | 20 CMYK colors in 5 families |
-| `mb-theme-cover.sty` | Front and back cover design |
+| `mb-theme-cover.sty` | Full-color front and back cover design |
 | `mb-theme-default.sty` | Theme loader |
 
 > **Note:** An earlier "Minimal" theme was removed in v1.0 due to incompatibility with core modules. The `default` theme is currently the only supported theme.
@@ -2107,8 +2281,9 @@ MatinBook v1.1 has a **single** theme: `default`.
 **`mb-theme-cover.sty`:**
 - Defines `\makecover` (4 args)
 - Defines `\makebackcover` (1 arg)
-- Defines `\covergeometric` (TikZ decorations)
-- Maps `cover*` aliases to `matin*` palette
+- Full-color front cover with math/code symbols
+- Fantasy math band on the back cover
+- Compact concept tree (7 nodes, A–G)
 
 **`mb-theme-default.sty`:**
 - Loads `mb-theme-cover`
@@ -2209,6 +2384,7 @@ MatinBook v1.1 does **not** currently support runtime language switching. The lo
 - **English text (inline):** Wrap in `\lr{...}`
 - **English text (block):** Wrap in `\begin{latin}...\end{latin}`
 - **Math:** Handled by `xepersian` — Persian digits in Persian mode, Latin digits in LTR mode
+- **Margin notes:** Wrap content in `\RL{}` (via `\mnote` macro)
 
 ### Number Format
 
@@ -2221,17 +2397,14 @@ MatinBook v1.1 does **not** currently support runtime language switching. The lo
 Use Persian calendar dates in Persian text:
 
 ```latex
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 ```
 
 For `\today` in Persian mode, `xepersian` provides `\today` as a Persian date.
 
 ---
 
-**End of Section 15-18**
-
 **End of Part II**
-```
 
 ---
 
@@ -2397,7 +2570,7 @@ Every English word, phrase, or technical term within Persian text must use `\lr{
 
 ### Rule 12: Reference Equations Properly
 
-When referencing an equation, use `\cref{}` and include the word "معادله" only if needed:
+When referencing an equation, use `\cref{}`:
 
 ```latex
 % GOOD:
@@ -2435,11 +2608,11 @@ Maintain consistent spacing between elements:
 
 | Element | Space Before | Space After |
 |---------|--------------|-------------|
-| Chapter title | 20pt (after `\titlespacing`) | 30pt |
+| Chapter title | 20pt | 30pt |
 | Section title | 20pt | 10pt |
 | Subsection title | 15pt | 8pt |
 | Subsubsection title | 12pt | 6pt |
-| Paragraph | 0pt | 0pt + `\parskip` |
+| Paragraph | 0pt | 0pt |
 | Theorem/Definition box | 10pt | 10pt |
 | Figure | 12pt | 12pt |
 | Table | 12pt | 12pt |
@@ -2470,9 +2643,9 @@ Maintain consistent spacing between elements:
 | Element | Visual Weight | Notes |
 |---------|---------------|-------|
 | Chapter title | Heavy | Large font, colored |
-| Section title | Medium | `\Large` bold |
-| Subsection title | Light | `\large` bold |
-| Body text | Normal | `\normalsize` |
+| Section title | Medium | 15pt bold |
+| Subsection title | Light | 13pt bold |
+| Body text | Normal | 10pt |
 | Boxed content | Medium | Colored background |
 | Figure/Table | Heavy | Visual anchor |
 
@@ -2482,8 +2655,8 @@ Maintain consistent spacing between elements:
 
 ### Optimal Reading Speed
 
-| Language | Words per Minute | Words per Page (Vaziri, 12pt) |
-|----------|------------------|-------------------------------|
+| Language | Words per Minute | Words per Page |
+|----------|------------------|----------------|
 | Persian | 180-220 | 300-400 |
 | English | 200-250 | 350-450 |
 
@@ -2943,31 +3116,11 @@ In Persian books: `منابع و مراجع`
 \printbibliography[title={منابع و مراجع}]
 ```
 
-> **CRITICAL:** Do **NOT** wrap `\printbibliography` in `\begin{latin}...\end{latin}` (this causes the Persian title to be scrambled).
-
-### Cross-Reference in Bibliography
-
-To reference a bibliography entry from the text:
-
-```latex
-طبق \cite{cormen2009}، ...
-```
-
-To reference from another bibliography entry:
-
-```bibtex
-@book{knuth1984,
-    author    = {Donald E. Knuth},
-    title     = {The {\TeX}book},
-    year      = {1984},
-    note      = {See also \cite{lamport1994}}
-}
-```
+> **CRITICAL:** Do **NOT** wrap `\printbibliography` in `\begin{latin}...\end{latin}`.
 
 ---
 
 **End of Part III**
-```
 
 ---
 
@@ -2975,19 +3128,11 @@ To reference from another bibliography entry:
 
 ## 27. Content Generation Rules
 
-These rules are **mandatory** for AI-generated content. Following them ensures correct, compilable, and academically rigorous output.
+These rules are **mandatory** for AI-generated content.
 
 ### RULE 1: Persian Text is Natural
 
 Persian body text is written normally without any special commands.
-
-```latex
-% CORRECT:
-این یک متن فارسی است که به طور طبیعی نوشته می‌شود.
-
-% WRONG:
-\rl{این یک متن فارسی است...}
-```
 
 ### RULE 2: Latin Text in Persian
 
@@ -2995,58 +3140,33 @@ Any English word, phrase, or technical term within Persian text must use `\lr{}`
 
 ```latex
 % CORRECT:
-این کتاب درباره \lr{machine learning} و \lr{deep neural networks} است.
+این کتاب درباره \lr{machine learning} است.
 
 % WRONG:
-این کتاب درباره machine learning و deep neural networks است.
+این کتاب درباره machine learning است.
 ```
 
 ### RULE 3: Latin Blocks
 
-Large blocks of English text, code, algorithms, and TikZ diagrams must be wrapped in `\begin{latin}...\end{latin}`:
-
-```latex
-\begin{latin}
-This is a block of English text.
-It can contain multiple paragraphs.
-\end{latin}
-```
+Large blocks of English text, code, algorithms, and TikZ diagrams must be wrapped in `\begin{latin}...\end{latin}`.
 
 ### RULE 4: Code Comments in English
 
-ALL comments inside `minted` code blocks MUST be in English (unless using `|\pc{...}|`):
-
-```python
-# CORRECT:
-def calculate_sum(numbers):
-    """Compute the sum of all numbers."""
-    return sum(numbers)
-
-# WRONG:
-def calculate_sum(numbers):
-    """محاسبه مجموع اعداد"""
-    return sum(numbers)
-```
+ALL comments inside `minted` code blocks MUST be in English (unless using `|\pc{...}|`).
 
 ### RULE 5: Persian Comments in Code via `\pc{}`
-
-For Persian comments inside code, use the `escapeinside` syntax:
 
 ```latex
 \begin{latin}
 \begin{minted}{python}
 x = 5  # |\pc{مقدار متغیر}|
-y = 10 # |\pc{مقدار دیگر}|
 \end{minted}
 \end{latin}
 ```
 
 ### RULE 6: Algorithm Captions Inside the Environment
 
-In v1.1, the algorithm caption is the standard `\caption{}` **inside** the `algorithm` environment:
-
 ```latex
-% CORRECT:
 \begin{latin}
 \begin{algorithm}
 \caption{جستجوی دودویی}
@@ -3056,70 +3176,23 @@ In v1.1, the algorithm caption is the standard `\caption{}` **inside** the `algo
 \end{algorithmic}
 \end{algorithm}
 \end{latin}
-
-% WRONG (v1.0 style, no longer valid):
-\begin{latin}
-\begin{algorithm}
-\begin{algorithmic}[1]
-    ...
-\end{algorithmic}
-\end{algorithm}
-\end{latin}
-\algcaption[alg:binary]{جستجوی دودویی}
 ```
 
 ### RULE 7: Labels Inside Environments
 
-`\label` commands belong INSIDE the environment they reference:
-
-```latex
-% CORRECT:
-\begin{theorem}
-    Content...
-    \label{thm:mythm}
-\end{theorem}
-
-% WRONG:
-\begin{theorem}
-    Content...
-\end{theorem}
-\label{thm:mythm}
-```
+`\label` commands belong INSIDE the environment they reference.
 
 ### RULE 8: No Math in Section Titles
 
-Do NOT use math mode (`$...$`) in section titles. Use plain Unicode characters instead:
-
-```latex
-% CORRECT:
-\section{تحلیل پیچیدگی O بزرگ}
-
-% WRONG:
-\section{تحلیل پیچیدگی $O$ بزرگ}
-```
+Do NOT use math mode (`$...$`) in section titles.
 
 ### RULE 9: Use `\lr{}` for Technical Terms
 
-All technical terms in English should use `\lr{}`:
-
-```latex
-استفاده از \lr{Quick Sort} برای مرتب‌سازی داده‌ها.
-پیچیدگی زمانی \lr{Merge Sort} برابر \lr{$O(n \log n)$} است.
-```
+All technical terms in English should use `\lr{}`.
 
 ### RULE 10: Tables with Persian Text
 
-Use `C{width}` column type for Persian text columns, `c` for numeric/symbol columns, and `l` for English:
-
-```latex
-\begin{tabular}{@{}cC{5cm}c@{}}
-\toprule
-\textbf{Number} & \textbf{Description in Persian} & \textbf{Status} \\
-\midrule
-۱ & توضیح فارسی در این ستون قرار می‌گیرد & OK \\
-\bottomrule
-\end{tabular}
-```
+Use `C{width}` column type for Persian text columns.
 
 ### RULE 11: Book Structure
 
@@ -3131,8 +3204,9 @@ Always follow this structure for a complete book:
 % 1. FRONT COVER
 \makecover{Title}{Subtitle}{Author}{Date}
 
-% 2. FRONT MATTER (Persian letter numbering)
+% 2. FRONT MATTER (no wide margin)
 \frontmatter
+\frontmattergeometry
 
 % 3. Title page
 \maketitle
@@ -3143,30 +3217,25 @@ Always follow this structure for a complete book:
 \clearpage
 
 % 5. Dedication (optional)
-\thispagestyle{empty}
 ...
-\clearpage
 
 % 6. Preface
 \chapter*{پیشگفتار}
-\addcontentsline{toc}{chapter}{پیشگفتار}
 ...
-\clearpage
 
 % 7. Table of Contents
 \tableofcontents
 \clearpage
 
-% 8. Lists of Figures/Tables/Algorithms (only if needed)
+% 8. Lists
 \listoffigures
 \clearpage
 \listoftables
 \clearpage
-% \listofalgorithms  % Uncomment only if using algorithms
-% \clearpage
 
-% 9. MAIN MATTER (Arabic numbering)
+% 9. MAIN MATTER (wide margin for notes)
 \mainmatter
+\mainmattergeometry
 
 % 10. Chapters
 \chapter{...}
@@ -3175,10 +3244,10 @@ Always follow this structure for a complete book:
 % 11. Appendices (optional)
 \appendix
 \chapter{...}
-...
 
-% 12. BACK MATTER
+% 12. BACK MATTER (no wide margin)
 \backmatter
+\frontmattergeometry
 
 % 13. Bibliography
 \printbibliography[title={منابع و مراجع}]
@@ -3194,117 +3263,76 @@ Always follow this structure for a complete book:
 
 ### RULE 12: Use `\frontmatter`, `\mainmatter`, `\backmatter`
 
-These commands change the page numbering:
-
-- `\frontmatter` → Persian letters (الف، ب، ج) via `xepersian`
-- `\mainmatter` → Arabic numerals (1، 2، 3)
-- `\backmatter` → continues Arabic numerals, no chapter numbers
+These commands change the page numbering AND geometry (with `\frontmattergeometry` / `\mainmattergeometry`).
 
 ### RULE 13: Bibliography Without `latin` Wrapper
-
-In v1.1, do NOT wrap `\printbibliography` in `\begin{latin}`:
 
 ```latex
 % CORRECT:
 \printbibliography[title={منابع و مراجع}]
-
-% WRONG (v1.0 style):
-\begin{latin}
-\printbibliography[title={منابع و مراجع}]
-\end{latin}
 ```
 
 ### RULE 14: Use `\cref{}` for All References
-
-In v1.1, all references use `\cref{}`:
 
 ```latex
 % CORRECT:
 طبق \cref{thm:fundamental}، ...
 
-% WRONG (v1.0 style):
+% ALSO CORRECT:
 طبق \thmref{thm:fundamental}، ...
 ```
 
 ### RULE 15: Two Compilation Passes for Cover
 
-The cover uses `remember picture, overlay` (TikZ), which requires at least **2 compilation passes**.
-
-```bash
-xelatex -shell-escape document.tex  # Pass 1
-xelatex -shell-escape document.tex  # Pass 2
-```
+The cover requires at least **2 compilation passes**.
 
 ### RULE 16: Index Requires Xindy
 
-MatinBook v1.1 uses **xindy** (not `makeindex`) for correct Persian sorting. Xindy is called automatically when `-shell-escape` is enabled.
-
-```bash
-# Always use -shell-escape
-xelatex -shell-escape document.tex
-```
+MatinBook v1.1 uses **xindy** (not `makeindex`) for correct Persian sorting.
 
 ### RULE 17: Use CMYK Colors
 
-All MatinBook colors are defined in **CMYK**. When creating custom colors, use CMYK with 5/10 multiples:
-
-```latex
-% CORRECT:
-\definecolor{mycolor}{cmyk}{0.80, 0.30, 0.00, 0.25}
-
-% WRONG (RGB):
-\definecolor{mycolor}{RGB}{41, 128, 185}
-```
+All MatinBook colors are defined in **CMYK**.
 
 ### RULE 18: Code Blocks Inside `latin` Environment
 
-All `minted` code blocks MUST be inside `\begin{latin}...\end{latin}`:
-
-```latex
-% CORRECT:
-\begin{latin}
-\begin{minted}{python}
-def hello():
-    return "Hello"
-\end{minted}
-\end{latin}
-
-% WRONG:
-\begin{minted}{python}
-def hello():
-    return "Hello"
-\end{minted}
-```
+All `minted` code blocks MUST be inside `\begin{latin}...\end{latin}`.
 
 ### RULE 19: TikZ Diagrams Inside `latin` Environment
 
-All TikZ diagrams (except the cover) MUST be inside `\begin{latin}...\end{latin}`:
-
-```latex
-% CORRECT:
-\begin{latin}
-\begin{tikzpicture}
-    ...
-\end{tikzpicture}
-\end{latin}
-
-% WRONG:
-\begin{tikzpicture}
-    ...
-\end{tikzpicture}
-```
+All TikZ diagrams (except the cover) MUST be inside `\begin{latin}...\end{latin}`.
 
 ### RULE 20: Persian Text in TikZ Nodes Requires `\rl{}`
-
-Persian text inside TikZ nodes MUST be wrapped in `\rl{}`:
 
 ```latex
 % CORRECT:
 \node {\rl{متن فارسی}};
-
-% WRONG:
-\node {متن فارسی};
 ```
+
+### RULE 21: Use `\frontmattergeometry` After `\frontmatter`
+
+```latex
+\frontmatter
+\frontmattergeometry    % ← switch to symmetric margins
+```
+
+### RULE 22: Use `\mainmattergeometry` After `\mainmatter`
+
+```latex
+\mainmatter
+\mainmattergeometry     % ← restore wide margin
+```
+
+### RULE 23: Margin Notes (NEW in v1.1)
+
+```latex
+\mnote{یادداشت حاشیه}                    % plain margin note
+\marginfig{figures/plot.png}{نمودار}     % figure + caption
+```
+
+**Limitations:**
+- Cannot be used inside `tcolorbox` or `figure`.
+- Requires wide outer margin (`mainmattergeometry`).
 
 ---
 
@@ -3312,53 +3340,44 @@ Persian text inside TikZ nodes MUST be wrapped in `\rl{}`:
 
 ### Template 1: Minimal Book (3-5 chapters)
 
-Use this for a simple book with no bibliography or index.
-
 ```latex
-% main.tex — Minimal book template
-
 \documentclass{matinbook}
 
 \title{عنوان کتاب}
 \author{نام نویسنده}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
 \booktitle{عنوان کتاب}
 
 \begin{document}
 
-% Cover
 \makecover
     {عنوان کتاب}
     {زیرعنوان کتاب}
     {نام نویسنده}
-    {تابستان ۱۴۰۵}
+    {مهر ۱۴۰۵}
 
-% Front matter
 \frontmatter
+\frontmattergeometry
 
 \maketitle
-
 \tableofcontents
 
 \chapter*{پیشگفتار}
 \addcontentsline{toc}{chapter}{پیشگفتار}
 پیشگفتار کتاب...
 
-% Main matter
 \mainmatter
+\mainmattergeometry
 
 \chapter{فصل اول}
 \label{chap:first}
-
 محتوا...
 
 \chapter{فصل دوم}
 \label{chap:second}
-
 محتوا...
 
-% Back cover
 \makebackcover{توضیحات پشت جلد...}
 
 \end{document}
@@ -3366,18 +3385,14 @@ Use this for a simple book with no bibliography or index.
 
 ### Template 2: Standard Book (with Bibliography and Index)
 
-Use this for a technical book with references and index.
-
 ```latex
-% main.tex — Standard book template
-
 \documentclass{matinbook}
 
 \addbibresource{references.bib}
 
 \title{عنوان کتاب}
 \author{نام نویسنده}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
 \booktitle{عنوان کتاب}
 
@@ -3385,15 +3400,14 @@ Use this for a technical book with references and index.
 
 \begin{document}
 
-% Cover
 \makecover
     {عنوان کتاب}
     {زیرعنوان کتاب}
     {نام نویسنده}
-    {تابستان ۱۴۰۵}
+    {مهر ۱۴۰۵}
 
-% Front matter
 \frontmatter
+\frontmattergeometry
 
 \maketitle
 
@@ -3404,17 +3418,6 @@ Use this for a technical book with references and index.
     {\large\textbf{حقوق نشر}}
     \vspace{1cm}
     تمامی حقوق این کتاب محفوظ است.
-    \vspace{1cm}
-    \textbf{شناسنامه کتاب}
-    \vspace{0.5cm}
-    \begin{tabular}{rl}
-        عنوان: & عنوان کتاب \\
-        نویسنده: & نام نویسنده \\
-        ناشر: & نام ناشر \\
-        نوبت چاپ: & اول \\
-        تیراژ: & ۱۰۰۰ نسخه \\
-        شابک: & ۹۷۸-XXX-XXX-XXX-X \\
-    \end{tabular}
     \vspace{1cm}
     {\small نسخه \matinbookversion\ — \matinbookdate}
 \end{center}
@@ -3433,18 +3436,15 @@ Use this for a technical book with references and index.
 \addcontentsline{toc}{chapter}{پیشگفتار}
 پیشگفتار کتاب...
 
-% Table of Contents
 \tableofcontents
 \clearpage
-
 \listoffigures
 \clearpage
-
 \listoftables
 \clearpage
 
-% Main matter
 \mainmatter
+\mainmattergeometry
 
 \chapter{فصل اول}
 \label{chap:first}
@@ -3454,14 +3454,12 @@ Use this for a technical book with references and index.
 \label{chap:second}
 محتوا...
 
-% Back matter
 \backmatter
+\frontmattergeometry
 
 \printbibliography[title={منابع و مراجع}]
-
 \printindex
 
-% Back cover
 \makebackcover{توضیحات پشت جلد...}
 
 \end{document}
@@ -3469,62 +3467,38 @@ Use this for a technical book with references and index.
 
 ### Template 3: Multi-Part Book (8+ chapters)
 
-Use this for a comprehensive book with parts.
-
 ```latex
-% main.tex — Multi-part book template
-
 \documentclass{matinbook}
 
 \addbibresource{references.bib}
 
 \title{راهنمای جامع}
 \author{نام نویسنده}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
 \booktitle{راهنمای جامع}
 
 \begin{document}
 
-% Cover
 \makecover
     {راهنمای جامع}
     {از مبتدی تا پیشرفته}
     {نام نویسنده}
-    {تابستان ۱۴۰۵}
+    {مهر ۱۴۰۵}
 
-% Front matter
 \frontmatter
+\frontmattergeometry
 
 \maketitle
-
-% Copyright (omitted for brevity)
-
-% Dedication
-\thispagestyle{empty}
-\vfill
-\begin{flushright}
-    {\Large\itshape تقدیم به...}
-\end{flushright}
-\clearpage
-
-% Preface
-\chapter*{پیشگفتار}
-\addcontentsline{toc}{chapter}{پیشگفتار}
-پیشگفتار...
-
-% TOC and lists
 \tableofcontents
 \clearpage
 \listoffigures
 \clearpage
 \listoftables
 \clearpage
-% \listofalgorithms  % Uncomment if using algorithms
-% \clearpage
 
-% Main matter
 \mainmatter
+\mainmattergeometry
 
 \part{مبانی}
 \label{part:fundamentals}
@@ -3544,32 +3518,23 @@ Use this for a comprehensive book with parts.
 \label{chap:sorting}
 محتوا...
 
-\chapter{جستجو}
-\label{chap:searching}
-محتوا...
-
-% Appendices
 \appendix
 \chapter{پیوست الف}
 \label{app:a}
 محتوا...
 
-% Back matter
 \backmatter
+\frontmattergeometry
 
 \printbibliography[title={منابع و مراجع}]
-
 \printindex
 
-% Back cover
 \makebackcover{توضیحات پشت جلد...}
 
 \end{document}
 ```
 
-### Template 4: Chapter File (separate .tex file)
-
-If you split chapters into separate files:
+### Template 4: Chapter File
 
 ```latex
 % chapters/chapter-01.tex
@@ -3581,11 +3546,6 @@ If you split chapters into separate files:
 \label{sec:motivation}
 
 متن مقدمه...
-
-\section{ساختار کتاب}
-\label{sec:structure}
-
-متن...
 
 \begin{definition}[الگوریتم]
     تعریف الگوریتم...
@@ -3600,54 +3560,8 @@ If you split chapters into separate files:
 \begin{proof}
     اثبات...
 \end{proof}
-```
 
-Then in `main.tex`:
-
-```latex
-\mainmatter
-
-\input{chapters/chapter-01}
-\input{chapters/chapter-02}
-% ...
-```
-
-### Template 5: Section with Theorem-Proof Pair
-
-```latex
-\section{قضیه اصلی حساب}
-
-\begin{definition}[عدد اول]
-    عدد طبیعی بزرگ‌تر از ۱ که تنها دو مقسوم‌علیه مثبت دارد،
-    \emph{عدد اول} نامیده می‌شود.
-    \label{def:prime}
-\end{definition}
-
-\begin{theorem}[قضیه اساسی حساب]
-    هر عدد طبیعی بزرگ‌تر از ۱ را می‌توان به‌صورت یکتا
-    به حاصل‌ضرب اعداد اول تجزیه کرد.
-    \label{thm:fundamental}
-\end{theorem}
-
-\begin{proof}
-    با استقرای قوی روی \lr{$n$} اثبات می‌کنیم.
-    برای \lr{$n = 2$}، حکم بدیهی است. فرض کنید حکم برای
-    همه اعداد کوچک‌تر از \lr{$n$} درست باشد.
-    اگر \lr{$n$} اول باشد، حکم ثابت است. در غیر این صورت،
-    \lr{$n = ab$} که \lr{$1 < a, b < n$}. طبق فرض استقرا،
-    \lr{$a$} و \lr{$b$} به عوامل اول تجزیه می‌شوند، پس \lr{$n$} نیز.
-\end{proof}
-
-\begin{example}
-    عدد \lr{$60$} به‌صورت \lr{$60 = 2^{2} \cdot 3 \cdot 5$}
-    تجزیه می‌شود.
-    \label{ex:factorization}
-\end{example}
-```
-
----
-
-**End of Section 27-28**
+\mnote{این یک یادداشت حاشیه‌ای است.}
 ```
 
 ---
@@ -3656,52 +3570,27 @@ Then in `main.tex`:
 
 ### Minimal Compilation (no bibliography or index)
 
-For a simple document without bibliography or index:
-
 ```bash
-# Pass 1 — Write .aux file
 xelatex -shell-escape document.tex
-
-# Pass 2 — Read .aux, resolve cross-references
 xelatex -shell-escape document.tex
 ```
 
 ### Standard Compilation (with bibliography)
 
-For a document with bibliography but no index:
-
 ```bash
-# Pass 1
 xelatex -shell-escape document.tex
-
-# Bibliography processing
 biber document
-
-# Pass 2 — Read bibliography, resolve references
 xelatex -shell-escape document.tex
-
-# Pass 3 — Resolve final cross-references
 xelatex -shell-escape document.tex
 ```
 
-### Full Compilation (with bibliography, index, and cover)
-
-For a complete book with all features:
+### Full Compilation (with bibliography, index, cover)
 
 ```bash
-# Pass 1 — Write .aux, .idx, .bcf
 xelatex -shell-escape document.tex
-
-# Bibliography processing
 biber document
-
-# Pass 2 — Read bibliography, write index
 xelatex -shell-escape document.tex
-
-# Pass 3 — Read index, resolve cross-references
 xelatex -shell-escape document.tex
-
-# Pass 4 — Final pass (if needed for cover positioning)
 xelatex -shell-escape document.tex
 ```
 
@@ -3710,8 +3599,6 @@ xelatex -shell-escape document.tex
 > - `xindy` requires it for index processing
 
 ### Using latexmk (Automated)
-
-For automated multi-pass compilation:
 
 ```bash
 latexmk -xelatex -shell-escape document.tex
@@ -3725,19 +3612,11 @@ latexmk -c document.tex
 
 ### Using the Project's `compile.sh` Script
 
-MatinBook v1.1 includes a test compiler at `tests/v1.1/compile.sh`:
-
 ```bash
 cd tests/v1.1
-./compile.sh                    # Compile all .tex files in directory
-./compile.sh stage-cls-01.tex   # Compile a specific file
+./compile.sh                    # Compile all .tex files
+./compile.sh stage-cls-01.tex   # Compile specific file
 ```
-
-The script:
-1. Sets `TEXINPUTS` to include the project root
-2. Compiles each `.tex` file with 2 passes
-3. Cleans auxiliary files on success
-4. Reports a summary of passed/failed tests
 
 ### Required Tools
 
@@ -3755,12 +3634,11 @@ The script:
 | Problem | Cause | Solution |
 |---------|-------|----------|
 | `File matinbook.cls not found` | TEXINPUTS not set | Set `TEXINPUTS` or install in `texmf` |
-| `You have requested package X` | Wrong package name | Use simple names (`mb-*`) |
 | `Package minted Error` | Missing `-shell-escape` | Add `-shell-escape` |
 | `xindy: command not found` | Xindy not installed | Install xindy |
 | `persian-variant2.xdy not found` | Xindy-persian not installed | Install xindy-persian |
 | `Font X not found` | Font not installed | Install font + `fc-cache -fv` |
-| `remember picture` issues | Only 1 compilation pass | Run 2+ passes |
+| `remember picture` issues | Only 1 pass | Run 2+ passes |
 
 ---
 
@@ -3779,7 +3657,6 @@ The script:
     ...
 \end{proof}
 
-% Reference:
 طبق \cref{thm:fundamental}، ...
 ```
 
@@ -3797,7 +3674,6 @@ The script:
     \label{ex:k4}
 \end{example}
 
-% Reference:
 طبق \cref{def:graph}، ...
 ```
 
@@ -3814,7 +3690,6 @@ The script:
     آنگاه \lr{$a + b = 2(m + n)$} که زوج است.
 \end{solution}
 
-% Reference:
 \cref{exc:sum-even} را حل کنید.
 ```
 
@@ -3931,109 +3806,36 @@ Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
 جدول \cref{tab:complexity} پیچیدگی الگوریتم‌ها را مقایسه می‌کند.
 ```
 
-### Pattern 9: Cross-Chapter Reference
+### Pattern 9: Margin Note
 
 ```latex
-% In chapter 3:
-\chapter{الگوریتم‌های گراف}
-\label{chap:graphs}
-...
+\chapter{فصل اول}
 
-% In chapter 1:
-همانطور که در \cref{chap:graphs} خواهیم دید، ...
+این یک متن اصلی است.
+\mnote{این یک یادداشت حاشیه‌ای است.}
+و این ادامه‌ی متن اصلی است.
+
+\marginfig{figures/plot.png}{نمودار نمونه}
 ```
 
-### Pattern 10: Multiple References
+### Pattern 10: Frontmatter/Mainmatter Split
 
 ```latex
-\cref{thm:a,thm:b,thm:c} سه قضیه اساسی هستند.
+\frontmatter
+\frontmattergeometry          % symmetric margins
 
-\crefrange{eq:a}{eq:c} سه معادله اول را نشان می‌دهند.
-```
+\maketitle
+\tableofcontents
 
-### Pattern 11: Multi-Line Equation
+\mainmatter
+\mainmattergeometry           % wide margin for notes
 
-```latex
-\begin{align}
-    f(x) &= a_{0} + a_{1}x + a_{2}x^{2} + \cdots \nonumber \\
-         &\quad + a_{n}x^{n} \\
-    &= \sum_{i=0}^{n} a_{i}x^{i}
-    \label{eq:polynomial}
-\end{align}
-```
+\chapter{...}
 
-### Pattern 12: Matrix
-
-```latex
-\[
-    A = \mat{
-        1 & 2 & 3 \\
-        4 & 5 & 6 \\
-        7 & 8 & 9
-    }
-\]
-```
-
-### Pattern 13: Cases
-
-```latex
-\[
-    f(x) = \begin{cases}
-        x^{2}, & x \geq 0 \\
-        -x^{2}, & x < 0
-    \end{cases}
-\]
-```
-
-### Pattern 14: Custom Operator
-
-```latex
-\[
-    \grad f = \nabla f, \quad
-    \curl \vec{F} = \nabla \times \vec{F}, \quad
-    \diver \vec{F} = \nabla \cdot \vec{F}
-\]
-```
-
-### Pattern 15: Set Builder
-
-```latex
-\[
-    S = \setbuilder{x \in \R}{x^{2} < 2}
-\]
-```
-
-### Pattern 16: Index Entry
-
-```latex
-الگوریتم\index{الگوریتم} یک مفهوم اساسی است.
-
-برنامه‌نویسی\index{برنامه‌نویسی!پایتون} در پایتون...
-
-مفهوم کلیدی\idxbold{مفهوم کلیدی}
-```
-
-### Pattern 17: Bibliography Citation
-
-```latex
-طبق \cite{cormen2009}، ...
-
-منابع \cite{knuth1984,lamport1994} ...
-
-\textcite{einstein1905} نظریه نسبیت را معرفی کرد.
-```
-
-### Pattern 18: Bilingual Text (Persian + English)
-
-```latex
-این کتاب درباره \lr{machine learning} است.
-
-\begin{latin}
-Machine learning is a subset of artificial intelligence.
-It focuses on developing algorithms that can learn from data.
-\end{latin}
-
-بازگشت به متن فارسی.
+\backmatter
+\frontmattergeometry          % symmetric margins again
+\printbibliography
+\printindex
 ```
 
 ---
@@ -4044,35 +3846,17 @@ It focuses on developing algorithms that can learn from data.
 
 **Cause:** Using `\given` without `\left` and `\right`.
 
-**Solution:** Use `\setbuilder{cond}{cond}` or `\mid` for manual braces.
-
-```latex
-% WRONG:
-$\{x \given x > 0\}$
-
-% CORRECT:
-$\setbuilder{x}{x > 0}$
-% OR:
-$\{x \mid x > 0\}$
-```
+**Solution:** Use `\setbuilder{cond}{cond}` or `\mid`.
 
 ### Error 2: "Extra \fi" in section titles with math
 
-**Cause:** Using `$...$` inside `\section{}`, `\subsection{}`, etc.
+**Cause:** Using `$...$` inside section titles.
 
-**Solution:** Use Unicode characters or text equivalents.
-
-```latex
-% WRONG:
-\section{Analysis of $O(n)$}
-
-% CORRECT:
-\section{Analysis of O(n)}
-```
+**Solution:** Use Unicode characters.
 
 ### Error 3: "Dimension too large" with tan(x)
 
-**Cause:** tan(x) has asymptotes that go to infinity.
+**Cause:** tan(x) has asymptotes.
 
 **Solution:** Add `restrict y to domain`:
 
@@ -4082,185 +3866,127 @@ $\{x \mid x > 0\}$
 
 ### Error 4: Algorithmic blocks not closed
 
-**Cause:** Missing `\EndIf`, `\EndFor`, `\EndWhile`, or `\EndFunction`.
+**Cause:** Missing `\EndIf`, `\EndFor`, `\EndWhile`, `\EndFunction`.
 
 **Solution:** Ensure every opening block has a matching close.
-
-```latex
-% WRONG:
-\If{condition}
-    \State action
-
-% CORRECT:
-\If{condition}
-    \State action
-\EndIf
-```
 
 ### Error 5: "Undefined control sequence" with `\pc`
 
 **Cause:** Using `\pc` without `escapeinside=||`.
 
-**Solution:** Ensure `escapeinside=||` is set in `\setminted` (MatinBook v1.1 does this by default).
-
-```latex
-% CORRECT:
-x = 5  # |\pc{مقدار}|
-```
+**Solution:** Ensure `escapeinside=||` is set (MatinBook does this by default).
 
 ### Error 6: References showing "??"
 
-**Cause:** Needs additional LaTeX compilation passes.
+**Cause:** Need additional LaTeX compilation passes.
 
 **Solution:** Run XeLaTeX at least 2-3 times.
 
 ### Error 7: Empty bibliography
 
-**Cause:** `biber` not run between compilations.
+**Cause:** `biber` not run.
 
-**Solution:** Run the full compilation sequence:
-
-```bash
-xelatex -shell-escape document.tex
-biber document
-xelatex -shell-escape document.tex
-xelatex -shell-escape document.tex
-```
+**Solution:** Run the full compilation sequence.
 
 ### Error 8: Persian text scrambled in TikZ nodes
 
-**Cause:** TikZ nodes inside `latin` environment need `\rl{}`.
+**Cause:** Missing `\rl{}`.
 
-**Solution:** Wrap Persian text in `\rl{}`:
-
-```latex
-% CORRECT:
-\node {\rl{متن فارسی}};
-
-% WRONG:
-\node {متن فارسی};
-```
+**Solution:** Wrap Persian text in `\rl{}`.
 
 ### Error 9: Code not displaying
 
-**Cause:** Missing `-shell-escape` flag.
+**Cause:** Missing `-shell-escape`.
 
 **Solution:** Always use `xelatex -shell-escape`.
 
 ### Error 10: Overfull hbox warnings
 
-**Cause:** Long unbreakable text (URLs, long inline code).
+**Cause:** Long unbreakable text.
 
-**Solution:** Use `\emergencystretch=1em` (already set) or manually break lines. For URLs, use `\url{}` from `hyperref`.
+**Solution:** Use `\emergencystretch=1em` (already set) or break manually.
 
 ### Error 11: Cover missing elements
 
-**Cause:** Only one compilation pass.
+**Cause:** Only 1 compilation pass.
 
-**Solution:** Run at least 2 passes:
-
-```bash
-xelatex -shell-escape document.tex
-xelatex -shell-escape document.tex
-```
+**Solution:** Run 2+ passes.
 
 ### Error 12: Index not sorted correctly
 
 **Cause:** Using `makeindex` instead of `xindy`.
 
-**Solution:** Ensure `mb-index.sty` uses `xindy`:
+**Solution:** Ensure `mb-index.sty` uses `xindy`.
 
-```latex
-\makeindex[
-    intoc,
-    program=xindy,
-    options={-L persian-variant2 -C utf8 -M texindy -M page-ranges}
-]
-```
+### Error 13: "Package xepersian Error"
 
-### Error 13: "Package xepersian Error: Oops! you have loaded package ... after xepersian"
+**Cause:** Loading a package after `xepersian`.
 
-**Cause:** Loading a package after `xepersian` that should come before.
-
-**Solution:** `xepersian` MUST be the last package. In MatinBook v1.1, this is handled by `matinbook.cls`. Do not load packages after `xepersian` manually.
+**Solution:** `xepersian` MUST be the last package.
 
 ### Error 14: "Undefined color: matinblue"
 
-**Cause:** `mb-theme-colors` not loaded before the consumer.
+**Cause:** `mb-theme-colors` not loaded before consumer.
 
-**Solution:** In MatinBook v1.1, `mb-theme-colors` is loaded by `matinbook.cls` immediately after `mb-core`. Do not change this order.
+**Solution:** Don't change load order.
 
-### Error 15: "File mb-algorithm.sty not found"
-
-**Cause:** `mb-algorithm.sty` was removed in v1.1.
-
-**Solution:** Algorithms are now handled by `xepersian`'s built-in `algorithm-xepersian.def`. Use the standard `algorithm` package.
-
-### Error 16: `\algcaption` undefined
+### Error 15: `\algcaption` undefined
 
 **Cause:** `\algcaption` was removed in v1.1.
 
-**Solution:** Use the standard `\caption{}` **inside** the `algorithm` environment:
+**Solution:** Use `\caption{}` inside `algorithm`.
 
-```latex
-\begin{latin}
-\begin{algorithm}
-\caption{عنوان الگوریتم}
-\label{alg:myalgo}
-...
-\end{algorithm}
-\end{latin}
-```
+### Error 16: `\thmref` undefined
 
-### Error 17: `\thmref` undefined
+**Cause:** Actually still defined in v1.1 as helper. If undefined, use `\cref`.
 
-**Cause:** `\thmref` and other manual reference commands were removed in v1.1.
-
-**Solution:** Use `\cref{}` instead:
-
-```latex
-% WRONG:
-\thmref{thm:main}
-
-% CORRECT:
-\cref{thm:main}
-```
-
-### Error 18: Persian text in `\printbibliography` title scrambled
+### Error 17: Persian text in `\printbibliography` title scrambled
 
 **Cause:** `\printbibliography` wrapped in `\begin{latin}`.
 
-**Solution:** Do NOT wrap `\printbibliography` in `latin`:
+**Solution:** Do NOT wrap it.
 
-```latex
-% CORRECT:
-\printbibliography[title={منابع و مراجع}]
-
-% WRONG:
-\begin{latin}
-\printbibliography[title={منابع و مراجع}]
-\end{latin}
-```
-
-### Error 19: `\endL` or `\endR` problem
+### Error 18: `\endL` or `\endR` problem
 
 **Cause:** Using `\lr{}` inside TikZ nodes with `remember picture, overlay`.
 
-**Solution:** Remove `\lr{}` from TikZ nodes. `bidi` already handles `tikzpicture` as LTR:
+**Solution:** Remove `\lr{}` from TikZ nodes.
 
-```latex
-% CORRECT:
-\node at (0,0) {$\lambda$};
-
-% WRONG:
-\node at (0,0) {\lr{$\lambda$}};
-```
-
-### Error 20: B Nazanin glyphs missing
+### Error 19: B Nazanin glyphs missing
 
 **Cause:** B Nazanin has incomplete glyph coverage.
 
-**Solution:** Use XB Niloofar or Vazirmatn instead. B Nazanin is not recommended for technical books.
+**Solution:** Use XB Niloofar or Vazirmatn.
+
+### Error 20: Margin note on wrong side
+
+**Cause:** Using `\reversemarginpar` (v1.1 doesn't use it).
+
+**Solution:** Use `\mnote` macro (which handles RTL correctly).
+
+### Error 21: Margin note text LTR on verso pages
+
+**Cause:** Content not wrapped in `\RL{}`.
+
+**Solution:** Use `\mnote` macro (which wraps in `\RL{}`).
+
+### Error 22: `\mnote` inside `tcolorbox` causes error
+
+**Cause:** `\marginpar` cannot be used inside `tcolorbox`.
+
+**Solution:** Place `\mnote` outside the box.
+
+### Error 23: `\frontmattergeometry` causes "paperwidth not available"
+
+**Cause:** `\newgeometry` cannot change `paperwidth` or `paperheight`.
+
+**Solution:** `\frontmattergeometry` omits them (already done in v1.1).
+
+### Error 24: Wide margin shrinks text too much
+
+**Cause:** `outer=5.9cm` reduces text width to ~10.3cm.
+
+**Solution:** Use `\frontmattergeometry` for frontmatter/backmatter, or reduce `marginparwidth`.
 
 ---
 
@@ -4277,7 +4003,7 @@ Below is a complete, compilable example demonstrating the most common patterns:
 
 \title{مقدمه‌ای بر الگوریتم‌ها}
 \author{نام نویسنده}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
 \booktitle{مقدمه‌ای بر الگوریتم‌ها}
 
@@ -4292,12 +4018,13 @@ Below is a complete, compilable example demonstrating the most common patterns:
     {مقدمه‌ای بر الگوریتم‌ها}
     {راهنمای جامع}
     {نام نویسنده}
-    {تابستان ۱۴۰۵}
+    {مهر ۱۴۰۵}
 
 % ========================================
 % FRONT MATTER
 % ========================================
 \frontmatter
+\frontmattergeometry
 
 \maketitle
 
@@ -4331,6 +4058,7 @@ Below is a complete, compilable example demonstrating the most common patterns:
 % MAIN MATTER
 % ========================================
 \mainmatter
+\mainmattergeometry
 
 % ========================================
 % CHAPTER 1
@@ -4350,6 +4078,8 @@ Below is a complete, compilable example demonstrating the most common patterns:
     در آرایه مرتب در زمان \lr{$O(\log n)$} پیدا می‌کند.
     \label{ex:binary-search}
 \end{example}
+
+\mnote{الگوریتم‌ها پایه‌ی علوم کامپیوتر هستند.}
 
 \section{نماد مجانبی}
 
@@ -4476,6 +4206,7 @@ Merge Sort & مرتب‌سازی ادغامی & \lr{$O(n \log n)$} \\
 % BACK MATTER
 % ========================================
 \backmatter
+\frontmattergeometry
 
 % Bibliography
 \printbibliography[title={منابع و مراجع}]
@@ -4504,69 +4235,40 @@ Merge Sort & مرتب‌سازی ادغامی & \lr{$O(n \log n)$} \\
 
 ---
 
-**End of Part IV**
-```
-
----
-
-# Summary Checklist for AI Content Generation
-
-Before generating content, verify:
+## Summary Checklist for AI Content Generation
 
 ### Structural
-
-- [ ] Document starts with `\documentclass{matinbook}`
-- [ ] Bibliography resource is added (`\addbibresource{references.bib}`)
-- [ ] Cover is configured with `\makecover{...}{...}{...}{...}`
-- [ ] `\frontmatter` / `\mainmatter` / `\backmatter` structure is correct
-- [ ] `\makebackcover{...}` is at the **very end** (before `\end{document}`)
-- [ ] `\booktitle{...}` is set (for even-page headers)
+- [ ] `\documentclass{matinbook}` is used
+- [ ] `\addbibresource` is present (if bibliography)
+- [ ] `\makecover{...}{...}{...}{...}` has 4 arguments
+- [ ] `\frontmatter` + `\frontmattergeometry`
+- [ ] `\mainmatter` + `\mainmattergeometry`
+- [ ] `\backmatter` + `\frontmattergeometry`
+- [ ] `\makebackcover{...}` is at the **very end**
+- [ ] `\booktitle{...}` is set
 
 ### Bilingual
-
 - [ ] All Latin text uses `\lr{}` or `\begin{latin}...\end{latin}`
-- [ ] All code comments are in English (or `|\pc{...}|` for Persian)
+- [ ] All code comments are in English (or `|\pc{...}|`)
 - [ ] All algorithm environments are inside `\begin{latin}...\end{latin}`
 - [ ] All TikZ diagrams (except cover) are inside `\begin{latin}...\end{latin}`
 - [ ] Persian text in TikZ nodes is wrapped in `\rl{}`
 
 ### Technical
-
 - [ ] All `\label` commands are **inside** their environments
-- [ ] No math mode (`$...$`) in section titles
+- [ ] No math mode in section titles
 - [ ] Tables use `C{width}` for Persian columns
-- [ ] All blocks (`\If`/`\For`/`\While`/`\Function`) are properly closed
-- [ ] All colors are in **CMYK** (if custom colors are added)
+- [ ] All blocks (`\If`/`\For`/`\While`/`\Function`) are closed
+- [ ] All colors are in **CMYK**
 - [ ] `\printbibliography` is **NOT** wrapped in `latin`
-- [ ] `\cref{}` is used for all references (not `\ref{}`)
+- [ ] `\cref{}` is used for all references
 - [ ] `\caption{}` (not `\algcaption`) is used for algorithms
-
-### Academic
-
-- [ ] Each paragraph has **one** main idea
-- [ ] Topic sentences are first
-- [ ] Terms are defined **before** use
-- [ ] Visual hierarchy follows the **60-30-10 rule**
-- [ ] Box-to-text ratio is appropriate
-- [ ] Citations follow **numeric** style
-- [ ] Index entries are meaningful
-
-### Quality
-
-- [ ] No emoji in formal text
-- [ ] Consistent terminology
-- [ ] Parallel structure in lists
-- [ ] No orphan/widow lines
-- [ ] Bibliography is printed **inside `latin`**? ❌ **NO** — in v1.1, it's **outside**!
-- [ ] Cross-references use `\cref{}`
-- [ ] Cover requires **2 compilation passes**
-- [ ] Index requires **xindy** (not makeindex)
+- [ ] `\mnote` is not used inside `tcolorbox` or `figure`
 
 ### Compilation
-
-- [ ] `xelatex -shell-escape` is used (not plain `xelatex`)
+- [ ] `xelatex -shell-escape` is used
 - [ ] At least **2 passes** for cover
-- [ ] `biber` is run between passes (if bibliography is used)
+- [ ] `biber` is run (if bibliography)
 - [ ] `xindy` is installed (for index)
 
 ---
@@ -4580,10 +4282,22 @@ These commands were **removed** in v1.1:
 | Removed | Replacement |
 |---------|-------------|
 | `\algcaption` | `\caption{}` inside `algorithm` |
-| `\thmref`, `\lemref`, `\corref`, `\defref`, `\exref` | `\cref{}` |
 | `\figref`, `\tabref`, `\meqref` | `\cref{}` |
 | `\coderef`, `\algref` | `\cref{}` |
 | `\chref`, `\secref` | `\cref{}` |
+
+These helper commands **still exist** in v1.1 (delegating to `\cref`):
+
+| Command | Delegates to |
+|---------|--------------|
+| `\thmref{label}` | `\cref{label}` |
+| `\lemref{label}` | `\cref{label}` |
+| `\corref{label}` | `\cref{label}` |
+| `\propref{label}` | `\cref{label}` |
+| `\defref{label}` | `\cref{label}` |
+| `\exref{label}` | `\cref{label}` |
+| `\remref{label}` | `\cref{label}` |
+| `\excref{label}` | `\cref{label}` |
 
 These modules were **removed** in v1.1:
 
@@ -4596,41 +4310,31 @@ These modules were **removed** in v1.1:
 | `mb-algorithm.sty` | `xepersian` handles `algorithm` natively |
 | `mb-colors.sty` | Empty placeholder |
 
-These modules were **moved** in v1.1:
+These **features were added** in v1.1:
 
-| Moved | From | To |
-|-------|------|-----|
-| `pgf-pie` | `mb-core` | `mb-graphics` |
-| `draftwatermark` | `mb-core` | `mb-layout` |
-| `\newcolumntype{L,R,C}` | `mb-core` | `mb-typography` |
-| `\thinmuskip`/`\medmuskip`/`\thickmuskip` | `mb-typography` | `mb-math` |
-
-These **color definitions changed** in v1.1:
-
-| Color | v1.0 | v1.1 |
-|-------|------|------|
-| All colors | RGB | **CMYK** |
-| `matincream` | (not present) | CMYK(0, 0, 0, 0) |
-| Cover aliases | Direct RGB | Mapped to `matin*` palette |
+| Feature | Command |
+|---------|---------|
+| Wide outer margin (5.9cm) | `\geometry{outer=5.9cm}` |
+| Margin notes | `\mnote{...}` |
+| Margin figures | `\marginfig{file}{caption}` |
+| Frontmatter geometry | `\frontmattergeometry` |
+| Mainmatter geometry | `\mainmattergeometry` |
+| Two box families | `matinbox` + `matin-outline` |
+| Breakable outline boxes | `underlay first/middle/last` |
+| Boyer/Stewart heading scale | 24/20/15/13/11pt |
+| Book title for headers | `\booktitle{...}` |
+| Theorem rewrite | `\newtcolorbox` + `\matin@thmtitle` |
 
 These **layout settings changed** in v1.1:
 
 | Setting | v1.0 | v1.1 |
 |---------|------|------|
-| Page size | A4 | **وزیری (16.5 × 24 cm)** |
-| Margins | 2.5cm symmetric | **O'Reilly (top=3.0, bottom=2.5, inner/outer=2.5)** |
-| Line spacing | 1.15 | **1.1** |
-| Paragraph indent | 1em | **0.5cm** |
-| Index backend | `makeindex` | **`xindy` + persian-variant2** |
-
-These **build requirements changed** in v1.1:
-
-| Requirement | v1.0 | v1.1 |
-|-------------|------|------|
-| Index tool | `makeindex` | **`xindy`** + `texindy` + `xindy-persian` |
-| Cover passes | 1 | **2+** |
-| Code comments | English only | English OR `|\pc{...}|` |
-| Algorithm captions | `\algcaption` | **`\caption{}`** |
+| Page size | A4 | **17.8 × 25.4 cm** |
+| Outer margin | 2.5 cm | **5.9 cm** (wide) |
+| Inner margin | 2.5 cm | **1.5 cm** |
+| Line spacing | 1.15 | **1.15** |
+| Paragraph indent | 1em | **1em** |
+| Heading scale | 36/17/15/14/10 | **24/20/15/13/11** |
 
 ---
 
@@ -4638,167 +4342,27 @@ These **build requirements changed** in v1.1:
 
 ### Mistake 1: Using `\ref{}` instead of `\cref{}`
 
-```latex
-% WRONG:
-طبق قضیه \ref{thm:main}، ...
-
-% CORRECT:
-طبق \cref{thm:main}، ...
-```
-
 ### Mistake 2: Wrapping `\printbibliography` in `latin`
-
-```latex
-% WRONG:
-\begin{latin}
-\printbibliography[title={منابع و مراجع}]
-\end{latin}
-
-% CORRECT:
-\printbibliography[title={منابع و مراجع}]
-```
 
 ### Mistake 3: Using `\algcaption` (removed in v1.1)
 
-```latex
-% WRONG:
-\begin{latin}
-\begin{algorithm}
-...
-\end{algorithm}
-\end{latin}
-\algcaption[alg:myalgo]{عنوان}
-
-% CORRECT:
-\begin{latin}
-\begin{algorithm}
-\caption{عنوان}
-\label{alg:myalgo}
-...
-\end{algorithm}
-\end{latin}
-```
-
 ### Mistake 4: Placing `\makebackcover` at the beginning
-
-```latex
-% WRONG:
-\makecover{...}
-\makebackcover{...}  % Should be at end!
-\maketitle
-
-% CORRECT:
-\makecover{...}
-\maketitle
-...
-\makebackcover{...}  % At end
-\end{document}
-```
 
 ### Mistake 5: Using `\rl{}` in TikZ nodes
 
-```latex
-% WRONG:
-\node {\rl{متن فارسی}};  % Causes \endL or \endR error
-
-% CORRECT:
-\node {متن فارسی};  % bidi handles it
-```
-
 ### Mistake 6: Using RGB for custom colors
-
-```latex
-% WRONG:
-\definecolor{mycolor}{RGB}{41, 128, 185}
-
-% CORRECT:
-\definecolor{mycolor}{cmyk}{0.80, 0.30, 0.00, 0.25}
-```
 
 ### Mistake 7: Putting math in section titles
 
-```latex
-% WRONG:
-\section{تحلیل $O(n)$}
-
-% CORRECT:
-\section{تحلیل O(n)}
-```
-
 ### Mistake 8: Not wrapping code in `latin`
 
-```latex
-% WRONG:
-\begin{minted}{python}
-def hello():
-    return "Hello"
-\end{minted}
+### Mistake 9: Forgetting `-shell-escape`
 
-% CORRECT:
-\begin{latin}
-\begin{minted}{python}
-def hello():
-    return "Hello"
-\end{minted}
-\end{latin}
-```
+### Mistake 10: Using `\mnote` inside `tcolorbox`
 
-### Mistake 9: Using `\thmref` (removed in v1.1)
+### Mistake 11: Forgetting `\frontmattergeometry`
 
-```latex
-% WRONG:
-\thmref{thm:main}
-
-% CORRECT:
-\cref{thm:main}
-```
-
-### Mistake 10: Forgetting `-shell-escape`
-
-```bash
-# WRONG:
-xelatex document.tex
-
-# CORRECT:
-xelatex -shell-escape document.tex
-```
-
----
-
-## AI Response Template
-
-When asked to generate content for a MatinBook book, follow this template:
-
-```
-1. Determine the content type:
-   - Chapter opening
-   - Section
-   - Theorem/Definition/Example
-   - Code listing
-   - Algorithm
-   - Figure/Table
-   - Exercise/Solution
-
-2. Generate the content with:
-   - Correct LaTeX structure
-   - Persian text (natural, no special markup)
-   - Latin text (wrapped in \lr{} or latin)
-   - All labels (inside environments)
-   - All references (\cref{})
-   - All colors (CMYK, or use matin* colors)
-
-3. Verify:
-   - No math in section titles
-   - Code inside latin
-   - Algorithm inside latin with \caption{}
-   - Bibliography outside latin
-   - Cover requires 2 passes
-
-4. Compile:
-   - xelatex -shell-escape (2+ passes)
-   - biber (if bibliography)
-   - xindy (automatic via shell-escape)
-```
+### Mistake 12: Forgetting `\mainmattergeometry`
 
 ---
 
@@ -4807,7 +4371,6 @@ When asked to generate content for a MatinBook book, follow this template:
 Before submitting AI-generated content, verify:
 
 ### Critical (Must Fix)
-
 - [ ] `\documentclass{matinbook}` is used
 - [ ] `\makecover` has 4 arguments
 - [ ] `\makebackcover` is at the end
@@ -4815,21 +4378,22 @@ Before submitting AI-generated content, verify:
 - [ ] All algorithms are inside `\begin{latin}...\end{latin}`
 - [ ] All TikZ diagrams are inside `\begin{latin}...\end{latin}`
 - [ ] Algorithm uses `\caption{}` (not `\algcaption`)
-- [ ] References use `\cref{}` (not `\ref{}` or `\thmref`)
+- [ ] References use `\cref{}` (or helper macros)
 - [ ] `\printbibliography` is **not** inside `latin`
 - [ ] Compilation uses `-shell-escape`
+- [ ] `\frontmattergeometry` after `\frontmatter`
+- [ ] `\mainmattergeometry` after `\mainmatter`
+- [ ] `\mnote` is not used inside `tcolorbox` or `figure`
 
 ### Important (Should Fix)
-
 - [ ] No math in section titles
-- [ ] Persian text in TikZ nodes is NOT wrapped in `\rl{}`
+- [ ] Persian text in TikZ nodes is wrapped in `\rl{}`
 - [ ] All labels are inside their environments
 - [ ] All blocks (`\If`/`\For`/`\While`) are closed
 - [ ] Colors are in CMYK (if custom)
 - [ ] Line length ≤ 80 characters in code
 
 ### Nice to Have (Could Fix)
-
 - [ ] Paragraphs have one main idea
 - [ ] Topic sentences are first
 - [ ] Terms are defined before use
@@ -4864,7 +4428,7 @@ Before submitting AI-generated content, verify:
 This guide is the definitive reference for generating content with MatinBook v1.1. It is maintained alongside the class itself and updated with each major release.
 
 **Version:** 1.1
-**Last Updated:** 1405 / 2026
+**Last Updated:** Mehr 1405 / October 2026
 **Maintained by:** MatinBook Project
 **License:** MIT (same as MatinBook)
 
@@ -4877,4 +4441,3 @@ For questions or issues, please open an issue on GitHub:
 
 **Made with MatinBook — Written with passion for Persian technical writing.**
 ```
-
