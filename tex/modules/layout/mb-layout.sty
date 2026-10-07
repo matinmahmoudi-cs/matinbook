@@ -17,26 +17,28 @@
 % Page format:
 %   - Paper size: 17.8 × 25.4 cm (7 × 10 in)
 %   - Inner margin: 1.5cm (near spine)
-%   - Outer margin: 5.6cm (wide — for margin notes)
+%   - Outer margin: 5.9cm (wide — for margin notes)
 %   - marginparwidth: 3.5cm
-%   - marginparsep: 0.3cm
+%   - marginparsep: 0.6cm (gap between text and note)
 %
 % Line spacing:
-%   Boyer/Stewart-style textbook leading (1.15) — loose and
-%   formula-friendly, unlike the more compact O'Reilly style.
+%   Boyer/Stewart-style textbook leading (1.15).
 %
-% Margin notes:
-%   Uses sidenotesplus, which correctly handles:
-%     - twoside (odd/even pages)
-%     - RTL (bidi/xepersian)
-%     - tcolorbox and float environments
+% Margin notes (RTL fix):
+%   We use the standard \marginpar (not sidenotesplus) because
+%   \marginpar handles twoside odd/even placement at the LaTeX
+%   kernel level and cannot be broken by bidi.
 %
-%   \mnote{...}         — plain margin note
+%   We do NOT use \reversemarginpar because \marginpar already
+%   places notes on the correct side under twoside. Adding
+%   \reversemarginpar would double-reverse the position.
+%
+%   \RL{...} (from xepersian) forces the note content into an
+%   independent RTL group, so the direction is never inherited
+%   from the (LTR) verso page.
+%
+%   \mnote{...}          — plain margin note (RTL, no number)
 %   \marginfig{...}{...} — figure + caption in margin
-%
-% Usage:
-%   \mnote{یادداشت حاشیه}
-%   \marginfig{file}{caption}
 %
 %========================================================================
 
@@ -50,9 +52,9 @@
     top=1.7cm,
     bottom=1.7cm,
     inner=1.5cm,
-    outer=5.6cm,
+    outer=5.9cm,
     marginparwidth=3.5cm,
-    marginparsep=0.3cm,
+    marginparsep=0.6cm,
     headheight=15pt,
     headsep=5pt,
     footskip=18pt,
@@ -61,22 +63,27 @@
 
 
 %------------------------------------------------------------------------
-% Margin Notes (sidenotesplus, RTL-aware)
+% Margin Notes (standard \marginpar, RTL-aware)
 %------------------------------------------------------------------------
-\RequirePackage{sidenotesplus}
+% NOTE: We do NOT use \reversemarginpar.
+%       \marginpar already places notes on the correct side
+%       (outer margin) under twoside. Adding \reversemarginpar
+%       would double-reverse the position.
 
-% NOTE: We do NOT use \reversemarginpar here.
-%       sidenotesplus already handles RTL correctly under bidi/xepersian.
-%       Adding \reversemarginpar would double-reverse the direction.
+% Plain margin note (RTL, no number)
+% \RL{} forces the content into an RTL group, so the direction
+% cannot be inherited from the (LTR) verso page.
+\newcommand{\mnote}[1]{%
+    \marginpar{\RL{\footnotesize #1}}%
+}
 
-% Simple aliases for user convenience
-\newcommand{\mnote}[1]{\sidenote{#1}}
-
+% Margin figure with caption
 \newcommand{\marginfig}[2]{%
-    \begin{marginfigure}%
+    \marginpar{%
         \includegraphics[width=\marginparwidth]{#1}%
-        \caption{#2}%
-    \end{marginfigure}%
+        \par\vspace{2pt}%
+        \RL{\footnotesize #2}%
+    }%
 }
 
 
@@ -168,6 +175,6 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-layout}{Layout loaded (wide margin, sidenotesplus, stretch 1.15)}
+\PackageInfo{mb-layout}{Layout loaded (wide margin, marginpar RTL, stretch 1.15)}
 
 \endinput
