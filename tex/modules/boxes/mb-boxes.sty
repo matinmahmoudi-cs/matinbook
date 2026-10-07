@@ -27,6 +27,10 @@
 % Design family 2 (matin-outline) — used by:
 %   example, proof, solution
 %
+% Title font size:
+%   \normalsize (10pt) — same as body text, per AMS/Boyer standard.
+%   Bold weight and color differentiate the title from body text.
+%
 % RTL note:
 %   The vertical "margin" line is drawn on the RIGHT side (borderline east).
 %
@@ -129,7 +133,7 @@
         breakable,
         frame hidden,
         colback=white,
-        coltitle=black,           % ← عنوان سیاه
+        coltitle=black,
         colbacktitle=white,
         fonttitle=\bfseries\normalsize,
         titlerule=0pt,
@@ -174,6 +178,6 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-boxes}{Box styles loaded (2 families: matinbox, matin-outline RTL)}
+\PackageInfo{mb-boxes}{Box styles loaded (title=\string\normalsize, AMS/Boyer)}
 
 \endinput

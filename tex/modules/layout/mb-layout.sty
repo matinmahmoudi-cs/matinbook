@@ -15,11 +15,15 @@
 %========================================================================
 %
 % Page format:
-%   - Paper size: 17.8 × 25.4 cm (7 × 10 in, O'Reilly/Boyer standard)
-%   - Inner margin: 1.5cm
-%   - Outer margin: 4.5cm (wide — for margin notes)
+%   - Paper size: 17.8 × 25.4 cm (7 × 10 in)
+%   - Inner margin: 1.5cm (near spine)
+%   - Outer margin: 5.6cm (wide — for margin notes)
 %   - marginparwidth: 3.5cm
 %   - marginparsep: 0.3cm
+%
+% Line spacing:
+%   Boyer/Stewart-style textbook leading (1.15) — loose and
+%   formula-friendly, unlike the more compact O'Reilly style.
 %
 % Margin notes:
 %   Uses sidenotesplus, which correctly handles:
@@ -27,8 +31,12 @@
 %     - RTL (bidi/xepersian)
 %     - tcolorbox and float environments
 %
-%   \sidenote{...}      — plain margin note
-%   \marginfigure       — figure + caption in margin
+%   \mnote{...}         — plain margin note
+%   \marginfig{...}{...} — figure + caption in margin
+%
+% Usage:
+%   \mnote{یادداشت حاشیه}
+%   \marginfig{file}{caption}
 %
 %========================================================================
 
@@ -42,7 +50,7 @@
     top=1.7cm,
     bottom=1.7cm,
     inner=1.5cm,
-    outer=4.5cm,
+    outer=5.6cm,
     marginparwidth=3.5cm,
     marginparsep=0.3cm,
     headheight=15pt,
@@ -70,6 +78,7 @@
         \caption{#2}%
     \end{marginfigure}%
 }
+
 
 %------------------------------------------------------------------------
 % Header and Footer Setup
@@ -109,9 +118,9 @@
 
 
 %------------------------------------------------------------------------
-% Line Spacing
+% Line Spacing (Boyer/Stewart textbook leading)
 %------------------------------------------------------------------------
-\setstretch{1.03}
+\setstretch{1.15}
 
 
 %------------------------------------------------------------------------
@@ -159,6 +168,6 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-layout}{Layout loaded (sidenotesplus, RTL-aware)}
+\PackageInfo{mb-layout}{Layout loaded (wide margin, sidenotesplus, stretch 1.15)}
 
 \endinput

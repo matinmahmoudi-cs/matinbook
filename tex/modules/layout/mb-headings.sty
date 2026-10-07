@@ -15,13 +15,22 @@
 %========================================================================
 %
 % Purpose:
-%   Define chapter, section, subsection styles for MatinBook.
+%   Define chapter, section, subsection styles for MatinBook,
+%   following the Boyer/Stewart university textbook scale.
+%
+% Heading scale (Boyer/Stewart standard):
+%   Chapter number:  24pt  (was 36pt)
+%   Chapter title:   20pt  (was \LARGE = 17pt)
+%   \section:        15pt  (was 17pt)
+%   \subsection:     13pt  (was 14pt)
+%   \subsubsection:  11pt  (was \normalsize = 10pt)
 %
 % Design:
-%   - Chapter number: 36pt colored digit (not 72pt)
-%   - Chapter title: \LARGE (not \Huge)
-%   - Section: colored box with number
-%   - ToC: colored chapter/section names
+%   - Chapter number: 24pt colored digit
+%   - Chapter title: 20pt
+%   - Section: colored box with number, 15pt
+%   - Subsection: colored number, 13pt
+%   - Subsubsection: colored number, 11pt
 %
 % Note:
 %   This module uses colors from mb-theme-colors, which MUST be
@@ -31,28 +40,19 @@
 
 
 %------------------------------------------------------------------------
-% Chapter Number Format
-%------------------------------------------------------------------------
-% NOTE: We do NOT redefine \thechapter. The book class handles
-%       \appendix correctly by switching to alphabetic numbering.
-% \renewcommand{\thechapter}{\arabic{chapter}}  % REMOVED
-
-
-%------------------------------------------------------------------------
-% Chapter Style
+% Chapter Style (Boyer/Stewart: 24pt number, 20pt title)
 %------------------------------------------------------------------------
 \titleformat{\chapter}[display]
 {\normalfont\bfseries\color{matindarkgray}}
 {%
-    \color{matinblue!20}\fontsize{36}{42}\selectfont\thechapter
+    \color{matinblue!20}\fontsize{24}{28}\selectfont\thechapter
 }
 {10pt}
 {%
-    \LARGE
+    \fontsize{20}{24}\selectfont
 }
 [\vspace{5pt}\noindent\textcolor{matinblue}{\rule{\textwidth}{1.5pt}}]
 
-% Space around chapter (positive values only)
 \titlespacing*{\chapter}
 {0pt}
 {20pt}
@@ -60,10 +60,10 @@
 
 
 %------------------------------------------------------------------------
-% Section Style
+% Section Style (Boyer/Stewart: 15pt)
 %------------------------------------------------------------------------
 \titleformat{\section}
-{\normalfont\small\bfseries\color{matindarkgray}}
+{\normalfont\fontsize{15}{18}\selectfont\bfseries\color{matindarkgray}}
 {%
     \colorbox{matinblue!15}{\color{matinblue}\bfseries\thesection}%
 }
@@ -77,10 +77,10 @@
 
 
 %------------------------------------------------------------------------
-% Subsection Style
+% Subsection Style (Boyer/Stewart: 13pt)
 %------------------------------------------------------------------------
 \titleformat{\subsection}
-{\normalfont\small\bfseries\color{matindarkgray}}
+{\normalfont\fontsize{13}{16}\selectfont\bfseries\color{matindarkgray}}
 {\color{matinblue!70}\thesubsection}
 {0.8em}
 {}
@@ -92,10 +92,10 @@
 
 
 %------------------------------------------------------------------------
-% Subsubsection Style
+% Subsubsection Style (Boyer/Stewart: 11pt)
 %------------------------------------------------------------------------
 \titleformat{\subsubsection}
-{\normalfont\small\bfseries\color{matindarkgray}}
+{\normalfont\fontsize{11}{13}\selectfont\bfseries\color{matindarkgray}}
 {\color{matinblue!50}\thesubsubsection}
 {0.8em}
 {}
@@ -111,6 +111,7 @@
 %------------------------------------------------------------------------
 % Use \markboth for both marks to ensure consistency in twoside.
 % Format: chapter name only (no "Chapter N:" prefix).
+%------------------------------------------------------------------------
 \renewcommand{\chaptermark}[1]{%
     \markboth{%
         \ifnum\c@chapter>0
@@ -159,6 +160,6 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-headings}{Heading styles loaded}
+\PackageInfo{mb-headings}{Heading styles loaded (Boyer/Stewart scale)}
 
 \endinput
