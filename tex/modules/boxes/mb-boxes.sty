@@ -15,43 +15,52 @@
 %========================================================================
 %
 % Purpose:
-%   Provide tcolorbox STYLES for use with \tcolorboxenvironment.
-%   This module does NOT define any environments — only styles.
+%   Provide tcolorbox STYLES for theorem-like environments.
 %
-% Usage (in mb-theorem.sty):
-%   \tcolorboxenvironment{theorem}{matin-theorem}
-%   \tcolorboxenvironment{lemma}{matin-lemma}
-%   ...
+% Two design families:
+%   1. "matinbox"      — Boyer-style: solid colored title bar, white body
+%   2. "matin-outline" — Outline style: right vertical line + horizontal rules
 %
-% Color philosophy (Iranian educational publishing standards):
-%   - Blue:   theorems, lemmas, definitions (calming)
-%   - Orange: examples, remarks, exercises (attention)
-%   - Green:  solutions, proofs (success)
+% Design family 1 (matinbox) — used by:
+%   theorem, lemma, corollary, proposition, definition, remark, exercise
+%
+% Design family 2 (matin-outline) — used by:
+%   example, proof, solution
+%
+% RTL note:
+%   The vertical "margin" line is drawn on the RIGHT side (borderline east).
+%
+% Color note:
+%   In matin-outline, the title text is BLACK (coltitle=black),
+%   while the border lines keep the style color (#1).
 %
 %========================================================================
 
 
-%------------------------------------------------------------------------
-% Base Style
-%------------------------------------------------------------------------
+%========================================================================
+% FAMILY 1 — BOYER-STYLE BOXES (matinbox)
+%========================================================================
+
 \tcbset{
     matinbox/.style={
         enhanced,
         breakable,
-        colback=matincream,
+        sharp corners,
         boxrule=0.5pt,
-        arc=3pt,
-        outer arc=3pt,
-        left=8pt,
-        right=8pt,
-        top=6pt,
-        bottom=6pt,
-        toptitle=3pt,
-        bottomtitle=2pt,
-        fonttitle=\footnotesize\bfseries,
+        colback=white,
+        colframe=#1,
+        colbacktitle=#1,
+        coltitle=white,
+        fonttitle=\bfseries\normalsize,
         titlerule=0pt,
-        before skip=8pt,
-        after skip=8pt,
+        left=10pt,
+        right=10pt,
+        top=8pt,
+        bottom=8pt,
+        toptitle=5pt,
+        bottomtitle=5pt,
+        before skip=10pt,
+        after skip=10pt,
         parbox=false
     }
 }
@@ -61,89 +70,110 @@
 % Theorem Family Styles (blue)
 %------------------------------------------------------------------------
 \tcbset{
-    matin-theorem/.style={
-        matinbox,
-        colframe=matinblue!80,
-        colbacktitle=matinblue!10,
-        coltitle=matinblue!80!black
-    },
-    matin-lemma/.style={
-        matinbox,
-        colframe=matinblue!70,
-        colbacktitle=matinblue!10,
-        coltitle=matinblue!70!black
-    },
-    matin-corollary/.style={
-        matinbox,
-        colframe=matinblue!60,
-        colbacktitle=matinblue!10,
-        coltitle=matinblue!60!black
-    },
-    matin-proposition/.style={
-        matinbox,
-        colframe=matinblue!75,
-        colbacktitle=matinblue!85
+    matin-theorem/.style={matinbox=matinblue},
+    matin-lemma/.style={matinbox=matinblue!85!black},
+    matin-corollary/.style={matinbox=matinblue!70!black},
+    matin-proposition/.style={matinbox=matinblue!90!black}
+}
+
+
+%------------------------------------------------------------------------
+% Definition Family Style (green)
+%------------------------------------------------------------------------
+\tcbset{
+    matin-definition/.style={matinbox=matingreen!85!black}
+}
+
+
+%------------------------------------------------------------------------
+% Exercise Style (purple)
+%------------------------------------------------------------------------
+\tcbset{
+    matin-exercise/.style={matinbox=matinpurple!85!black}
+}
+
+
+%------------------------------------------------------------------------
+% Remark Style (red)
+%------------------------------------------------------------------------
+\tcbset{
+    matin-remark/.style={matinbox=matinred!80!black}
+}
+
+
+%========================================================================
+% FAMILY 2 — OUTLINE-STYLE BOXES (matin-outline, RTL)
+%========================================================================
+%
+% Design (RTL — vertical line on the RIGHT):
+%
+%   ──────────────────────────────────┤ EXAMPLE 1
+%                                     │
+%                                     │  content...
+%                                     │
+%   ──────────────────────────────────┘
+%
+% Features:
+%   - Right vertical line (2pt, colored)
+%   - Title WITHOUT background, BLACK bold text
+%   - Horizontal rule under title (2pt, colored)
+%   - Horizontal rule at bottom (2pt, colored)
+%   - No frame on left/top/bottom sides
+%   - White body
+%
+%------------------------------------------------------------------------
+
+\tcbset{
+    matin-outline/.style={
+        enhanced,
+        breakable,
+        frame hidden,
+        colback=white,
+        coltitle=black,           % ← عنوان سیاه
+        colbacktitle=white,
+        fonttitle=\bfseries\normalsize,
+        titlerule=0pt,
+        left=10pt,
+        right=12pt,
+        top=8pt,
+        bottom=8pt,
+        toptitle=4pt,
+        bottomtitle=4pt,
+        before skip=10pt,
+        after skip=10pt,
+        parbox=false,
+        % Right vertical line (RTL) — style color
+        borderline east={2pt}{0pt}{#1},
+        % Horizontal line under title — style color
+        underlay={%
+            \draw[#1, line width=2pt]
+                ([yshift=0pt]title.south west) -- ([yshift=0pt]title.south east);
+        },
+        % Horizontal line at bottom — style color
+        overlay={%
+            \draw[#1, line width=2pt]
+                ([yshift=0pt]frame.south west) -- ([yshift=0pt]frame.south east);
+        }
     }
 }
 
 
 %------------------------------------------------------------------------
-% Definition Style (lighter blue)
+% Outline Styles (for example, proof, solution)
+%------------------------------------------------------------------------
+% The color #1 is used ONLY for the border lines.
+% The title text is always black.
 %------------------------------------------------------------------------
 \tcbset{
-    matin-definition/.style={
-        matinbox,
-        colframe=matinblue!50,
-        colbacktitle=matinblue!60
-    }
-}
-
-
-%------------------------------------------------------------------------
-% Example Family Styles (orange)
-%------------------------------------------------------------------------
-\tcbset{
-    matin-example/.style={
-        matinbox,
-        colframe=matinorange!80,
-        colbacktitle=matinorange!10,
-        coltitle=matinorange!80!black
-    },
-    matin-remark/.style={
-        matinbox,
-        colframe=matinorange!70,
-        colbacktitle=matinorange!10,
-        coltitle=matinorange!70!black
-    },
-    matin-exercise/.style={
-        matinbox,
-        colframe=matinorange!60,
-        colbacktitle=matinorange!70
-    }
-}
-
-
-%------------------------------------------------------------------------
-% Solution / Proof Styles (green)
-%------------------------------------------------------------------------
-\tcbset{
-    matin-solution/.style={
-        matinbox,
-        colframe=matingreen!70,
-        colbacktitle=matingreen!10,
-        coltitle=matingreen!70!black
-    },
-    matin-proof/.style={
-        matinbox,
-        colframe=matingreen!50,
-        colbacktitle=matingreen!60
-    }
+    matin-example-outline/.style={matin-outline=matinorange!90!black},
+    matin-proof-outline/.style={matin-outline=matindarkgray},
+    matin-solution-outline/.style={matin-outline=matingreen!70!black}
 }
 
 
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-boxes}{Box styles loaded (3 colors: blue, orange, green)}
+\PackageInfo{mb-boxes}{Box styles loaded (2 families: matinbox, matin-outline RTL)}
 
 \endinput

@@ -11,114 +11,166 @@
 \ProvidesPackage{mb-theorem}[2026/01/01 v1.1 MatinBook Theorem System]
 
 %========================================================================
-% MB-THEOREM — THEOREM ENVIRONMENTS (via amsthm)
+% MB-THEOREM — THEOREM ENVIRONMENTS
 %========================================================================
 %
 % Purpose:
-%   Define theorem-like environments using amsthm's \newtheorem,
-%   then style them with tcolorbox via \tcolorboxenvironment.
+%   Define theorem-like environments with two visual styles.
+%
+% Design families (from mb-boxes):
+%   1. matinbox      — Boyer-style (solid title bar, white body)
+%   2. matin-outline — Outline style (right line + horizontal rules, RTL)
+%
+% Environment assignments:
+%   Family 1 (matinbox):
+%     theorem, lemma, corollary, proposition,
+%     definition, remark, exercise
+%
+%   Family 2 (matin-outline):
+%     example, proof, solution
 %
 % Architecture:
-%   - amsthm (loaded in mb-core) handles:
-%       * Counters and shared numbering
-%       * \label / \ref support
-%       * \qed symbol for proofs
-%   - mb-boxes provides tcolorbox styles
-%   - This module combines them
+%   - All numbered environments share counter: matin@thmcounter
+%   - Counter resets per chapter
+%   - Optional title: \begin{theorem}[نام] → "قضیه ۱.۱: نام"
 %
-% Shared counter:
-%   theorem, lemma, corollary, proposition share a single counter.
-%   definition, example, remark, exercise each have independent counters.
+% Reference helpers:
+%   \thmref, \lemref, \corref, \propref, \defref,
+%   \exref, \remref, \excref
 %
 %========================================================================
 
 
 %------------------------------------------------------------------------
-% Theorem Family (shared counter with definition)
+% Shared Counter
 %------------------------------------------------------------------------
-\theoremstyle{definition}
-\newtheorem{definition}{تعریف}[chapter]
-
-\theoremstyle{plain}
-\newtheorem{theorem}[definition]{قضیه}
-\newtheorem{lemma}[definition]{لم}
-\newtheorem{corollary}[definition]{نتیجه}
-\newtheorem{proposition}[definition]{گزاره}
-
-\theoremstyle{definition}
-\newtheorem{example}[definition]{مثال}
-
-\theoremstyle{remark}
-\newtheorem{remark}[definition]{نکته}
-\newtheorem{exercise}[definition]{تمرین}
+\newcounter{matin@thmcounter}[chapter]
+\renewcommand{\thematin@thmcounter}{\thechapter.\arabic{matin@thmcounter}}
 
 
 %------------------------------------------------------------------------
-% tcolorbox Styles (from mb-boxes)
+% Title Builder
 %------------------------------------------------------------------------
-\tcolorboxenvironment{theorem}{matin-theorem}
-\tcolorboxenvironment{lemma}{matin-lemma}
-\tcolorboxenvironment{corollary}{matin-corollary}
-\tcolorboxenvironment{proposition}{matin-proposition}
-\tcolorboxenvironment{definition}{matin-definition}
-\tcolorboxenvironment{example}{matin-example}
-\tcolorboxenvironment{remark}{matin-remark}
-\tcolorboxenvironment{exercise}{matin-exercise}
-
-
-%------------------------------------------------------------------------
-% Solution Environment (no numbering)
-%------------------------------------------------------------------------
-\newenvironment{solution}{%
-    \begin{tcolorbox}[matin-solution, title={\textbf{\solutionname}}]%
-}{%
-    \end{tcolorbox}%
+\newcommand{\matin@thmtitle}[2]{%
+    #1~\thetcbcounter
+    \ifx\relax#2\relax\else:~#2\fi
 }
 
 
 %------------------------------------------------------------------------
-% Proof Environment (preserves \qed)
+% Helper: Create Themed Environment
 %------------------------------------------------------------------------
-\renewenvironment{proof}[1][]{%
-    \begin{tcolorbox}[matin-proof, title={\textbf{\proofname}}]%
-    \ifx\relax#1\relax\else\textbf{#1}\par\fi
-}{%
-    \hfill$\qedsymbol$%
-    \end{tcolorbox}%
+% #1 = environment name (e.g., theorem)
+% #2 = display name     (e.g., قضیه)
+% #3 = tcolorbox style  (e.g., matin-theorem)
+% #4 = body font style  (itshape, normalfont, \bfseries\color{black}, ...)
+%------------------------------------------------------------------------
+\newcommand{\matin@newthm}[4]{%
+    \newtcolorbox[use counter=matin@thmcounter]{#1}[1][]{%
+        #3,
+        title={\matin@thmtitle{#2}{##1}},
+        fontupper={#4}%
+    }%
 }
 
 
 %------------------------------------------------------------------------
-% Cleveref Names (using environment names, not counter names)
+% Theorem Family (Family 1 — matinbox, blue, italic body)
 %------------------------------------------------------------------------
-\crefname{theorem}{قضیه}{قضایا}
-\Crefname{theorem}{قضیه}{قضایا}
+\matin@newthm{theorem}    {قضیه}  {matin-theorem}    {\itshape}
+\matin@newthm{lemma}      {لم}    {matin-lemma}      {\itshape}
+\matin@newthm{corollary}  {نتیجه} {matin-corollary}  {\itshape}
+\matin@newthm{proposition}{گزاره} {matin-proposition}{\itshape}
 
-\crefname{lemma}{لم}{لم‌ها}
-\Crefname{lemma}{لم}{لم‌ها}
 
-\crefname{corollary}{نتیجه}{نتایج}
-\Crefname{corollary}{نتیجه}{نتایج}
+%------------------------------------------------------------------------
+% Definition Family (Family 1 — matinbox, normal body)
+%------------------------------------------------------------------------
+\matin@newthm{definition}{تعریف}{matin-definition}{\normalfont}
+\matin@newthm{remark}    {نکته} {matin-remark}    {\normalfont}
+\matin@newthm{exercise}  {تمرین}{matin-exercise}  {\normalfont}
 
+
+%------------------------------------------------------------------------
+% Example (Family 2 — outline, numbered, orange, black bold body)
+%------------------------------------------------------------------------
+\matin@newthm{example}   {مثال} {matin-example-outline} {\bfseries\color{black}}
+
+
+%------------------------------------------------------------------------
+% Solution (Family 2 — outline, no counter, green, black bold body)
+%------------------------------------------------------------------------
+\newtcolorbox{solution}{
+    matin-solution-outline,
+    title={\textbf{\solutionname}},
+    fontupper=\bfseries\color{black}
+}
+
+
+%------------------------------------------------------------------------
+% Proof (Family 2 — outline, no counter, gray, black bold body, \qed)
+%------------------------------------------------------------------------
+% amsthm (loaded in mb-core) defines \proof. We clear it first
+% to avoid "Command \proof already defined" error.
+%------------------------------------------------------------------------
+\let\proof\relax
+\let\endproof\relax
+
+\newtcolorbox{proof}[1][]{
+    matin-proof-outline,
+    title={\textbf{\proofname}\ifx\relax#1\relax\else:~#1\fi},
+    fontupper=\bfseries\color{black},
+    after upper={\hfill$\qedsymbol$}
+}
+
+
+%------------------------------------------------------------------------
+% Reference Helpers
+%------------------------------------------------------------------------
+\newcommand{\thmref}[1]{\cref{#1}}
+\newcommand{\lemref}[1]{\cref{#1}}
+\newcommand{\corref}[1]{\cref{#1}}
+\newcommand{\propref}[1]{\cref{#1}}
+\newcommand{\defref}[1]{\cref{#1}}
+\newcommand{\exref}[1]{\cref{#1}}
+\newcommand{\remref}[1]{\cref{#1}}
+\newcommand{\excref}[1]{\cref{#1}}
+
+
+%------------------------------------------------------------------------
+% Cleveref Names
+%------------------------------------------------------------------------
+\crefalias{theorem}    {matin@thmcounter}
+\crefalias{lemma}      {matin@thmcounter}
+\crefalias{corollary}  {matin@thmcounter}
+\crefalias{proposition}{matin@thmcounter}
+\crefalias{definition} {matin@thmcounter}
+\crefalias{example}    {matin@thmcounter}
+\crefalias{remark}     {matin@thmcounter}
+\crefalias{exercise}   {matin@thmcounter}
+
+\crefname{theorem}    {قضیه} {قضایا}
+\crefname{lemma}      {لم}   {لم‌ها}
+\crefname{corollary}  {نتیجه}{نتایج}
 \crefname{proposition}{گزاره}{گزاره‌ها}
+\crefname{definition} {تعریف}{تعاریف}
+\crefname{example}    {مثال} {مثال‌ها}
+\crefname{remark}     {نکته} {نکات}
+\crefname{exercise}   {تمرین}{تمرین‌ها}
+
+\Crefname{theorem}    {قضیه} {قضایا}
+\Crefname{lemma}      {لم}   {لم‌ها}
+\Crefname{corollary}  {نتیجه}{نتایج}
 \Crefname{proposition}{گزاره}{گزاره‌ها}
-
-\crefname{definition}{تعریف}{تعاریف}
-\Crefname{definition}{تعریف}{تعاریف}
-
-\crefname{example}{مثال}{مثال‌ها}
-\Crefname{example}{مثال}{مثال‌ها}
-
-\crefname{remark}{نکته}{نکات}
-\Crefname{remark}{نکته}{نکات}
-
-\crefname{exercise}{تمرین}{تمرین‌ها}
-\Crefname{exercise}{تمرین}{تمرین‌ها}
+\Crefname{definition} {تعریف}{تعاریف}
+\Crefname{example}    {مثال} {مثال‌ها}
+\Crefname{remark}     {نکته} {نکات}
+\Crefname{exercise}   {تمرین}{تمرین‌ها}
 
 
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-theorem}{Theorem environments loaded (via amsthm)}
+\PackageInfo{mb-theorem}{Theorem environments loaded (2 style families)}
 
 \endinput
