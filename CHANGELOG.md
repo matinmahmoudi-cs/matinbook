@@ -16,14 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`mb-code`:** Migrate to `minted` v3's `bgcolorpadding` (requires TeX Live 2024+)
 - **`mb-code`:** Replace manual `codecounter` with minted's `listing` float
 - **`mb-theme-colors`:** Convert RGB→CMYK with a professional color tool for precise values
-- **`mb-theme-cover`:** Simplify cover design (reduce decorative elements)
-- **`mb-theme-cover`:** Reduce font count from 5 to 2
 - **`main.tex`:** Enable Bismillah page and Latin title page by default
 - **`tests/`:** Replace `run-all-tests.sh` with a modern test runner
 
 ---
 
-## [1.1.0] — 2026-01-01 (تابستان ۱۴۰۵)
+## [1.1.0] — 2026-10-08 (مهر ۱۴۰۵)
 
 ### 🎯 Major Changes
 
@@ -83,43 +81,67 @@ into other modules or handled automatically by `xepersian`:
 - **`mb-typography.sty`:**
   - `xepersian-hm` for Kashida support (disabled by default)
   - `\newcolumntype{L}[1]`, `R[1]`, `C[1]` (with width argument)
-  - Reduced `\emergencystretch` from 3em to 1em (Persian uses Kashida, not spacing)
+  - Reduced `\emergencystretch` from 3em to 1em
 
 - **`mb-layout.sty`:**
-  - O'Reilly-standard margins with Vaziri page size (16.5 × 24 cm)
-  - Asymmetric margins: top=3.0cm, bottom=2.5cm, inner/outer=2.5cm
-  - `bindingoffset=0.5cm`
-  - Header/Footer per Iranian standard (book title / chapter name)
-  - Draft watermark (moved from `mb-core`)
+  - **Wide outer margin** (5.9cm) with `marginparwidth=3.5cm` and
+    `marginparsep=0.6cm`, for margin notes and figures.
+  - **`\mnote{...}`** — plain margin note (RTL-aware, no numbering).
+  - **`\marginfig{...}{...}`** — figure with caption in the margin.
+  - **RTL fix**: standard `\marginpar` with `\RL{}` (from xepersian) to
+    force note content into an RTL group. Fixes the LTR-direction issue
+    on verso (even) pages.
+  - **`\frontmattergeometry`** — switches to symmetric margins (no wide
+    margin) for frontmatter (copyright, preface, ToC, ...).
+  - **`\mainmattergeometry`** — restores the wide-margin geometry.
+  - **`\setstretch{1.15}`** — Boyer/Stewart-style textbook leading.
+  - **`headheight=15pt`** — fixes the `fancyhdr` warning.
+  - Draft watermark (moved from `mb-core`).
 
 - **`mb-headings.sty`:**
-  - Reduced chapter number from 72pt to 36pt
-  - Changed chapter title from `\Huge` to `\LARGE`
-  - Replaced negative `\titlespacing` with positive values
-  - Restored `\cftdotsep` from 0.5 to 4.5 (LaTeX default)
-  - Removed `\renewcommand{\thechapter}` (preserves `\appendix`)
+  - **Boyer/Stewart heading scale:**
+    - Chapter number: 24pt (was 36pt)
+    - Chapter title: 20pt (was `\LARGE` = 17pt)
+    - `\section`: 15pt (was 17pt)
+    - `\subsection`: 13pt (was 14pt)
+    - `\subsubsection`: 11pt (was `\normalsize` = 10pt)
+  - **`\chaptermark`**: format "فصل N  نام فصل", no bold, `\small`.
+  - **`\sectionmark`**: no bold, `\small`.
+  - Restored `\cftdotsep` from 0.5 to 4.5 (LaTeX default).
+  - Removed `\renewcommand{\thechapter}` (preserves `\appendix`).
 
 - **`mb-math.sty`:**
-  - Wrapped all `\DeclareMathOperator` in `\AtBeginDocument` (unicode-math override)
+  - Wrapped all `\DeclareMathOperator` in `\AtBeginDocument`
   - Changed `\newcommand` to `\providecommand` for `\N, \Z, \Q, \R, \C, \D`
-  - Equation numbering: `\theequation` redefined to `(formula-chapter)` per Iranian standard
-  - Removed duplicate `\thinmuskip`/`\medmuskip`/`\thickmuskip` (LaTeX defaults)
+  - Equation numbering: `\theequation` redefined to `(formula-chapter)`
+  - Removed duplicate `\thinmuskip`/`\medmuskip`/`\thickmuskip`
 
 - **`mb-boxes.sty`:**
-  - Reduced color count from 5 to 3 (blue, orange, green)
-  - Changed `colback` from white to `matincream` (off-white)
-  - Changed `fonttitle` from `\small` to `\normalsize`
-  - Increased `toptitle` from 4pt to 6pt
-  - Removed redundant `\textbf{ }` in title
+  - **Two-family box system:**
+    - **Family 1 — `matinbox`** (Boyer-style): solid colored title bar,
+      white body, sharp corners. Used by `theorem`, `lemma`,
+      `corollary`, `proposition`, `definition`, `remark`, `exercise`.
+    - **Family 2 — `matin-outline`** (RTL outline): right vertical line
+      (2pt), horizontal rule under title (1pt), horizontal rule at
+      bottom (1pt), no frame on other sides, white body, black bold
+      title. Used by `example`, `proof`, `solution`.
+  - **Breakable handling**: `underlay first/middle/last` +
+    `overlay last` to keep the vertical line on the correct side of
+    each broken piece.
+  - **`fonttitle=\bfseries\normalsize`** — same size as body text,
+    per AMS/Boyer standard.
+  - Reduced color count from 5 to 3 (blue, orange, green).
 
 - **`mb-theorem.sty`:**
-  - Complete rewrite using `\newtheorem` + `\tcolorboxenvironment`
-  - All theorem environments share a counter (`definition`)
-  - `solution` environment (no numbering)
-  - `proof` environment preserves `\qedsymbol`
-  - `\crefname` uses environment names (not counter names)
-  - Added `\Crefname` for capitalized forms
-  - Added plural forms in `fa-IR` and `en-US`
+  - **Complete rewrite using `\newtcolorbox`** (not `amsthm`).
+  - Shared counter `matin@thmcounter` (reset per chapter).
+  - `\matin@thmtitle` builds the title text without `\ifstrempty`.
+  - `\let\proof\relax` + `\let\endproof\relax` before
+    `\newtcolorbox{proof}` (fixes "Command \proof already defined").
+  - Reference helpers: `\thmref`, `\lemref`, `\corref`, `\propref`,
+    `\defref`, `\exref`, `\remref`, `\excref`.
+  - `\crefalias` for each environment → shared counter.
+  - Per-environment `fontupper`.
 
 - **`mb-code.sty`:**
   - Added `escapeinside=||` for Persian comments
@@ -129,31 +151,39 @@ into other modules or handled automatically by `xepersian`:
   - Changed `breakanywhere` from `true` to `false`
   - Added `baselinestretch=0.95`
   - Added `style=friendly`
-  - Removed `python3=true` (obsolete in minted v2/v3)
+  - Removed `python3=true`
 
 - **`mb-graphics.sty`:**
   - Moved `pgf-pie` from `mb-core`
-  - Documented `lstlisting` in TikZ nodes limitation (LaTeX kernel issue)
+  - Documented `lstlisting` in TikZ nodes limitation
 
 - **`mb-index.sty`:**
   - Switched from `makeindex` to `xindy` with `persian-variant2`
-  - Removed fragile `\renewcommand{\subitem}` and `\subsubitem`
-  - Full xindy options: `-L persian-variant2 -C utf8 -M texindy -M page-ranges`
 
 - **`mb-theme-colors.sty`:**
-  - Converted all colors from RGB to CMYK (per Iranian standard ز/۱-۴)
-  - Changed `\definecolor` to `\providecolor` (user override support)
+  - Converted all colors from RGB to CMYK
+  - Changed `\definecolor` to `\providecolor`
   - Added `matincream` (off-white background)
-  - `matinblue` is the dominant color
 
 - **`mb-theme-cover.sty`:**
-  - Mapped all `cover*` colors to `matin*` palette via `\colorlet`
-  - Replaced hardcoded `v1.0.0` with `\matinbookversion`
-  - Replaced hardcoded `github.com/matinbook` with `\matin@repository`
-  - Added `\repository` public alias
-  - Fixed TikZ font size syntax in nodes
-  - Removed `\lr{}` from math symbols inside `tikzpicture`
-  - Added prominent 2-pass compilation note
+  - **Full-color front cover**: dark green background with math symbols
+    (`∑ ∫ ∂ π ∞ √ ∇ λ θ ε Σ Ω Δ`), math formulas, programming keywords
+    (`def`, `class`, `while`, `return`, `import`, `lambda`), and code
+    symbols (`<\ />`, `{ }`, `[ ]`, `=>`, `===`, `!=`).
+  - **Back cover fantasy band (0–7cm)**: 3-row layout with
+    - Row 1: three parallel sine waves (orange, faded)
+    - Row 2: five math formulas (`∫`, `∑`, `∂`, `∇`, `lim`)
+    - Row 3: neural network, dotted graph, small formulas,
+      code symbols, and large faint symbols
+  - **Mini-plot**: aligned with "درباره این کتاب" heading at 7cm,
+    width scaled ×0.75, height scaled ×1.5.
+  - **Concept tree**: 7 nodes, English labels (A–G), positioned at
+    bottom-left.
+  - **Barcode strip + ISBN** at the bottom.
+  - Mapped all `cover*` colors to `matin*` palette via `\colorlet`.
+  - Replaced hardcoded `v1.0.0` with `\matinbookversion`.
+  - Replaced hardcoded `github.com/matinbook` with `\matin@repository`.
+  - Added `\repository` public alias.
 
 - **`main.tex`:**
   - Fixed document order per Iranian publishing standards
@@ -165,11 +195,14 @@ into other modules or handled automatically by `xepersian`:
   - Added optional Bismillah page (commented)
   - Added optional Latin title page (commented)
   - Added conditional `\listofalgorithms` (commented)
+  - Added `\frontmattergeometry` after `\frontmatter`
+  - Added `\mainmattergeometry` after `\mainmatter`
+  - Added `\frontmattergeometry` after `\backmatter`
 
 #### Tests
 
-- **22 integration tests** in `tests/v1.1/`:
-  - `compile.sh` — modern test compiler (compiles all `.tex`, cleans aux files on success)
+- **24 integration tests** in `tests/v1.1/`:
+  - `compile.sh` — modern test compiler
   - `stage-cls-01.tex` — basic infrastructure
   - `stage-packages-01.tex` — package loading conventions
   - `stage-options-01.tex` — key-value option system
@@ -192,6 +225,8 @@ into other modules or handled automatically by `xepersian`:
   - `stage-theme-default-01.tex` — theme loader
   - `stage-cover-01.tex` — front and back cover
   - `stage-main-01.tex` — full book structure
+  - **`stage-margin-01.tex`** — 20 margin notes, Latin terms,
+    formulas, odd/even page coverage.
 
 ### 🔧 Changed
 
@@ -206,60 +241,113 @@ into other modules or handled automatically by `xepersian`:
 
 #### `fa-IR.sty` and `en-US.sty`
 
-- Changed `\renewcommand` to `\providecommand` for names undefined in `book` class (`\abstractname`, `\refname`)
+- Changed `\renewcommand` to `\providecommand` for names undefined in `book` class
 - Added `\crefname` for `subsection`, `exercise`, `proposition`
 - Added `\crefrangeformat` for `theorem`
 - Added `\crefpairconjunction`, `\crefrangeconjunction`, `\crefmiddleconjunction`, `\creflastconjunction` via `\AtBeginDocument`
-- Added plural forms (`\theoremplural`, `\lemmanplural`, etc.)
-- Removed `\floatname{algorithm}` (xepersian handles it)
+- Added plural forms
+- Removed `\floatname{algorithm}`
 
 #### `mb-utils.sty`
 
-- Fixed `\matin@ifcmd` to accept 3 arguments (was 1, broken)
+- Fixed `\matin@ifcmd` to accept 3 arguments
 - Added `\makeatletter`/`\makeatother` block
 - Pre-initialized `\@latintitle` and `\@latinauthor` with `\providecommand`
-- Used `\gdef` for global assignment (matches LaTeX kernel pattern)
-- Removed dead code (`\matinbookversion`, `\matinbookdate` — moved to `matinbook.cls`)
+- Used `\gdef` for global assignment
+- Removed dead code
+
+#### `mb-layout.sty`
+
+- Page geometry: `outer=5.9cm` (was 1.4cm), `marginparwidth=3.5cm`,
+  `marginparsep=0.6cm`.
+- `\setstretch{1.15}` (was 1.03).
+- `headheight=15pt` (was 13pt).
+- Margin notes: `\marginpar{\RL{\footnotesize #1}}` (no
+  `\reversemarginpar`).
+
+#### `mb-headings.sty`
+
+- Heading scale: 24/20, 15, 13, 11pt (was 36/17, 15, 14, 10pt).
+- `\chaptermark`: "فصل N  نام فصل" (was just chapter name).
+- `\sectionmark`: no bold.
+
+#### `mb-boxes.sty`
+
+- `fonttitle`: `\bfseries\normalsize` (was `\bfseries\small`).
+- Two families: `matinbox` (Boyer) + `matin-outline` (RTL outline).
+- `matin-outline` uses `underlay first/middle/last` and
+  `overlay last` instead of `borderline east`.
+
+#### `mb-theorem.sty`
+
+- Complete rewrite: `\newtcolorbox` instead of `\newtheorem` +
+  `\tcolorboxenvironment`.
+- `example`, `proof`, `solution` use `matin-outline` styles.
+- `\let\proof\relax` + `\let\endproof\relax` before
+  `\newtcolorbox{proof}`.
+
+#### `mb-theme-cover.sty`
+
+- Complete redesign: full-color front, fantasy math band on the back,
+  compact concept tree with English labels.
+
+#### `main.tex`
+
+- Added `\frontmattergeometry` and `\mainmattergeometry`.
 
 ### 🐛 Fixed
 
 - **`matinbook.cls`:** Removed stray `\n` character introduced by earlier `sed`
-- **`mb-core.sty`:** Fixed `mathtools`/`amsmath` order (amsmath first)
+- **`mb-core.sty`:** Fixed `mathtools`/`amsmath` order
 - **`mb-core.sty`:** Removed `amssymb` (unicode-math replaces it)
 - **`mb-core.sty`:** Added explicit `\tcbuselibrary{minted}`
 - **`mb-core.sty`:** Added `colortbl` (via `xcolor[table]`) for `\rowcolor`
 - **`mb-boxes.sty`:** Fixed `\newcolumntype{L,R,C}` to accept width argument
-- **`mb-theorem.sty`:** Fixed `\crefname` to use environment names (not counter names)
+- **`mb-boxes.sty`:** Fixed `underlay first` double-definition (merged
+  two `\draw` commands into one `underlay first`).
+- **`mb-theorem.sty`:** Fixed `Command \proof already defined` error
+  (via `\let\proof\relax`).
+- **`mb-theorem.sty`:** Fixed `Incomplete \ifx` error (removed
+  `\ifstrempty` from `tcolorbox` title).
+- **`mb-theorem.sty`:** Fixed `\crefname` to use environment names
 - **`mb-theorem.sty`:** Fixed `\qedsymbol` preservation in proof environment
-- **`fa-IR.sty`:** Fixed `\renewcommand{\abstractname}` (undefined in book) → `\providecommand`
-- **`fa-IR.sty`:** Fixed `\creflastconjunction` undefined error via `\AtBeginDocument`
-- **`mb-theme-cover.sty`:** Fixed TikZ `font=` syntax (`\fontsize` inside node content)
-- **`mb-theme-cover.sty`:** Fixed `\lr{}` in `tikzpicture` (`\endL or \endR` error)
-- **`mb-theme-cover.sty`:** Fixed `\matin@repository` not accessible from tests (added `\repository`)
+- **`fa-IR.sty`:** Fixed `\renewcommand{\abstractname}` → `\providecommand`
+- **`fa-IR.sty`:** Fixed `\creflastconjunction` undefined error
+- **`mb-layout.sty`:** Fixed margin note direction on verso pages
+  (via `\RL{}`).
+- **`mb-layout.sty`:** Fixed `fancyhdr` headheight warning
+  (`headheight=15pt`).
+- **`mb-layout.sty`:** Fixed `geometry: paperwidth not available in
+  \newgeometry` (removed `paperwidth`/`paperheight` from
+  `\frontmattergeometry`).
+- **`mb-theme-cover.sty`:** Fixed TikZ `font=` syntax
+- **`mb-theme-cover.sty`:** Fixed `\lr{}` in `tikzpicture`
+- **`mb-theme-cover.sty`:** Fixed `\matin@repository` not accessible from tests
+- **`mb-theme-cover.sty`:** Fixed Persian text not rendering in cover
+  (was using `\sffamily`/`\rmfamily` which are Latin-only fonts;
+  switched to default Persian font via `\fontsize...\selectfont`).
 - **`main.tex`:** Fixed document order per Iranian publishing standards
 
 ### ⚠️ Known Issues
 
 - **`mb-theorem`:** `\theoremstyle{remark}` produces italic title for 'نکته'. To be fixed in v1.2.
-- **`mb-code`:** `bgcolorpadding` not available in TeX Live 2023's `fvextra`. To be added when TeX Live 2024+ is required.
-- **`mb-theme-colors`:** CMYK values are approximate (converted from RGB). Precise conversion planned for v1.2.
-- **`mb-theme-cover`:** Cover uses 5 fonts and many decorative elements. Simplification planned for v1.2.
+- **`mb-code`:** `bgcolorpadding` not available in TeX Live 2023's `fvextra`.
+- **`mb-theme-colors`:** CMYK values are approximate (converted from RGB).
+- **`mb-theme-cover`:** Cover still uses many decorative elements.
+- **`mb-layout`:** `\mnote` uses `\marginpar`, which cannot be used inside `tcolorbox` or `figure`.
+- **`mb-theme-cover`:** The fantasy band on the back cover may still show minor overlaps depending on TeX Live version.
 
 ### 📚 Documentation
 
 - **`README.md`:** Complete rewrite
-  - Updated for v1.1 (18 modules, not 20)
-  - Updated font list
-  - Updated compilation instructions (xindy, 2-pass cover)
-  - Updated project structure
-  - Updated test list (22 tests)
-  - Added CHANGELOG section
 - **`CHANGELOG.md`:** Initial release (this file)
 - **`AI_GUIDE.md`:** (pending update)
 
 ### 🔍 Review Reports
 
-This release is based on 25 review reports covering:
+This release is based on 25 review reports covering LaTeX 2023 standards,
+official documentation, open-source comparisons, and Iranian publishing
+standards.
 
 | # | Report | File(s) |
 |---|--------|---------|
