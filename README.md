@@ -29,7 +29,7 @@
 
 ### Core Capabilities
 - **Persian-first design:** Full RTL support with proper Persian/Arabic typography
-- **Modular architecture:** 18 independent modules for easy maintenance
+- **Modular architecture:** 18 source modules (17 `.sty` + 1 `.cls`) for easy maintenance
 - **Professional typography:** Microtype protrusion, Kashida support, widow/orphan control
 - **Standard-compliant:** Follows LaTeX 2023 key-value option system
 - **Print-ready:** CMYK color palette per Iranian educational publishing standards
@@ -97,7 +97,7 @@
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/matinbook/matinbook.git
+git clone https://github.com/matinmahmoudi-cs/matinbook.git
 cd matinbook
 ```
 
@@ -485,7 +485,7 @@ xelatex -shell-escape advanced-algorithms-book.tex
 
 ## Tests
 
-The project includes 24 incremental integration tests in `tests/v1.1/`. To run all tests:
+The project includes 24 integration tests in `tests/v1.1/` (plus 15 legacy tests in `tests/v1/`) and 2 complete examples in `examples/`. To run all tests:
 
 ```bash
 cd tests/v1.1
@@ -519,6 +519,8 @@ Each test validates a specific module or feature:
 | `stage-cover-01` | Cover | Front and back cover |
 | `stage-main-01` | Main | Full book structure |
 | **`stage-margin-01`** | **Layout** | **Margin notes, RTL direction, odd/even pages** |
+
+> **Debug helpers:** The files `test-latin.tex`, `test-minimal.tex`, and `test-unicode-math.tex` are temporary diagnostic tests written during development to isolate specific issues. They are **not** part of the official test suite and are kept in `tests/v1.1/` for reference.
 
 ---
 
@@ -664,8 +666,8 @@ We welcome contributions! Here's how you can help:
 
 1. **Module Structure:**
    ```latex
-   \NeedsTeXFormat{LaTeX2e}[2020/10/01]
-   \ProvidesPackage{mb-myfeature}[2026/01/01 v1.1 MatinBook My Feature]
+   \NeedsTeXFormat{LaTeX2e}[2023/06/01]
+   \ProvidesPackage{mb-myfeature}[2026/10/08 v1.1 MatinBook My Feature]
    
    %========================================================================
    % MB-MYFEATURE — DESCRIPTION
@@ -734,7 +736,7 @@ MatinBook is released under the **MIT License**. See the [LICENSE](LICENSE) file
 ```
 MIT License
 
-Copyright (c) 2025-2026 MatinBook Project
+Copyright (c) 2025-2026 Matin Mahmoudi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -779,8 +781,8 @@ Special thanks to:
 
 ## Contact
 
-- **GitHub:** [github.com/matinbook](https://github.com/matinbook)
-- **Issues:** [github.com/matinbook/issues](https://github.com/matinbook/issues)
+- **GitHub:** [github.com/matinmahmoudi-cs/matinbook](https://github.com/matinmahmoudi-cs/matinbook)
+- **Issues:** [github.com/matinmahmoudi-cs/matinbook/issues](https://github.com/matinmahmoudi-cs/matinbook/issues)
 
 ---
 

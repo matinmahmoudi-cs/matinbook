@@ -1,8 +1,14 @@
-%% mb-theme-cover.sty -- MatinBook print cover system
-%% Copyright (C) 2025-2026 MatinBook Project
-%% Persian typesetting is provided by the document (XeLaTeX + XePersian).
-\NeedsTeXFormat{LaTeX2e}[2020/10/01]
-\ProvidesPackage{mb-theme-cover}[2026/06/15 v3.1 MatinBook Covers]
+%%
+%% This is file `mb-theme-cover.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 Matin Mahmoudi
+%% 
+%% Repository: https://github.com/matinmahmoudi-cs/matinbook
+%% 
+
+\NeedsTeXFormat{LaTeX2e}[2023/06/01]
+\ProvidesPackage{mb-theme-cover}[2026/10/08 v1.1 MatinBook Covers]
 
 \RequirePackage{xcolor}
 \RequirePackage{tikz}
@@ -20,9 +26,14 @@
 \colorlet{covergray}{matinmediumgray}
 \colorlet{covergold}{matingold}
 \colorlet{coverpaper}{matinivory}
+\colorlet{coverbg}{matincream}
+\colorlet{coveraccent2}{matinorange}
+\colorlet{coveraccent3}{matinblue}
+\colorlet{coverlight}{matinlightgray}
+\colorlet{coverdark}{matindarkgray}
 
 % Public metadata hooks; projects may define these before loading this package.
-\providecommand{\repository}{github.com/matinbook}
+\providecommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
 \providecommand{\coverabout}{درباره این کتاب}
 \providecommand{\coversource}{دریافت نسخهٔ دیجیتال}
 \providecommand{\isbn}{978-600-000000-0-0}

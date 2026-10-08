@@ -168,6 +168,9 @@ matinbook/
 │       ├── stage-cover-01.tex
 │       ├── stage-main-01.tex
 │       └── stage-margin-01.tex      # ← Margin notes test
+│       ├── test-latin.tex          # (debug) Latin-only test
+│       ├── test-minimal.tex        # (debug) minimal document test
+│       ├── test-unicode-math.tex   # (debug) unicode-math test
 │
 └── examples/                        # 2 example books
     ├── matinbook-documentation.tex
@@ -180,12 +183,12 @@ matinbook/
 Phase 1 — Base packages (BEFORE xepersian):
  1.  mb-core          → Load ALL base packages
  2.  mb-theme-colors  → Color palette (CMYK)
- 3.  mb-boxes         → tcolorbox styles (two families)
+ 8.  mb-theorem       → Theorem environments (tcolorbox)
  4.  mb-code          → minted configuration
  5.  mb-layout        → Page geometry (wide margin)
  6.  mb-headings      → Chapter/section styles (Boyer/Stewart)
  7.  mb-math          → Math operators
- 8.  mb-theorem       → Theorem environments (tcolorbox)
+ 3.  mb-boxes         → tcolorbox styles (two families)
  9.  mb-references    → hyperref + cleveref
 10.  mb-graphics      → TikZ + PGFPlots
 11.  mb-index         → xindy configuration
@@ -729,10 +732,11 @@ matincream       cmyk(0.00, 0.00, 0.00, 0.00)   % Off-white background
 The cover uses aliases mapped to the main palette:
 
 ```latex
-coverprimary     → matindarkgreen   % dark green
-coveraccent      → matinorange      % warm orange
-covergray        → matinmediumgray  % gray
-coverlight       → matinlightgray   % light gray
+coverprimary     → matinnavy        % dark navy (RGB: 30,42,58)
+coveraccent      → matincrimson     % crimson (RGB: 166,25,46)
+covergold        → matingold        % gold (RGB: 201,162,39)
+coverpaper       → matinivory       % ivory (RGB: 242,238,227)
+covergray        → matinmediumgray  % gray (RGB: 145,151,157)
 ```
 
 > **Note:** This ensures the cover uses the same CMYK palette as the rest of the book.
@@ -1080,7 +1084,7 @@ MatinBook v1.1 provides two geometry commands:
 
 ### Technical Note
 
-`\newgeometry` (used inside `\frontmattergeometry`) **cannot change** `paperwidth` or `paperheight`. Those are only set once by `\geometry`. This is why `\frontmattergeometry` omits them.
+`\frontmattergeometry` uses `\newgeometry` to switch between two page geometries. Both `\geometry` and `\newgeometry` accept `paperwidth` and `paperheight`; MatinBook v1.1 re-declares them explicitly in `\frontmattergeometry` for clarity.
 
 **End of Section 6-8**
 
@@ -2133,15 +2137,17 @@ xelatex -shell-escape document.tex
 MatinBook v1.1 provides a **redesigned** professional front and back cover:
 
 **Front cover:**
-- Full-color dark green background
-- Math symbols (`∑ ∫ ∂ π ∞ √ ∇ λ θ ε Σ Ω Δ`)
-- Math formulas and programming keywords
-  (`def`, `class`, `while`, `return`, `import`, `lambda`)
-- Code symbols (`<\ />`, `{ }`, `[ ]`, `=>`, `===`, `!=`)
+- Full-bleed navy background (`matinnavy`)
+- Crimson wedge (`matincrimson`) from the top-left corner
+- Preserved gold ellipse/orbit (`matingold`)
+- Damped oscillation and logarithmic growth curves
+- Semi-transparent IDE-style C++ code specimen
+- Compact equations in fine gold typography
+- Direction arrows and target nodes (crimson)
 
 **Back cover:**
-- Full-color dark green background
-- **Fantasy math band (0–7cm)**: three rows of
+- Ivory reverse (`matinivory`)
+- **Top decorative zone above y = -6.4cm (clear of 7.0cm blurb)**:
   - Row 1: three parallel sine waves (orange, faded)
   - Row 2: five math formulas (`∫`, `∑`, `∂`, `∇`, `lim`)
   - Row 3: neural network, dotted graph, small formulas,
@@ -2190,7 +2196,7 @@ The cover shows the repository URL. To customize:
 \renewcommand{\repository}{github.com/your-username/your-book}
 ```
 
-Default: `github.com/matinbook`
+Default: `github.com/matinmahmoudi-cs/matinbook`
 
 ### Version Info
 
@@ -2207,10 +2213,11 @@ The cover uses **aliases** mapped to the main CMYK palette:
 
 | Cover Alias | Maps To |
 |-------------|---------|
-| `coverprimary` | `matindarkgreen` |
-| `coveraccent` | `matinorange` |
-| `covergray` | `matinmediumgray` |
-| `coverlight` | `matinlightgray` |
+| `coverprimary` | `matinnavy` (RGB: 30,42,58) |
+| `coveraccent` | `matincrimson` (RGB: 166,25,46) |
+| `covergold` | `matingold` (RGB: 201,162,39) |
+| `coverpaper` | `matinivory` (RGB: 242,238,227) |
+| `covergray` | `matinmediumgray` (RGB: 145,151,157) |
 
 This ensures the cover uses the same CMYK palette as the rest of the book.
 
@@ -2282,7 +2289,7 @@ MatinBook v1.1 has a **single** theme: `default`.
 - Defines `\makecover` (4 args)
 - Defines `\makebackcover` (1 arg)
 - Full-color front cover with math/code symbols
-- Fantasy math band on the back cover
+- Ivory reverse with top decorative zone (see Section 16)
 - Compact concept tree (7 nodes, A–G)
 
 **`mb-theme-default.sty`:**
@@ -3976,7 +3983,7 @@ Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
 
 **Solution:** Place `\mnote` outside the box.
 
-### Error 23: `\frontmattergeometry` causes "paperwidth not available"
+### Error 23: (REMOVED in v1.1 — was a false assumption)
 
 **Cause:** `\newgeometry` cannot change `paperwidth` or `paperheight`.
 
@@ -4007,7 +4014,7 @@ Below is a complete, compilable example demonstrating the most common patterns:
 
 \booktitle{مقدمه‌ای بر الگوریتم‌ها}
 
-\renewcommand{\repository}{github.com/matinbook/algorithms-book}
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
 
 \begin{document}
 
@@ -4429,11 +4436,11 @@ This guide is the definitive reference for generating content with MatinBook v1.
 
 **Version:** 1.1
 **Last Updated:** Mehr 1405 / October 2026
-**Maintained by:** MatinBook Project
+**Maintained by:** Matin Mahmoudi
 **License:** MIT (same as MatinBook)
 
 For questions or issues, please open an issue on GitHub:
-[github.com/matinbook/matinbook/issues](https://github.com/matinbook/matinbook/issues)
+[github.com/matinmahmoudi-cs/matinbook/issues](https://github.com/matinmahmoudi-cs/matinbook/issues)
 
 ---
 

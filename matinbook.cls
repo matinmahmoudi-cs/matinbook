@@ -2,7 +2,7 @@
 %% This is file `matinbook.cls',
 %% generated with the MatinBook project.
 %% 
-%% Copyright (C) 2025-2026 MatinBook Project
+%% Copyright (C) 2025-2026 Matin Mahmoudi
 %% 
 %% MatinBook is a professional LaTeX class for Persian technical books
 %% in programming and mathematics.
@@ -10,15 +10,15 @@
 %% It may be distributed and/or modified under the conditions of
 %% the MIT License.
 %% 
-%% Repository: https://github.com/matinbook/matinbook
+%% Repository: https://github.com/matinmahmoudi-cs/matinbook
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesClass{matinbook}[2026/01/01 v1.1 MatinBook - Professional Persian Technical Book Class]
+\ProvidesClass{matinbook}[2026/10/08 v1.1 MatinBook - Professional Persian Technical Book Class]
 
 % Version Information
 \def\matinbookversion{1.1}
-\def\matinbookdate{2026/01/01}
+\def\matinbookdate{2026/10/08}
 
 %========================================================================
 % MATINBOOK CLASS — BOOTSTRAP SEQUENCE

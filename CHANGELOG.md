@@ -38,7 +38,7 @@ and Iranian publishing standards.
 
 - **Standardized package conventions**
   - All 24 `.sty` files now use `\ProvidesPackage{mb-*}` (simple names)
-  - All files use `\NeedsTeXFormat{LaTeX2e}[2020/10/01]`
+  - All files use `\NeedsTeXFormat{LaTeX2e}[2023/06/01]`
   - All files use `\PackageInfo` instead of `\typeout`
 
 - **Fixed loading order** (critical for xepersian and colors)
@@ -236,7 +236,7 @@ into other modules or handled automatically by `xepersian`:
   1. **Phase 1 — Base packages (BEFORE xepersian):** `mb-core`, `mb-theme-colors`, `mb-boxes`, `mb-code`, `mb-layout`, `mb-headings`, `mb-math`, `mb-references`, `mb-graphics`, `mb-index`, `mb-utils`, `mb-theme-cover`
   2. **Phase 2 — xepersian (LAST package):** `\RequirePackage{xepersian}`
   3. **Phase 3 — Persian-specific settings (AFTER xepersian):** font configuration, `mb-typography`, `fa-IR`
-- `\ProvidesClass{matinbook}[2026/01/01 v1.1]`
+- `\ProvidesClass{matinbook}[2026/10/08 v1.1]`
 - `\NeedsTeXFormat{LaTeX2e}[2023/06/01]`
 
 #### `fa-IR.sty` and `en-US.sty`
@@ -422,8 +422,8 @@ Persian calendar dates are provided in parentheses for reference.
 
 ## Links
 
-- **Repository:** [github.com/matinbook/matinbook](https://github.com/matinbook/matinbook)
-- **Issues:** [github.com/matinbook/matinbook/issues](https://github.com/matinbook/matinbook/issues)
+- **Repository:** [github.com/matinmahmoudi-cs/matinbook](https://github.com/matinmahmoudi-cs/matinbook)
+- **Issues:** [github.com/matinmahmoudi-cs/matinbook/issues](https://github.com/matinmahmoudi-cs/matinbook/issues)
 - **CTAN:** (planned)
 
 ---
