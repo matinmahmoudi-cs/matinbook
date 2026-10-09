@@ -1,0 +1,414 @@
+%%
+%% part2-book-components/ch06-chapters.tex
+%%
+%% Chapter 6: Chapters and Sections — How to organize a book
+%% into parts, chapters, sections, subsections, and
+%% subsubsections, and how to cross-reference them.
+%%
+
+\chapter{فصل و بخش}
+\label{chap:chapters}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:chapters-why}
+
+یک کتاب خوب، فقط مجموعه‌ای از متن نیست؛ بلکه
+ساختاری منظم دارد که خواننده را در مسیر یادگیری
+هدایت می‌کند. فصل‌ها، بخش‌ها و زیربخش‌ها،
+ستون فقرات این ساختار هستند.
+
+\lr{MatinBook} از یک سیستم عنوان‌بندی پنج‌سطحی
+استفاده می‌کند که بر اساس مقیاس \lr{Boyer/Stewart}
+طراحی شده است. در این فصل، با این سیستم آشنا
+می‌شوید و یاد می‌گیرید که چگونه ساختار کتاب
+خود را سازمان‌دهی کنید.
+
+\mnote{مقیاس \lr{Boyer/Stewart} استاندارد کتاب‌های درسی دانشگاهی است و در انتشارات معتبری مانند \lr{Wiley} و \lr{Pearson} استفاده می‌شود.}
+
+\section{سطوح عنوان‌بندی}
+\label{sec:chapters-levels}
+
+\lr{MatinBook} از پنج سطح عنوان‌بندی پشتیبانی
+می‌کند:
+
+\begin{enumerate}
+    \item \textbf{بخش} (\cmd{part}): بزرگ‌ترین
+    واحد ساختاری.
+    \item \textbf{فصل} (\cmd{chapter}): واحد
+    اصلی کتاب.
+    \item \textbf{بخش} (\cmd{section}): زیرمجموعه‌ی
+    فصل.
+    \item \textbf{زیربخش} (\cmd{subsection}):
+    زیرمجموعه‌ی بخش.
+    \item \textbf{زیرزیربخش} (\cmd{subsubsection}):
+    عمیق‌ترین سطح.
+\end{enumerate}
+
+\mnote{توجه کنید که «بخش» در فارسی برای هر دو \lr{part} و \lr{section} استفاده می‌شود. در این کتاب، برای \lr{part} از «بخش اصلی» و برای \lr{section} از «بخش» استفاده می‌کنیم.}
+
+\section{بخش اصلی (\lr{part})}
+\label{sec:chapters-part}
+
+بخش اصلی، بزرگ‌ترین واحد ساختاری در یک کتاب
+است. یک کتاب می‌تواند چند بخش اصلی داشته باشد
+که هر یک شامل چند فصل است.
+
+برای ایجاد بخش اصلی:
+
+\begin{latin}
+\begin{minted}{latex}
+\part{|\pc{مبانی}|}
+\label{part:fundamentals}
+\end{minted}
+\end{latin}
+
+\mnote{بخش اصلی در فهرست مطالب ظاهر می‌شود ولی شماره‌ی فصل را تغییر نمی‌دهد.}
+
+\subsection{شماره‌گذاری بخش اصلی}
+\label{sec:chapters-part-numbering}
+
+بخش‌های اصلی با اعداد رومی شماره‌گذاری می‌شوند:
+بخش اول، بخش دوم، بخش سوم و...
+
+\subsection{نمایش بخش اصلی}
+\label{sec:chapters-part-display}
+
+هر بخش اصلی، یک صفحه‌ی جداگانه دارد که فقط
+شامل عنوان بخش است. این صفحه، بدون شماره
+است و به عنوان یک جداکننده بین بخش‌ها عمل
+می‌کند.
+
+\mnote{اگر کتاب شما کوتاه است (کمتر از ۸ فصل)، نیازی به بخش اصلی ندارید.}
+
+\section{فصل (\lr{chapter})}
+\label{sec:chapters-chapter}
+
+فصل، واحد اصلی کتاب است. هر فصل، یک موضوع
+مشخص را پوشش می‌دهد و معمولاً ۱۵ تا ۲۵ صفحه
+است.
+
+برای ایجاد فصل:
+
+\begin{latin}
+\begin{minted}{latex}
+\chapter{|\pc{مقدمه}|}
+\label{chap:introduction}
+\end{minted}
+\end{latin}
+
+\subsection{شماره‌گذاری فصل}
+\label{sec:chapters-chapter-numbering}
+
+فصل‌ها با اعداد عربی شماره‌گذاری می‌شوند: ۱، ۲،
+۳ و... این شماره‌گذاری در \cmd{mainmatter}
+شروع می‌شود و در \cmd{backmatter} ادامه می‌یابد.
+
+\subsection{سبک نمایش فصل}
+\label{sec:chapters-chapter-style}
+
+فصل‌ها در \lr{MatinBook} با یک سبک خاص نمایش
+داده می‌شوند:
+
+\begin{itemize}
+    \item شماره‌ی فصل با فونت \pnum{۲۴pt} و
+    رنگ کم‌رنگ.
+    \item عنوان فصل با فونت \pnum{۲۰pt}.
+    \item یک خط افقی رنگی زیر عنوان.
+\end{itemize}
+
+\mnote{سبک فصل در فایل \lr{mb-headings.sty} تعریف شده است. برای شخصی‌سازی، این فایل را ویرایش کنید.}
+
+\subsection{فصل‌های بدون شماره}
+\label{sec:chapters-chapter-star}
+
+برای فصل‌های بدون شماره، از \cmd{chapter*}
+استفاده می‌کنیم. این دستور برای پیشگفتار،
+پیوست‌های بدون شماره و بخش‌های ویژه مناسب
+است:
+
+\begin{latin}
+\begin{minted}{latex}
+\chapter*{|\pc{پیشگفتار}|}
+\addcontentsline{toc}{chapter}{|\pc{پیشگفتار}|}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash addcontentsline} باعث می‌شود که این فصل در فهرست مطالب ظاهر شود.}
+
+\section{بخش (\lr{section})}
+\label{sec:chapters-section}
+
+بخش، زیرمجموعه‌ی فصل است. هر فصل معمولاً
+شامل ۳ تا ۵ بخش است. برای ایجاد بخش:
+
+\begin{latin}
+\begin{minted}{latex}
+\section{|\pc{مقدمه}|}
+\label{sec:introduction}
+\end{minted}
+\end{latin}
+
+\subsection{سبک نمایش بخش}
+\label{sec:chapters-section-style}
+
+بخش‌ها در \lr{MatinBook} با یک سبک خاص نمایش
+داده می‌شوند:
+
+\begin{itemize}
+    \item شماره‌ی بخش در یک \lr{colorbox}
+    با پس‌زمینه‌ی آبی روشن.
+    \item عنوان بخش با فونت \pnum{۱۵pt}.
+\end{itemize}
+
+\mnote{شماره‌ی بخش به صورت «فصل.بخش» نمایش داده می‌شود، مثلاً \lr{3.2} یعنی بخش دوم از فصل سوم.}
+
+\section{زیربخش (\lr{subsection})}
+\label{sec:chapters-subsection}
+
+زیربخش، زیرمجموعه‌ی بخش است. برای ایجاد
+زیربخش:
+
+\begin{latin}
+\begin{minted}{latex}
+\subsection{|\pc{پیشینه}|}
+\label{sec:background}
+\end{minted}
+\end{latin}
+
+\subsection{سبک نمایش زیربخش}
+\label{sec:chapters-subsection-style}
+
+زیربخش‌ها با فونت \pnum{۱۳pt} و شماره‌ی آبی
+کم‌رنگ نمایش داده می‌شوند.
+
+\mnote{شماره‌ی زیربخش به صورت «فصل.بخش.زیربخش» نمایش داده می‌شود، مثلاً \lr{3.2.1}.}
+
+\section{زیرزیربخش (\lr{subsubsection})}
+\label{sec:chapters-subsubsection}
+
+زیرزیربخش، عمیق‌ترین سطح عنوان‌بندی در
+\lr{MatinBook} است. برای ایجاد زیرزیربخش:
+
+\begin{latin}
+\begin{minted}{latex}
+\subsubsection{|\pc{مثال اول}|}
+\label{sec:example-first}
+\end{minted}
+\end{latin}
+
+\mnote{استفاده‌ی بیش از حد از زیرزیربخش، ساختار کتاب را پیچیده می‌کند. سعی کنید از سه سطح اول (فصل، بخش، زیربخش) استفاده کنید.}
+
+\section{جدول مقایسه‌ی سطوح}
+\label{sec:chapters-comparison}
+
+جدول \cref{tab:heading-levels} مقایسه‌ی خلاصه‌ای
+بین پنج سطح عنوان‌بندی را نشان می‌دهد.
+
+\begin{matintable}{مقایسه‌ی سطوح عنوان‌بندی}{tab:heading-levels}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دستور & اندازه & شماره‌گذاری & در فهرست \\
+\lr{\textbackslash part} & صفحه‌ی جداگانه & رومی & بله \\
+\lr{\textbackslash chapter} & \pnum{۲۴/۲۰}pt & عربی & بله \\
+\lr{\textbackslash section} & \pnum{۱۵}pt & فصل.بخش & بله \\
+\lr{\textbackslash subsection} & \pnum{۱۳}pt & فصل.بخش.زیر & بله \\
+\lr{\textbackslash subsubsection} & \pnum{۱۱}pt & فصل.بخش.زیر.زیر & بله \\
+\end{tblr}
+\end{matintable}
+
+\section{ارجاع به فصل و بخش}
+\label{sec:chapters-references}
+
+برای ارجاع به فصل و بخش، از دستور \cmd{cref}
+استفاده می‌کنیم. این دستور به‌طور خودکار نوع
+مرجع را تشخیص می‌دهد و پیشوند مناسب (فصل،
+بخش، زیربخش) را اضافه می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{ارجاع به فصل}|
+\cref{chap:introduction}
+
+% |\pc{ارجاع به بخش}|
+\cref{sec:introduction}
+
+% |\pc{ارجاع به چند مرجع}|
+\cref{chap:introduction,chap:chapters}
+\end{minted}
+\end{latin}
+
+\mnote{خروجی \lr{\textbackslash cref\{chap:introduction\}} می‌شود «فصل ۱» و خروجی \lr{\textbackslash cref\{sec:introduction\}} می‌شود «بخش ۱.۱».}
+
+\subsection{نام‌گذاری برچسب‌ها}
+\label{sec:chapters-label-naming}
+
+برای اینکه برچسب‌ها معنادار باشند، از
+پیشوندهای زیر استفاده کنید:
+
+\begin{itemize}
+    \item \textbf{فصل:} \lr{chap:xxx} —
+    مثال: \lr{chap:introduction}.
+    \item \textbf{بخش:} \lr{sec:xxx} —
+    مثال: \lr{sec:motivation}.
+    \item \textbf{زیربخش:} \lr{subsec:xxx} —
+    مثال: \lr{subsec:history}.
+    \item \textbf{زیرزیربخش:} \lr{subsubsec:xxx}.
+\end{itemize}
+
+\mnote{برچسب‌های معنادار، خواندن فایل‌های \lr{tex} را آسان‌تر می‌کنند و از خطاهای ارجاع جلوگیری می‌کنند.}
+
+\section{مثال کامل: یک فصل با همه‌ی سطوح}
+\label{sec:chapters-full-example}
+
+در ادامه، یک فصل کامل با همه‌ی سطوح عنوان‌بندی
+نمایش داده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\chapter{|\pc{مقدمه}|}
+\label{chap:introduction}
+
+\section{|\pc{انگیزه}|}
+\label{sec:motivation}
+
+|\pc{متن انگیزه...}|
+
+\subsection{|\pc{پیشینه}|}
+\label{subsec:background}
+
+|\pc{متن پیشینه...}|
+
+\subsubsection{|\pc{کارهای مرتبط}|}
+\label{subsubsec:related}
+
+|\pc{متن کارهای مرتبط...}|
+
+\section{|\pc{تعریف مسئله}|}
+\label{sec:problem}
+
+|\pc{متن تعریف مسئله...}|
+
+\section{|\pc{نتیجه‌گیری}|}
+\label{sec:conclusion}
+
+|\pc{متن نتیجه‌گیری...}|
+\end{minted}
+\end{latin}
+
+\mnote{در این مثال، از پنج سطح عنوان‌بندی استفاده شده است. سعی کنید از چهار سطح اول استفاده کنید و از زیرزیربخش فقط در موارد ضروری.}
+
+\section{خطاهای رایج}
+\label{sec:chapters-mistakes}
+
+\subsection{عنوان‌بندی بدون متن}
+\label{sec:chapters-mistake-empty}
+
+هرگز دو عنوان را پشت سر هم بدون متن قرار
+ندهید. این کار، خواننده را گیج می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+\section{|\pc{مقدمه}|}
+\subsection{|\pc{پیشینه}|}
+
+% |\pc{درست}|:
+\section{|\pc{مقدمه}|}
+|\pc{این فصل به بررسی... می‌پردازد.}|
+
+\subsection{|\pc{پیشینه}|}
+|\pc{پیشینه پژوهش...}|
+\end{minted}
+\end{latin}
+
+\subsection{استفاده‌ی بیش از حد از زیرزیربخش}
+\label{sec:chapters-mistake-deep}
+
+اگر از زیرزیربخش بیش از حد استفاده کنید،
+ساختار کتاب پیچیده می‌شود و خواننده مسیر
+خود را گم می‌کند.
+
+\textbf{راه‌حل:} از سه سطح اول (فصل، بخش،
+زیربخش) استفاده کنید و فقط در موارد ضروری
+به زیرزیربخش بروید.
+
+\subsection{فراموش کردن \cmd{label}}
+\label{sec:chapters-mistake-label}
+
+اگر \cmd{label} را فراموش کنید، نمی‌توانید
+به آن بخش ارجاع دهید و ممکن است در آینده
+مشکل ایجاد شود.
+
+\textbf{راه‌حل:} برای هر فصل و بخش مهم، یک
+\cmd{label} معنادار تعریف کنید.
+
+\section{تمرین‌ها}
+\label{sec:chapters-exercises}
+
+\begin{exercise}
+    یک فصل با سه بخش و هر بخش با دو زیربخش
+    بسازید. آیا ساختار در فهرست مطالب به‌درستی
+    نمایش داده می‌شود؟
+    \label{exc:chapters-structure}
+\end{exercise}
+
+\begin{exercise}
+    به فصل و بخش‌های خود ارجاع دهید. آیا
+    پیشوندها به‌درستی نمایش داده می‌شوند؟
+    \label{exc:chapters-refs}
+\end{exercise}
+
+\begin{exercise}
+    یک کتاب با دو بخش اصلی و چهار فصل بسازید.
+    از دستور \cmd{part} برای ایجاد بخش‌های
+    اصلی استفاده کنید.
+    \label{exc:chapters-parts}
+\end{exercise}
+
+\begin{exercise}
+    یک \cmd{chapter*} با \cmd{addcontentsline}
+    بسازید. آیا در فهرست مطالب ظاهر می‌شود؟
+    \label{exc:chapters-star}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:chapters-summary}
+
+در این فصل، با سیستم عنوان‌بندی \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از پنج سطح عنوان‌بندی
+    پشتیبانی می‌کند: \cmd{part}، \cmd{chapter}،
+    \cmd{section}، \cmd{subsection}،
+    \cmd{subsubsection}.
+
+    \item مقیاس اندازه‌ها بر اساس استاندارد
+    \lr{Boyer/Stewart} است: ۲۴/۲۰، ۱۵، ۱۳، ۱۱pt.
+
+    \item برای فصل‌های بدون شماره، از
+    \cmd{chapter*} با \cmd{addcontentsline}
+    استفاده می‌شود.
+
+    \item ارجاع به فصل و بخش با \cmd{cref}
+    انجام می‌شود که پیشوند مناسب را به‌طور
+    خودکار اضافه می‌کند.
+
+    \item برچسب‌ها باید معنادار باشند و از
+    پیشوندهای استاندارد (\lr{chap:}،
+    \lr{sec:}، \lr{subsec:}) استفاده کنند.
+
+    \item خطاهای رایج شامل عنوان‌بندی بدون
+    متن، استفاده‌ی بیش از حد از زیرزیربخش،
+    و فراموش کردن \cmd{label} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:text})، با متن و
+پاراگراف آشنا می‌شوید و یاد می‌گیرید که
+چگونه متن فارسی و لاتین را با هم ترکیب کنید.
