@@ -2,7 +2,7 @@
 
 **MatinBook** is a modular, feature-rich LaTeX document class designed specifically for writing professional Persian books in programming, mathematics, and computer science. Built with XeLaTeX, it provides a complete typesetting solution with beautiful typography, intelligent cross-referencing, and extensive customization options.
 
-**Current version:** v1.1 (Mehr 1405 / مهر ۱۴۰۵)
+**Current version:** v1.2 (Mehr 1405 / مهر ۱۴۰۵)
 
 ---
 
@@ -152,8 +152,8 @@ texhash ~/texmf
 ### 5. Verify Installation
 
 ```bash
-cd tests/v1.1
-./compile.sh stage-cls-01.tex
+cd tests/v1.2
+./run-all-tests.sh
 ```
 
 If a PDF is generated without errors, the installation is successful.
@@ -272,33 +272,27 @@ matinbook/
 │   ├── cover/                   #   Cover images
 │   └── images/                  #   Book images
 │
-├── tests/                       # Integration tests (24)
-│   ├── v1.1/                    #   v1.1-specific tests
-│   │   ├── compile.sh           #     Test compiler script
-│   │   ├── stage-cls-01.tex
-│   │   ├── stage-packages-01.tex
-│   │   ├── stage-options-01.tex
-│   │   ├── stage-core-01.tex
-│   │   ├── stage-utils-01.tex
-│   │   ├── stage-rtl-01.tex
-│   │   ├── stage-locale-01.tex
-│   │   ├── stage-locale-en-01.tex
-│   │   ├── stage-typography-01.tex
-│   │   ├── stage-layout-01.tex
-│   │   ├── stage-headings-01.tex
-│   │   ├── stage-math-01.tex
-│   │   ├── stage-boxes-01.tex
-│   │   ├── stage-theorem-01.tex
-│   │   ├── stage-code-01.tex
-│   │   ├── stage-algorithm-01.tex
-│   │   ├── stage-graphics-01.tex
-│   │   ├── stage-index-01.tex
-│   │   ├── stage-colors-01.tex
-│   │   ├── stage-theme-default-01.tex
-│   │   ├── stage-cover-01.tex
-│   │   ├── stage-main-01.tex
-│   │   └── stage-margin-01.tex  # ← margin notes test
-│   └── (legacy stage01-15 tests)
+├── tests/                       # Test suites
+│   ├── v1.2/                    #   Active v1.2 test suite (15 tests)
+│   │   ├── run-all-tests.sh     #     Test runner script
+│   │   ├── stage01-basic.tex
+│   │   ├── stage02-fonts.tex
+│   │   ├── stage03-layout.tex
+│   │   ├── stage04-typography.tex
+│   │   ├── stage05-math.tex
+│   │   ├── stage06-theorems.tex
+│   │   ├── stage07-boxes.tex
+│   │   ├── stage08-code.tex
+│   │   ├── stage09-algorithms.tex
+│   │   ├── stage10-tikz.tex
+│   │   ├── stage11-references.tex
+│   │   ├── stage12-biblatex.tex
+│   │   ├── stage13-index.tex
+│   │   ├── stage14-book.tex
+│   │   └── stage15-cover.tex
+│   │
+│   └── archive/                 #   Legacy test suites
+│       └── v1.1/                #     Old v1.1 tests (for reference)
 │
 └── examples/                    # Example books (2)
     ├── matinbook-documentation.tex  # Full documentation
@@ -322,7 +316,7 @@ xelatex -shell-escape matinbook-documentation.tex
 
 This documentation covers:
 - Installation and setup
-- Architecture overview (all 18 modules)
+- Architecture overview (all 19 modules)
 - User guide (writing math, theorems, code, algorithms)
 - Theme system and customization
 - Development guide
@@ -526,42 +520,44 @@ xelatex -shell-escape advanced-algorithms-book.tex
 
 ## Tests
 
-The project includes 24 integration tests in `tests/v1.1/`, 15 legacy tests in `tests/v1/` (being rewritten in v1.1 style), and 2 complete examples in `examples/`.
+The project includes **15 integration tests** in `tests/v1.2/` and 2 complete examples in `examples/`. The legacy v1.1 test suite is preserved in `tests/archive/v1.1/` for historical reference.
+
+To run all tests:
 
 ```bash
-cd tests/v1.1
-./compile.sh
+cd tests/v1.2
+./run-all-tests.sh
+```
+
+To run a specific test:
+
+```bash
+cd tests/v1.2
+./run-all-tests.sh stage08
 ```
 
 Each test validates a specific module or feature:
 
 | Test | Module | Description |
 |------|--------|-------------|
-| `stage-cls-01` | Class | Basic infrastructure |
-| `stage-packages-01` | Packages | Package loading conventions |
-| `stage-options-01` | Options | Key-value option system |
-| `stage-core-01` | Core | Core package loader |
-| `stage-utils-01` | Utils | Utility macros |
-| `stage-rtl-01` | RTL | RTL/Bidi support |
-| `stage-locale-01` | fa-IR | Persian locale |
-| `stage-locale-en-01` | en-US | English locale |
-| `stage-typography-01` | Typography | Microtype, Kashida, line breaking |
-| `stage-layout-01` | Layout | Page geometry, headers, footers |
-| `stage-headings-01` | Headings | Chapter/section styles |
-| `stage-math-01` | Math | Equations, matrices, delimiters |
-| `stage-boxes-01` | Boxes | Two box families, breakable boxes |
-| `stage-theorem-01` | Theorem | All theorem environments |
-| `stage-code-01` | Code | Syntax highlighting (minted) |
-| `stage-algorithm-01` | Algorithm | Pseudocode with Persian captions |
-| `stage-graphics-01` | Graphics | TikZ, PGFPlots, flowcharts |
-| `stage-index-01` | Index | Xindy with persian-variant2 |
-| `stage-colors-01` | Colors | CMYK color palette |
-| `stage-theme-default-01` | Theme | Theme loader |
-| `stage-cover-01` | Cover | Front and back cover |
-| `stage-main-01` | Main | Full book structure |
-| **`stage-margin-01`** | **Layout** | **Margin notes, RTL direction, odd/even pages** |
+| `stage01-basic` | Core | Basic infrastructure, colors, fonts, math |
+| `stage02-fonts` | Fonts | Persian, Latin, Math, Monospace, Code fonts |
+| `stage03-layout` | Layout | Page geometry, headers, footers, margin notes |
+| `stage04-typography` | Typography | Microtype, line breaking, hyphenation |
+| `stage05-math` | Math | Equations, matrices, operators, delimiters |
+| `stage06-theorems` | Theorems | All theorem environments and both box families |
+| `stage07-boxes` | Boxes | Two box families, all 10 colored box types |
+| `stage06-theorems` | Theorems | All theorem environments and both box families |
+| `stage08-code` | Code | Syntax highlighting (minted), inline code |
+| `stage09-algorithms` | Algorithms | Pseudocode with Persian captions |
+| `stage10-tikz` | Graphics | TikZ, PGFPlots, flowcharts, trees, 3D, pie charts |
+| `stage11-references` | References | \cref, \crefrange, hyperref, all ref commands |
+| `stage12-biblatex` | Bibliography | biblatex + biber, citation commands |
+| `stage13-index` | Index | xindy with persian-variant2, sub-entries |
+| `stage14-book` | Integration | Full book: all modules together |
+| `stage15-cover` | Cover | Front cover, back cover, author bio |
 
-> **Debug helpers:** The files `test-latin.tex`, `test-minimal.tex`, and `test-unicode-math.tex` are temporary diagnostic tests written during development to isolate specific issues. They are **not** part of the official test suite and are kept in `tests/v1.1/` for reference.
+> **Note:** The test runner preserves the `.log` file of any failed test for inspection. All other auxiliary files are removed after the run.
 
 ---
 
@@ -761,7 +757,7 @@ We welcome contributions! Here's how you can help:
    - Counters: `*counter`
 
 3. **Testing:**
-   - Add a new stage file in `tests/v1.1/`
+   - Add a new stage file in `tests/v1.2/`
    - Increment the stage number
    - Run all tests before submitting
 
@@ -776,7 +772,7 @@ We welcome contributions! Here's how you can help:
 
 See [CHANGELOG.md](CHANGELOG.md) for version history.
 
-### v1.1 (Mehr 1405 / مهر ۱۴۰۵) — Current
+### v1.1 (Mehr 1405 / مهر ۱۴۰۵)
 
 **Major changes:**
 - **Migrated to LaTeX 2023 key-value option system** (`\DeclareKeys`)
@@ -796,7 +792,7 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - **Fixed cover design** (2-pass compilation, CMYK colors, LTR math symbols)
 - **Fixed main.tex structure** per Iranian publishing standards
 - **Added 24 integration tests** (was 22)
-### v1.2 (Unreleased)
+### v1.2 (Mehr 1405 / مهر ۱۴۰۵) — Current
 
 **Added:**
 - **`mb-table`** — New module for table configuration using `tabularray`
