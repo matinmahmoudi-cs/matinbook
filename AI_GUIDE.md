@@ -149,34 +149,26 @@ matinbook/
 │   └── irlotus/
 │
 ├── tests/
-│   └── v1.1/                        # 24 integration tests
-│       ├── compile.sh               # Test compiler script
-│       ├── stage-cls-01.tex
-│       ├── stage-packages-01.tex
-│       ├── stage-options-01.tex
-│       ├── stage-core-01.tex
-│       ├── stage-utils-01.tex
-│       ├── stage-rtl-01.tex
-│       ├── stage-locale-01.tex
-│       ├── stage-locale-en-01.tex
-│       ├── stage-typography-01.tex
-│       ├── stage-layout-01.tex
-│       ├── stage-headings-01.tex
-│       ├── stage-math-01.tex
-│       ├── stage-boxes-01.tex
-│       ├── stage-theorem-01.tex
-│       ├── stage-code-01.tex
-│       ├── stage-algorithm-01.tex
-│       ├── stage-graphics-01.tex
-│       ├── stage-index-01.tex
-│       ├── stage-colors-01.tex
-│       ├── stage-theme-default-01.tex
-│       ├── stage-cover-01.tex
-│       ├── stage-main-01.tex
-│       └── stage-margin-01.tex      # ← Margin notes test
-│       ├── test-latin.tex          # (debug) Latin-only test
-│       ├── test-minimal.tex        # (debug) minimal document test
-│       ├── test-unicode-math.tex   # (debug) unicode-math test
+│   ├── v1.2/                        # Active test suite (15 tests)
+│   │   ├── run-all-tests.sh         # Test runner script
+│   │   ├── stage01-basic.tex
+│   │   ├── stage02-fonts.tex
+│   │   ├── stage03-layout.tex
+│   │   ├── stage04-typography.tex
+│   │   ├── stage05-math.tex
+│   │   ├── stage06-theorems.tex
+│   │   ├── stage07-boxes.tex
+│   │   ├── stage08-code.tex
+│   │   ├── stage09-algorithms.tex
+│   │   ├── stage10-tikz.tex
+│   │   ├── stage11-references.tex
+│   │   ├── stage12-biblatex.tex
+│   │   ├── stage13-index.tex
+│   │   ├── stage14-book.tex
+│   │   └── stage15-cover.tex
+│   │
+│   └── archive/
+│       └── v1.1/                    # Legacy v1.1 tests (historical)
 │
 └── examples/                        # 2 example books
     ├── matinbook-documentation.tex
@@ -3802,12 +3794,12 @@ To clean auxiliary files:
 latexmk -c document.tex
 ```
 
-### Using the Project's `compile.sh` Script
+### Using the Project's `run-all-tests.sh` Script
 
 ```bash
-cd tests/v1.1
-./compile.sh                    # Compile all .tex files
-./compile.sh stage-cls-01.tex   # Compile specific file
+cd tests/v1.2
+./run-all-tests.sh              # Run all tests
+./run-all-tests.sh stage08      # Run a specific test
 ```
 
 ### Required Tools
