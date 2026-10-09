@@ -1,0 +1,568 @@
+%%
+%% part2-book-components/ch09-math.tex
+%%
+%% Chapter 9: Mathematics — Equations, matrices, operators,
+%% delimiters, and number sets.
+%%
+
+\chapter{ریاضیات}
+\label{chap:math}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:math-why}
+
+ریاضیات، ستون فقرات کتاب‌های فنی و علمی است.
+از معادلات ساده تا ماتریس‌های پیچیده، از
+عملگرهای حسابان تا مجموعه‌های عددی، همه در
+\lr{MatinBook} پشتیبانی می‌شوند.
+
+\lr{MatinBook} از بسته‌های \lr{amsmath}،
+\lr{mathtools} و \lr{unicode-math} استفاده
+می‌کند و مجموعه‌ای از عملگرها و جداکننده‌های
+سفارشی را نیز اضافه کرده است. در این فصل،
+با تمام این قابلیت‌ها آشنا می‌شوید.
+
+\mnote{فونت ریاضی \lr{MatinBook}، \lr{XITS Math} است که از \lr{OpenType} پشتیبانی می‌کند و نمادهای ریاضی را با کیفیت بالا نمایش می‌دهد.}
+
+\section{معادلات درون‌خطی}
+\label{sec:math-inline}
+
+معادلات درون‌خطی، برای اشاره به نمادها و
+عبارات کوتاه استفاده می‌شوند. در \lr{MatinBook}،
+این معادلات باید داخل \cmd{lr} قرار گیرند تا
+جهت‌نمایی درست حفظ شود:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{رابطه‌ی معروف اینشتین:}|\lr{$E = mc^{2}$}|\pc{است.}|%
+|\pc{قضیه‌ی فیثاغورث:}|\lr{$a^{2} + b^{2} = c^{2}$}|\pc{است.}|%
+|\pc{اتحاد اویلر:}|\lr{$e^{i\pi} + 1 = 0$}|\pc{است.}|%
+\end{minted}
+\end{latin}
+
+خروجی:
+
+رابطه‌ی معروف اینشتین: \lr{$E = mc^{2}$} است.
+قضیه‌ی فیثاغورث: \lr{$a^{2} + b^{2} = c^{2}$} است.
+اتحاد اویلر: \lr{$e^{i\pi} + 1 = 0$} است.
+
+\mnote{همیشه معادلات درون‌خطی را داخل \lr{\textbackslash lr\{...\}} قرار دهید. این کار از به‌هم‌ریختن جهت متن جلوگیری می‌کند.}
+
+\section{معادلات نمایشی}
+\label{sec:math-display}
+
+معادلات نمایشی، در خط جداگانه و وسط‌چین نمایش
+داده می‌شوند. \lr{MatinBook} از سه محیط اصلی
+پشتیبانی می‌کند:
+
+\subsection{معادله‌ی ساده (\lr{equation})}
+\label{sec:math-equation}
+
+برای یک معادله‌ی شماره‌دار، از محیط
+\env{equation} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{equation}
+    \int_{0}^{\infty} \frac{x^{3}}{e^{x} - 1} \, dx
+    = \frac{\pi^{4}}{15}
+    \label{eq:stefan-boltzmann}
+\end{equation}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{equation}
+    \int_{0}^{\infty} \frac{x^{3}}{e^{x} - 1} \, dx
+    = \frac{\pi^{4}}{15}
+    \label{eq:stefan-boltzmann-ch9}
+\end{equation}
+
+\mnote{شماره‌گذاری معادلات در \lr{MatinBook} به‌صورت «شماره-فصل» است: \lr{(۱-۲)} یعنی فرمول اول از فصل دوم.}
+
+\subsection{معادلات هم‌تراز (\lr{align})}
+\label{sec:math-align}
+
+برای چند معادله‌ی هم‌تراز، از محیط \env{align}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{align}
+    (a + b)^{2} &= (a + b)(a + b) \nonumber \\
+    &= a^{2} + ab + ba + b^{2} \nonumber \\
+    &= a^{2} + 2ab + b^{2} \label{eq:binomial}
+\end{align}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{align}
+    (a + b)^{2} &= (a + b)(a + b) \nonumber \\
+    &= a^{2} + ab + ba + b^{2} \nonumber \\
+    &= a^{2} + 2ab + b^{2} \label{eq:binomial-ch9}
+\end{align}
+
+\mnote{دستور \lr{\textbackslash nonumber} معادله را بدون شماره می‌کند. برای معادلات میانی که به آن‌ها ارجاع نمی‌دهید، از این دستور استفاده کنید.}
+
+\subsection{معادلات غیرهم‌تراز (\lr{gather})}
+\label{sec:math-gather}
+
+برای معادلات غیرهم‌تراز، از محیط \env{gather}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{gather}
+    x = a + b + c + d + e + f \label{eq:long1} \\
+    y = \alpha + \beta + \gamma + \delta + \epsilon \label{eq:long2}
+\end{gather}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{gather}
+    x = a + b + c + d + e + f \label{eq:long1-ch9} \\
+    y = \alpha + \beta + \gamma + \delta + \epsilon \label{eq:long2-ch9}
+\end{gather}
+
+\mnote{تفاوت \lr{align} و \lr{gather}: در \lr{align}، معادلات با \lr{\&} هم‌تراز می‌شوند، ولی در \lr{gather}، هر معادله در خط جداگانه و بدون هم‌ترازی نمایش داده می‌شود.}
+
+\section{ماتریس‌ها}
+\label{sec:math-matrices}
+
+\lr{MatinBook} سه دستور برای نمایش ماتریس
+ارائه می‌دهد:
+
+\begin{itemize}
+    \item \cmd{mat\{...\}}: ماتریس با کروشه.
+    \item \cmd{pmat\{...\}}: ماتریس با پرانتز.
+    \item \cmd{vmat\{...\}}: ماتریس با خط عمودی
+    (دترمینان).
+\end{itemize}
+
+\subsection{ماتریس با کروشه (\cmd{mat})}
+\label{sec:math-mat-bracket}
+
+\begin{latin}
+\begin{minted}{latex}
+\[
+    A = \mat{1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9}
+\]
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\[
+    A = \mat{1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9}
+\]
+
+\subsection{ماتریس با پرانتز (\cmd{pmat})}
+\label{sec:math-mat-paren}
+
+\begin{latin}
+\begin{minted}{latex}
+\[
+    B = \pmat{a_{11} & a_{12} \\ a_{21} & a_{22}}
+\]
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\[
+    B = \pmat{a_{11} & a_{12} \\ a_{21} & a_{22}}
+\]
+
+\subsection{دترمینان (\cmd{vmat})}
+\label{sec:math-mat-vmatrix}
+
+\begin{latin}
+\begin{minted}{latex}
+\[
+    \det(B) = \vmat{a_{11} & a_{12} \\ a_{21} & a_{22}}
+    = a_{11}a_{22} - a_{12}a_{21}
+\]
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\[
+    \det(B) = \vmat{a_{11} & a_{12} \\ a_{21} & a_{22}}
+    = a_{11}a_{22} - a_{12}a_{21}
+\]
+
+\mnote{برای ماتریس‌های بزرگ، می‌توانید از \lr{\textbackslash cdots}، \lr{\textbackslash vdots} و \lr{\textbackslash ddots} برای نشان دادن ادامه‌ی الگو استفاده کنید.}
+
+\section{عملگرهای ریاضی}
+\label{sec:math-operators}
+
+\lr{MatinBook} مجموعه‌ای از عملگرهای سفارشی
+ارائه می‌دهد که در حوزه‌های مختلف ریاضیات
+و علوم کامپیوتر کاربرد دارند. جدول
+\cref{tab:math-operators} این عملگرها را
+خلاصه می‌کند.
+
+\begin{matintable}{عملگرهای ریاضی \lr{MatinBook}}{tab:math-operators}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[l]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دسته & دستور & خروجی \\
+حسابان برداری & \lr{\textbackslash grad} & \lr{$\grad f$} \\
+حسابان برداری & \lr{\textbackslash curl} & \lr{$\curl \vec{F}$} \\
+حسابان برداری & \lr{\textbackslash diver} & \lr{$\diver \vec{F}$} \\
+جبر خطی & \lr{\textbackslash rank} & \lr{$\rank(A)$} \\
+جبر خطی & \lr{\textbackslash trace} & \lr{$\trace(A)$} \\
+جبر خطی & \lr{\textbackslash diag} & \lr{$\diag(a, b, c)$} \\
+بهینه‌سازی & \lr{\textbackslash argmax} & \lr{$\argmax_x f(x)$} \\
+بهینه‌سازی & \lr{\textbackslash argmin} & \lr{$\argmin_x f(x)$} \\
+نظریه اعداد & \lr{\textbackslash gcdop} & \lr{$\gcdop(a, b)$} \\
+نظریه اعداد & \lr{\textbackslash lcm} & \lr{$\lcm(a, b)$} \\
+توابع خاص & \lr{\textbackslash sinc} & \lr{$\sinc(x)$} \\
+توابع خاص & \lr{\textbackslash sgn} & \lr{$\sgn(x)$} \\
+توابع خاص & \lr{\textbackslash erf} & \lr{$\erf(x)$} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{نام \lr{\textbackslash gcdop} از \lr{gcd operator} گرفته شده، چون \lr{\textbackslash gcd} در برخی بسته‌ها تعریف شده است.}
+
+\section{جداکننده‌های هوشمند}
+\label{sec:math-delimiters}
+
+\lr{MatinBook} شش جداکننده‌ی هوشمند ارائه می‌دهد
+که به‌طور خودکار با محتوای خود مقیاس می‌گیرند.
+جدول \cref{tab:math-delimiters} این جداکننده‌ها
+را خلاصه می‌کند.
+
+\begin{matintable}{جداکننده‌های هوشمند}{tab:math-delimiters}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[l]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دستور & خروجی & کاربرد \\
+\lr{\textbackslash abs\{x\}} & \lr{$\abs{x}$} & قدر مطلق \\
+\lr{\textbackslash norm\{x\}} & \lr{$\norm{x}$} & نرم \\
+\lr{\textbackslash ceil\{x\}} & \lr{$\ceil{x}$} & سقف \\
+\lr{\textbackslash floor\{x\}} & \lr{$\floor{x}$} & کف \\
+\lr{\textbackslash inner\{u\}\{v\}} & \lr{$\inner{u}{v}$} & ضرب داخلی \\
+\lr{\textbackslash paren\{x\}} & \lr{$\paren{x}$} & پرانتز هوشمند \\
+\end{tblr}
+\end{matintable}
+
+\subsection{مقیاس خودکار}
+\label{sec:math-delimiters-scaling}
+
+این جداکننده‌ها به‌طور خودکار با محتوای خود
+مقیاس می‌گیرند:
+
+\begin{latin}
+\begin{minted}{latex}
+\[
+    \abs{\frac{a}{b}}, \quad
+    \norm{\sum_{i=1}^{n} x_i}, \quad
+    \paren{\frac{a + b}{c + d}}
+\]
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\[
+    \abs{\frac{a}{b}}, \quad
+    \norm{\sum_{i=1}^{n} x_i}, \quad
+    \paren{\frac{a + b}{c + d}}
+\]
+
+\mnote{برای مقیاس دستی، می‌توانید از \lr{\textbackslash abs[\textbackslash Big]\{...\}}، \lr{\textbackslash abs[\textbackslash big]\{...\}} و... استفاده کنید.}
+
+\section{مجموعه‌های عددی}
+\label{sec:math-numbers}
+
+\lr{MatinBook} پنج مجموعه‌ی عددی استاندارد
+ارائه می‌دهد:
+
+\begin{itemize}
+    \item \cmd{N}: مجموعه‌ی اعداد طبیعی
+    (\lr{$\N$}).
+    \item \cmd{Z}: مجموعه‌ی اعداد صحیح
+    (\lr{$\Z$}).
+    \item \cmd{Q}: مجموعه‌ی اعداد گویا
+    (\lr{$\Q$}).
+    \item \cmd{R}: مجموعه‌ی اعداد حقیقی
+    (\lr{$\R$}).
+    \item \cmd{C}: مجموعه‌ی اعداد مختلط
+    (\lr{$\C$}).
+\end{itemize}
+
+رابطه‌ی شمول میان این مجموعه‌ها:
+
+\begin{latin}
+\begin{minted}{latex}
+\[
+    \N \subset \Z \subset \Q \subset \R \subset \C
+\]
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\[
+    \N \subset \Z \subset \Q \subset \R \subset \C
+\]
+
+\mnote{این مجموعه‌ها با \lr{\textbackslash providecommand} تعریف شده‌اند، پس می‌توانید آن‌ها را با \lr{\textbackslash renewcommand} بازنویسی کنید.}
+
+\section{نمادگذاری مجموعه}
+\label{sec:math-sets}
+
+\lr{MatinBook} سه دستور برای نمادگذاری مجموعه
+ارائه می‌دهد:
+
+\begin{itemize}
+    \item \cmd{set\{...\}}: مجموعه‌ی ساده.
+    \item \cmd{setbuilder\{...\}\{...\}}: مجموعه‌ی
+    سازنده.
+    \item \cmd{given}: جداکننده‌ی شرط.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+\[
+    A = \set{1, 2, 3, 4, 5}, \quad
+    B = \setbuilder{x \in \R}{x > 0}
+\]
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\[
+    A = \set{1, 2, 3, 4, 5}, \quad
+    B = \setbuilder{x \in \R}{x > 0}
+\]
+
+\mnote{دستور \lr{\textbackslash setbuilder} دو آرگومان می‌گیرد: شرط و محدوده.}
+
+\section{مشتق و انتگرال}
+\label{sec:math-derivatives}
+
+\lr{MatinBook} چهار دستور برای مشتق و انتگرال
+ارائه می‌دهد:
+
+\begin{itemize}
+    \item \cmd{dd\{x\}}: دیفرانسیل (\lr{$dx$}).
+    \item \cmd{D}: دیفرانسیل کوتاه (\lr{$\D$}).
+    \item \cmd{deriv\{f\}\{x\}}: مشتق معمولی
+    (\lr{$\deriv{f}{x}$}).
+    \item \cmd{pderiv\{f\}\{x\}}: مشتق جزئی
+    (\lr{$\pderiv{f}{x}$}).
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+\[
+    \deriv{f}{x} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}, \quad
+    \pderiv{f}{x} = \frac{\partial f}{\partial x}
+\]
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\[
+    \deriv{f}{x} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}, \quad
+    \pderiv{f}{x} = \frac{\partial f}{\partial x}
+\]
+
+\mnote{استفاده از \lr{\textbackslash dd\{x\}} به‌جای \lr{dx} در انتگرال‌ها، فاصله‌ی بهتری ایجاد می‌کند.}
+
+\section{شماره‌گذاری معادلات}
+\label{sec:math-equation-numbering}
+
+شماره‌گذاری معادلات در \lr{MatinBook} به‌صورت
+\textbf{«شماره-فصل»} است. یعنی معادله‌ی شماره‌ی
+\lr{(۵-۱)} به معنای فرمول پنجم از فصل اول است.
+
+\begin{matintable}{نمونه‌ی شماره‌گذاری معادلات}{tab:equation-numbering}
+\begin{tblr}{
+    width = 0.7\textwidth,
+    colspec = {c c c},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+فصل & معادله & نمایش \\
+۱ & اول & \lr{(۱-۱)} \\
+۱ & دوم & \lr{(۲-۱)} \\
+۲ & اول & \lr{(۱-۲)} \\
+۲ & دوم & \lr{(۲-۲)} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{این شماره‌گذاری، مطابق استاندارد نشر دانشگاهی ایران (دانشگاه تهران و دانشگاه علوم پزشکی) است.}
+
+\section{شکستن معادلات طولانی}
+\label{sec:math-breaking}
+
+\lr{MatinBook} امکان شکستن معادلات طولانی بین
+صفحات را فراهم می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{align}
+    f(x) &= a_{0} + a_{1}x + a_{2}x^{2} + \cdots \nonumber \\
+         &\quad + a_{n}x^{n} \\
+    &= \sum_{i=0}^{n} a_{i}x^{i}
+\end{align}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{align}
+    f(x) &= a_{0} + a_{1}x + a_{2}x^{2} + \cdots \nonumber \\
+         &\quad + a_{n}x^{n} \\
+    &= \sum_{i=0}^{n} a_{i}x^{i}
+\end{align}
+
+\mnote{دستور \lr{\textbackslash allowdisplaybreaks} در \lr{MatinBook} فعال است، پس معادلات طولانی به‌طور خودکار بین صفحات می‌شکنند.}
+
+\section{خطاهای رایج}
+\label{sec:math-mistakes}
+
+\subsection{فراموش کردن \cmd{lr} برای معادلات درون‌خطی}
+\label{sec:math-mistake-lr}
+
+اگر معادله‌ی درون‌خطی را داخل \cmd{lr} قرار
+ندهید، ممکن است جهت آن به‌هم بریزد:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+|\pc{این معادله}|\lr{$E = mc^{2}$}|\pc{است.}|%
+
+% |\pc{درست}|:
+|\pc{این معادله}|\lr{$E = mc^{2}$}|\pc{است.}|%
+\end{minted}
+\end{latin}
+
+\subsection{استفاده از \cmd{\$...\$} در عنوان بخش}
+\label{sec:math-mistake-title}
+
+هرگز از حالت ریاضی در عنوان بخش استفاده نکنید:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+\section{|\pc{تحلیل}|\lr{$O(n)$}}
+
+% |\pc{درست}|:
+\section{|\pc{تحلیل}|\lr{O(n)}}
+\end{minted}
+\end{latin}
+
+\subsection{فراموش کردن شماره‌گذاری معادلات مهم}
+\label{sec:math-mistake-label}
+
+معادلاتی که به آن‌ها ارجاع می‌دهید، باید
+شماره‌دار باشند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+\[
+    E = mc^{2}
+\]
+|\pc{طبق معادله‌ی بالا...}|%
+
+% |\pc{درست}|:
+\begin{equation}
+    E = mc^{2}
+    \label{eq:einstein}
+\end{equation}
+|\pc{طبق}|\cref{eq:einstein}|\pc{...}|%
+\end{minted}
+\end{latin}
+
+\section{تمرین‌ها}
+\label{sec:math-exercises}
+
+\begin{exercise}
+    یک معادله‌ی درون‌خطی و یک معادله‌ی نمایشی
+    بنویسید. به معادله‌ی نمایشی ارجاع دهید.
+    \label{exc:math-equation}
+\end{exercise}
+
+\begin{exercise}
+    یک ماتریس ۳×۳ با کروشه و یک ماتریس ۲×۲
+    با پرانتز بنویسید.
+    \label{exc:math-matrix}
+\end{exercise}
+
+\begin{exercise}
+    از سه عملگر سفارشی \lr{MatinBook} در یک
+    معادله استفاده کنید.
+    \label{exc:math-operators}
+\end{exercise}
+
+\begin{exercise}
+    یک مجموعه‌ی سازنده بنویسید که اعداد
+    حقیقی مثبت را توصیف کند.
+    \label{exc:math-set}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:math-summary}
+
+در این فصل، با ریاضیات در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item معادلات درون‌خطی باید داخل \cmd{lr}
+    قرار گیرند.
+
+    \item معادلات نمایشی با سه محیط
+    \env{equation}، \env{align} و \env{gather}
+    نمایش داده می‌شوند.
+
+    \item سه دستور برای ماتریس:
+    \cmd{mat}، \cmd{pmat}، \cmd{vmat}.
+
+    \item ۱۳ عملگر سفارشی برای حسابان برداری،
+    جبر خطی، بهینه‌سازی، نظریه اعداد و توابع
+    خاص.
+
+    \item شش جداکننده‌ی هوشمند که با محتوا
+    مقیاس می‌گیرند.
+
+    \item پنج مجموعه‌ی عددی (\lr{$\N$}،
+    \lr{$\Z$}، \lr{$\Q$}، \lr{$\R$}، \lr{$\C$}).
+
+    \item شماره‌گذاری معادلات به‌صورت
+    «شماره-فصل» است.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{lr}، استفاده از حالت ریاضی در
+    عنوان بخش، و فراموش کردن شماره‌گذاری
+    معادلات مهم است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:code})، با کد و
+الگوریتم در \lr{MatinBook} آشنا می‌شوید و
+یاد می‌گیرید که چگونه کدهای برنامه‌نویسی
+و شبه‌کدها را نمایش دهید.
