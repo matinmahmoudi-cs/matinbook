@@ -9,15 +9,187 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+#### Core
+
+- **`mb-utils.sty`:** Added `\pnum{...}` helper for Persian numbers
+  that contain a decimal point, a slash, or a thousands separator.
+  Wraps the number in `\lr{}` to avoid the bidi/fontspec reversal
+  bug (e.g. "1.2" rendering as "2.1"). Defined in
+  `\AtBeginDocument` because `\lr` is provided by `xepersian`;
+  falls back to plain output with a package warning if `\lr` is
+  unavailable.
+
+- **`matinbook.cls`:** Load the new `mb-table` module in Phase 1,
+  after `mb-theme-colors` and before `mb-math`.
+
+#### New Module — `mb-table.sty`
+
+- **`tex/modules/table/mb-table.sty`:** New module that centralizes
+  all table-related configuration:
+  - Loads `tabularray` and its `booktabs` compatibility library.
+  - Sets global `tblr` defaults (`colsep=8pt`, `rowsep=4pt`) tuned
+    for Persian text at the default font scale.
+  - Provides the `matintable` environment, a wrapper around a
+    captioned, labelled, centered table float with `\small` text.
+  - Keeps legacy p-based column types (`L`, `R`, `C`) for backward
+    compatibility with bare `tabular` environments.
+  - Provides `\matintablespacing` as a no-op for backward
+    compatibility.
+
+#### Back Cover Redesign
+
+- **`mb-theme-cover.sty`:** Complete redesign of the back cover.
+  The previous decorative artwork (sine waves, neural network,
+  concept DAG, barcode, etc.) has been removed and replaced with a
+  static two-block layout:
+  - Block 1: "درباره این کتاب" (larger, primary).
+  - Block 2: "درباره این نویسنده" (smaller, secondary).
+  - Separated by exactly 0.7cm.
+  - All content placed inside a fixed-height `minipage`
+    (`\dimexpr\paperheight-8.9cm\relax`) to prevent overflow onto
+    a second page.
+  - Wrapped in `\beginR...\endR` so that the contents are laid out
+    RTL. Uses `\raggedright` for Persian paragraphs.
+
+- **`mb-theme-cover.sty`:** Added `\authorbio{...}` API for the
+  author biography. If called before `\makebackcover`, a second
+  block is rendered on the back cover. If omitted, only the book
+  blurb is shown. Backward compatible with the existing
+  `\makebackcover{...}` signature.
+
+- **`fa-IR.sty` and `en-US.sty`:** Added `\coverauthorbio`
+  ("درباره این نویسنده" / "About the Author").
+
+#### `mb-boxes.sty` — Outline Family Fix
+
+- **`mb-boxes.sty`:** Fixed the `matin-outline` family (used by
+  `example`, `proof`, `solution`) so that both horizontal rules
+  (under the title and under the content) are rendered correctly
+  in every breakage state:
+  - `underlay unbroken` draws BOTH rules when the box fits on a
+    single page.
+  - `underlay first` draws ONLY the top rule on the first
+    fragment of a broken box.
+  - `underlay last` draws ONLY the bottom rule on the last
+    fragment of a broken box.
+  - `borderline east` / `borderline west` draws the vertical rule
+    on the outer margin, on every fragment.
+  - All three rules are now 2pt thick, per project decision.
+  - The parity dispatcher was renamed from `\matin@outline@apply`
+    to `\matinOutlineApply` (no `@`), to avoid requiring
+    `\makeatletter` in the `.sty` file.
+  - The previous implementation relied on `overlay last` for the
+    bottom rule, which drew it ON TOP of the content, and omitted
+    `underlay unbroken`, which silently dropped both rules from
+    unbroken boxes.
+
+#### Tests Rewritten
+
+- **`tests/v1/stage01-basic.tex`:** Rewritten in v1.1 style:
+  - Full book skeleton (cover, frontmatter, mainmatter,
+    backmatter, back cover).
+  - Added `\booktitle`, `\repository`, `\authorbio`.
+  - Added preface, ToC, LoF, LoT.
+  - New chapter documenting the back cover API.
+  - Replaced `\meqref` with `\cref` throughout.
+  - Added `\mnote` in the Persian font chapter.
+  - All Persian decimal numbers wrapped in `\pnum{...}`.
+
+- **`tests/v1/stage02-fonts.tex`:** Rewritten in v1.1 style:
+  - Full book skeleton.
+  - Reorganized into six chapters (Persian, Latin, Math, Code,
+    Multilingual, Summary).
+  - Replaced `\meqref` with `\cref`.
+  - Added `\mnote`.
+  - Font status table rewritten with `tblr` (tabularray):
+    `width = \textwidth`, `colspec = {l l X[c] X[c]}`,
+    `hlines, vlines`, `colsep = 8pt`, `rowsep = 4pt`.
+  - All Persian decimal numbers wrapped in `\pnum{...}`.
+  - Removed emoji from the summary and conclusion.
+
+- **`main.tex`:** Added an `\authorbio{...}` example before
+  `\makebackcover`.
+
+### Changed
+
+- **`mb-typography.sty`:** Removed the `\newcolumntype{L}`, `R`,
+  `C` definitions. They are now centralized in `mb-table.sty` to
+  avoid duplicate definitions that would override each other
+  depending on load order.
+
+- **`mb-core.sty`:** Removed the `% TODO: move to mb-typography`
+  comment in the Tables section. The higher-level table
+  configuration now lives in `mb-table`.
+
+- **`matinbook.cls`:** Updated the module count in the welcome
+  message from "18 modules" to "19 modules".
+
+### Fixed
+
+- **`mb-boxes.sty`:** Fixed missing horizontal rules in the
+  `matin-outline` family (see above).
+
+- **`mb-boxes.sty`:** Fixed pgfkeys error
+  `I do not know the key '/tcb/matin@outline'` by defining the
+  public outline styles with `/.code` instead of `/.style`.
+
+- **`mb-theme-cover.sty`:** Fixed back cover overflow onto a
+  second page. The previous implementation used a `titlepage`
+  environment with no fixed height, so long blurbs pushed the
+  footer to a second page.
+
+- **`mb-theme-cover.sty`:** Fixed LTR layout in the back cover
+  minipage. A `minipage` does not inherit the surrounding RTL
+  direction, so the content was rendered left-to-right. Wrapping
+  the minipage in `\beginR...\endR` and using `\raggedright`
+  (which means "flush right" in RTL) resolves the issue.
+
+- **`stage02-fonts.tex`:** Fixed the font status table that was
+  hugging the page margins. Root cause: `tabularx` is
+  incompatible with `xepersian` (via `bidi`), producing
+  `Package array: Illegal pream-token (\TX@col@width): 'c' used`.
+  Switched to `tabularray`, which is RTL-native.
+
+### Known Issues
+
+- **`mb-table`:** The `tabularray` package requires TeX Live 2021
+  or later. Users on older distributions should install it via
+  `tlmgr install tabularray ninecolors`.
+
+- **`mb-theorem`:** `\theoremstyle{remark}` produces italic title
+  for 'نکته'. To be fixed in v1.2.
+
+- **`mb-code`:** `bgcolorpadding` not available in TeX Live 2023's
+  `fvextra`.
+
+- **`mb-theme-colors`:** CMYK values are approximate (converted
+  from RGB).
+
+- **`mb-layout`:** `\mnote` uses `\marginpar`, which cannot be
+  used inside `tcolorbox` or `figure`.
+
 ### Planned for v1.2
 
-- **`matinbook.cls`:** Add `\DeclareRelease` for backward compatibility with v1.0
-- **`mb-theorem`:** Unify all `\theoremstyle` calls to `definition` (fix italic title for 'نکته')
-- **`mb-code`:** Migrate to `minted` v3's `bgcolorpadding` (requires TeX Live 2024+)
-- **`mb-code`:** Replace manual `codecounter` with minted's `listing` float
-- **`mb-theme-colors`:** Convert RGB→CMYK with a professional color tool for precise values
-- **`main.tex`:** Enable Bismillah page and Latin title page by default
-- **`tests/`:** Replace `run-all-tests.sh` with a modern test runner
+- **`matinbook.cls`:** Add `\DeclareRelease` for backward
+  compatibility with v1.0.
+- **`mb-theorem`:** Unify all `\theoremstyle` calls to
+  `definition` (fix italic title for 'نکته').
+- **`mb-code`:** Migrate to `minted` v3's `bgcolorpadding`
+  (requires TeX Live 2024+).
+- **`mb-code`:** Replace manual `codecounter` with minted's
+  `listing` float.
+- **`mb-theme-colors`:** Convert RGB→CMYK with a professional
+  color tool for precise values.
+- **`main.tex`:** Enable Bismillah page and Latin title page by
+  default.
+- **`tests/`:** Replace `run-all-tests.sh` with a modern test
+  runner.
+- **`tests/v1/`:** Rewrite the remaining 13 tests (`stage03` to
+  `stage15`) in v1.1 style.
+- **`examples/`:** Rewrite `matinbook-documentation.tex` and
+  `advanced-algorithms-book.tex` in v1.1 style.
 
 ---
 

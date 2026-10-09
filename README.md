@@ -29,7 +29,7 @@
 
 ### Core Capabilities
 - **Persian-first design:** Full RTL support with proper Persian/Arabic typography
-- **Modular architecture:** 18 source modules (17 `.sty` + 1 `.cls`) for easy maintenance
+- **Modular architecture:** 19 source modules (18 `.sty` + 1 `.cls`) for easy maintenance
 - **Professional typography:** Microtype protrusion, Kashida support, widow/orphan control
 - **Standard-compliant:** Follows LaTeX 2023 key-value option system
 - **Print-ready:** CMYK color palette per Iranian educational publishing standards
@@ -43,9 +43,10 @@
 - **Algorithms:** Pseudocode with Persian captions via `xepersian` (standard `algorithm` package)
 - **Code display:** Syntax highlighting for 300+ languages via `minted` with Persian comment support
 - **Graphics:** TikZ styles, PGFPlots presets, flowcharts, trees, and pie charts
+- **Tables:** Modern table system via `tabularray` with `matintable` environment, RTL-native, `booktabs`-compatible
 
 ### Document Structure
-- **Professional cover:** Full-color front cover with math/code symbols and a fantasy math band on the back cover (requires 2 compilation passes)
+- **Professional cover:** Full-color front cover with math/code symbols and a two-block back cover (book blurb + author bio). Requires 2 compilation passes.
 - **Wide margin layout:** 5.9cm outer margin with `\mnote{}` and `\marginfig{}{}` for RTL margin notes
 - **Frontmatter / mainmatter split:** Symmetric margins for frontmatter (copyright, preface, ToC) and wide margins for main chapters
 - **Boyer/Stewart heading scale:** 24/20pt chapter, 15pt section, 13pt subsection, 11pt subsubsection
@@ -58,6 +59,7 @@
 - **Draft mode:** Watermark and overfull box highlighting
 - **Multiple fonts:** XB Niloofar (default), Vazirmatn, Sahel, IR Lotus, B Nazanin
 - **Textbook leading:** 1.15 line spacing (Boyer/Stewart-style)
+- **Persian number helper:** `\pnum{...}` for decimal numbers and thousands separators in RTL context
 - **Localization:** Persian (fa-IR) and English (en-US) locales
 
 ---
@@ -74,6 +76,7 @@
 | **Python 3** | 3.6+ | Pygments (for `minted`) |
 | **Pygments** | Latest | Code syntax highlighting |
 | **latexminted** | Latest | Required for `minted` v3+ (optional) |
+| **tabularray** | 2021+ | Modern table package (RTL-compatible) |
 
 > **Note:** `xindy` is required because `makeindex` cannot sort Persian correctly (it fails to order the Persian-specific letters پ، چ، ژ، گ، ک).
 
@@ -255,6 +258,7 @@ matinbook/
 │   │   ├── layout/              #   Page layout, headings, margin notes
 │   │   ├── math/                #   Math operators and delimiters
 │   │   ├── references/          #   Hyperref and cleveref
+│   │   ├── table/               #   Table system (tabularray)
 │   │   ├── theorem/             #   Theorem environments (tcolorbox)
 │   │   └── typography/          #   Fonts and typography
 │   │
@@ -364,6 +368,18 @@ This documentation covers:
 \deriv{}{x}, \pderiv{f}{x}    % Derivatives
 ```
 
+#### Persian Numbers
+
+```latex
+مقیاس \pnum{۱.۲} به این معناست...     % decimal point
+\pnum{۳/۱۴}                             % slash
+\pnum{۱٬۰۰۰٬۰۰۰}                        % thousands separator
+```
+
+> **Note:** Persian numbers containing a decimal point, slash, or
+> thousands separator are reversed by the bidi/fontspec
+> interaction. Use `\pnum{...}` to wrap them.
+
 #### Code Display
 
 ```latex
@@ -416,6 +432,28 @@ x = 5  # |\pc{مقدار متغیر}|
 \mnote{یادداشت حاشیه}                    % plain margin note (RTL, no number)
 \marginfig{figures/plot.png}{نمودار}     % figure + caption in the margin
 ```
+#### Tables
+
+```latex
+\begin{matintable}{caption}{label}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & فونت & وضعیت & توضیحات \\
+فارسی & \lr{XB Niloofar} & فعال & ... \\
+\end{tblr}
+\end{matintable}
+```
+
+> **Note:** MatinBook uses `tabularray` (not `tabularx`) because
+> `tabularx` is incompatible with `xepersian`. The `matintable`
+> environment wraps the boilerplate of a captioned, labelled,
+> centered table.
 
 #### Frontmatter / Mainmatter
 
@@ -456,6 +494,9 @@ x = 5  # |\pc{مقدار متغیر}|
     {نام نویسنده}
     {مهر ۱۴۰۵}
 
+% Author bio (optional, before \makebackcover):
+\authorbio{متن درباره نویسنده}
+
 % Back cover (at the very end):
 \makebackcover{توضیحات پشت جلد...}
 ```
@@ -485,7 +526,7 @@ xelatex -shell-escape advanced-algorithms-book.tex
 
 ## Tests
 
-The project includes 24 integration tests in `tests/v1.1/` (plus 15 legacy tests in `tests/v1/`) and 2 complete examples in `examples/`. To run all tests:
+The project includes 24 integration tests in `tests/v1.1/`, 15 legacy tests in `tests/v1/` (being rewritten in v1.1 style), and 2 complete examples in `examples/`.
 
 ```bash
 cd tests/v1.1
@@ -650,6 +691,39 @@ Margin notes use the standard `\marginpar` with `\RL{}` (from xepersian) to ensu
 
 ---
 
+### Table Customization
+
+MatinBook uses **`tabularray`** for all tables, which is fully
+compatible with RTL typesetting. The recommended environment is
+`matintable`:
+
+```latex
+\begin{matintable}{caption}{label}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+}
+...
+\end{tblr}
+\end{matintable}
+```
+
+**Key options:**
+
+| Option | Effect |
+|--------|--------|
+| `width = \textwidth` | Table spans the full text width |
+| `colspec = {l l X[c] X[c]}` | Column types (`l` = left, `X[c]` = centered flexible) |
+| `hlines, vlines` | Horizontal and vertical rules |
+| `colsep = 8pt` | Cell padding on each side |
+| `rowsep = 4pt` | Vertical space above and below each row |
+| `row{1} = {font=\bfseries}` | Bold header row |
+
+To customize, edit `tex/modules/table/mb-table.sty`.
+
 ## Contributing
 
 We welcome contributions! Here's how you can help:
@@ -722,8 +796,26 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - **Fixed cover design** (2-pass compilation, CMYK colors, LTR math symbols)
 - **Fixed main.tex structure** per Iranian publishing standards
 - **Added 24 integration tests** (was 22)
+### v1.2 (Unreleased)
 
-### v1.0 (Summer 1404 / تابستان ۱۴۰۴)
+**Added:**
+- **`mb-table`** — New module for table configuration using `tabularray`
+- **`\pnum{...}`** — Persian number helper for decimals and thousands separators
+- **`\authorbio{...}`** — Author biography block on the back cover
+- **`\coverauthorbio`** — Locale string for "About the Author"
+
+**Changed:**
+- **Back cover redesign:** Static two-block layout (book blurb + author bio), removed decorative math elements
+- **`matin-outline` boxes:** Fixed missing horizontal rules; all lines now 2pt
+- **`mb-typography`:** Removed `L/R/C` column types (moved to `mb-table`)
+- **`matinbook.cls`:** Loads `mb-table` in Phase 1
+
+**Fixed:**
+- **`matin-outline`:** Both horizontal rules (under title and under content) now render in all breakage states
+- **Back cover:** No more overflow onto a second page; RTL direction fixed
+- **`tabularx` incompatibility** with `xepersian` resolved by switching to `tabularray`
+
+### v1.0 (Summer 1404 / تابستان 1404)
 
 - Initial release
 
@@ -768,6 +860,7 @@ MatinBook is built on the shoulders of giants:
 - **TColorBox** — Colored box system by Thomas F. Sturm
 - **Minted** — Code highlighting by Geoffrey Poore
 - **TikZ & PGFPlots** — Graphics by Till Tantau and Christian Feuersänger
+- **Tabularray** — Modern table package by Jianrui Lyu
 - **Biber & Biblatex** — Bibliography management
 - **Hyperref & Cleveref** — Cross-referencing by Heiko Oberdiek and Toby Cubitt
 - **Xindy** — Index processing with Persian support

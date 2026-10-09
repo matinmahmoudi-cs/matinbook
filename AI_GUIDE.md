@@ -2,7 +2,7 @@
 
 ## Complete Reference for AI-Assisted Academic Book Writing
 
-**Version:** 1.1
+**Version:** 1.2
 **Target:** Persian technical books in programming, mathematics, and computer science
 **Engine:** XeLaTeX (mandatory)
 **Last Updated:** Mehr 1405 / October 2026
@@ -59,8 +59,7 @@
 
 ## 1. Overview
 
-MatinBook is a professional LaTeX document class (`matinbook.cls`) designed for writing Persian technical books in programming, mathematics, and computer science. It requires **XeLaTeX** as the compilation engine and provides a modular architecture with **18 independent modules**.
-
+MatinBook is a professional LaTeX document class (`matinbook.cls`) designed for writing Persian technical books in programming, mathematics, and computer science. It requires **XeLaTeX** as the compilation engine and provides a modular architecture with **19 independent modules**.
 ### Design Philosophy
 
 MatinBook follows three core principles inspired by top-tier academic publishers (MIT Press, Springer, Oxford University Press):
@@ -83,12 +82,18 @@ MatinBook follows three core principles inspired by top-tier academic publishers
 10. **The index requires `xindy`** (not `makeindex`) for correct Persian sorting
 11. **Margin notes use the wide outer margin** (5.9cm) with `\mnote{}` and `\marginfig{}{}`
 12. **Frontmatter and mainmatter use different geometries** — `\frontmattergeometry` and `\mainmattergeometry`
+13. **Persian decimal numbers use `\pnum{...}`** — the bidi/fontspec
+    interaction reverses them otherwise (e.g. "1.2" → "2.1")
+14. **Tables use `tabularray`** (not `tabularx`) — `tabularx` is
+    incompatible with `xepersian`
+15. **The back cover has two static blocks** — book blurb + author bio,
+    via `\makebackcover{...}` and `\authorbio{...}`
 
 ---
 
 ## 2. Project Architecture
 
-### Directory Structure (v1.1)
+### Directory Structure (v1.2)
 
 ```
 matinbook/
@@ -110,7 +115,7 @@ matinbook/
 │   │   ├── fa-IR.sty                # Persian translations
 │   │   └── en-US.sty                # English translations
 │   │
-│   ├── modules/                     # 9 feature modules
+│   ├── modules/                     # 10 feature modules
 │   │   ├── boxes/mb-boxes.sty       # Two families: matinbox + matin-outline
 │   │   ├── code/mb-code.sty         # minted configuration
 │   │   ├── graphics/mb-graphics.sty # TikZ + PGFPlots
@@ -120,6 +125,7 @@ matinbook/
 │   │   │   └── mb-headings.sty      # Chapter/section styles
 │   │   ├── math/mb-math.sty         # Math operators and delimiters
 │   │   ├── references/mb-references.sty  # hyperref + cleveref
+│   │   ├── table/mb-table.sty       # Table system (tabularray)
 │   │   ├── theorem/mb-theorem.sty   # Theorem environments (tcolorbox)
 │   │   └── typography/
 │   │       ├── mb-typography.sty    # Microtype + Kashida
@@ -183,25 +189,27 @@ matinbook/
 Phase 1 — Base packages (BEFORE xepersian):
  1.  mb-core          → Load ALL base packages
  2.  mb-theme-colors  → Color palette (CMYK)
- 8.  mb-theorem       → Theorem environments (tcolorbox)
- 4.  mb-code          → minted configuration
- 5.  mb-layout        → Page geometry (wide margin)
- 6.  mb-headings      → Chapter/section styles (Boyer/Stewart)
- 7.  mb-math          → Math operators
- 3.  mb-boxes         → tcolorbox styles (two families)
- 9.  mb-references    → hyperref + cleveref
-10.  mb-graphics      → TikZ + PGFPlots
-11.  mb-index         → xindy configuration
-12.  mb-utils         → Utility commands
-13.  mb-theme-cover   → Cover design (full-color)
+ 3.  mb-table         → Table system (tabularray)
+ 4.  mb-math          → Math operators
+ 5.  mb-boxes         → tcolorbox styles (two families)
+ 6.  mb-theorem       → Theorem environments (tcolorbox)
+ 7.  mb-code          → minted configuration
+ 8.  mb-layout        → Page geometry (wide margin)
+ 9.  mb-headings      → Chapter/section styles (Boyer/Stewart)
+10.  mb-references    → hyperref + cleveref
+11.  mb-graphics      → TikZ + PGFPlots
+12.  mb-index         → xindy configuration
+13.  mb-utils         → Utility commands
+14.  mb-theme-cover   → Cover design (full-color)
 
 Phase 2 — xepersian (MUST be the last package):
-14.  xepersian        → RTL/Bidi support
+15.  xepersian        → RTL/Bidi support
 
 Phase 3 — Persian-specific settings (AFTER xepersian):
-15.  mb-typography    → Microtype + Kashida
-16.  fa-IR            → Persian locale
-17.  mb-theme-default → Theme loader
+16.  mb-typography    → Microtype + Kashida
+17.  fa-IR            → Persian locale
+18.  mb-theme-default → Theme loader
+
 ```
 
 > ⚠️ **CRITICAL:** Changing this order will break the class.
@@ -233,7 +241,7 @@ Phase 3 — Persian-specific settings (AFTER xepersian):
 | `irlotus` | Use IR Lotus Persian font | |
 | `bnazanin` | Use B Nazanin Persian font (commercial) | |
 
-> **Note:** MatinBook v1.1 uses the LaTeX 2023 `\DeclareKeys` system for options. This is more robust and supports the modern key-value syntax.
+> **Note:** MatinBook v1.2 uses the LaTeX 2023 `\DeclareKeys` system for options. This is more robust and supports the modern key-value syntax.
 
 ### Base Packages (Loaded in `mb-core.sty`)
 
@@ -248,17 +256,20 @@ imakeidx,
 geometry, fancyhdr, titlesec, tocloft,
 setspace, caption, footmisc,
 booktabs, array, multirow,
+tabularray (with booktabs library),
 hyperref, cleveref
 ```
 
 > **Note:** `pgf-pie`, `draftwatermark`, and `\newcolumntype` are **NOT** in `mb-core`.
 > - `pgf-pie` → moved to `mb-graphics`
 > - `draftwatermark` → moved to `mb-layout`
-> - `\newcolumntype` → moved to `mb-typography`
+> - `\newcolumntype` → moved to `mb-table` (in v1.2)
 
 ### Enhanced Column Types for Tables
 
-Defined in `mb-typography.sty`:
+Defined in `mb-table.sty` (moved from `mb-typography.sty` in v1.2):
+
+**p-based (for legacy `tabular`):**
 
 ```latex
 L{width}  → Left-aligned paragraph column
@@ -266,7 +277,13 @@ R{width}  → Right-aligned paragraph column (for Persian)
 C{width}  → Center-aligned paragraph column
 ```
 
-> 💡 **Tip:** Use `C{width}` for Persian text, `l` for English/numeric, `c` for short symbols.
+> ⚠️ **Warning:** Do NOT use `tabularx`. It is incompatible with
+> `xepersian` because of an internal `\TX@col@width` conflict.
+> Use `tabularray` instead. See Section 25.
+
+> 💡 **Tip:** For `tabularray`, use `colspec` with `X[l]`, `X[c]`,
+> `X[r]`. For legacy `tabular`, use `L{width}`, `C{width}`,
+> `R{width}`.
 
 ### Module Roles
 
@@ -283,6 +300,7 @@ C{width}  → Center-aligned paragraph column
 | `mb-references` | Configures hyperref and cleveref |
 | `mb-graphics` | TikZ, PGFPlots, pgf-pie |
 | `mb-index` | Configures xindy with persian-variant2 |
+| `mb-table` | Table system via `tabularray`, `matintable` environment, legacy `L/R/C` column types |
 | `mb-utils` | `\latintitle`, `\latinauthor`, `\matin@ifcmd` |
 | `mb-theme-cover` | Front and back cover design (full-color) |
 | `mb-typography` | Microtype, Kashida, column types |
@@ -352,6 +370,34 @@ All theorem-family environments **share a single counter** (per Persian LaTeX co
 | `proof` | (none) | matin-proof-outline (gray) | اثبات |
 
 > **Note:** The `proof` environment automatically adds `\qedsymbol` (□) at the end.
+
+
+### Tables (New in v1.2)
+
+MatinBook uses **`tabularray`** for all tables. The recommended
+environment is `matintable`, which wraps a captioned, labelled,
+centered table float:
+
+```latex
+\begin{matintable}{caption}{label}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & فونت & وضعیت & توضیحات \\
+فارسی & \lr{XB Niloofar} & فعال & ... \\
+\end{tblr}
+\end{matintable}
+```
+
+> ⚠️ **CRITICAL:** Do NOT use `tabularx`. It is incompatible with
+> `xepersian` and produces `Package array: Illegal pream-token
+> (\TX@col@width)`.
+
 
 ### Usage Pattern
 
@@ -497,7 +543,7 @@ The title of each box is built by `\matin@thmtitle`:
 | Command | Usage | Description |
 |---------|-------|-------------|
 | `\makecover{...}` | 4 args | Front cover with full-color background |
-| `\makebackcover{...}` | 1 arg | Back cover with math/code fantasy band |
+| `\makebackcover{...}` | 1 arg | Back cover with static two-block layout (blurb + author bio) |
 | `\repository` | Variable | Repository URL (shown on cover) |
 | `\booktitle{...}` | 1 arg | Book title for headers |
 
@@ -649,13 +695,42 @@ Use the standard `algorithm` + `algorithmic` environments:
 
 > **CRITICAL:** MatinBook v1.1 uses **`xindy`** (not `makeindex`) because `makeindex` cannot sort Persian correctly (it fails on پ، چ، ژ، گ، ک).
 
+### Table Commands (New in v1.2)
+
+| Command | Usage | Description |
+|---------|-------|-------------|
+| `matintable` | Environment | Captioned, labelled, centered table wrapper |
+| `\matintablespacing` | no-op | Retained for backward compatibility (no effect with `tabularray`) |
+
+**Example:**
+
+```latex
+\begin{matintable}{وضعیت فونت‌ها}{tab:fonts}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+...
+\end{tblr}
+\end{matintable}
+
 ### Utility Commands
 
 | Command | Usage | Description |
 |---------|-------|-------------|
 | `\latintitle{text}` | `\latintitle{My Book}` | Latin title (for bilingual covers) |
 | `\latinauthor{text}` | `\latinauthor{Author}` | Latin author |
+| `\pnum{number}` | `\pnum{۱.۲}` | Persian number with decimal point or slash (RTL-safe) |
 | `\matin@ifcmd{cmd}{true}{false}` | Conditional | Check if command exists |
+
+> **Note:** `\pnum` wraps its argument in `\lr{}` to avoid the
+> bidi/fontspec reversal bug. Use it for any Persian number
+> containing a decimal point (`.`), a slash (`/`), or a
+> thousands separator (`٬`).
 
 ### Class Options
 
@@ -2129,14 +2204,13 @@ xelatex -shell-escape document.tex
 > **Note:** No manual `makeindex` or `xindy` command is needed. `imakeidx` handles it automatically when `-shell-escape` is enabled.
 
 ---
-
 ## 16. Cover System
 
 ### Overview
 
-MatinBook v1.1 provides a **redesigned** professional front and back cover:
+MatinBook v1.2 provides a professional front and back cover:
 
-**Front cover:**
+**Front cover** (unchanged since v1.1):
 - Full-bleed navy background (`matinnavy`)
 - Crimson wedge (`matincrimson`) from the top-left corner
 - Preserved gold ellipse/orbit (`matingold`)
@@ -2145,19 +2219,28 @@ MatinBook v1.1 provides a **redesigned** professional front and back cover:
 - Compact equations in fine gold typography
 - Direction arrows and target nodes (crimson)
 
-**Back cover:**
+**Back cover** (redesigned in v1.2):
 - Ivory reverse (`matinivory`)
-- **Top decorative zone above y = -6.4cm (clear of 7.0cm blurb)**:
-  - Row 1: three parallel sine waves (orange, faded)
-  - Row 2: five math formulas (`∫`, `∑`, `∂`, `∇`, `lim`)
-  - Row 3: neural network, dotted graph, small formulas,
-    code symbols, and large faint symbols
-- **Mini-plot**: aligned with "درباره این کتاب" heading at 7cm,
-  width scaled ×0.75, height scaled ×1.5
-- **Concept tree**: 7 nodes, English labels (A–G), bottom-left
-- Barcode strip + ISBN at the bottom
+- A single thin crimson rule at the top (visual anchor)
+- **Two static blocks**, separated by exactly 0.7cm:
+  1. **"درباره این کتاب"** (`\coverabout`) — larger, primary block
+  2. **"درباره این نویسنده"** (`\coverauthorbio`) — smaller,
+     secondary block, rendered only if `\authorbio{...}` is called
+- Footer with MatinBook, repository URL, and source link
+- All content placed inside a fixed-height `minipage`
+  (`\dimexpr\paperheight-8.9cm\relax`) to prevent overflow onto
+  a second page
+- The entire body is wrapped in `\beginR...\endR` so that its
+  contents are laid out RTL
 
-> ⚠️ **CRITICAL:** The cover uses `remember picture, overlay` (TikZ), which **requires at least 2 compilation passes**.
+> **Note:** The decorative mathematical elements that used to
+> appear on the back cover (sine waves, neural network, concept
+> DAG, barcode, etc.) were removed in v1.2. They caused two
+> problems: (1) long blurbs overflowed onto a second page, and
+> (2) the many decorative elements competed with the text.
+
+> ⚠️ **CRITICAL:** The cover uses `remember picture, overlay`
+> (TikZ), which **requires at least 2 compilation passes**.
 
 ### Front Cover
 
@@ -2178,15 +2261,34 @@ MatinBook v1.1 provides a **redesigned** professional front and back cover:
 | 3 | Author | نام نویسنده |
 | 4 | Date | مهر ۱۴۰۵ |
 
+### Author Bio (New in v1.2)
+
+```latex
+\authorbio{%
+    نام نویسنده، پژوهشگر حوزه‌ی الگوریتم و ریاضیات کاربردی است.
+    او سال‌ها در زمینه‌ی آموزش برنامه‌نویسی و ساختار داده
+    فعالیت کرده و مؤلف چند کتاب و مقاله در این حوزه است.
+}
+```
+
+> **Note:** `\authorbio` is **optional**. If called before
+> `\makebackcover`, the "About the Author" block is rendered.
+> If omitted, only the book blurb is shown.
+
 ### Back Cover
 
 ```latex
+% Optional:
+\authorbio{متن درباره نویسنده}
+
+% Required:
 \makebackcover{%
     توضیحات پشت جلد کتاب را اینجا بنویسید...
 }
 ```
 
-> **CRITICAL:** `\makebackcover` MUST be at the **end** of the document (before `\end{document}`).
+> **CRITICAL:** `\makebackcover` MUST be at the **end** of the
+> document (before `\end{document}`).
 
 ### Repository Info
 
@@ -2200,10 +2302,11 @@ Default: `github.com/matinmahmoudi-cs/matinbook`
 
 ### Version Info
 
-The cover shows `v\matinbookversion`. This is defined in `matinbook.cls`:
+The cover shows `v\matinbookversion`. This is defined in
+`matinbook.cls`:
 
 ```latex
-\def\matinbookversion{1.1}
+\def\matinbookversion{1.2}
 \def\matinbookdate{2026/10/08}
 ```
 
@@ -2219,8 +2322,6 @@ The cover uses **aliases** mapped to the main CMYK palette:
 | `coverpaper` | `matinivory` (RGB: 242,238,227) |
 | `covergray` | `matinmediumgray` (RGB: 145,151,157) |
 
-This ensures the cover uses the same CMYK palette as the rest of the book.
-
 ### Compilation for Cover
 
 ```bash
@@ -2231,8 +2332,8 @@ xelatex -shell-escape document.tex
 xelatex -shell-escape document.tex
 ```
 
-> 💡 **Tip:** If the cover appears misaligned or missing elements, run a third pass.
-
+> 💡 **Tip:** If the cover appears misaligned or missing
+> elements, run a third pass.
 
 ## 17. Theme System
 
@@ -2367,6 +2468,7 @@ All document element names are translated to Persian:
 | `\coverisbn` | شابک |
 | `\covertag` | آموزش برنامه‌نویسی و ریاضیات |
 | `\coverabout` | درباره این کتاب |
+| `\coverauthorbio` | درباره این نویسنده |
 | `\coversource` | مشاهده سورس کد |
 
 ### English Locale (`en-US.sty`)
@@ -3002,27 +3104,49 @@ Captions should be:
 
 ### Table Standards
 
-- **Use `booktabs`** for professional tables (no vertical lines, only horizontal)
-- **Captions above** tables (opposite of figures)
-- **Align numbers** on decimal point
-- **Use `C{width}`** for Persian text columns
+MatinBook uses **`tabularray`** for all tables. Do NOT use
+`tabular` for new tables, and do NOT use `tabularx` (it is
+incompatible with `xepersian`).
+
+**Recommended pattern:**
 
 ```latex
-\begin{table}[h]
-\centering
-\caption{مقایسه پیچیدگی الگوریتم‌ها}
-\label{tab:complexity}
-\begin{tabular}{@{}lC{4cm}c@{}}
-\toprule
-\textbf{Algorithm} & \textbf{Description} & \textbf{Complexity} \\
-\midrule
-Binary Search & جستجو در آرایه مرتب & \lr{$O(\log n)$} \\
-Merge Sort & مرتب‌سازی پایدار & \lr{$O(n \log n)$} \\
-Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\begin{matintable}{caption}{label}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & فونت & وضعیت & توضیحات \\
+فارسی & \lr{XB Niloofar} & فعال & ... \\
+\end{tblr}
+\end{matintable}
 ```
+
+**Key options:**
+
+| Option | Effect |
+|--------|--------|
+| `width = \textwidth` | Table spans the full text width |
+| `colspec = {l l X[c] X[c]}` | Column types (`l` = left, `X[c]` = centered flexible) |
+| `hlines, vlines` | Horizontal and vertical rules |
+| `colsep = 8pt` | Cell padding on each side |
+| `rowsep = 4pt` | Vertical space above and below each row |
+| `row{1} = {font=\bfseries}` | Bold header row |
+
+**Rules:**
+
+1. **Captions above** tables (opposite of figures) — handled by
+   `matintable`.
+2. **Use `X[c]` for Persian text columns** in `tabularray`.
+3. **For legacy `tabular`**: use `C{width}` for Persian columns.
+4. **Never use `tabularx`** — it is incompatible with
+   `xepersian`.
+5. **Use `\lr{}` for Latin content** inside table cells.
+6. **Use `\pnum{}` for Persian decimals** inside table cells.
 
 ### Figure/Table Density
 
@@ -3199,7 +3323,19 @@ All technical terms in English should use `\lr{}`.
 
 ### RULE 10: Tables with Persian Text
 
-Use `C{width}` column type for Persian text columns.
+Use `tabularray` with `X[c]` column type for Persian text columns:
+
+```latex
+\begin{matintable}{caption}{label}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    ...
+}
+...
+\end{tblr}
+\end{matintable}
+```
 
 ### RULE 11: Book Structure
 
@@ -3341,6 +3477,55 @@ All TikZ diagrams (except the cover) MUST be inside `\begin{latin}...\end{latin}
 - Cannot be used inside `tcolorbox` or `figure`.
 - Requires wide outer margin (`mainmattergeometry`).
 
+### RULE 24: Tables Use tabularray (NEW in v1.2)
+
+All tables MUST use `tabularray` with the `matintable` wrapper.
+Do NOT use `tabularx` — it is incompatible with `xepersian`.
+
+```latex
+\begin{matintable}{caption}{label}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+...
+\end{tblr}
+\end{matintable}
+```
+
+### RULE 25: Persian Numbers with Decimals Use `\pnum` (NEW in v1.2)
+
+Any Persian number containing a decimal point, a slash, or a
+thousands separator MUST be wrapped in `\pnum{...}`:
+
+```latex
+% CORRECT:
+مقیاس \pnum{۱.۲} به این معناست...
+اعداد اعشاری: \pnum{۳/۱۴}، \pnum{۲/۷۱۸}
+
+% WRONG (renders reversed):
+مقیاس ۱.۲ به این معناست...
+اعداد اعشاری: ۳/۱۴، ۲/۷۱۸
+```
+
+### RULE 26: Author Bio is Optional but Recommended (NEW in v1.2)
+
+If the book has an author biography, use `\authorbio{...}` before
+`\makebackcover{...}`:
+
+```latex
+\authorbio{%
+    نام نویسنده، پژوهشگر حوزه‌ی ...
+}
+
+\makebackcover{%
+    این کتاب ...
+}
+```
 ---
 
 ## 28. File Structure Templates
@@ -3795,20 +3980,21 @@ result = x + y  # |\pc{جمع دو متغیر}|
 ### Pattern 8: Table with Persian Text
 
 ```latex
-\begin{table}[h]
-\centering
-\caption{مقایسه پیچیدگی الگوریتم‌ها}
-\label{tab:complexity}
-\begin{tabular}{@{}lC{4cm}c@{}}
-\toprule
-\textbf{Algorithm} & \textbf{Description} & \textbf{Complexity} \\
-\midrule
+\begin{matintable}{مقایسه پیچیدگی الگوریتم‌ها}{tab:complexity}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+Algorithm & Description & Complexity \\
 Binary Search & جستجو در آرایه مرتب & \lr{$O(\log n)$} \\
 Merge Sort & مرتب‌سازی پایدار & \lr{$O(n \log n)$} \\
 Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\end{tblr}
+\end{matintable}
 
 جدول \cref{tab:complexity} پیچیدگی الگوریتم‌ها را مقایسه می‌کند.
 ```
@@ -3843,6 +4029,32 @@ Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
 \frontmattergeometry          % symmetric margins again
 \printbibliography
 \printindex
+```
+### Pattern 11: Persian Numbers with Decimals
+
+```latex
+مقیاس \pnum{۱.۲} به این معناست که اندازه‌ی فونت،
+\pnum{۲۰٪} بزرگ‌تر از پایه است.
+
+اعداد اعشاری مهم: \pnum{۳/۱۴۱۵۹}، \pnum{۲/۷۱۸۲۸}، \pnum{۱/۶۱۸۰۳}.
+
+جداکننده هزارگان: \pnum{۱٬۰۰۰٬۰۰۰}.
+```
+### Pattern 12: Author Bio and Back Cover
+
+```latex
+% At the very end of the document:
+
+\authorbio{%
+    نام نویسنده، پژوهشگر حوزه‌ی الگوریتم و ریاضیات کاربردی است.
+    او سال‌ها در زمینه‌ی آموزش برنامه‌نویسی و ساختار داده
+    فعالیت کرده و مؤلف چند کتاب و مقاله در این حوزه است.
+}
+
+\makebackcover{%
+    این کتاب یک مقدمه‌ی جامع بر الگوریتم‌ها و ساختار داده‌هاست.
+    هدف آن، آموزش مفاهیم اساسی به دانشجویان علوم کامپیوتر است.
+}
 ```
 
 ---
@@ -3994,7 +4206,51 @@ Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
 **Cause:** `outer=5.9cm` reduces text width to ~10.3cm.
 
 **Solution:** Use `\frontmattergeometry` for frontmatter/backmatter, or reduce `marginparwidth`.
+### Error 25: `tabularx` fails with `\TX@col@width` (v1.2)
 
+**Cause:** `tabularx` is incompatible with `xepersian` (via
+`bidi`). The X column relies on an internal macro that
+`xepersian` redefines in an incompatible way.
+
+**Error message:**
+```
+Package array: Illegal pream-token (\TX@col@width): `c' used.
+```
+
+**Solution:** Use `tabularray` instead:
+
+```latex
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    ...
+}
+...
+\end{tblr}
+```
+
+### Error 26: Persian decimal numbers render reversed (v1.2)
+
+**Cause:** bidi/fontspec interaction reverses the period and
+slash in Persian numbers (e.g. "1.2" → "2.1", "3/14" → "14/3").
+
+**Solution:** Wrap the number in `\pnum{...}`:
+
+```latex
+% CORRECT:
+مقیاس \pnum{۱.۲}
+
+% WRONG:
+مقیاس ۱.۲
+```
+
+### Error 27: Back cover text overflows onto a second page (v1.2)
+
+**Cause:** The `titlepage` environment has no fixed height.
+
+**Solution:** The redesigned back cover (v1.2) places all content
+inside a fixed-height `minipage`. If you have an old back cover,
+replace it with the new one.
 ---
 
 ## 32. Complete Example
@@ -4172,20 +4428,21 @@ def quicksort(arr: list) -> list:
 
 \section{مقایسه پیچیدگی}
 
-\begin{table}[h]
-\centering
-\caption{مقایسه الگوریتم‌های مرتب‌سازی}
-\label{tab:sorting}
-\begin{tabular}{@{}lC{4cm}c@{}}
-\toprule
-\textbf{Algorithm} & \textbf{Description} & \textbf{Average Case} \\
-\midrule
+\begin{matintable}{مقایسه الگوریتم‌های مرتب‌سازی}{tab:sorting}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+Algorithm & Description & Average Case \\
 Bubble Sort & مرتب‌سازی حبابی & \lr{$O(n^{2})$} \\
 Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
 Merge Sort & مرتب‌سازی ادغامی & \lr{$O(n \log n)$} \\
-\bottomrule
-\end{tabular}
-\end{table}
+\end{tblr}
+\end{matintable}
 
 جدول \cref{tab:sorting} مقایسه‌ای بین
 الگوریتم‌های مرتب‌سازی ارائه می‌دهد.
@@ -4224,6 +4481,12 @@ Merge Sort & مرتب‌سازی ادغامی & \lr{$O(n \log n)$} \\
 % ========================================
 % BACK COVER
 % ========================================
+\authorbio{%
+    نام نویسنده، پژوهشگر حوزه‌ی الگوریتم و ریاضیات کاربردی است.
+    او سال‌ها در زمینه‌ی آموزش برنامه‌نویسی و ساختار داده
+    فعالیت کرده و مؤلف چند کتاب و مقاله در این حوزه است.
+}
+
 \makebackcover{%
     این کتاب یک مقدمه جامع بر الگوریتم‌ها
     و ساختار داده‌ها است.
@@ -4264,7 +4527,9 @@ Merge Sort & مرتب‌سازی ادغامی & \lr{$O(n \log n)$} \\
 ### Technical
 - [ ] All `\label` commands are **inside** their environments
 - [ ] No math mode in section titles
-- [ ] Tables use `C{width}` for Persian columns
+- [ ] Tables use `tabularray` with `matintable` and `X[c]` columns
+- [ ] Persian decimal numbers wrapped in `\pnum{...}`
+- [ ] `\authorbio{...}` is set before `\makebackcover{...}` (if author bio is provided)
 - [ ] All blocks (`\If`/`\For`/`\While`/`\Function`) are closed
 - [ ] All colors are in **CMYK**
 - [ ] `\printbibliography` is **NOT** wrapped in `latin`
@@ -4343,6 +4608,41 @@ These **layout settings changed** in v1.1:
 | Paragraph indent | 1em | **1em** |
 | Heading scale | 36/17/15/14/10 | **24/20/15/13/11** |
 
+
+### For MatinBook v1.2
+
+These commands were **added** in v1.2:
+
+| Command | Purpose |
+|---------|---------|
+| `\pnum{...}` | Persian number helper for decimals and thousands separators |
+| `\authorbio{...}` | Author biography for back cover |
+| `matintable` | Caption/label wrapper for `tabularray` tables |
+
+These modules were **added** in v1.2:
+
+| Module | Purpose |
+|--------|---------|
+| `mb-table.sty` | Table system using `tabularray` |
+
+These modules were **changed** in v1.2:
+
+| Module | Change |
+|--------|--------|
+| `mb-typography.sty` | Removed `L/R/C` column types (moved to `mb-table`) |
+| `mb-theme-cover.sty` | Back cover redesigned (static two-block layout) |
+| `mb-boxes.sty` | Fixed missing horizontal rules in `matin-outline` family |
+| `matinbook.cls` | Loads `mb-table` in Phase 1 |
+
+These **features were changed** in v1.2:
+
+| Feature | Change |
+|---------|--------|
+| Back cover | Static two-block layout, removed decorative math elements |
+| Tables | Switched from `tabular`/`tabularx` to `tabularray` |
+| Outline boxes | Both horizontal rules (2pt) now render in all breakage states |
+| Persian decimals | Use `\pnum{...}` to avoid bidi/fontspec reversal |
+
 ---
 
 ## Common AI Generation Mistakes to Avoid
@@ -4371,6 +4671,12 @@ These **layout settings changed** in v1.1:
 
 ### Mistake 12: Forgetting `\mainmattergeometry`
 
+### Mistake 13: Using `tabularx` instead of `tabularray`
+
+### Mistake 14: Writing `۱.۲` instead of `\pnum{۱.۲}`
+
+### Mistake 15: Placing `\authorbio` after `\makebackcover`
+
 ---
 
 ## Final Checklist
@@ -4380,6 +4686,7 @@ Before submitting AI-generated content, verify:
 ### Critical (Must Fix)
 - [ ] `\documentclass{matinbook}` is used
 - [ ] `\makecover` has 4 arguments
+- [ ] `\authorbio{...}` is set before `\makebackcover{...}` (if provided)
 - [ ] `\makebackcover` is at the end
 - [ ] All code is inside `\begin{latin}...\end{latin}`
 - [ ] All algorithms are inside `\begin{latin}...\end{latin}`
@@ -4390,6 +4697,8 @@ Before submitting AI-generated content, verify:
 - [ ] Compilation uses `-shell-escape`
 - [ ] `\frontmattergeometry` after `\frontmatter`
 - [ ] `\mainmattergeometry` after `\mainmatter`
+- [ ] Tables use `tabularray` (not `tabularx`)
+- [ ] Persian decimals wrapped in `\pnum{...}`
 - [ ] `\mnote` is not used inside `tcolorbox` or `figure`
 
 ### Important (Should Fix)
@@ -4432,9 +4741,9 @@ Before submitting AI-generated content, verify:
 
 ## About This Guide
 
-This guide is the definitive reference for generating content with MatinBook v1.1. It is maintained alongside the class itself and updated with each major release.
+This guide is the definitive reference for generating content with MatinBook v1.2. It is maintained alongside the class itself and updated with each major release.
 
-**Version:** 1.1
+**Version:** 1.2
 **Last Updated:** Mehr 1405 / October 2026
 **Maintained by:** Matin Mahmoudi
 **License:** MIT (same as MatinBook)
