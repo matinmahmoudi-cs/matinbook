@@ -1,166 +1,368 @@
 %========================================
-% MatinBook - Stage 01: Basic Test
-% Test: Core System + Colors + Fonts + Math
-% Purpose: Validate basic infrastructure works
+% MatinBook — Stage 01: Basic Infrastructure Test
+% Version: v1.1
+% Purpose:
+%   Validate the foundational systems of MatinBook v1.1:
+%     1. Class loading and metadata
+%     2. Frontmatter / Mainmatter geometry split
+%     3. Color system (CMYK palette, 5 families × 3 shades)
+%     4. Font system (Persian, Latin, Math, Monospace, Code)
+%     5. Mathematical operators and delimiters
+%     6. Basic box families (matinbox + matin-outline)
+%     7. Typography (microtype, line spacing, widow/orphan)
+%     8. Cross-referencing (cleveref with Persian names)
+%     9. Margin notes (RTL)
+%    10. Full document structure (cover → back cover)
+%
+% Compilation:
+%   xelatex -shell-escape stage01-basic.tex
+%   xelatex -shell-escape stage01-basic.tex
+%   (2 passes required for cover + cross-references)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that all core
+%   systems are functional and visually consistent.
 %========================================
 
-% Add parent directory to search path
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون زیرساخت پایه}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون زیرساخت پایه}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون زیرساخت پایه}
+    {اعتبارسنجی سیستم‌های بنیادین MatinBook}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
-% Chapter 1: Color System
-%----------------------------------------
-\chapter{سیستم رنگ‌ها}
-
-\section{پالت رنگی اصلی}
-
-رنگ‌های اصلی \lr{MatinBook} برای تفکیک بصری انواع محتوا طراحی شده‌اند.
-هر رنگ خانواده‌ای از سه طیف روشن، اصلی و تیره دارد.
-
-\subsection{رنگ‌های آبی (قضایا)}
-
-خانواده آبی برای قضایا، لم‌ها و نتایج:
-
-\begin{itemize}
-    \item \textcolor{matinblue}{\textbf{آبی اصلی}} --- \texttt{matinblue} (RGB: 41, 128, 185)
-    \item \textcolor{matindarkblue}{\textbf{آبی تیره}} --- \texttt{matindarkblue} (RGB: 21, 67, 96)
-    \item \colorbox{matinlightblue}{\textbf{آبی روشن}} --- \texttt{matinlightblue} (RGB: 214, 234, 248)
-\end{itemize}
-
-\subsection{رنگ‌های سبز (تعاریف)}
-
-خانواده سبز برای تعاریف و مفاهیم:
-
-\begin{itemize}
-    \item \textcolor{matingreen}{\textbf{سبز اصلی}} --- \texttt{matingreen} (RGB: 39, 174, 96)
-    \item \textcolor{matindarkgreen}{\textbf{سبز تیره}} --- \texttt{matindarkgreen} (RGB: 20, 90, 50)
-    \item \colorbox{matinlightgreen}{\textbf{سبز روشن}} --- \texttt{matinlightgreen} (RGB: 215, 245, 227)
-\end{itemize}
-
-\subsection{رنگ‌های نارنجی (مثال‌ها)}
-
-خانواده نارنجی برای مثال‌ها:
-
-\begin{itemize}
-    \item \textcolor{matinorange}{\textbf{نارنجی اصلی}} --- \texttt{matinorange} (RGB: 230, 126, 34)
-    \item \textcolor{matindarkorange}{\textbf{نارنجی تیره}} --- \texttt{matindarkorange} (RGB: 120, 66, 18)
-    \item \colorbox{matinlightorange}{\textbf{نارنجی روشن}} --- \texttt{matinlightorange} (RGB: 252, 235, 213)
-\end{itemize}
-
-\subsection{رنگ‌های قرمز (نکات و هشدارها)}
-
-خانواده قرمز برای نکات مهم:
-
-\begin{itemize}
-    \item \textcolor{matinred}{\textbf{قرمز اصلی}} --- \texttt{matinred} (RGB: 231, 76, 60)
-    \item \textcolor{matindarkred}{\textbf{قرمز تیره}} --- \texttt{matindarkred} (RGB: 120, 40, 31)
-    \item \colorbox{matinlightred}{\textbf{قرمز روشن}} --- \texttt{matinlightred} (RGB: 250, 215, 210)
-\end{itemize}
-
-\subsection{رنگ‌های بنفش (تمرین‌ها)}
-
-خانواده بنفش برای تمرین‌ها:
-
-\begin{itemize}
-    \item \textcolor{matinpurple}{\textbf{بنفش اصلی}} --- \texttt{matinpurple} (RGB: 142, 68, 173)
-    \item \textcolor{matindarkpurple}{\textbf{بنفش تیره}} --- \texttt{matindarkpurple} (RGB: 74, 35, 90)
-    \item \colorbox{matinlightpurple}{\textbf{بنفش روشن}} --- \texttt{matinlightpurple} (RGB: 235, 222, 245)
-\end{itemize}
-
-\subsection{رنگ‌های خنثی}
-
-\begin{itemize}
-    \item \textcolor{matindarkgray}{\textbf{خاکستری تیره}} --- متن اصلی
-    \item \textcolor{matinmediumgray}{\textbf{خاکستری متوسط}} --- متن فرعی
-    \item \colorbox{matinlightgray}{\textbf{خاکستری روشن}} --- پس‌زمینه
-    \item \colorbox{matinbordergray}{\textbf{خاکستری مرزی}} --- حاشیه‌ها
-\end{itemize}
-
-\section{نمودار رنگی}
-
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
 \begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون زیرساخت پایه \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، نخستین آزمون از مجموعه‌ی آزمون‌های یکپارچگی \lr{MatinBook} نسخه‌ی
+\lr{\matinbookversion} است. هدف آن، اعتبارسنجی سیستم‌های بنیادین کلاس
+پیش از آزمودن ماژول‌های تخصصی است.
+
+در این آزمون، ده زیرسیستم کلیدی بررسی می‌شوند: بارگذاری کلاس و فراداده،
+تفکیک هندسه‌ی پیش‌متن و متن اصلی، سیستم رنگ \lr{CMYK}، سیستم فونت،
+عملگرهای ریاضی، خانواده‌های جعبه، تایپوگرافی، ارجاع هوشمند، یادداشت‌های
+حاشیه‌ای و ساختار کامل سند از جلد تا پشت‌جلد.
+
+هر بخش با مثال‌های عملی و ارجاعات متقابل همراه است تا خواننده بتواند
+درستی رفتار هر زیرسیستم را در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — COLOR SYSTEM
+%========================================================================
+\chapter{سیستم رنگ‌ها}
+\label{chap:colors}
+
+\section{فلسفه‌ی رنگ در MatinBook}
+\label{sec:color-philosophy}
+
+سیستم رنگ \lr{MatinBook} بر پایه‌ی سه اصل طراحی شده است: \textbf{وضوح}
+بر تزئین، \textbf{معناداری} بر تنوع، و \textbf{سازگاری} بر نوآوری.
+هر رنگ در این سیستم، نقش معنایی مشخصی دارد و به‌جای آنکه صرفاً
+جنبه‌ی زیبایی‌شناختی داشته باشد، به خواننده در تشخیص سریع نوع محتوا
+کمک می‌کند.
+
+مدل رنگ به‌کاررفته در \lr{MatinBook}، مدل \lr{CMYK} است که مطابق
+استاندارد نشر آموزشی ایران (ز/۱-۴) انتخاب شده است. تمام درصدها
+مضرب ۵ یا ۱۰ هستند تا در چاپ حرفه‌ای، رنگ‌های یکنواخت و قابل
+پیش‌بینی تولید شوند. رنگ غالب سیستم، \texttt{matinblue} است و
+سایر رنگ‌ها یا سایه‌های آبی هستند یا رنگ‌های عملکردی.
+
+\mnote{مدل \lr{CMYK} برای چاپ، و مدل \lr{RGB} برای نمایش دیجیتال مناسب است.}
+
+\section{خانواده‌ی آبی — قضایا و لم‌ها}
+\label{sec:color-blue}
+
+خانواده‌ی آبی، رنگ غالب سیستم است و برای محیط‌های نظری مانند
+قضیه، لم، نتیجه و گزاره به کار می‌رود. این انتخاب بر اساس
+سنت نشر دانشگاهی است که رنگ آبی را به مفاهیم نظری و دقیق
+اختصاص می‌دهد.
+
+\begin{itemize}
+    \item \textcolor{matinblue}{\textbf{آبی اصلی}} — \texttt{matinblue}،
+          \lr{CMYK(80, 30, 0, 30)}
+    \item \textcolor{matindarkblue}{\textbf{آبی تیره}} — \texttt{matindarkblue}،
+          \lr{CMYK(80, 30, 0, 60)}
+    \item \colorbox{matinlightblue}{\textbf{آبی روشن}} — \texttt{matinlightblue}،
+          \lr{CMYK(15, 5, 0, 5)}
+\end{itemize}
+
+\section{خانواده‌ی سبز — تعاریف و راه‌حل‌ها}
+\label{sec:color-green}
+
+خانواده‌ی سبز به مفاهیم تعریفی و راه‌حل‌ها اختصاص دارد. رنگ سبز
+در روان‌شناسی رنگ‌ها، حس آرامش و رشد را منتقل می‌کند که با
+ماهیت تعریف‌ها — یعنی ساختن پایه‌های دانش — هم‌خوانی دارد.
+
+\begin{itemize}
+    \item \textcolor{matingreen}{\textbf{سبز اصلی}} — \texttt{matingreen}،
+          \lr{CMYK(80, 0, 45, 30)}
+    \item \textcolor{matindarkgreen}{\textbf{سبز تیره}} — \texttt{matindarkgreen}،
+          \lr{CMYK(80, 0, 45, 65)}
+    \item \colorbox{matinlightgreen}{\textbf{سبز روشن}} — \texttt{matinlightgreen}،
+          \lr{CMYK(10, 0, 5, 5)}
+\end{itemize}
+
+\section{خانواده‌ی نارنجی — مثال‌ها}
+\label{sec:color-orange}
+
+خانواده‌ی نارنجی برای مثال‌ها به کار می‌رود. نارنجی رنگی
+گرم و جلب‌کننده‌ی توجه است و به‌خوبی می‌تواند خواننده را به
+سمت کاربردهای عملی مفاهیم هدایت کند.
+
+\begin{itemize}
+    \item \textcolor{matinorange}{\textbf{نارنجی اصلی}} — \texttt{matinorange}،
+          \lr{CMYK(0, 45, 85, 10)}
+    \item \textcolor{matindarkorange}{\textbf{نارنجی تیره}} — \texttt{matindarkorange}،
+          \lr{CMYK(0, 45, 85, 55)}
+    \item \colorbox{matinlightorange}{\textbf{نارنجی روشن}} — \texttt{matinlightorange}،
+          \lr{CMYK(0, 5, 15, 0)}
+\end{itemize}
+
+\section{خانواده‌ی قرمز — نکته‌ها و هشدارها}
+\label{sec:color-red}
+
+خانواده‌ی قرمز به نکته‌ها و هشدارها اختصاص دارد. استفاده‌ی
+سنجیده از قرمز، به‌دلیل قدرت بصری بالای آن، ضروری است؛
+زیرا استفاده‌ی بیش از حد، اثر هشداردهندگی آن را از بین می‌برد.
+
+\begin{itemize}
+    \item \textcolor{matinred}{\textbf{قرمز اصلی}} — \texttt{matinred}،
+          \lr{CMYK(0, 65, 75, 10)}
+    \item \textcolor{matindarkred}{\textbf{قرمز تیره}} — \texttt{matindarkred}،
+          \lr{CMYK(0, 65, 75, 55)}
+    \item \colorbox{matinlightred}{\textbf{قرمز روشن}} — \texttt{matinlightred}،
+          \lr{CMYK(0, 15, 15, 0)}
+\end{itemize}
+
+\section{خانواده‌ی بنفش — تمرین‌ها}
+\label{sec:color-purple}
+
+خانواده‌ی بنفش به تمرین‌ها اختصاص دارد. بنفش، رنگی است که
+مرز میان مفاهیم نظری و کاربردهای عملی را نشان می‌دهد و
+به همین دلیل برای تمرین‌ها — که پلی میان نظریه و عمل هستند —
+انتخاب شده است.
+
+\begin{itemize}
+    \item \textcolor{matinpurple}{\textbf{بنفش اصلی}} — \texttt{matinpurple}،
+          \lr{CMYK(20, 60, 0, 30)}
+    \item \textcolor{matindarkpurple}{\textbf{بنفش تیره}} — \texttt{matindarkpurple}،
+          \lr{CMYK(20, 60, 0, 65)}
+    \item \colorbox{matinlightpurple}{\textbf{بنفش روشن}} — \texttt{matinlightpurple}،
+          \lr{CMYK(5, 10, 0, 5)}
+\end{itemize}
+
+\section{رنگ‌های خنثی}
+\label{sec:color-neutral}
+
+رنگ‌های خنثی، ستون فقرات تایپوگرافی \lr{MatinBook} هستند.
+متن اصلی نه با سیاه مطلق، بلکه با خاکستری تیره‌ی نزدیک به سیاه
+حروف‌چینی می‌شود تا کنتراست چشم‌نوازتری ایجاد شود و
+خستگی چشم خواننده در مطالعه‌ی طولانی کاهش یابد.
+
+\begin{itemize}
+    \item \textcolor{matindarkgray}{\textbf{خاکستری تیره}} — متن اصلی
+    \item \textcolor{matinmediumgray}{\textbf{خاکستری متوسط}} — متن فرعی
+    \item \colorbox{matinlightgray}{\textbf{خاکستری روشن}} — پس‌زمینه
+    \item \colorbox{matinbordergray}{\textbf{خاکستری مرزی}} — حاشیه‌ها
+    \item \colorbox{matincream}{\textbf{کِرِم}} — پس‌زمینه‌ی گرم
+\end{itemize}
+
+\section{نمایش گرافیکی پالت}
+\label{sec:color-swatches}
+
+نمودار \cref{fig:color-swatches} پالت رنگی \lr{MatinBook} را به‌صورت
+بصری نمایش می‌دهد. هر خانواده با سه سایه — اصلی، روشن و تیره —
+نمایش داده شده است.
+
+\begin{figure}[h]
+\centering
 \begin{latin}
-\begin{tikzpicture}
-    % Color swatches
-    \foreach \color [count=\i] in {matinblue, matingreen, matinorange, matinred, matinpurple} {
-        \fill[\color] (\i*2.5-1.5, 2) rectangle (\i*2.5-0.5, 3);
-        \fill[\color!50] (\i*2.5-1.5, 0.5) rectangle (\i*2.5-0.5, 1.5);
-        \fill[\color!20] (\i*2.5-1.5, -1) rectangle (\i*2.5-0.5, 0);
+\begin{tikzpicture}[scale=0.9]
+    \foreach \color [count=\i] in {
+        matinblue, matingreen, matinorange, matinred, matinpurple} {
+        \fill[\color] (\i*2.4-1.5, 2.4) rectangle (\i*2.4-0.4, 3.2);
+        \fill[\color!60] (\i*2.4-1.5, 1.4) rectangle (\i*2.4-0.4, 2.2);
+        \fill[\color!25] (\i*2.4-1.5, 0.4) rectangle (\i*2.4-0.4, 1.2);
+        \node[font=\tiny, anchor=north] at (\i*2.4-0.95, 0.2) {\color};
     }
+    \draw[matindarkgray, thick] (-0.2, 0.2) -- (11.5, 0.2);
+    \draw[matindarkgray, thick] (-0.2, 0.2) -- (-0.2, 3.4);
+    \node[font=\footnotesize, anchor=west] at (0.1, 3.5) {سایه‌ها};
 \end{tikzpicture}
 \end{latin}
-\end{center}
+\caption{پالت رنگی \lr{MatinBook} — پنج خانواده، هر یک با سه سایه}
+\label{fig:color-swatches}
+\end{figure}
 
-%----------------------------------------
-% Chapter 2: Font System
-%----------------------------------------
+همان‌طور که در \cref{fig:color-swatches} پیداست، هر خانواده
+دارای سه سایه است که امکان استفاده‌ی معنادار در سطوح مختلف
+محتوا را فراهم می‌کند.
+
+%========================================================================
+% CHAPTER 2 — FONT SYSTEM
+%========================================================================
 \chapter{سیستم فونت‌ها}
+\label{chap:fonts}
 
-\section{فونت فارسی}
+\section{فونت متن فارسی}
+\label{sec:font-persian}
 
-این یک پاراگراف طولانی فارسی است برای تست فونت پیش‌فرض \lr{XB Niloofar}.
-این فونت باید خوانایی خوبی داشته باشد و تمام حروف فارسی را
-به درستی نمایش دهد. حروف خاص فارسی مانند «گ»، «چ»، «پ»، «ژ»
-باید به صورت صحیح نمایش داده شوند.
+فونت پیش‌فرض متن فارسی در \lr{MatinBook}، \lr{XB Niloofar} است
+که با مقیاس ۱.۲ بارگذاری می‌شود. این فونت به‌دلیل پوشش کامل
+حروف فارسی و خوانایی بالا در متون فنی انتخاب شده است.
+
+این یک پاراگراف طولانی فارسی است که به‌عنوان نمونه‌ی متن
+برای ارزیابی فونت به کار می‌رود. هدف آن است که رفتار فونت
+در مواجهه با حروف خاص فارسی مانند «گ»، «چ»، «پ» و «ژ» بررسی شود.
+همچنین ترکیب این حروف با حروف دیگر در کلمات طولانی مانند
+«برنامه‌نویسی»، «الگوریتم‌های» و «پیاده‌سازی» آزموده می‌شود.
 
 اعداد فارسی: ۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹
 
-اعداد انگلیسی در متن فارسی: 0 1 2 3 4 5 6 7 8 9
+اعداد لاتین در متن فارسی: \lr{0 1 2 3 4 5 6 7 8 9}
 
-نویسه‌های ویژه فارسی: «نقل قول»، (پرانتز)، [کروشه]، \{آکولاد\}
+نشانه‌های نگارشی فارسی: «نقل قول»، (پرانتز)، [کروشه]، \{آکولاد\}،
+نقطه‌ویرگول؛ و ویرگول،
 
-\section{فونت انگلیسی (لاتین)}
+\section{فونت متن لاتین}
+\label{sec:font-latin}
 
 \begin{latin}
-This is an English paragraph to test the Latin font Times New Roman.
-It should render professionally with proper kerning and ligatures.
+The default Latin font in MatinBook is Times New Roman, with
+TeX Gyre Termes as a fallback. The font is chosen for its
+professional appearance and excellent readability in technical
+documents.
 
 The quick brown fox jumps over the lazy dog.
 Pack my box with five dozen liquor jugs.
 
-Special ligatures: fi fl ff ffi ffl --- -- ``quotes''
+Special ligatures: fi fl ff ffi ffl
 
-Mathematical symbols in text: \( \alpha, \beta, \gamma, \delta \)
+Quotation marks: ``double'' and `single'
+
+Mathematical symbols in text: \(\alpha, \beta, \gamma, \delta, \epsilon\)
 \end{latin}
 
-\section{ترکیب فارسی و انگلیسی}
+\section{ترکیب فارسی و لاتین}
+\label{sec:font-mixing}
 
-این یک متن فارسی است که شامل کلمات انگلیسی مانند \lr{computer}،
-\lr{software}، \lr{algorithm}، \lr{function} و \lr{variable} می‌باشد.
-همچنین اعداد لاتین مانند \lr{3.14159} و \lr{42} در متن فارسی قرار گرفته‌اند.
+در متن‌های فنی فارسی، ترکیب متن فارسی و لاتین امری اجتناب‌ناپذیر
+است. در \lr{MatinBook}، تمام واژه‌ها و عبارات لاتین باید در
+دستور \lr{\textbackslash lr\{...\}} قرار گیرند تا جهت‌نمایی
+متن به‌درستی حفظ شود.
 
-نام‌های خاص خارجی: \lr{Donald Knuth}، \lr{Leslie Lamport}، \lr{Alan Turing}
+این یک متن فارسی است که شامل واژه‌های لاتین مانند \lr{computer}،
+\lr{software}، \lr{algorithm}، \lr{function} و \lr{variable} است.
+همچنین اعداد لاتین مانند \lr{3.14159} و \lr{42} در متن فارسی
+قرار گرفته‌اند.
+
+نام‌های خاص خارجی: \lr{Donald Knuth}، \lr{Leslie Lamport}،
+\lr{Alan Turing}، \lr{John von Neumann}.
 
 \section{فونت ریاضی}
+\label{sec:font-math}
 
-آزمایش فونت ریاضی \lr{XITS Math} با معادلات پایه:
+فونت ریاضی پیش‌فرض \lr{MatinBook}، \lr{XITS Math} است که
+پوشش گسترده‌ای از نمادهای ریاضی دارد. در ادامه، چند نمونه
+از کاربرد این فونت نمایش داده می‌شود.
 
-معادله درون خطی: $E = mc^2$، قضیه فیثاغورث: $a^2 + b^2 = c^2$
+معادله‌ی درون‌خطی: $E = mc^2$؛ قضیه‌ی فیثاغورث: $a^2 + b^2 = c^2$.
 
-معادله نمایشی:
+معادله‌ی نمایشی:
 \begin{equation}
     \int_{0}^{\infty} \frac{x^3}{e^x - 1} \,dx = \frac{\pi^4}{15}
     \label{eq:stefan-boltzmann}
 \end{equation}
 
-حروف یونانی: $\alpha, \beta, \gamma, \Gamma, \delta, \Delta, \epsilon, \varepsilon,
-\zeta, \eta, \theta, \Theta, \lambda, \Lambda, \mu, \pi, \Pi, \sigma, \Sigma, \tau,
-\phi, \Phi, \omega, \Omega$
+معادله‌ی \cref{eq:stefan-boltzmann} به‌عنوان یک نمونه‌ی کلاسیک
+از انتگرال‌های مهم در فیزیک آماری شناخته می‌شود.
+
+حروف یونانی: $\alpha, \beta, \gamma, \Gamma, \delta, \Delta,
+\epsilon, \varepsilon, \zeta, \eta, \theta, \Theta, \lambda,
+\Lambda, \mu, \pi, \Pi, \sigma, \Sigma, \tau, \phi, \Phi,
+\omega, \Omega$.
 
 عملگرهای بزرگ:
 \[
@@ -169,87 +371,366 @@ Mathematical symbols in text: \( \alpha, \beta, \gamma, \delta \)
     \lim_{x \to \infty} \left(1 + \frac{1}{x}\right)^x = e
 \]
 
-%----------------------------------------
-% Chapter 3: Color Boxes Test
-%----------------------------------------
-\chapter{جعبه‌های رنگی}
+\section{فونت مونواسپیس و کد}
+\label{sec:font-mono}
 
-\section{نمایش رنگ‌ها در جعبه‌های اطلاعاتی}
+برای کدهای درون‌خطی و بلوک‌های کد، \lr{MatinBook} از فونت‌های
+\lr{DejaVu Sans Mono} و \lr{JetBrains Mono} استفاده می‌کند.
+نمونه‌ی کد درون‌خطی: \inlcode{print("Hello, World!")}.
 
-\begin{theorem}[قضیه تست]
-    این یک قضیه آزمایشی با رنگ آبی است.
-    تمام عناوین باید خوانا و متمایز باشند.
+%========================================================================
+% CHAPTER 3 — MATHEMATICAL SYSTEM
+%========================================================================
+\chapter{سیستم ریاضی}
+\label{chap:math}
+
+\section{عملگرهای ریاضی سفارشی}
+\label{sec:math-operators}
+
+\lr{MatinBook} مجموعه‌ای از عملگرهای ریاضی سفارشی را ارائه می‌دهد
+که برای حوزه‌های مختلف ریاضیات و علوم کامپیوتر طراحی شده‌اند.
+
+\subsection{حساب برداری}
+
+عملگرهای گرادیان، دیورژانس و کرل:
+\[
+    \grad f = \nabla f, \qquad
+    \diver \vec{F} = \nabla \cdot \vec{F}, \qquad
+    \curl \vec{F} = \nabla \times \vec{F}
+\]
+
+\subsection{جبر خطی}
+
+عملگرهای رتبه، رد و ماتریس قطری:
+\[
+    \rank(A) = 3, \qquad
+    \trace(A) = \sum_{i=1}^{n} a_{ii}, \qquad
+    \diag(a_1, a_2, \ldots, a_n)
+\]
+
+\subsection{بهینه‌سازی}
+
+عملگرهای \lr{argmax} و \lr{argmin}:
+\[
+    \argmax_{x \in \R} f(x), \qquad \argmin_{x \in \R} g(x)
+\]
+
+\section{مجموعه‌های اعداد}
+\label{sec:math-numbers}
+
+مجموعه‌های اعداد استاندارد:
+\[
+    \N \subset \Z \subset \Q \subset \R \subset \C
+\]
+
+\section{جداکننده‌های هوشمند}
+\label{sec:math-delimiters}
+
+جداکننده‌های هوشمند که به‌طور خودکار با محتوای خود مقیاس می‌گیرند:
+
+\begin{align}
+    \abs{\frac{a}{b}} &= \frac{\abs{a}}{\abs{b}} \label{eq:abs} \\
+    \norm{\sum_{i=1}^{n} x_i} &\leq \sum_{i=1}^{n} \norm{x_i} \label{eq:norm} \\
+    \inner{u}{v} &= \sum_{i=1}^{n} u_i v_i \label{eq:inner}
+\end{align}
+
+معادلات \cref{eq:abs,eq:norm,eq:inner} نمونه‌هایی از
+جداکننده‌های هوشمند را نشان می‌دهند.
+
+\section{ماتریس‌ها}
+\label{sec:math-matrices}
+
+نمایش ماتریس‌ها با سه سبک مختلف:
+
+\[
+    A = \mat{1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9}, \qquad
+    B = \pmat{1 & 0 \\ 0 & 1}, \qquad
+    \det(C) = \vmat{1 & 2 \\ 3 & 4} = -2
+\]
+
+\section{مشتق و انتگرال}
+\label{sec:math-derivatives}
+
+نمایش مشتق و انتگرال:
+\[
+    \deriv{f}{x} = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}, \qquad
+    \pderiv{f}{x} = \frac{\partial f}{\partial x}
+\]
+
+انتگرال معین:
+\[
+    \int_{a}^{b} f(x) \, \dd{x} = F(b) - F(a)
+\]
+
+%========================================================================
+% CHAPTER 4 — BOX FAMILIES
+%========================================================================
+\chapter{خانواده‌های جعبه}
+\label{chap:boxes}
+
+\section{فلسفه‌ی دو خانواده}
+\label{sec:box-philosophy}
+
+\lr{MatinBook} دو خانواده‌ی جعبه ارائه می‌دهد که هر یک برای
+نوع خاصی از محتوا طراحی شده‌اند. خانواده‌ی \lr{matinbox} با
+نوار رنگی توپر و بدنه‌ی سفید، برای محتوای نظری و رسمی مناسب است.
+خانواده‌ی \lr{matin-outline} با خط عمودی سمت راست و قواعد افقی،
+برای محتوای توضیحی و کاربردی به کار می‌رود.
+
+هر دو خانواده، قابلیت شکستن در چند صفحه را دارند؛ یعنی اگر
+محتوای جعبه از یک صفحه فراتر رود، جعبه به‌طور خودکار در مرز
+صفحه شکسته می‌شود و در صفحه‌ی بعد ادامه می‌یابد.
+
+\section{خانواده‌ی matinbox (سبک Boyer)}
+\label{sec:box-matinbox}
+
+\subsection{قضیه}
+
+\begin{theorem}[قضیه‌ی نمونه]
+    این یک قضیه‌ی آزمایشی است که برای ارزیابی خانواده‌ی
+    \lr{matinbox} نوشته شده است. عنوان جعبه با نوار رنگی
+    توپر و متن سفید نمایش داده می‌شود.
+    \label{thm:sample}
 \end{theorem}
 
-\begin{definition}[تعریف تست]
-    این یک تعریف آزمایشی با رنگ سبز است.
-    رنگ‌ها باید در حالت چاپ سیاه و سفید نیز قابل تشخیص باشند.
+طبق \cref{thm:sample}، خانواده‌ی \lr{matinbox} به‌درستی کار می‌کند.
+
+\subsection{لم، نتیجه و گزاره}
+
+\begin{lemma}[لم نمونه]
+    این یک لم آزمایشی است.
+    \label{lem:sample}
+\end{lemma}
+
+\begin{corollary}[نتیجه‌ی نمونه]
+    این یک نتیجه‌ی آزمایشی است.
+    \label{cor:sample}
+\end{corollary}
+
+\begin{proposition}[گزاره‌ی نمونه]
+    این یک گزاره‌ی آزمایشی است.
+    \label{prop:sample}
+\end{proposition}
+
+قضیه‌ی \cref{thm:sample}، لم \cref{lem:sample}، نتیجه‌ی
+\cref{cor:sample} و گزاره‌ی \cref{prop:sample} همگی از
+یک شمارنده‌ی مشترک استفاده می‌کنند.
+
+\subsection{تعریف، نکته و تمرین}
+
+\begin{definition}[تعریف نمونه]
+    این یک تعریف آزمایشی است.
+    \label{def:sample}
 \end{definition}
 
-\begin{example}[مثال تست]
-    این یک مثال آزمایشی با رنگ نارنجی است.
-    مثال‌ها باید توجه خواننده را به کاربرد مفاهیم جلب کنند.
-\end{example}
-
-\begin{remark}[نکته تست]
-    این یک نکته آزمایشی با رنگ قرمز است.
-    نکات مهم باید برجسته و قابل توجه باشند.
+\begin{remark}
+    این یک نکته‌ی آزمایشی است.
+    \label{rem:sample}
 \end{remark}
 
-\begin{exercise}[تمرین تست]
-    این یک تمرین آزمایشی با رنگ بنفش است.
-    تمرین‌ها باید خواننده را به تفکر وادارند.
+\begin{exercise}
+    این یک تمرین آزمایشی است.
+    \label{exc:sample}
 \end{exercise}
 
-%----------------------------------------
-% Chapter 4: Typography
-%----------------------------------------
+\section{خانواده‌ی matin-outline (سبک RTL)}
+\label{sec:box-outline}
+
+\subsection{مثال}
+
+\begin{example}[مثال نمونه]
+    این یک مثال آزمایشی است که برای ارزیابی خانواده‌ی
+    \lr{matin-outline} نوشته شده است. خط عمودی در سمت
+    راست جعبه قرار دارد و عنوان با متن مشکی و بدون
+    پس‌زمینه نمایش داده می‌شود.
+    \label{ex:sample}
+\end{example}
+
+\subsection{اثبات}
+
+\begin{proof}
+    این یک اثبات آزمایشی است. مربع \lr{QED} در انتهای
+    جعبه به‌طور خودکار اضافه می‌شود.
+\end{proof}
+
+\subsection{راه‌حل}
+
+\begin{solution}
+    این یک راه‌حل آزمایشی است.
+\end{solution}
+
+\section{شمارنده‌ی مشترک}
+\label{sec:box-counter}
+
+تمام محیط‌های شماره‌دار در \lr{MatinBook} از یک شمارنده‌ی
+مشترک استفاده می‌کنند. این طراحی، بر اساس نظر جامعه‌ی
+\lr{LaTeX} فارسی، به خواننده کمک می‌کند تا مفاهیم را
+سریع‌تر پیدا کند. برای نمونه، اگر تعریفی با شماره‌ی ۱.۱
+ثبت شود و سپس قضیه‌ای با شماره‌ی ۱.۲ بیاید، خواننده
+می‌داند که این دو، در یک فصل و به‌ترتیب ظاهر شده‌اند.
+
+%========================================================================
+% CHAPTER 5 — TYPOGRAPHY
+%========================================================================
 \chapter{تایپوگرافی}
+\label{chap:typography}
 
-\section{فاصله خطوط و ترازبندی}
+\section{فاصله‌ی خطوط}
+\label{sec:typography-leading}
 
-این یک پاراگراف طولانی فارسی است که برای تست تایپوگرافی نوشته شده است.
-هدف ما این است که ببینیم آیا خطوط به خوبی تراز می‌شوند و فاصله بین
-کلمات مناسب است یا خیر. تایپوگرافی خوب باعث افزایش خوانایی متن
-و کاهش خستگی چشم خواننده می‌شود. ما در \lr{MatinBook} از تنظیمات
-پیشرفته \lr{microtype} برای بهبود تایپوگرافی استفاده می‌کنیم.
+فاصله‌ی خطوط در \lr{MatinBook} روی ۱.۱۵ تنظیم شده است که
+مطابق سبک کتاب‌های درسی دانشگاهی مانند \lr{Boyer} و
+\lr{Stewart} است. این مقدار، تعادلی میان خوانایی و
+فشردگی متن ایجاد می‌کند.
 
-فاصله بین خطوط باید به اندازه‌ای باشد که خواننده به راحتی بتواند
-خط بعدی را پیدا کند، اما نه آنقدر زیاد که متن از هم گسیخته به نظر برسد.
-همچنین ترازبندی دوطرفه (\lr{justified}) باید به گونه‌ای باشد که
-فضای خالی بیش از حد بین کلمات ایجاد نشود.
+این یک پاراگراف طولانی فارسی است که برای ارزیابی
+تایپوگرافی نوشته شده است. هدف آن است که ببینیم آیا
+خطوط به‌خوبی تراز می‌شوند و فاصله‌ی میان کلمات مناسب
+است یا خیر. تایپوگرافی خوب، خوانایی را افزایش می‌دهد
+و خستگی چشم خواننده را کاهش می‌دهد.
 
-\section{جلوگیری از خطوط آویزان}
+\lr{MatinBook} از \lr{microtype} برای بهبود تایپوگرافی
+استفاده می‌کند. این بسته، با اعمال \lr{protrusion} روی
+نشانه‌های نگارشی، ترازبندی لبه‌ها را بهبود می‌بخشد.
 
-در حروف‌چینی حرفه‌ای، باید از ایجاد خطوط آویزان (\lr{widow}) و
-یتیم (\lr{orphan}) جلوگیری شود. خط آویزان به آخرین خط یک پاراگراف
-گفته می‌شود که به تنهایی در بالای صفحه بعد قرار گیرد. خط یتیم
-به اولین خط یک پاراگراف گفته می‌شود که در انتهای صفحه باقی بماند.
+\section{جلوگیری از خطوط آویزان و یتیم}
+\label{sec:typography-widow}
 
-\lr{MatinBook} با تنظیم \texttt{\textbackslash widowpenalty=10000}
-و \texttt{\textbackslash clubpenalty=10000} از این مشکلات جلوگیری می‌کند.
+در حروف‌چینی حرفه‌ای، باید از ایجاد خطوط آویزان (\lr{widow})
+و یتیم (\lr{orphan}) جلوگیری شود. \lr{MatinBook} با تنظیم
+جریمه‌های مناسب، این مشکلات را به حداقل می‌رساند.
 
-%----------------------------------------
-% System Check Summary
-%----------------------------------------
-\chapter{خلاصه نتایج}
+\begin{definition}[خط آویزان]
+    خط آویزان به آخرین خط یک پاراگراف گفته می‌شود که به
+    تنهایی در بالای صفحه‌ی بعد قرار گیرد.
+    \label{def:widow}
+\end{definition}
 
-\section{وضعیت ماژول‌ها}
+\begin{definition}[خط یتیم]
+    خط یتیم به اولین خط یک پاراگراف گفته می‌شود که
+    در انتهای صفحه باقی بماند.
+    \label{def:orphan}
+\end{definition}
+
+\lr{MatinBook} با تنظیم \lr{\textbackslash widowpenalty=10000}
+و \lr{\textbackslash clubpenalty=10000} از این مشکلات
+جلوگیری می‌کند.
+
+\section{یادداشت‌های حاشیه‌ای}
+\label{sec:typography-margin}
+
+یکی از ویژگی‌های جدید \lr{MatinBook} نسخه‌ی \lr{\matinbookversion}،
+پشتیبانی از یادداشت‌های حاشیه‌ای است. حاشیه‌ی بیرونی پهن
+(۵.۹ سانتی‌متر) فضای کافی برای یادداشت‌های توضیحی فراهم می‌کند.
+
+\mnote{یادداشت‌های حاشیه‌ای باید کوتاه و مکمل متن اصلی باشند.}
+
+دستور \lr{\textbackslash mnote\{...\}} برای یادداشت‌های متنی
+و دستور \lr{\textbackslash marginfig\{...\}\{...\}} برای
+شکل‌های حاشیه‌ای به کار می‌رود.
+
+%========================================================================
+% CHAPTER 6 — CROSS-REFERENCES
+%========================================================================
+\chapter{ارجاع هوشمند}
+\label{chap:cref}
+
+\section{سیستم ارجاع}
+\label{sec:cref-system}
+
+\lr{MatinBook} از بسته‌ی \lr{cleveref} برای ارجاع هوشمند
+استفاده می‌کند. با این سیستم، نیازی به نوشتن دستی نوع
+مرجع (مانند «قضیه»، «شکل» یا «معادله») نیست؛ زیرا
+\lr{cleveref} نوع مرجع را به‌طور خودکار تشخیص می‌دهد.
+
+\section{نمونه‌های ارجاع}
+\label{sec:cref-examples}
+
+ارجاع به معادله: \cref{eq:stefan-boltzmann}
+
+ارجاع به شکل: \cref{fig:color-swatches}
+
+ارجاع به قضیه: \cref{thm:sample}
+
+ارجاع به تعریف: \cref{def:sample}
+
+ارجاع به فصل: \cref{chap:colors}
+
+ارجاع به بخش: \cref{sec:color-blue}
+
+ارجاع به چند مرجع: \cref{thm:sample,lem:sample,cor:sample}
+
+ارجاع بازه‌ای: \crefrange{eq:abs}{eq:inner}
+
+همان‌طور که در \cref{fig:color-swatches} دیده می‌شود،
+سیستم ارجاع هوشمند \lr{MatinBook} به‌درستی کار می‌کند.
+
+%========================================================================
+% CHAPTER 7 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
+
+\section{وضعیت زیرسیستم‌ها}
+\label{sec:summary-status}
 
 \begin{itemize}
-    \item \textcolor{matingreen}{\textbf{سیستم رنگ:}} ۱۵ رنگ در ۵ خانواده --- ✅
-    \item \textcolor{matingreen}{\textbf{فونت فارسی:}} \lr{XB Niloofar} با مقیاس ۱.۲ --- ✅
-    \item \textcolor{matingreen}{\textbf{فونت لاتین:}} \lr{Times New Roman} --- ✅
-    \item \textcolor{matingreen}{\textbf{فونت ریاضی:}} \lr{XITS Math} --- ✅
-    \item \textcolor{matingreen}{\textbf{فونت کد:}} \lr{JetBrains Mono} --- ✅
-    \item \textcolor{matingreen}{\textbf{جعبه‌های رنگی:}} ۱۰ نوع مختلف --- ✅
-    \item \textcolor{matingreen}{\textbf{تایپوگرافی:}} \lr{microtype} فعال --- ✅
-    \item \textcolor{matingreen}{\textbf{ارجاع هوشمند:}} \lr{cleveref} فارسی --- ✅
+    \item \textcolor{matingreen}{\textbf{بارگذاری کلاس:}} موفق
+    \item \textcolor{matingreen}{\textbf{فراداده:}} موفق
+    \item \textcolor{matingreen}{\textbf{تفکیک هندسه:}} موفق
+    \item \textcolor{matingreen}{\textbf{سیستم رنگ:}} ۲۰ رنگ \lr{CMYK} در ۵ خانواده
+    \item \textcolor{matingreen}{\textbf{فونت فارسی:}} \lr{XB Niloofar} با مقیاس ۱.۲
+    \item \textcolor{matingreen}{\textbf{فونت لاتین:}} \lr{Times New Roman}
+    \item \textcolor{matingreen}{\textbf{فونت ریاضی:}} \lr{XITS Math}
+    \item \textcolor{matingreen}{\textbf{فونت مونواسپیس:}} \lr{DejaVu Sans Mono}
+    \item \textcolor{matingreen}{\textbf{عملگرهای ریاضی:}} ۱۴ عملگر سفارشی
+    \item \textcolor{matingreen}{\textbf{جداکننده‌های هوشمند:}} ۶ جداکننده
+    \item \textcolor{matingreen}{\textbf{خانواده‌های جعبه:}} \lr{matinbox} + \lr{matin-outline}
+    \item \textcolor{matingreen}{\textbf{محیط‌های قضیه:}} ۱۱ محیط
+    \item \textcolor{matingreen}{\textbf{تایپوگرافی:}} \lr{microtype} فعال
+    \item \textcolor{matingreen}{\textbf{ارجاع هوشمند:}} \lr{cleveref} فارسی
+    \item \textcolor{matingreen}{\textbf{یادداشت حاشیه:}} \lr{\textbackslash mnote}
 \end{itemize}
 
-\section{نتیجه}
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
 
-\textbf{ماژول‌های پایه \lr{MatinBook} نسخه ۱ با موفقیت بارگذاری و آزمایش شدند.}
-تمام سیستم‌های رنگی، فونت‌ها و جعبه‌ها به درستی کار می‌کنند. 🎉
+\textbf{تمام زیرسیستم‌های پایه‌ی \lr{MatinBook} نسخه‌ی
+\lr{\matinbookversion} با موفقیت بارگذاری و آزمایش شدند.
+این آزمون، پایه‌ای برای آزمون‌های تخصصی‌تر فراهم می‌کند
+و اطمینان می‌دهد که زیرساخت کلاس، آماده‌ی استفاده در
+پروژه‌های واقعی است.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\makebackcover{%
+    این سند، نخستین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item سیستم رنگ \lr{CMYK}
+        \item فونت‌های فارسی، لاتین و ریاضی
+        \item عملگرهای ریاضی سفارشی
+        \item خانواده‌های جعبه
+        \item تایپوگرافی و یادداشت حاشیه
+        \item ارجاع هوشمند
+    \end{itemize}
+}
 
 \end{document}
