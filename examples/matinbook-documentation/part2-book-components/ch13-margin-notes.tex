@@ -1,0 +1,370 @@
+%%
+%% part2-book-components/ch13-margin-notes.tex
+%%
+%% Chapter 13: Margin Notes — RTL margin notes and
+%% margin figures in the wide outer margin.
+%%
+
+\chapter{یادداشت حاشیه}
+\label{chap:margin-notes}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:margin-notes-why}
+
+یکی از ویژگی‌های متمایزکننده‌ی کتاب‌های درسی
+حرفه‌ای، استفاده از \textbf{حاشیه‌ی بیرونی پهن}
+برای یادداشت‌های توضیحی، شکل‌های کوچک و
+فرمول‌های مکمل است. این طراحی، از کتاب‌های
+\lr{Boyer} و \lr{Stewart} الهام گرفته شده
+است.
+
+\lr{MatinBook} یک حاشیه‌ی بیرونی پهن (\pnum{۵.۹}
+سانتی‌متر) ارائه می‌دهد که مخصوص این کار طراحی
+شده است. در این فصل، با دو دستور \cmd{mnote}
+و \cmd{marginfig} آشنا می‌شوید.
+
+\mnote{حاشیه‌ی پهن در \lr{frontmatter} و \lr{backmatter} حذف می‌شود و فقط در \lr{mainmatter} فعال است.}
+
+\section{دستور \cmd{mnote}}
+\label{sec:margin-notes-mnote}
+
+دستور \cmd{mnote} برای افزودن یک یادداشت متنی
+ساده در حاشیه استفاده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این یک متن اصلی است.}|\mnote{|\pc{این یک یادداشت حاشیه‌ای است.}|}%
+|\pc{و این ادامه‌ی متن اصلی است.}|%
+\end{minted}
+\end{latin}
+
+خروجی:
+
+این یک متن اصلی است.\mnote{این یک یادداشت حاشیه‌ای است.}
+و این ادامه‌ی متن اصلی است.
+
+\mnote{یادداشت‌های حاشیه‌ای باید کوتاه و مکمل متن اصلی باشند. طول ایده‌آل: ۱ تا ۳ خط.}
+
+\subsection{ویژگی‌های \cmd{mnote}}
+\label{sec:margin-notes-mnote-features}
+
+دستور \cmd{mnote} ویژگی‌های زیر را دارد:
+
+\begin{itemize}
+    \item \textbf{بدون شماره:} یادداشت‌ها
+    شماره‌گذاری نمی‌شوند (برخلاف پانویس).
+    \item \textbf{راست‌به‌چپ:} متن یادداشت
+    به‌طور خودکار راست‌به‌چپ است.
+    \item \textbf{حاشیه‌ی بیرونی:} در صفحات فرد،
+    در سمت راست؛ در صفحات زوج، در سمت چپ.
+    \item \textbf{اندازه‌ی کوچک:} متن یادداشت با
+    \cmd{footnotesize} نمایش داده می‌شود.
+\end{itemize}
+
+\mnote{یادداشت‌های حاشیه‌ای با \lr{\textbackslash marginpar} پیاده‌سازی شده‌اند که بخشی از هسته‌ی \lr{LaTeX} است.}
+
+\section{دستور \cmd{marginfig}}
+\label{sec:margin-notes-marginfig}
+
+دستور \cmd{marginfig} برای افزودن یک شکل کوچک
+با کپشن در حاشیه استفاده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این یک متن اصلی است.}|%
+\marginfig{figures/plot.png}{|\pc{نمودار نمونه}|}%
+\end{minted}
+\end{latin}
+
+این دستور دو آرگومان می‌گیرد:
+
+\begin{enumerate}
+    \item \textbf{نام فایل:} مسیر فایل تصویر.
+    \item \textbf{کپشن:} متن توضیح زیر شکل.
+\end{enumerate}
+
+\mnote{عرض شکل در حاشیه، به‌طور خودکار با \lr{\textbackslash marginparwidth} تنظیم می‌شود که \lr{۳.۵} سانتی‌متر است.}
+
+\section{محدودیت‌ها}
+\label{sec:margin-notes-limitations}
+
+یادداشت‌های حاشیه‌ای چند محدودیت دارند:
+
+\subsection{عدم استفاده در \env{tcolorbox}}
+\label{sec:margin-notes-limitation-tcolorbox}
+
+دستور \cmd{mnote} \textbf{نمی‌تواند} داخل
+\env{tcolorbox} (مثل \env{theorem}، \env{definition}
+و...) استفاده شود، چون \cmd{marginpar} در
+محیط‌های شناور کار نمی‌کند.
+
+\textbf{راه‌حل:} یادداشت را بیرون از جعبه قرار دهید.
+
+\subsection{عدم استفاده در \env{figure}}
+\label{sec:margin-notes-limitation-figure}
+
+دستور \cmd{mnote} \textbf{نمی‌تواند} داخل
+\env{figure} استفاده شود.
+
+\textbf{راه‌حل:} یادداشت را در متن اصلی، بیرون
+از \env{figure}، قرار دهید.
+
+\subsection{نیاز به هندسه‌ی \lr{mainmatter}}
+\label{sec:margin-notes-limitation-geometry}
+
+یادداشت‌های حاشیه‌ای فقط در \lr{mainmatter} کار
+می‌کنند، چون در \lr{frontmatter} و \lr{backmatter}
+حاشیه‌ی پهن حذف می‌شود.
+
+\textbf{راه‌حل:} از \cmd{mainmattergeometry} برای
+فعال‌سازی حاشیه‌ی پهن استفاده کنید.
+
+\subsection{کامپایل چندباره}
+\label{sec:margin-notes-limitation-compile}
+
+یادداشت‌های حاشیه‌ای برای موقعیت‌یابی پایدار،
+حداقل \textbf{۲ بار کامپایل} نیاز دارند.
+
+\textbf{راه‌حل:} چرخه‌ی کامل کامپایل را اجرا
+کنید.
+
+\mnote{اگر یادداشت‌ها در جای اشتباه ظاهر شدند، یک بار دیگر کامپایل کنید.}
+
+\section{جهت متن در صفحات زوج و فرد}
+\label{sec:margin-notes-direction}
+
+یادداشت‌های حاشیه‌ای در \lr{MatinBook} در
+هر دو نوع صفحه (فرد و زوج) راست‌به‌چپ هستند.
+این کار با استفاده از \cmd{RL} از \lr{xepersian}
+انجام می‌شود.
+
+جدول \cref{tab:margin-direction} رفتار یادداشت‌ها
+را در صفحات مختلف نشان می‌دهد.
+
+\begin{matintable}{رفتار یادداشت‌های حاشیه‌ای}{tab:margin-direction}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع صفحه & سمت حاشیه & جهت متن \\
+فرد (راست) & راست & راست‌به‌چپ \\
+زوج (چپ) & چپ & راست‌به‌چپ \\
+\end{tblr}
+\end{matintable}
+
+\mnote{در \lr{MatinBook}، از \lr{\textbackslash reversemarginpar} استفاده نمی‌شود، چون جهت را دو بار معکوس می‌کند.}
+
+\section{مثال‌های کاربردی}
+\label{sec:margin-notes-examples}
+
+\subsection{یادداشت توضیحی}
+\label{sec:margin-notes-example-explanation}
+
+یادداشت‌ها برای توضیحات مکمل مناسب هستند:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{الگوریتم دایکسترا برای یافتن کوتاه‌ترین مسیر در گراف‌های وزن‌دار استفاده می‌شود.}|%
+\mnote{|\pc{پیچیدگی این الگوریتم}|\lr{$O((V+E) \log V)$}|\pc{است.}|}%
+\end{minted}
+\end{latin}
+
+خروجی:
+
+الگوریتم دایکسترا برای یافتن کوتاه‌ترین مسیر در
+گراف‌های وزن‌دار استفاده می‌شود.\mnote{پیچیدگی این الگوریتم \lr{$O((V+E) \log V)$} است.}
+
+\subsection{یادداشت هشدار}
+\label{sec:margin-notes-example-warning}
+
+یادداشت‌ها برای هشدارها نیز مناسب هستند:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{تقسیم بر صفر تعریف نشده است.}|%
+\mnote{|\pc{هنگام ساده‌سازی عبارات کسری، همواره فرض کنید مخرج غیرصفر است.}|}%
+\end{minted}
+\end{latin}
+
+خروجی:
+
+تقسیم بر صفر تعریف نشده است.\mnote{هنگام ساده‌سازی عبارات کسری، همواره فرض کنید مخرج غیرصفر است.}
+
+\subsection{یادداشت ارجاع}
+\label{sec:margin-notes-example-reference}
+
+یادداشت‌ها برای ارجاع به منابع نیز مناسب هستند:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این قضیه اولین بار توسط اویلر اثبات شد.}|%
+\mnote{|\pc{برای مطالعه‌ی بیشتر، به}|\cite{knuth1984}|\pc{مراجعه کنید.}|}%
+\end{minted}
+\end{latin}
+
+\section{شخصی‌سازی}
+\label{sec:margin-notes-customization}
+
+برای شخصی‌سازی یادداشت‌های حاشیه‌ای، می‌توانید
+پارامترهای زیر را در فایل \file{mb-layout.sty}
+تغییر دهید:
+
+\begin{matintable}{پارامترهای قابل تنظیم یادداشت حاشیه}{tab:margin-params}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+پارامتر & توضیح & مقدار پیش‌فرض \\
+\lr{marginparwidth} & عرض ناحیه‌ی یادداشت & \pnum{۳.۵} سانتی‌متر \\
+\lr{marginparsep} & فاصله از متن اصلی & \pnum{۰.۶} سانتی‌متر \\
+\lr{outer} & حاشیه‌ی بیرونی کل & \pnum{۵.۹} سانتی‌متر \\
+\end{tblr}
+\end{matintable}
+
+\mnote{تغییر این پارامترها، بر چیدمان کل کتاب تأثیر می‌گذارد. با احتیاط عمل کنید.}
+
+\section{تفاوت با پانویس}
+\label{sec:margin-notes-vs-footnote}
+
+یادداشت‌های حاشیه‌ای با پانویس تفاوت‌هایی
+دارند. جدول \cref{tab:margin-vs-footnote} این
+تفاوت‌ها را نشان می‌دهد.
+
+\begin{matintable}{تفاوت یادداشت حاشیه و پانویس}{tab:margin-vs-footnote}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+ویژگی & یادداشت حاشیه & پانویس \\
+موقعیت & حاشیه‌ی صفحه & پایین صفحه \\
+شماره‌گذاری & ندارد & دارد \\
+طول & کوتاه (۱-۳ خط) & متوسط (۱-۵ خط) \\
+کاربرد & توضیح مکمل & ارجاع یا توضیح \\
+دستور & \cmd{mnote} & \cmd{footnote} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{از یادداشت حاشیه برای توضیحات کوتاه و مکمل استفاده کنید، و از پانویس برای ارجاعات و توضیحات بلندتر.}
+
+\section{خطاهای رایج}
+\label{sec:margin-notes-mistakes}
+
+\subsection{استفاده در \env{tcolorbox}}
+\label{sec:margin-notes-mistake-tcolorbox}
+
+\textbf{مشکل:} \cmd{mnote} داخل \env{tcolorbox}
+(مثل \env{theorem}، \env{definition}) کار نمی‌کند
+و خطا می‌دهد.
+
+\textbf{راه‌حل:} یادداشت را بیرون از جعبه قرار
+دهید.
+
+\subsection{استفاده در \env{figure}}
+\label{sec:margin-notes-mistake-figure}
+
+\textbf{مشکل:} \cmd{mnote} داخل \env{figure} کار
+نمی‌کند.
+
+\textbf{راه‌حل:} یادداشت را در متن اصلی قرار
+دهید.
+
+\subsection{یادداشت بسیار طولانی}
+\label{sec:margin-notes-mistake-long}
+
+\textbf{مشکل:} اگر یادداشت بیش از ۳ خط باشد،
+ممکن است از حاشیه سرریز کند یا به صفحه‌ی بعد
+برود.
+
+\textbf{راه‌حل:} یادداشت‌ها را کوتاه نگه دارید
+(حداکثر ۳ خط). برای توضیحات بلندتر، از متن اصلی
+یا پانویس استفاده کنید.
+
+\subsection{فراموش کردن هندسه‌ی \lr{mainmatter}}
+\label{sec:margin-notes-mistake-geometry}
+
+\textbf{مشکل:} اگر \cmd{mainmattergeometry} را
+فراخوانی نکنید، حاشیه‌ی پهن وجود ندارد و
+یادداشت‌ها در جای اشتباه ظاهر می‌شوند.
+
+\textbf{راه‌حل:} همیشه پس از \cmd{mainmatter}،
+دستور \cmd{mainmattergeometry} را فراخوانی کنید.
+
+\section{تمرین‌ها}
+\label{sec:margin-notes-exercises}
+
+\begin{exercise}
+    یک متن ساده با دو یادداشت حاشیه‌ای بنویسید.
+    آیا یادداشت‌ها در حاشیه‌ی درست ظاهر
+    می‌شوند؟
+    \label{exc:margin-notes-basic}
+\end{exercise}
+
+\begin{exercise}
+    یک یادداشت هشدار در حاشیه بنویسید که
+    به یک بخش دیگر کتاب ارجاع دهد.
+    \label{exc:margin-notes-warning}
+\end{exercise}
+
+\begin{exercise}
+    یک \env{theorem} بنویسید و یک یادداشت
+    حاشیه‌ای در بیرون آن (نه داخلش) قرار
+    دهید.
+    \label{exc:margin-notes-outside}
+\end{exercise}
+
+\begin{exercise}
+    یک یادداشت بسیار طولانی بنویسید و ببینید
+    آیا سرریز می‌کند. سپس آن را کوتاه کنید.
+    \label{exc:margin-notes-long}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:margin-notes-summary}
+
+در این فصل، با یادداشت حاشیه‌ای در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} یک حاشیه‌ی بیرونی پهن
+    (\pnum{۵.۹} سانتی‌متر) برای یادداشت‌ها ارائه
+    می‌دهد.
+
+    \item دو دستور برای یادداشت:
+    \cmd{mnote} (متنی) و \cmd{marginfig} (شکل).
+
+    \item یادداشت‌ها بدون شماره هستند و جهت
+    راست‌به‌چپ دارند.
+
+    \item یادداشت‌ها در حاشیه‌ی بیرونی قرار
+    می‌گیرند (راست در صفحات فرد، چپ در
+    صفحات زوج).
+
+    \item محدودیت‌ها: عدم استفاده در
+    \env{tcolorbox} و \env{figure}، نیاز به
+    \cmd{mainmattergeometry}، و کامپایل چندباره.
+
+    \item یادداشت‌ها با پانویس تفاوت دارند:
+    بدون شماره، کوتاه‌تر، و در حاشیه.
+
+    \item خطاهای رایج شامل استفاده در
+    \env{tcolorbox}، استفاده در \env{figure}،
+    یادداشت بسیار طولانی، و فراموش کردن
+    \cmd{mainmattergeometry} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:bibliography})، با
+منابع و کتاب‌نامه در \lr{MatinBook} آشنا
+می‌شوید و یاد می‌گیرید که چگونه به منابع
+ارجاع دهید.
