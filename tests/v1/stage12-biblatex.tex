@@ -1,93 +1,219 @@
 %========================================
-% MatinBook - Stage 12: Bibliography Test
-% Test: Biblatex + Citations + References + Print Bibliography
-% Purpose: Validate bibliography management system
+% MatinBook — Stage 12: Bibliography Test
+% Version: v1.1
+% Purpose:
+%   Validate the bibliography system of MatinBook v1.1:
+%     1. \addbibresource with an external .bib file
+%     2. \cite, \parencite, \textcite, \autocite
+%     3. Multiple citations in one command
+%     4. \printbibliography with a Persian title
+%     5. Full biber compilation cycle
+%     6. Persian bibliography entries
+%
+% Compilation:
+%   xelatex -shell-escape stage12-biblatex.tex
+%   biber stage12-biblatex
+%   xelatex -shell-escape stage12-biblatex.tex
+%   xelatex -shell-escape stage12-biblatex.tex
+%   (biber is required to generate the bibliography)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that all
+%   citation commands work correctly, that the bibliography
+%   is generated with the correct Persian title and RTL
+%   layout, and that no "??" markers appear.
 %========================================
 
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
-% Add bibliography resource file
+%------------------------------------------------------------------------
+% Bibliography Resource
+%------------------------------------------------------------------------
 \addbibresource{../references.bib}
 
-\title{آزمون سیستم منابع و کتابنامه}
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
+\title{آزمون سیستم منابع و کتاب‌نامه}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون سیستم منابع و کتاب‌نامه}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون سیستم منابع و کتاب‌نامه}
+    {ارزیابی استناد و کتاب‌شناسی در MatinBook}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
-% Chapter 1: Introduction to Citations
-%----------------------------------------
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون سیستم منابع و کتاب‌نامه \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، دوازدهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+\lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است. هدف آن،
+اعتبارسنجی کامل سیستم کتاب‌نامه‌ی کلاس در شش حوزه‌ی
+متمایز است: بارگذاری فایل \lr{.bib} خارجی، دستورات
+استناد (\lr{\textbackslash cite}، \lr{\textbackslash parencite}،
+\lr{\textbackslash textcite}، \lr{\textbackslash autocite})،
+استنادهای چندگانه، نمایش کتاب‌نامه با
+\lr{\textbackslash printbibliography}، چرخه‌ی کامل
+\lr{biber}، و ورودی‌های کتاب‌نامه‌ی فارسی.
+
+در کتاب‌های علمی، مدیریت منابع و کتاب‌نامه از ارکان
+اساسی نگارش است. هر ادعای علمی باید به منبع معتبر
+ارجاع داده شود و خواننده باید بتواند به‌راحتی منابع
+را پیدا کند. \lr{MatinBook} با استفاده از \lr{biblatex}
+و موتور \lr{biber}، این قابلیت‌ها را فراهم می‌سازد.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل
+همراه است تا خواننده بتواند درستی رفتار هر زیرسیستم را
+در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — INTRODUCTION TO CITATIONS
+%========================================================================
 \chapter{مقدمه‌ای بر استناددهی}
+\label{chap:citation-intro}
 
 \section{اهمیت استناددهی}
+\label{sec:citation-importance}
 
-استناددهی\index{استناددهی} یکی از ارکان اساسی
-نگارش علمی است. هر کتاب علمی باید منابع مورد استفاده
-خود را به طور دقیق مشخص کند. \lr{MatinBook}
-از بسته \lr{biblatex} با موتور \lr{biber}
-برای مدیریت منابع استفاده می‌کند.
+استناددهی\index{استناددهی} یکی از ارکان اساسی نگارش
+علمی است. هر کتاب علمی باید منابع مورد استفاده‌ی خود
+را به‌طور دقیق مشخص کند. \lr{MatinBook} از بسته‌ی
+\lr{biblatex} با موتور \lr{biber} برای مدیریت منابع
+استفاده می‌کند.
 
-\section{شیوه استناد}
+\mnote{استناددهی دقیق، اعتبار علمی کتاب را افزایش می‌دهد و از سرقت ادبی جلوگیری می‌کند.}
 
-در این کتاب از شیوه \textbf{عددی} (\lr{numeric})
-برای استناددهی استفاده می‌شود. هر منبع با یک شماره
-مشخص می‌شود و در بخش کتابنامه به ترتیب استناد
-فهرست می‌شود.
+\section{شیوه‌ی استناد}
+\label{sec:citation-style}
 
-%----------------------------------------
-% Chapter 2: Citation Examples
-%----------------------------------------
+در این کتاب از شیوه‌ی \textbf{عددی} (\lr{numeric}) برای
+استناددهی استفاده می‌شود. هر منبع با یک شماره مشخص
+می‌شود و در بخش کتاب‌نامه به ترتیب استناد فهرست
+می‌شود.
+
+%========================================================================
+% CHAPTER 2 — CITATION EXAMPLES
+%========================================================================
 \chapter{نمونه‌های استناد}
+\label{chap:citation-examples}
 
 \section{کتاب‌ها}
+\label{sec:citation-books}
 
-کتاب‌های مرجع در زمینه علوم کامپیوتر:
+کتاب‌های مرجع در زمینه‌ی علوم کامپیوتر:
 
 \begin{itemize}
-    \item \textbf{هنر برنامه‌نویسی:}
-    دونالد کنوث \cite{knuth1984} مجموعه‌ای بی‌نظیر
-    درباره الگوریتم‌ها و ساختمان داده‌ها نوشته است.
-    
-    \item \textbf{راهنمای لاتک:}
-    لسلی لمپورت \cite{lamport1994} سیستم \LaTeX{}
-    را برای حروف‌چینی متون علمی معرفی کرد.
-    
-    \item \textbf{مقدمه‌ای بر الگوریتم‌ها:}
-    کتاب \lr{CLRS} \cite{cormen2009} مرجع استاندارد
+    \item \textbf{هنر برنامه‌نویسی:} دونالد کنوث
+    \cite{knuth1984} مجموعه‌ای بی‌نظیر درباره‌ی
+    الگوریتم‌ها و ساختمان داده‌ها نوشته است.
+
+    \item \textbf{راهنمای لاتک:} لسلی لمپورت
+    \cite{lamport1994} سیستم \LaTeX{} را برای
+    حروف‌چینی متون علمی معرفی کرد.
+
+    \item \textbf{مقدمه‌ای بر الگوریتم‌ها:} کتاب
+    \lr{CLRS} \cite{cormen2009} مرجع استاندارد
     الگوریتم‌ها در دانشگاه‌های سراسر جهان است.
 \end{itemize}
 
 \section{مقالات علمی}
+\label{sec:citation-articles}
 
 \begin{itemize}
-    \item \textbf{نسبیت خاص:}
-    آلبرت اینشتین در سال ۱۹۰۵ مقاله معروف خود
-    درباره الکترودینامیک اجسام متحرک را منتشر کرد
-    \cite{einstein1905}. این مقاله پایه‌گذار
-    نظریه نسبیت خاص بود.
+    \item \textbf{نسبیت خاص:} آلبرت اینشتین در سال
+    ۱۹۰۵ مقاله‌ی معروف خود درباره‌ی الکترودینامیک
+    اجسام متحرک را منتشر کرد \cite{einstein1905}.
+    این مقاله پایه‌گذار نظریه‌ی نسبیت خاص بود.
 \end{itemize}
 
 \section{منابع آنلاین}
+\label{sec:citation-online}
 
 \begin{itemize}
-    \item \textbf{پروژه لاتک:}
-    وبسایت رسمی پروژه \LaTeX{} \cite{latex-project}
-    منبع معتبری برای دریافت اطلاعات به‌روز است.
+    \item \textbf{پروژه لاتک:} وبسایت رسمی پروژه
+    \LaTeX{} \cite{latex-project} منبع معتبری برای
+    دریافت اطلاعات به‌روز است.
 \end{itemize}
 
 \section{استنادهای چندگانه}
+\label{sec:citation-multiple}
 
-مطالعه هم‌زمان چند منبع برای درک عمیق یک موضوع
+مطالعه‌ی هم‌زمان چند منبع برای درک عمیق یک موضوع
 ضروری است. برای مثال، برای یادگیری الگوریتم‌ها
 می‌توان به آثار کنوث \cite{knuth1984} و کورمن
 \cite{cormen2009} مراجعه کرد.
@@ -95,33 +221,38 @@
 همچنین برای آشنایی با \LaTeX{}، منابع
 \cite{lamport1994,latex-project} توصیه می‌شوند.
 
-%----------------------------------------
-% Chapter 3: Citation Commands
-%----------------------------------------
+%========================================================================
+% CHAPTER 3 — CITATION COMMANDS
+%========================================================================
 \chapter{دستورات استناد}
+\label{chap:citation-commands}
 
 \section{دستورات پایه}
+\label{sec:citation-base}
 
 \lr{MatinBook} از تمام دستورات استاندارد \lr{biblatex}
-پشتیبانی می‌کند:
+پشتیبانی می‌کند. جدول \cref{tab:citation-commands}
+این دستورات را نشان می‌دهد:
 
-\begin{table}[h]
-\centering
-\caption{دستورات استناد در \lr{biblatex}}
-\label{tab:citation-commands}
-\begin{tabular}{|c|C{5cm}|c|}
-\hline
-\textbf{دستور} & \textbf{توضیحات} & \textbf{مثال} \\
-\hline
+\begin{matintable}{دستورات استناد در \lr{biblatex}}{tab:citation-commands}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دستور & توضیحات & مثال \\
 \lr{\textbackslash cite} & استناد ساده & \cite{knuth1984} \\
 \lr{\textbackslash parencite} & استناد پرانتزی & \parencite{lamport1994} \\
 \lr{\textbackslash textcite} & استناد متنی & \textcite{cormen2009} \\
 \lr{\textbackslash autocite} & استناد خودکار & \autocite{einstein1905} \\
-\hline
-\end{tabular}
-\end{table}
+\end{tblr}
+\end{matintable}
 
-\section{تنظیمات کتابنامه}
+\section{تنظیمات کتاب‌نامه}
+\label{sec:citation-settings}
 
 تنظیمات \lr{biblatex} در \lr{MatinBook}:
 
@@ -129,85 +260,157 @@
     \item \textbf{موتور:} \lr{biber}
     \item \textbf{شیوه:} \lr{numeric} (عددی)
     \item \textbf{ترتیب:} \lr{none} (به ترتیب استناد)
-    \item \textbf{فایل منبع:} \texttt{references.bib}
+    \item \textbf{فایل منبع:} \lr{references.bib}
 \end{itemize}
 
 \section{ارجاع به منابع بدون استناد}
+\label{sec:citation-nocite}
 
 می‌توان منابعی را که مستقیماً به آن‌ها استناد نشده
-اما مطالعه شده‌اند، با \texttt{\textbackslash nocite}
-در کتابنامه گنجاند:
-
-% Uncomment to include all references even if not cited:
-% \nocite{*}
-
-%----------------------------------------
-% Chapter 4: Bibliography Display
-%----------------------------------------
-\chapter{نمایش کتابنامه}
-
-\section{فرمت خروجی}
-
-کتابنامه در \lr{MatinBook} با عنوان «منابع و مراجع»
-و به صورت راست‌به‌چپ نمایش داده می‌شود.
-محیط \lr{latin} برای حفظ جهت صحیح متون انگلیسی
-استفاده می‌شود.
-
-\section{فهرست منابع}
-
-در ادامه، تمام منابع استناد شده در این کتاب
-نمایش داده می‌شوند:
+اما مطالعه شده‌اند، با \lr{\textbackslash nocite}
+در کتاب‌نامه گنجاند:
 
 \begin{latin}
-\printbibliography[title={منابع و مراجع}]
+\begin{minted}{latex}
+\nocite{*}
+\end{minted}
+\end{latin}
+
+> **توجه:** این دستور در این آزمون فعال نیست، چون
+> می‌خواهیم فقط منابع استنادشده نمایش داده شوند.
+
+%========================================================================
+% CHAPTER 4 — BIBLIOGRAPHY DISPLAY
+%========================================================================
+\chapter{نمایش کتاب‌نامه}
+\label{chap:bibliography-display}
+
+\section{فرمت خروجی}
+\label{sec:bibliography-format}
+
+کتاب‌نامه در \lr{MatinBook} با عنوان «منابع و مراجع»
+و به‌صورت راست‌به‌چپ نمایش داده می‌شود. برخلاف نسخه‌های
+قدیمی، \lr{\textbackslash printbibliography} **نباید**
+داخل محیط \lr{latin} قرار گیرد، زیرا \lr{xepersian}
+خودش جهت متن را به‌درستی مدیریت می‌کند.
+
+\mnote{در v1.1، \lr{\textbackslash printbibliography} را بدون \lr{latin} بنویسید.}
+
+\section{چرخه‌ی کامپایل}
+\label{sec:bibliography-compile}
+
+برای به‌روزرسانی کتاب‌نامه پس از افزودن استناد جدید،
+باید دستور \lr{biber} را اجرا کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+xelatex -shell-escape document.tex
+biber document
+xelatex -shell-escape document.tex
+xelatex -shell-escape document.tex
+\end{minted}
 \end{latin}
 
 \begin{remark}
-    برای به‌روزرسانی کتابنامه پس از افزودن استناد جدید،
-    باید دستور \texttt{biber} را اجرا کنید:
-    
-    \begin{latin}
-\begin{minted}{bash}
-xelatex -shell-escape main.tex
-biber main
-xelatex -shell-escape main.tex
-xelatex -shell-escape main.tex
-\end{minted}
-    \end{latin}
+    اگر کتاب‌نامه خالی است یا استنادها به‌صورت «؟؟»
+    نمایش داده می‌شوند، یعنی \lr{biber} اجرا نشده است.
+    چرخه‌ی کامل بالا را دوباره اجرا کنید.
 \end{remark}
 
-%----------------------------------------
-% Summary
-%----------------------------------------
-\chapter{خلاصه نتایج}
+%========================================================================
+% CHAPTER 5 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
 
-\section{وضعیت سیستم کتابنامه}
+\section{وضعیت سیستم کتاب‌نامه}
+\label{sec:summary-status}
 
-\begin{table}[h]
-\centering
-\caption{وضعیت قابلیت‌های کتابنامه}
-\label{tab:bibliography-status}
-\begin{tabular}{|c|C{6cm}|c|}
-\hline
-\textbf{قابلیت} & \textbf{توضیحات} & \textbf{وضعیت} \\
-\hline
-\lr{\textbackslash cite} & استناد ساده به منابع & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash parencite} & استناد پرانتزی & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash textcite} & استناد متنی & \textcolor{matingreen}{✅} \\
-استناد چندگانه & چند منبع در یک استناد & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash printbibliography} & چاپ کتابنامه & \textcolor{matingreen}{✅} \\
-شیوه عددی & \lr{numeric} با ترتیب استناد & \textcolor{matingreen}{✅} \\
-عنوان فارسی & «منابع و مراجع» & \textcolor{matingreen}{✅} \\
-فایل \lr{.bib} & مدیریت منابع خارجی & \textcolor{matingreen}{✅} \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:bibliography-status} وضعیت قابلیت‌های
+کتاب‌نامه‌ی \lr{MatinBook} را نشان می‌دهد.
 
-\section{نتیجه}
+\begin{matintable}{وضعیت قابلیت‌های کتاب‌نامه}{tab:bibliography-status}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+قابلیت & توضیحات & وضعیت \\
+\lr{\textbackslash cite} & استناد ساده به منابع & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash parencite} & استناد پرانتزی & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash textcite} & استناد متنی & \textcolor{matingreen}{فعال} \\
+استناد چندگانه & چند منبع در یک استناد & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash printbibliography} & چاپ کتاب‌نامه & \textcolor{matingreen}{فعال} \\
+شیوه‌ی عددی & \lr{numeric} با ترتیب استناد & \textcolor{matingreen}{فعال} \\
+عنوان فارسی & «منابع و مراجع» & \textcolor{matingreen}{فعال} \\
+فایل \lr{.bib} & مدیریت منابع خارجی & \textcolor{matingreen}{فعال} \\
+\end{tblr}
+\end{matintable}
 
-\textbf{سیستم کتابنامه \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
-تمامی دستورات استناد (\lr{cite}، \lr{parencite}، \lr{textcite})
-و نمایش کتابنامه با \lr{biblatex} و \lr{biber}
-به درستی کار می‌کنند. 🎉
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
+
+در این آزمون، سیستم کتاب‌نامه‌ی \lr{MatinBook} بر
+اساس پنج معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{دستورات استناد}: چهار دستور اصلی.
+    \item \textbf{استناد چندگانه}: \lr{\{a,b\}}.
+    \item \textbf{نمایش کتاب‌نامه}: بدون \lr{latin}.
+    \item \textbf{عنوان فارسی}: «منابع و مراجع».
+    \item \textbf{چرخه‌ی biber}: کامپایل کامل.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام زیرسیستم‌های کتاب‌نامه‌ی \lr{MatinBook}
+نسخه‌ی \lr{\matinbookversion} با موفقیت بارگذاری و
+آزمایش شدند. تمام دستورات استناد و نمایش کتاب‌نامه
+با \lr{biblatex} و \lr{biber} به‌درستی کار می‌کنند
+و کتاب‌نامه با عنوان فارسی «منابع و مراجع» نمایش
+داده می‌شود.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography — NOT wrapped in \begin{latin}
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، دوازدهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item فایل \lr{.bib} خارجی
+        \item دستورات استناد
+        \item استنادهای چندگانه
+        \item \lr{\textbackslash printbibliography}
+        \item چرخه‌ی \lr{biber}
+        \item ورودی‌های فارسی
+    \end{itemize}
+}
 
 \end{document}
