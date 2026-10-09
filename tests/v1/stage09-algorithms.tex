@@ -1,56 +1,172 @@
 %========================================
-% MatinBook - Stage 09: Algorithm Test
-% Test: Algorithm Environments + Captions + List of Algorithms + References
-% Purpose: Validate algorithm display, numbering, and indexing
+% MatinBook — Stage 09: Algorithm Test
+% Version: v1.1
+% Purpose:
+%   Validate the algorithm system of MatinBook v1.1:
+%     1. Standard algorithm + algorithmic environments
+%     2. Persian captions via \caption inside algorithm
+%     3. Automatic numbering (chapter.algorithm)
+%     4. List of algorithms
+%     5. Cross-references with \cref
+%     6. Persian text inside pseudocode comments
+%
+% Compilation:
+%   xelatex -shell-escape stage09-algorithms.tex
+%   xelatex -shell-escape stage09-algorithms.tex
+%   (2 passes required for cover + cross-references)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that every
+%   algorithm renders correctly, with a Persian caption, a
+%   continuous chapter-based number, and working references.
 %========================================
 
-% Add parent directory to search path
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون سیستم الگوریتم‌ها}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون سیستم الگوریتم‌ها}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون سیستم الگوریتم‌ها}
+    {ارزیابی شبه‌کد، کپشن و ارجاع در MatinBook}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون سیستم الگوریتم‌ها \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، نهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+\lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است. هدف آن،
+اعتبارسنجی کامل سیستم الگوریتم‌های کلاس در شش حوزه‌ی
+متمایز است: محیط‌های استاندارد \lr{algorithm} و
+\lr{algorithmic}، کپشن‌های فارسی، شماره‌گذاری خودکار،
+فهرست الگوریتم‌ها، ارجاع هوشمند و متن فارسی داخل
+شبه‌کد.
+
+در کتاب‌های برنامه‌نویسی و علوم کامپیوتر، نمایش
+حرفه‌ای الگوریتم‌ها اهمیت ویژه‌ای دارد. هر الگوریتم
+باید با شماره‌ی منظم، کپشن گویا و قابلیت ارجاع نمایش
+داده شود. \lr{MatinBook} با استفاده از بسته‌ی
+\lr{algorithm} و یکپارچگی با \lr{xepersian}، این
+اهداف را محقق می‌سازد.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل
+همراه است تا خواننده بتواند درستی رفتار هر زیرسیستم را
+در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
 % List of Algorithms
-%----------------------------------------
 \listofalgorithms
 \clearpage
 
-%----------------------------------------
-% Chapter 1: Search Algorithms
-%----------------------------------------
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — SEARCH ALGORITHMS
+%========================================================================
 \chapter{الگوریتم‌های جستجو}
+\label{chap:search}
 
 \section{مقدمه}
+\label{sec:search-intro}
 
 الگوریتم‌های جستجو\index{الگوریتم!جستجو} از پایه‌ای‌ترین
-الگوریتم‌های علوم کامپیوتر هستند. در این فصل،
-دو الگوریتم اصلی جستجو را بررسی می‌کنیم.
+الگوریتم‌های علوم کامپیوتر هستند. در این فصل، دو
+الگوریتم اصلی جستجو را بررسی می‌کنیم.
+
+\mnote{الگوریتم جستجو، یک مقدار مشخص را در یک ساختار داده پیدا می‌کند.}
 
 \section{جستجوی خطی}
+\label{sec:search-linear}
 
 ساده‌ترین روش جستجو، بررسی تک‌تک عناصر آرایه است.
-این روش برای آرایه‌های مرتب و نامرتب کار می‌کند:
+این روش برای آرایه‌های مرتب و نامرتب کار می‌کند.
+الگوریتم \cref{alg:linear-search} این روش را نشان می‌دهد:
 
 \begin{latin}
 \begin{algorithm}
+\caption{جستجوی خطی}
+\label{alg:linear-search}
 \begin{algorithmic}[1]
     \Require $A[1..n]$: array of $n$ elements
     \Require $x$: target value to find
     \Ensure Index $i$ such that $A[i] = x$, or $-1$ if not found
-    
+
     \For{$i \gets 1$ \textbf{to} $n$}
         \If{$A[i] = x$}
             \State \Return $i$
@@ -59,31 +175,34 @@
     \State \Return $-1$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:linear-search]{جستجوی خطی}
 \end{latin}
 
 \begin{theorem}[پیچیدگی جستجوی خطی]
-    الگوریتم \algref{alg:linear-search} در بدترین حالت
-    $O(n)$ مقایسه انجام می‌دهد، زیرا ممکن است مجبور شود
-    تمام $n$ عنصر آرایه را بررسی کند.
+    الگوریتم \cref{alg:linear-search} در بدترین حالت
+    \lr{$O(n)$} مقایسه انجام می‌دهد، زیرا ممکن است مجبور
+    شود تمام $n$ عنصر آرایه را بررسی کند.
     \label{thm:linear-complexity}
 \end{theorem}
 
 \section{جستجوی دودویی}
+\label{sec:search-binary}
 
-برای آرایه‌های \textbf{مرتب}، جستجوی دودویی
-بسیار کارآمدتر از جستجوی خطی است:
+برای آرایه‌های \textbf{مرتب}، جستجوی دودویی بسیار
+کارآمدتر از جستجوی خطی است. الگوریتم
+\cref{alg:binary-search} این روش را نشان می‌دهد:
 
 \begin{latin}
 \begin{algorithm}
+\caption{جستجوی دودویی}
+\label{alg:binary-search}
 \begin{algorithmic}[1]
     \Require $A[1..n]$: sorted array (ascending order)
     \Require $x$: target value to find
     \Ensure Index $i$ such that $A[i] = x$, or $-1$ if not found
-    
+
     \State $left \gets 1$
     \State $right \gets n$
-    
+
     \While{$left \leq right$}
         \State $mid \gets \lfloor (left + right) / 2 \rfloor$
         \If{$A[mid] = x$}
@@ -94,60 +213,67 @@
             \State $right \gets mid - 1$
         \EndIf
     \EndWhile
-    
+
     \State \Return $-1$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:binary-search]{جستجوی دودویی}
 \end{latin}
 
 \begin{theorem}[پیچیدگی جستجوی دودویی]
-    الگوریتم \algref{alg:binary-search} در بدترین حالت
-    $O(\log n)$ مقایسه انجام می‌دهد، زیرا در هر مرحله
-    فضای جستجو را نصف می‌کند.
+    الگوریتم \cref{alg:binary-search} در بدترین حالت
+    \lr{$O(\log n)$} مقایسه انجام می‌دهد، زیرا در هر
+    مرحله فضای جستجو را نصف می‌کند.
     \label{thm:binary-complexity}
 \end{theorem}
 
 \section{مقایسه دو الگوریتم}
+\label{sec:search-comparison}
 
-مقایسه \algref{alg:linear-search} و \algref{alg:binary-search}
-نشان می‌دهد که برای آرایه‌های مرتب، جستجوی دودویی
-به مراتب سریع‌تر است:
+مقایسه‌ی \cref{alg:linear-search} و
+\cref{alg:binary-search} نشان می‌دهد که برای آرایه‌های
+مرتب، جستجوی دودویی به‌مراتب سریع‌تر است. جدول
+\cref{tab:search-comparison} این مقایسه را خلاصه می‌کند:
 
-\begin{table}[h]
-\centering
-\caption{مقایسه الگوریتم‌های جستجو}
-\label{tab:search-comparison}
-\begin{tabular}{|c|C{3cm}|C{3cm}|c|}
-\hline
-\textbf{معیار} & \textbf{جستجوی خطی} & \textbf{جستجوی دودویی} & \textbf{برنده} \\
-\hline
-پیچیدگی زمانی & $O(n)$ & $O(\log n)$ & دودویی \\
+\begin{matintable}{مقایسه الگوریتم‌های جستجو}{tab:search-comparison}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+معیار & جستجوی خطی & جستجوی دودویی & برنده \\
+پیچیدگی زمانی & \lr{$O(n)$} & \lr{$O(\log n)$} & دودویی \\
 نیاز به مرتب‌سازی & خیر & \textcolor{matinred}{بله} & خطی \\
 پیاده‌سازی & ساده & متوسط & خطی \\
 کارایی برای $n$ کوچک & خوب & سربار بیشتر & خطی \\
 کارایی برای $n$ بزرگ & ضعیف & \textcolor{matingreen}{عالی} & دودویی \\
-\hline
-\end{tabular}
-\end{table}
+\end{tblr}
+\end{matintable}
 
-%----------------------------------------
-% Chapter 2: Sorting Algorithms
-%----------------------------------------
+%========================================================================
+% CHAPTER 2 — SORTING ALGORITHMS
+%========================================================================
 \chapter{الگوریتم‌های مرتب‌سازی}
+\label{chap:sorting}
 
 \section{مرتب‌سازی سریع}
+\label{sec:sorting-quicksort}
 
-\lr{Quick Sort}\index{الگوریتم!مرتب‌سازی سریع}
-یکی از سریع‌ترین الگوریتم‌های مرتب‌سازی در عمل است:
+\lr{Quick Sort}\index{الگوریتم!مرتب‌سازی سریع} یکی از
+سریع‌ترین الگوریتم‌های مرتب‌سازی در عمل است. الگوریتم
+\cref{alg:quicksort} این روش را نشان می‌دهد:
 
 \begin{latin}
 \begin{algorithm}
+\caption{مرتب‌سازی سریع (\lr{Quick Sort})}
+\label{alg:quicksort}
 \begin{algorithmic}[1]
     \Require $A[1..n]$: array of $n$ elements
     \Require $low, high$: indices defining the subarray
     \Ensure Array $A$ is sorted in ascending order
-    
+
     \Function{QuickSort}{$A$, $low$, $high$}
         \If{$low < high$}
             \State $p \gets \Call{Partition}{A, low, high}$
@@ -170,20 +296,23 @@
     \EndFunction
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:quicksort]{مرتب‌سازی سریع (\lr{Quick Sort})}
 \end{latin}
 
 \section{الگوریتم اقلیدس}
+\label{sec:sorting-euclidean}
 
-الگوریتم اقلیدس\index{الگوریتم!اقلیدس}
-برای محاسبه بزرگترین مقسوم‌علیه مشترک (\lr{GCD}):
+الگوریتم اقلیدس\index{الگوریتم!اقلیدس} برای محاسبه‌ی
+بزرگ‌ترین مقسوم‌علیه مشترک (\lr{GCD}) در
+\cref{alg:euclidean} نمایش داده شده است:
 
 \begin{latin}
 \begin{algorithm}
+\caption{الگوریتم اقلیدس برای $\gcd(a, b)$}
+\label{alg:euclidean}
 \begin{algorithmic}[1]
     \Require $a, b$: non-negative integers
     \Ensure $\gcd(a, b)$: greatest common divisor
-    
+
     \While{$b \neq 0$}
         \State $r \gets a \bmod b$
         \State $a \gets b$
@@ -192,11 +321,11 @@
     \State \Return $a$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:euclidean]{الگوریتم اقلیدس برای $\gcd(a, b)$}
 \end{latin}
 
 \begin{example}
-    محاسبه $\gcd(48, 18)$ با الگوریتم \algref{alg:euclidean}:
+    محاسبه‌ی $\gcd(48, 18)$ با الگوریتم
+    \cref{alg:euclidean}:
     \begin{align*}
         \gcd(48, 18) &: \; 48 \bmod 18 = 12 \\
         \gcd(18, 12) &: \; 18 \bmod 12 = 6 \\
@@ -206,33 +335,38 @@
     \label{ex:gcd-example}
 \end{example}
 
-%----------------------------------------
-% Chapter 3: Graph Algorithms
-%----------------------------------------
+%========================================================================
+% CHAPTER 3 — GRAPH ALGORITHMS
+%========================================================================
 \chapter{الگوریتم‌های گراف}
+\label{chap:graph}
 
-\section{جستجوی اول سطح (\lr{BFS})}
+\section{جستجوی اول سطح (BFS)}
+\label{sec:graph-bfs}
 
-\lr{Breadth-First Search}\index{الگوریتم!BFS}
-گراف را سطح به سطح پیمایش می‌کند:
+\lr{Breadth-First Search}\index{الگوریتم!BFS} گراف را
+سطح به سطح پیمایش می‌کند. الگوریتم \cref{alg:bfs}
+این روش را نشان می‌دهد:
 
 \begin{latin}
 \begin{algorithm}
+\caption{جستجوی اول سطح (\lr{BFS})}
+\label{alg:bfs}
 \begin{algorithmic}[1]
     \Require $G = (V, E)$: an unweighted graph
     \Require $s$: source vertex
     \Ensure $dist[v]$: shortest distance from $s$ to each $v \in V$
-    
+
     \ForAll{$v \in V$}
         \State $dist[v] \gets \infty$
         \State $visited[v] \gets \text{false}$
     \EndFor
-    
+
     \State $dist[s] \gets 0$
     \State $visited[s] \gets \text{true}$
     \State Create an empty queue $Q$
     \State $Q.\text{enqueue}(s)$
-    
+
     \While{$Q$ is not empty}
         \State $u \gets Q.\text{dequeue}()$
         \ForAll{neighbor $v$ of $u$}
@@ -243,25 +377,28 @@
             \EndIf
         \EndFor
     \EndWhile
-    
+
     \State \Return $dist$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:bfs]{جستجوی اول سطح (\lr{BFS})}
 \end{latin}
 
 \section{الگوریتم دایکسترا}
+\label{sec:graph-dijkstra}
 
-الگوریتم دایکسترا\index{الگوریتم!دایکسترا}
-کوتاه‌ترین مسیر در گراف وزن‌دار را پیدا می‌کند:
+الگوریتم دایکسترا\index{الگوریتم!دایکسترا} کوتاه‌ترین
+مسیر در گراف وزن‌دار را پیدا می‌کند. الگوریتم
+\cref{alg:dijkstra} این روش را نشان می‌دهد:
 
 \begin{latin}
 \begin{algorithm}
+\caption{الگوریتم دایکسترا (\lr{Dijkstra's Algorithm})}
+\label{alg:dijkstra}
 \begin{algorithmic}[1]
     \Require $G = (V, E)$: weighted graph with non-negative weights
     \Require $s$: source vertex
     \Ensure $dist[v]$: shortest distance from $s$ to each $v \in V$
-    
+
     \ForAll{$v \in V$}
         \State $dist[v] \gets \infty$
         \State $prev[v] \gets \text{null}$
@@ -269,7 +406,7 @@
     \State $dist[s] \gets 0$
     \State $PQ \gets$ priority queue of vertices keyed by $dist$
     \State Insert all vertices into $PQ$
-    
+
     \While{$PQ$ is not empty}
         \State $u \gets$ extract vertex with minimum $dist$ from $PQ$
         \ForAll{neighbor $v$ of $u$}
@@ -281,89 +418,156 @@
             \EndIf
         \EndFor
     \EndWhile
-    
+
     \State \Return $(dist, prev)$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:dijkstra]{الگوریتم دایکسترا (\lr{Dijkstra's Algorithm})}
 \end{latin}
 
-%----------------------------------------
-% Chapter 4: Algorithm Analysis
-%----------------------------------------
-\chapter{تحلیل و مقایسه الگوریتم‌ها}
+%========================================================================
+% CHAPTER 4 — ALGORITHM ANALYSIS
+%========================================================================
+\chapter{تحلیل و مقایسه‌ی الگوریتم‌ها}
+\label{chap:analysis}
 
 \section{ارجاع به الگوریتم‌ها}
+\label{sec:analysis-refs}
 
 سیستم ارجاع \lr{MatinBook} امکان ارجاع به الگوریتم‌ها
-را با استفاده از \texttt{\textbackslash algref} فراهم می‌کند:
+را با استفاده از \lr{\textbackslash cref} فراهم می‌کند:
 
 \begin{itemize}
-    \item \algref{alg:linear-search} --- ساده‌ترین روش جستجو
-    با پیچیدگی $O(n)$
-    \item \algref{alg:binary-search} --- جستجوی سریع
-    با پیچیدگی $O(\log n)$ برای آرایه‌های مرتب
-    \item \algref{alg:quicksort} --- مرتب‌سازی سریع
-    با پیچیدگی متوسط $O(n \log n)$
-    \item \algref{alg:euclidean} --- الگوریتم باستانی اقلیدس
-    با پیچیدگی $O(\log \min(a,b))$
-    \item \algref{alg:bfs} --- پیمایش سطح به سطح گراف
-    با پیچیدگی $O(V + E)$
-    \item \algref{alg:dijkstra} --- کوتاه‌ترین مسیر
-    با پیچیدگی $O((V+E) \log V)$
+    \item \cref{alg:linear-search} — ساده‌ترین روش جستجو
+    با پیچیدگی \lr{$O(n)$}
+    \item \cref{alg:binary-search} — جستجوی سریع با
+    پیچیدگی \lr{$O(\log n)$} برای آرایه‌های مرتب
+    \item \cref{alg:quicksort} — مرتب‌سازی سریع با
+    پیچیدگی متوسط \lr{$O(n \log n)$}
+    \item \cref{alg:euclidean} — الگوریتم باستانی اقلیدس
+    با پیچیدگی \lr{$O(\log \min(a,b))$}
+    \item \cref{alg:bfs} — پیمایش سطح به سطح گراف با
+    پیچیدگی \lr{$O(V + E)$}
+    \item \cref{alg:dijkstra} — کوتاه‌ترین مسیر با
+    پیچیدگی \lr{$O((V+E) \log V)$}
 \end{itemize}
 
 \section{جدول مقایسه}
+\label{sec:analysis-comparison}
 
-\begin{table}[h]
-\centering
-\caption{مقایسه پیچیدگی الگوریتم‌ها}
-\label{tab:algorithm-comparison}
-\begin{tabular}{|c|C{3cm}|c|c|}
-\hline
-\textbf{الگوریتم} & \textbf{کاربرد} & \textbf{پیچیدگی} & \textbf{نیازمندی} \\
-\hline
-جستجوی خطی & جستجوی ساده & $O(n)$ & ندارد \\
-جستجوی دودویی & جستجوی سریع & $O(\log n)$ & آرایه مرتب \\
-مرتب‌سازی سریع & مرتب‌سازی & $O(n \log n)$ & ندارد \\
-الگوریتم اقلیدس & محاسبه GCD & $O(\log n)$ & اعداد صحیح \\
-\lr{BFS} & پیمایش گراف & $O(V+E)$ & گراف بدون وزن \\
-دایکسترا & کوتاه‌ترین مسیر & $O((V+E)\log V)$ & یال‌های غیرمنفی \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:algorithm-comparison} پیچیدگی الگوریتم‌های
+معرفی‌شده را مقایسه می‌کند:
 
-%----------------------------------------
-% Summary
-%----------------------------------------
-\chapter{خلاصه نتایج}
+\begin{matintable}{مقایسه پیچیدگی الگوریتم‌ها}{tab:algorithm-comparison}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+الگوریتم & کاربرد & پیچیدگی & نیازمندی \\
+جستجوی خطی & جستجوی ساده & \lr{$O(n)$} & ندارد \\
+جستجوی دودویی & جستجوی سریع & \lr{$O(\log n)$} & آرایه مرتب \\
+مرتب‌سازی سریع & مرتب‌سازی & \lr{$O(n \log n)$} & ندارد \\
+الگوریتم اقلیدس & محاسبه GCD & \lr{$O(\log n)$} & اعداد صحیح \\
+\lr{BFS} & پیمایش گراف & \lr{$O(V+E)$} & گراف بدون وزن \\
+دایکسترا & کوتاه‌ترین مسیر & \lr{$O((V+E)\log V)$} & یال‌های غیرمنفی \\
+\end{tblr}
+\end{matintable}
+
+%========================================================================
+% CHAPTER 5 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
 
 \section{وضعیت سیستم الگوریتم}
+\label{sec:summary-status}
 
-\begin{table}[h]
-\centering
-\caption{وضعیت قابلیت‌های الگوریتم}
-\label{tab:algorithm-status}
-\begin{tabular}{|c|C{6cm}|c|}
-\hline
-\textbf{قابلیت} & \textbf{توضیحات} & \textbf{وضعیت} \\
-\hline
-شماره‌گذاری & شماره‌گذاری خودکار به صورت «فصل.شماره» & \textcolor{matingreen}{✅} \\
-عنوان فارسی & نمایش عنوان با \lr{\textbackslash algcaption} & \textcolor{matingreen}{✅} \\
-فهرست الگوریتم‌ها & \lr{\textbackslash listofalgorithms} & \textcolor{matingreen}{✅} \\
-ارجاع & \lr{\textbackslash algref} با پیشوند «الگوریتم» & \textcolor{matingreen}{✅} \\
-\lr{Require/Ensure} & پیش‌نیاز و خروجی الگوریتم & \textcolor{matingreen}{✅} \\
-\lr{For/While/If} & ساختارهای کنترلی استاندارد & \textcolor{matingreen}{✅} \\
-\lr{Function} & تعریف و فراخوانی تابع & \textcolor{matingreen}{✅} \\
-محیط \lr{latin} & شبه‌کد درون محیط لاتین & \textcolor{matingreen}{✅} \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:algorithm-status} وضعیت قابلیت‌های
+الگوریتم \lr{MatinBook} را نشان می‌دهد.
 
-\section{نتیجه}
+\begin{matintable}{وضعیت قابلیت‌های الگوریتم}{tab:algorithm-status}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+قابلیت & توضیحات & وضعیت \\
+شماره‌گذاری & شماره‌گذاری خودکار «فصل.شماره» & \textcolor{matingreen}{فعال} \\
+عنوان فارسی & نمایش عنوان با \lr{\textbackslash caption} & \textcolor{matingreen}{فعال} \\
+فهرست الگوریتم‌ها & \lr{\textbackslash listofalgorithms} & \textcolor{matingreen}{فعال} \\
+ارجاع & \lr{\textbackslash cref} با پیشوند «الگوریتم» & \textcolor{matingreen}{فعال} \\
+\lr{Require/Ensure} & پیش‌نیاز و خروجی الگوریتم & \textcolor{matingreen}{فعال} \\
+\lr{For/While/If} & ساختارهای کنترلی استاندارد & \textcolor{matingreen}{فعال} \\
+\lr{Function} & تعریف و فراخوانی تابع & \textcolor{matingreen}{فعال} \\
+محیط \lr{latin} & شبه‌کد درون محیط لاتین & \textcolor{matingreen}{فعال} \\
+\end{tblr}
+\end{matintable}
 
-\textbf{ماژول الگوریتم \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
-۶ الگوریتم مختلف با عناوین فارسی، شماره‌گذاری خودکار،
-فهرست الگوریتم‌ها و ارجاع هوشمند به درستی کار می‌کنند. 🎉
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
+
+در این آزمون، سیستم الگوریتم \lr{MatinBook} بر اساس
+پنج معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{شماره‌گذاری}: منظم و پیوسته در هر فصل.
+    \item \textbf{کپشن}: فارسی و گویا با \lr{\textbackslash caption}.
+    \item \textbf{ارجاع}: هوشمند با \lr{\textbackslash cref}.
+    \item \textbf{ساختار}: استاندارد \lr{algorithmic}.
+    \item \textbf{فهرست}: \lr{\textbackslash listofalgorithms}.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام زیرسیستم‌های الگوریتم \lr{MatinBook} نسخه‌ی
+\lr{\matinbookversion} با موفقیت بارگذاری و آزمایش شدند.
+شش الگوریتم مختلف با عناوین فارسی، شماره‌گذاری خودکار،
+فهرست الگوریتم‌ها و ارجاع هوشمند به‌درستی کار می‌کنند.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، نهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item محیط‌های \lr{algorithm} و \lr{algorithmic}
+        \item کپشن‌های فارسی
+        \item شماره‌گذاری خودکار
+        \item فهرست الگوریتم‌ها
+        \item ارجاع هوشمند با \lr{\textbackslash cref}
+        \item متن فارسی داخل شبه‌کد
+    \end{itemize}
+}
 
 \end{document}
