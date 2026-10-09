@@ -1,49 +1,171 @@
 %========================================
-% MatinBook - Stage 07: Boxes Test
-% Test: All 10 Colored Box Types + Visual Comparison
-% Purpose: Validate all tcolorbox environments and color families
+% MatinBook — Stage 07: Boxes Test
+% Version: v1.1
+% Purpose:
+%   Validate the two box families and all 10 colored box types:
+%     1. Family 1 — matinbox (Boyer-style, solid title bar)
+%        Used by: theorem, lemma, corollary, proposition,
+%                 definition, remark, exercise
+%     2. Family 2 — matin-outline (RTL outline, right vertical
+%        line, two horizontal rules)
+%        Used by: example, proof, solution
+%     3. All 5 color families (blue, green, orange, red, purple)
+%     4. Shared counter behavior
+%     5. Cross-references to all boxes
+%
+% Compilation:
+%   xelatex -shell-escape stage07-boxes.tex
+%   xelatex -shell-escape stage07-boxes.tex
+%   (2 passes required for cover + cross-references)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that every
+%   box type renders correctly, that the two families are
+%   visually distinct, and that color families are consistent.
 %========================================
 
-% Add parent directory to search path
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون جعبه‌های رنگی}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون جعبه‌های رنگی}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون جعبه‌های رنگی}
+    {ارزیابی دو خانواده‌ی جعبه و ده نوع محیط علمی}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
-% Chapter 1: Blue Family (Theorems)
-%----------------------------------------
-\chapter{خانواده آبی: قضایا و اثبات‌ها}
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون جعبه‌های رنگی \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، هفتمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+\lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است. هدف آن،
+اعتبارسنجی کامل سیستم جعبه‌های رنگی کلاس در پنج حوزه‌ی
+متمایز است: خانواده‌ی \lr{matinbox}، خانواده‌ی
+\lr{matin-outline}، پنج خانواده‌ی رنگی، شمارنده‌ی مشترک
+و ارجاع متقابل به همه‌ی جعبه‌ها.
+
+در کتاب‌های ریاضی و فنی، تمایز بصری میان انواع محتوا
+بسیار مهم است. قضیه، تعریف، مثال، نکته، تمرین، اثبات و
+راه‌حل، هر یک نقش معنایی مشخصی دارند و باید در قالب
+بصری متمایز نمایش داده شوند. \lr{MatinBook} با دو
+خانواده‌ی جعبه و پنج خانواده‌ی رنگی، این تمایز را
+ایجاد می‌کند.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل
+همراه است تا خواننده بتواند درستی رفتار هر زیرسیستم را
+در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — BLUE FAMILY (THEOREMS)
+%========================================================================
+\chapter{خانواده‌ی آبی: قضایا و اثبات‌ها}
+\label{chap:family-blue}
 
 \section{راهنمای رنگ‌ها}
+\label{sec:family-blue-guide}
 
-خانواده آبی برای مفاهیم اصلی و اثبات‌شده استفاده می‌شود.
-شامل چهار نوع جعبه است که از تیره به روشن مرتب شده‌اند:
+خانواده‌ی آبی برای مفاهیم اصلی و اثبات‌شده استفاده می‌شود.
+این خانواده شامل چهار نوع جعبه‌ی \lr{matinbox} است که
+از تیره به روشن مرتب شده‌اند:
 
 \begin{itemize}
-    \item \colorbox{matindarkblue!80}{\textcolor{white}{\textbf{گزاره}}} --- تیره‌ترین
-    \item \colorbox{matinblue}{\textcolor{white}{\textbf{قضیه}}} --- اصلی
-    \item \colorbox{matinblue!70}{\textcolor{white}{\textbf{لم}}} --- متوسط
-    \item \colorbox{matinblue!50}{\textcolor{white}{\textbf{نتیجه}}} --- روشن
+    \item \textcolor{matindarkblue}{\textbf{گزاره}} —
+    \lr{matinblue!90!black} (تیره‌ترین)
+    \item \textcolor{matinblue}{\textbf{قضیه}} —
+    \lr{matinblue} (اصلی)
+    \item \textcolor{matinblue!85!black}{\textbf{لم}} —
+    \lr{matinblue!85!black}
+    \item \textcolor{matinblue!70!black}{\textbf{نتیجه}} —
+    \lr{matinblue!70!black} (روشن‌ترین)
 \end{itemize}
 
-\section{نمونه‌های خانواده آبی}
+\mnote{خانواده‌ی آبی، رنگ غالب سیستم است و برای محیط‌های نظری به کار می‌رود.}
 
-\begin{theorem}[قضیه فیثاغورث]
-    در مثلث قائم‌الزاویه، مربع وتر برابر است با
-    مجموع مربعات دو ضلع دیگر:
+\section{نمونه‌های خانواده‌ی آبی}
+\label{sec:family-blue-samples}
+
+\begin{theorem}[قضیه‌ی فیثاغورث]
+    در مثلث قائم‌الزاویه، مربع وتر برابر است با مجموع
+    مربعات دو ضلع دیگر:
     \[
         a^{2} + b^{2} = c^{2}
     \]
@@ -51,58 +173,58 @@
 \end{theorem}
 
 \begin{lemma}[لم کمکی]
-    این یک لم با رنگ آبی متوسط است.
-    لم‌ها معمولاً برای اثبات قضایای بزرگتر
-    به کار می‌روند و ارزش مستقلی ندارند.
+    این یک لم با رنگ آبی متوسط است. لم‌ها معمولاً برای
+    اثبات قضایای بزرگ‌تر به کار می‌روند و ارزش مستقلی
+    ندارند.
     \label{lem:sample}
 \end{lemma}
 
-\begin{corollary}[نتیجه مستقیم]
-    این یک نتیجه با رنگ آبی روشن است.
-    نتایج معمولاً بلافاصله از قضایا یا لم‌ها
-    نتیجه‌گیری می‌شوند.
+\begin{corollary}[نتیجه‌ی مستقیم]
+    این یک نتیجه با رنگ آبی روشن است. نتایج معمولاً
+    بلافاصله از قضایا یا لم‌ها نتیجه‌گیری می‌شوند.
     \label{cor:sample}
 \end{corollary}
 
-\begin{proposition}[گزاره نمونه]
-    این یک گزاره با رنگ آبی تیره است.
-    گزاره‌ها احکامی هستند که ارزش اثبات دارند
-    اما لزوماً به اندازه قضایا مهم نیستند.
+\begin{proposition}[گزاره‌ی نمونه]
+    این یک گزاره با رنگ آبی تیره است. گزاره‌ها احکامی
+    هستند که ارزش اثبات دارند اما لزوماً به اندازه‌ی
+    قضایا مهم نیستند.
     \label{prop:sample}
 \end{proposition}
 
-\begin{proof}[اثبات نمونه]
-    این یک جعبه اثبات است که از خانواده آبی
-    با رنگ بسیار روشن استفاده می‌کند.
-    اثبات‌ها معمولاً با علامت پایان مشخص می‌شوند. $\square$
-\end{proof}
+طبق \cref{thm:pythagoras}، لم \cref{lem:sample}،
+نتیجه‌ی \cref{cor:sample} و گزاره‌ی \cref{prop:sample}
+همگی از یک شمارنده‌ی مشترک استفاده می‌کنند.
 
-%----------------------------------------
-% Chapter 2: Green Family (Definitions)
-%----------------------------------------
-\chapter{خانواده سبز: تعاریف و مفاهیم}
+%========================================================================
+% CHAPTER 2 — GREEN FAMILY (DEFINITIONS)
+%========================================================================
+\chapter{خانواده‌ی سبز: تعاریف و مفاهیم}
+\label{chap:family-green}
 
 \section{راهنمای رنگ}
+\label{sec:family-green-guide}
 
-خانواده سبز برای تعاریف و معرفی مفاهیم جدید
-استفاده می‌شود. رنگ سبز نماد رشد و یادگیری است.
-
-\colorbox{matingreen}{\textcolor{white}{\textbf{تعریف}}} ---
-رنگ اصلی خانواده سبز
+خانواده‌ی سبز برای تعاریف و معرفی مفاهیم جدید استفاده
+می‌شود. رنگ سبز نماد رشد و یادگیری است. تعریف‌ها از
+خانواده‌ی \lr{matinbox} با رنگ \lr{matingreen!85!black}
+استفاده می‌کنند.
 
 \section{نمونه‌های تعاریف}
+\label{sec:family-green-samples}
 
 \begin{definition}[مشتق تابع]
-    مشتق تابع $f$ در نقطه $x_{0}$ به صورت زیر تعریف می‌شود:
+    مشتق تابع $f$ در نقطه‌ی $x_{0}$ به صورت زیر تعریف
+    می‌شود:
     \[
         f'(x_{0}) = \lim_{h \to 0} \frac{f(x_{0} + h) - f(x_{0})}{h}
     \]
-    مشتق نشان‌دهنده نرخ تغییرات لحظه‌ای تابع است.
+    مشتق نشان‌دهنده‌ی نرخ تغییرات لحظه‌ای تابع است.
     \label{def:derivative}
 \end{definition}
 
 \begin{definition}[انتگرال معین]
-    انتگرال معین تابع $f$ روی بازه $[a, b]$:
+    انتگرال معین تابع $f$ روی بازه‌ی $[a, b]$:
     \[
         \int_{a}^{b} f(x) \dd{x} = \lim_{n \to \infty}
         \sum_{i=1}^{n} f(x_{i}^{*}) \Delta x
@@ -120,20 +242,28 @@
     \label{def:matrix}
 \end{definition}
 
-%----------------------------------------
-% Chapter 3: Orange Family (Examples)
-%----------------------------------------
-\chapter{خانواده نارنجی: مثال‌ها}
+تعریف‌های \cref{def:derivative}، \cref{def:integral} و
+\cref{def:matrix} سه مفهوم بنیادین حسابان و جبر خطی را
+معرفی می‌کنند.
+
+%========================================================================
+% CHAPTER 3 — ORANGE FAMILY (EXAMPLES)
+%========================================================================
+\chapter{خانواده‌ی نارنجی: مثال‌ها}
+\label{chap:family-orange}
 
 \section{راهنمای رنگ}
+\label{sec:family-orange-guide}
 
-خانواده نارنجی برای مثال‌های کاربردی استفاده می‌شود.
-رنگ گرم نارنجی توجه خواننده را به کاربرد مفاهیم جلب می‌کند.
-
-\colorbox{matinorange}{\textcolor{white}{\textbf{مثال}}} ---
-رنگ اصلی خانواده نارنجی
+خانواده‌ی نارنجی برای مثال‌های کاربردی استفاده می‌شود.
+رنگ گرم نارنجی توجه خواننده را به کاربرد مفاهیم جلب
+می‌کند. مثال‌ها از خانواده‌ی \lr{matin-outline} با رنگ
+\lr{matinorange!90!black} استفاده می‌کنند: خط عمودی
+سمت راست، دو خط افقی زیر عنوان و زیر محتوا، بدون
+پس‌زمینه‌ی رنگی.
 
 \section{نمونه‌های مثال}
+\label{sec:family-orange-samples}
 
 \begin{example}[مشتق چندجمله‌ای]
     مشتق تابع $f(x) = x^{3} - 2x^{2} + 5x - 1$:
@@ -143,7 +273,7 @@
     \label{ex:derivative-poly}
 \end{example}
 
-\begin{example}[محاسبه انتگرال]
+\begin{example}[محاسبه‌ی انتگرال]
     مساحت زیر نمودار $f(x) = x^{2}$ از $x = 0$ تا $x = 2$:
     \[
         \int_{0}^{2} x^{2} \dd{x}
@@ -164,40 +294,46 @@
     \label{ex:matrix-multiply}
 \end{example}
 
-%----------------------------------------
-% Chapter 4: Red Family (Remarks)
-%----------------------------------------
-\chapter{خانواده قرمز: نکات و هشدارها}
+مثال‌های \cref{ex:derivative-poly}، \cref{ex:integral-x2}
+و \cref{ex:matrix-multiply} سه کاربرد عملی از مفاهیم
+معرفی‌شده در فصل‌های قبل را نشان می‌دهند.
+
+%========================================================================
+% CHAPTER 4 — RED FAMILY (REMARKS)
+%========================================================================
+\chapter{خانواده‌ی قرمز: نکات و هشدارها}
+\label{chap:family-red}
 
 \section{راهنمای رنگ}
+\label{sec:family-red-guide}
 
-خانواده قرمز برای نکات مهم، هشدارها و توجه‌ها
-استفاده می‌شود. رنگ قرمز به طور طبیعی جلب توجه می‌کند.
+خانواده‌ی قرمز برای نکات مهم، هشدارها و توجه‌ها استفاده
+می‌شود. رنگ قرمز به‌طور طبیعی جلب توجه می‌کند. نکات
+از خانواده‌ی \lr{matinbox} با رنگ \lr{matinred!80!black}
+استفاده می‌کنند.
 
-\colorbox{matinred}{\textcolor{white}{\textbf{نکته}}} ---
-رنگ اصلی خانواده قرمز
+\mnote{استفاده‌ی سنجیده از قرمز ضروری است؛ استفاده‌ی بیش از حد، اثر هشداردهندگی آن را از بین می‌برد.}
 
 \section{نمونه‌های نکات}
+\label{sec:family-red-samples}
 
-\begin{remark}[نکته مهم]
-    در محاسبه مشتق، توجه داشته باشید که
-    $\deriv{}{x}(x^{n}) = nx^{n-1}$ فقط برای
-    $n \neq 0$ معتبر است. برای $n = 0$،
-    مشتق تابع ثابت صفر است.
+\begin{remark}[نکته‌ی مهم]
+    در محاسبه‌ی مشتق، توجه داشته باشید که
+    $\deriv{}{x}(x^{n}) = nx^{n-1}$ فقط برای $n \neq 0$
+    معتبر است. برای $n = 0$، مشتق تابع ثابت صفر است.
     \label{rem:derivative-power}
 \end{remark}
 
 \begin{remark}[هشدار]
-    تقسیم بر صفر تعریف نشده است!
-    هنگام ساده‌سازی عبارات کسری،
-    همواره فرض کنید مخرج غیرصفر است.
+    تقسیم بر صفر تعریف نشده است! هنگام ساده‌سازی
+    عبارات کسری، همواره فرض کنید مخرج غیرصفر است.
     \label{rem:division-zero}
 \end{remark}
 
-\begin{remark}[نکته کاربردی]
-    برای حفظ کردن فرمول مشتق توابع مثلثاتی،
-    به یاد داشته باشید که مشتق سینوس، کسینوس
-    و مشتق کسینوس، \textbf{منفی} سینوس است:
+\begin{remark}[نکته‌ی کاربردی]
+    برای حفظ کردن فرمول مشتق توابع مثلثاتی، به یاد
+    داشته باشید که مشتق سینوس، کسینوس و مشتق کسینوس،
+    \textbf{منفی} سینوس است:
     \[
         \deriv{}{x}(\sin x) = \cos x, \qquad
         \deriv{}{x}(\cos x) = -\sin x
@@ -205,20 +341,22 @@
     \label{rem:trig-derivatives}
 \end{remark}
 
-%----------------------------------------
-% Chapter 5: Purple Family (Exercises)
-%----------------------------------------
-\chapter{خانواده بنفش: تمرین‌ها}
+%========================================================================
+% CHAPTER 5 — PURPLE FAMILY (EXERCISES)
+%========================================================================
+\chapter{خانواده‌ی بنفش: تمرین‌ها}
+\label{chap:family-purple}
 
 \section{راهنمای رنگ}
+\label{sec:family-purple-guide}
 
-خانواده بنفش برای تمرین‌ها و مسائل استفاده می‌شود.
-رنگ بنفش محرک خلاقیت و تفکر است.
-
-\colorbox{matinpurple}{\textcolor{white}{\textbf{تمرین}}} ---
-رنگ اصلی خانواده بنفش
+خانواده‌ی بنفش برای تمرین‌ها و مسائل استفاده می‌شود.
+رنگ بنفش محرک خلاقیت و تفکر است. تمرین‌ها از خانواده‌ی
+\lr{matinbox} با رنگ \lr{matinpurple!85!black} استفاده
+می‌کنند.
 
 \section{نمونه‌های تمرین}
+\label{sec:family-purple-samples}
 
 \begin{exercise}[مشتق توابع مثلثاتی]
     مشتق توابع زیر را محاسبه کنید:
@@ -230,8 +368,8 @@
     \label{exc:trig-derivatives}
 \end{exercise}
 
-\begin{solution}[راه حل]
-    با استفاده از قاعده زنجیره‌ای:
+\begin{solution}[راه‌حل]
+    با استفاده از قاعده‌ی زنجیره‌ای:
     \begin{enumerate}
         \item $f'(x) = 2\cos(2x)$
         \item $g'(x) = -2x\sin(x^{2})$
@@ -249,7 +387,7 @@
     \label{exc:integrals}
 \end{exercise}
 
-\begin{solution}[راه حل]
+\begin{solution}[راه‌حل]
     \begin{enumerate}
         \item $\int (3x^{2} - 4x + 1) \dd{x}
         = x^{3} - 2x^{2} + x + C$
@@ -259,15 +397,23 @@
     \end{enumerate}
 \end{solution}
 
-%----------------------------------------
-% Chapter 6: All Boxes at a Glance
-%----------------------------------------
-\chapter{نمای کلی همه جعبه‌ها}
+راه‌حل‌های \cref{exc:trig-derivatives} و
+\cref{exc:integrals} از خانواده‌ی \lr{matin-outline}
+با رنگ \lr{matingreen!70!black} استفاده می‌کنند.
 
-\section{مقایسه بصری}
+%========================================================================
+% CHAPTER 6 — ALL BOXES AT A GLANCE
+%========================================================================
+\chapter{نمای کلی همه‌ی جعبه‌ها}
+\label{chap:all-boxes}
 
-در این بخش، هر ۱۰ نوع جعبه را بدون محتوای طولانی
-در کنار هم می‌بینیم تا تفاوت رنگ‌ها مشهود باشد:
+\section{مقایسه‌ی بصری}
+\label{sec:all-boxes-comparison}
+
+در این بخش، هر ده نوع جعبه را بدون محتوای طولانی در
+کنار هم می‌بینیم تا تفاوت رنگ‌ها و خانواده‌ها مشهود باشد:
+
+\subsection*{خانواده‌ی matinbox (نوار رنگی توپر)}
 
 \begin{theorem}
     \textbf{قضیه (آبی)}: مهم‌ترین احکام ریاضی
@@ -289,10 +435,6 @@
     \textbf{تعریف (سبز)}: معرفی مفاهیم جدید
 \end{definition}
 
-\begin{example}
-    \textbf{مثال (نارنجی)}: کاربرد مفاهیم
-\end{example}
-
 \begin{remark}
     \textbf{نکته (قرمز)}: توضیحات و هشدارهای مهم
 \end{remark}
@@ -301,52 +443,113 @@
     \textbf{تمرین (بنفش)}: مسائل برای حل کردن
 \end{exercise}
 
-\begin{solution}
-    \textbf{راه حل (سبز روشن)}: پاسخ تشریحی تمرین‌ها
-\end{solution}
+\subsection*{خانواده‌ی matin-outline (خط عمودی سمت راست)}
+
+\begin{example}
+    \textbf{مثال (نارنجی)}: کاربرد مفاهیم
+\end{example}
 
 \begin{proof}
-    \textbf{اثبات (آبی خیلی روشن)}: استدلال ریاضی
+    \textbf{اثبات (خاکستری تیره)}: استدلال ریاضی
 \end{proof}
 
-%----------------------------------------
-% Summary
-%----------------------------------------
-\chapter{خلاصه نتایج}
+\begin{solution}
+    \textbf{راه‌حل (سبز)}: پاسخ تشریحی تمرین‌ها
+\end{solution}
+
+%========================================================================
+% CHAPTER 7 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
 
 \section{وضعیت جعبه‌های رنگی}
+\label{sec:summary-status}
 
-\begin{table}[h]
-\centering
-\caption{وضعیت تمام جعبه‌های رنگی MatinBook}
-\label{tab:boxes-status}
-\begin{tabular}{|c|C{3cm}|c|c|}
-\hline
-\textbf{خانواده} & \textbf{نوع جعبه} & \textbf{رنگ} & \textbf{وضعیت} \\
-\hline
-\multirow{5}{*}{آبی} & قضیه (\lr{theorem}) & \colorbox{matinblue}{\textcolor{white}{آبی}} & \textcolor{matingreen}{✅} \\
-& لم (\lr{lemma}) & \colorbox{matinblue!70}{\textcolor{white}{متوسط}} & \textcolor{matingreen}{✅} \\
-& نتیجه (\lr{corollary}) & \colorbox{matinblue!50}{\textcolor{white}{روشن}} & \textcolor{matingreen}{✅} \\
-& گزاره (\lr{proposition}) & \colorbox{matindarkblue}{\textcolor{white}{تیره}} & \textcolor{matingreen}{✅} \\
-& اثبات (\lr{proof}) & \colorbox{matinblue!30}{خیلی روشن} & \textcolor{matingreen}{✅} \\
-\hline
-سبز & تعریف (\lr{definition}) & \colorbox{matingreen}{\textcolor{white}{سبز}} & \textcolor{matingreen}{✅} \\
-\hline
-نارنجی & مثال (\lr{example}) & \colorbox{matinorange}{\textcolor{white}{نارنجی}} & \textcolor{matingreen}{✅} \\
-\hline
-قرمز & نکته (\lr{remark}) & \colorbox{matinred}{\textcolor{white}{قرمز}} & \textcolor{matingreen}{✅} \\
-\hline
-بنفش & تمرین (\lr{exercise}) & \colorbox{matinpurple}{\textcolor{white}{بنفش}} & \textcolor{matingreen}{✅} \\
-\hline
-سبز روشن & راه حل (\lr{solution}) & \colorbox{matingreen!60}{\textcolor{white}{روشن}} & \textcolor{matingreen}{✅} \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:boxes-status} وضعیت تمام جعبه‌های رنگی
+\lr{MatinBook} را نشان می‌دهد.
 
-\section{نتیجه}
+\begin{matintable}{وضعیت تمام جعبه‌های رنگی \lr{MatinBook}}{tab:boxes-status}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l l X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+خانواده & نوع جعبه & استایل & وضعیت \\
+آبی & \lr{theorem} & \lr{matinbox} & \textcolor{matingreen}{فعال} \\
+آبی & \lr{lemma} & \lr{matinbox} & \textcolor{matingreen}{فعال} \\
+آبی & \lr{corollary} & \lr{matinbox} & \textcolor{matingreen}{فعال} \\
+آبی & \lr{proposition} & \lr{matinbox} & \textcolor{matingreen}{فعال} \\
+سبز & \lr{definition} & \lr{matinbox} & \textcolor{matingreen}{فعال} \\
+قرمز & \lr{remark} & \lr{matinbox} & \textcolor{matingreen}{فعال} \\
+بنفش & \lr{exercise} & \lr{matinbox} & \textcolor{matingreen}{فعال} \\
+نارنجی & \lr{example} & \lr{matin-outline} & \textcolor{matingreen}{فعال} \\
+خاکستری & \lr{proof} & \lr{matin-outline} & \textcolor{matingreen}{فعال} \\
+سبز & \lr{solution} & \lr{matin-outline} & \textcolor{matingreen}{فعال} \\
+\end{tblr}
+\end{matintable}
 
-\textbf{تمام ۱۰ نوع جعبه رنگی \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شدند.}
-رنگ‌ها در ۵ خانواده (آبی، سبز، نارنجی، قرمز، بنفش)
-به درستی کار می‌کنند و تمایز بصری مناسبی ایجاد می‌کنند. 🎉
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
+
+در این آزمون، سیستم جعبه‌های رنگی \lr{MatinBook} بر
+اساس پنج معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{تمایز خانوادگی}: تفاوت بصری میان دو خانواده.
+    \item \textbf{انسجام رنگی}: هماهنگی رنگ‌ها در هر خانواده.
+    \item \textbf{شمارنده‌ی مشترک}: شماره‌گذاری پیوسته.
+    \item \textbf{شکست صفحات}: رفتار جعبه‌های بلند.
+    \item \textbf{ارجاع هوشمند}: \lr{\textbackslash cref} با نام‌های فارسی.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام ده نوع جعبه‌ی رنگی \lr{MatinBook} نسخه‌ی
+\lr{\matinbookversion} با موفقیت بارگذاری و آزمایش شدند.
+پنج خانواده‌ی رنگی و دو خانواده‌ی جعبه، تمایز بصری
+مناسبی ایجاد می‌کنند و همگی به‌درستی کار می‌کنند.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، هفتمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item خانواده‌ی \lr{matinbox}
+        \item خانواده‌ی \lr{matin-outline}
+        \item پنج خانواده‌ی رنگی
+        \item شمارنده‌ی مشترک
+        \item ارجاع هوشمند
+    \end{itemize}
+}
 
 \end{document}
