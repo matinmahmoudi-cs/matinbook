@@ -1,39 +1,160 @@
 %========================================
-% MatinBook - Stage 10: Graphics Test
-% Test: TikZ + PGFPlots + Flowcharts + Trees + Statistical Charts
-% Purpose: Validate all drawing and plotting capabilities
+% MatinBook — Stage 10: Graphics Test
+% Version: v1.1
+% Purpose:
+%   Validate the graphics system of MatinBook v1.1:
+%     1. PGFPlots function plots
+%     2. Statistical charts (bar, line, scatter)
+%     3. Flowcharts with custom TikZ styles
+%     4. Trees (binary search tree, expression tree)
+%     5. Directed weighted graphs
+%     6. 3D surface plots
+%     7. Pie charts
+%     8. Timelines
+%
+% Compilation:
+%   xelatex -shell-escape stage10-tikz.tex
+%   xelatex -shell-escape stage10-tikz.tex
+%   (2 passes required for cover + cross-references)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that every
+%   graphics feature renders correctly, with proper Persian
+%   captions and working cross-references.
 %========================================
 
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Additional PGFPlots libraries for this test
+%------------------------------------------------------------------------
+\usepgfplotslibrary{colormaps}
+
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون سیستم گرافیک و نمودارها}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون سیستم گرافیک و نمودارها}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون سیستم گرافیک و نمودارها}
+    {ارزیابی ترسیم، نمودار و دیاگرام در MatinBook}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
-% Chapter 1: Function Plots
-%----------------------------------------
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون سیستم گرافیک و نمودارها \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، دهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+\lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است. هدف آن،
+اعتبارسنجی کامل سیستم گرافیک کلاس در هشت حوزه‌ی متمایز
+است: نمودار توابع ریاضی، نمودارهای آماری، فلوچارت‌ها،
+درخت‌ها، گراف‌ها، نمودارهای سه‌بعدی، نمودارهای دایره‌ای
+و خطوط زمانی.
+
+در کتاب‌های فنی و علمی، نمودارها و دیاگرام‌ها نقش محوری
+در انتقال مفاهیم پیچیده دارند. یک نمودار حرفه‌ای می‌تواند
+جای چند صفحه متن را بگیرد و درک مطلب را چند برابر کند.
+\lr{MatinBook} با استفاده از \lr{TikZ}، \lr{PGFPlots} و
+\lr{pgf-pie}، این قابلیت‌ها را فراهم می‌سازد.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل
+همراه است تا خواننده بتواند درستی رفتار هر زیرسیستم را
+در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — FUNCTION PLOTS
+%========================================================================
 \chapter{نمودار توابع ریاضی}
+\label{chap:function-plots}
 
 \section{مقایسه توابع پایه}
+\label{sec:plots-basic}
+
+نمودار \cref{fig:basic-functions} چهار تابع پایه‌ی ریاضی
+را مقایسه می‌کند:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=14cm, height=8cm,
+    width=\textwidth, height=7cm,
     xlabel={$x$},
     ylabel={$f(x)$},
     title={Comparison of Common Mathematical Functions},
@@ -44,19 +165,15 @@
     xmin=-3, xmax=3,
     ymin=-5, ymax=10
   ]
-    % Quadratic function
     \addplot[matinblue, thick] {x^2};
     \addlegendentry{$x^2$}
-    
-    % Cubic function
+
     \addplot[matinred, thick] {x^3};
     \addlegendentry{$x^3$}
-    
-    % Exponential function
+
     \addplot[matinorange, thick] {exp(x)};
     \addlegendentry{$e^x$}
-    
-    % Square root (only for x >= 0)
+
     \addplot[matingreen, thick, domain=0:3] {sqrt(x)};
     \addlegendentry{$\sqrt{x}$}
   \end{axis}
@@ -66,14 +183,20 @@
 \label{fig:basic-functions}
 \end{figure}
 
+\mnote{نمودارها با \lr{PGFPlots} رسم می‌شوند و از پالت رنگی \lr{MatinBook} پیروی می‌کنند.}
+
 \section{توابع مثلثاتی}
+\label{sec:plots-trig}
+
+نمودار \cref{fig:trig-functions} توابع مثلثاتی اصلی را
+نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=14cm, height=7cm,
+    width=\textwidth, height=6.5cm,
     xlabel={$x$},
     ylabel={$f(x)$},
     title={Trigonometric Functions},
@@ -82,16 +205,16 @@
     domain=-2*pi:2*pi,
     samples=300,
     xtick={-2*pi, -1.5*pi, -pi, -0.5*pi, 0, 0.5*pi, pi, 1.5*pi, 2*pi},
-    xticklabels={$-2\pi$, $-\frac{3\pi}{2}$, $-\pi$, $-\frac{\pi}{2}$, 
+    xticklabels={$-2\pi$, $-\frac{3\pi}{2}$, $-\pi$, $-\frac{\pi}{2}$,
                  $0$, $\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$, $2\pi$},
     ymin=-1.5, ymax=1.5
   ]
     \addplot[matinblue, thick] {sin(deg(x))};
     \addlegendentry{$\sin x$}
-    
+
     \addplot[matinred, thick] {cos(deg(x))};
     \addlegendentry{$\cos x$}
-    
+
     \addplot[matinorange, thick, dashed, restrict y to domain=-3:3] {tan(deg(x))};
     \addlegendentry{$\tan x$}
   \end{axis}
@@ -101,31 +224,32 @@
 \label{fig:trig-functions}
 \end{figure}
 
-\section{نمودار چندگانه با محورهای مختلف}
+\section{توابع فعال‌سازی}
+\label{sec:plots-activation}
+
+نمودار \cref{fig:activation-functions} توابع فعال‌سازی
+رایج در شبکه‌های عصبی را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=14cm, height=7cm,
+    width=\textwidth, height=6.5cm,
     xlabel={$x$},
     ylabel={$y$},
-    title={Multiple Functions with Custom Styles},
+    title={Activation Functions},
     grid=major,
     legend pos=north west,
     domain=-5:5,
     samples=200
   ]
-    % Sigmoid function
     \addplot[matinblue, ultra thick] {1/(1+exp(-x))};
     \addlegendentry{$\sigma(x) = \frac{1}{1+e^{-x}}$}
-    
-    % Hyperbolic tangent
+
     \addplot[matinpurple, thick, dashed] {tanh(x)};
     \addlegendentry{$\tanh x$}
-    
-    % ReLU approximation
+
     \addplot[matinorange, thick, dotted] {max(0, x)};
     \addlegendentry{$\max(0, x)$}
   \end{axis}
@@ -135,25 +259,28 @@
 \label{fig:activation-functions}
 \end{figure}
 
-\clearpage
-
-%----------------------------------------
-% Chapter 2: Statistical Charts
-%----------------------------------------
+%========================================================================
+% CHAPTER 2 — STATISTICAL CHARTS
+%========================================================================
 \chapter{نمودارهای آماری}
+\label{chap:statistical-charts}
 
 \section{نمودار میله‌ای}
+\label{sec:charts-bar}
+
+نمودار \cref{fig:language-popularity} محبوبیت زبان‌های
+برنامه‌نویسی را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=14cm, height=7cm,
+    width=\textwidth, height=6.5cm,
     ybar,
     symbolic x coords={Python, JavaScript, Java, C++, Go, Rust, TypeScript},
     xtick=data,
-    ylabel={محبوبیت (\%)},
+    ylabel={Popularity (\%)},
     title={Programming Language Popularity - 2025},
     grid=major,
     bar width=18pt,
@@ -179,13 +306,17 @@
 \end{figure}
 
 \section{نمودار خطی مقایسه‌ای}
+\label{sec:charts-line}
+
+نمودار \cref{fig:complexity-comparison} رشد پیچیدگی
+الگوریتم‌ها را با افزایش اندازه‌ی ورودی نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=14cm, height=7cm,
+    width=\textwidth, height=6.5cm,
     xlabel={Input Size ($n$)},
     ylabel={Operations},
     title={Algorithm Complexity Comparison},
@@ -195,19 +326,15 @@
     samples=100,
     ymin=0, ymax=3000
   ]
-    % O(n^2)
     \addplot[matinred, thick] {x^2};
     \addlegendentry{$O(n^2)$}
-    
-    % O(n log n)
+
     \addplot[matinorange, thick] {x*ln(x)};
     \addlegendentry{$O(n \log n)$}
-    
-    % O(n)
+
     \addplot[matinblue, thick] {x};
     \addlegendentry{$O(n)$}
-    
-    % O(log n)
+
     \addplot[matingreen, thick] {10*ln(x)};
     \addlegendentry{$O(\log n)$}
   \end{axis}
@@ -218,20 +345,23 @@
 \end{figure}
 
 \section{نمودار پراکندگی}
+\label{sec:charts-scatter}
+
+نمودار \cref{fig:scatter-plot} رابطه‌ی میان ساعت مطالعه
+و نمره‌ی امتحان را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=12cm, height=7cm,
+    width=\textwidth, height=6cm,
     xlabel={Hours Studied},
     ylabel={Exam Score},
     title={Study Time vs. Exam Performance},
     grid=major,
     legend pos=south east
   ]
-    % Scatter points
     \addplot[only marks, mark=*, color=matinblue, mark size=2pt] coordinates {
       (1, 45) (2, 52) (3, 58) (4, 65) (5, 70)
       (6, 75) (7, 80) (8, 85) (9, 88) (10, 92)
@@ -239,8 +369,7 @@
       (6.5, 78) (7.5, 82) (8.5, 86) (9.5, 90)
     };
     \addlegendentry{Data points}
-    
-    % Regression line
+
     \addplot[matinred, thick, domain=0:11] {5*x + 40};
     \addlegendentry{Regression line}
   \end{axis}
@@ -250,23 +379,27 @@
 \label{fig:scatter-plot}
 \end{figure}
 
-\clearpage
-
-%----------------------------------------
-% Chapter 3: Flowcharts
-%----------------------------------------
+%========================================================================
+% CHAPTER 3 — FLOWCHARTS AND DIAGRAMS
+%========================================================================
 \chapter{فلوچارت‌ها و دیاگرام‌ها}
+\label{chap:flowcharts}
 
 \section{فلوچارت تصمیم‌گیری}
+\label{sec:flowcharts-decision}
+
+فلوچارت \cref{fig:flowchart} فرآیند اعتبارسنجی و پردازش
+داده را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}[
   node distance=2cm,
+  scale=0.95,
+  transform shape,
   arrow/.style={thick,->,>=stealth}
 ]
-  % Define nodes
   \node[block] (start) {Start};
   \node[block, below of=start] (input) {Read Input Data};
   \node[decision, below of=input] (validate) {Data Valid?};
@@ -275,8 +408,7 @@
   \node[block, below of=process] (output) {Generate Output};
   \node[block, below of=output] (save) {Save Results};
   \node[block, below of=save] (end) {End};
-  
-  % Draw connections
+
   \draw[arrow] (start) -- (input);
   \draw[arrow] (input) -- (validate);
   \draw[arrow] (validate) -- node[anchor=south] {Yes} (process);
@@ -292,27 +424,31 @@
 \end{figure}
 
 \section{دیاگرام معماری نرم‌افزار}
+\label{sec:flowcharts-architecture}
+
+دیاگرام \cref{fig:architecture} معماری یک برنامه‌ی وب
+مدرن را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}[
   node distance=2.5cm,
+  scale=0.85,
+  transform shape,
   arrow/.style={thick,<->,>=stealth},
   component/.style={rectangle, draw=matindarkblue, fill=matinlightblue!30,
                     text width=3.5cm, text centered, rounded corners,
                     minimum height=2cm, font=\small}
 ]
-  % Define components
   \node[component] (frontend) {Frontend\\React / Vue};
   \node[component, right of=frontend, xshift=3cm] (api) {REST API\\Express / FastAPI};
   \node[component, right of=api, xshift=3cm] (database) {Database\\PostgreSQL};
-  
+
   \node[component, below of=api, yshift=-1.5cm] (cache) {Cache\\Redis};
   \node[component, left of=cache, xshift=-1.5cm] (queue) {Queue\\RabbitMQ};
   \node[component, right of=cache, xshift=1.5cm] (storage) {Storage\\S3 / MinIO};
-  
-  % Draw connections
+
   \draw[arrow] (frontend) -- (api);
   \draw[arrow] (api) -- (database);
   \draw[arrow] (api) -- (cache);
@@ -324,19 +460,24 @@
 \label{fig:architecture}
 \end{figure}
 
-\clearpage
-
-%----------------------------------------
-% Chapter 4: Trees and Graphs
-%----------------------------------------
+%========================================================================
+% CHAPTER 4 — TREES AND GRAPHS
+%========================================================================
 \chapter{درخت‌ها و گراف‌ها}
+\label{chap:trees-graphs}
 
-\section{درخت جستجوی دودویی (\lr{BST})}
+\section{درخت جستجوی دودویی (BST)}
+\label{sec:trees-bst}
+
+درخت \cref{fig:bst} یک درخت جستجوی دودویی را نشان
+می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}[
+  scale=0.9,
+  transform shape,
   level distance=2cm,
   level 1/.style={sibling distance=5cm},
   level 2/.style={sibling distance=2.5cm},
@@ -364,6 +505,10 @@
 \end{figure}
 
 \section{درخت بیان ریاضی}
+\label{sec:trees-expression}
+
+درخت \cref{fig:expression-tree} بیان ریاضی
+$3x + (5 - 2)$ را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
@@ -390,7 +535,11 @@
 \label{fig:expression-tree}
 \end{figure}
 
-\section{گراف جهت‌دار}
+\section{گراف جهت‌دار وزن‌دار}
+\label{sec:trees-graph}
+
+گراف \cref{fig:directed-graph} یک گراف جهت‌دار وزن‌دار
+با پنج رأس را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
@@ -401,14 +550,12 @@
                  minimum size=1cm, font=\bfseries},
   edge/.style={thick,->,>=stealth}
 ]
-  % Define vertices
   \node[vertex] (A) at (0,0) {A};
   \node[vertex] (B) at (3,2) {B};
   \node[vertex] (C) at (6,0) {C};
   \node[vertex] (D) at (3,-2) {D};
   \node[vertex] (E) at (1.5,-3.5) {E};
-  
-  % Draw edges with weights
+
   \draw[edge] (A) -- node[anchor=south] {5} (B);
   \draw[edge] (B) -- node[anchor=south] {3} (C);
   \draw[edge] (C) -- node[anchor=west] {4} (D);
@@ -422,21 +569,24 @@
 \label{fig:directed-graph}
 \end{figure}
 
-\clearpage
-
-%----------------------------------------
-% Chapter 5: Advanced TikZ
-%----------------------------------------
+%========================================================================
+% CHAPTER 5 — ADVANCED TIKZ
+%========================================================================
 \chapter{نمودارهای پیشرفته}
+\label{chap:advanced-tikz}
 
-\section{نمودار تابع سه‌بعدی}
+\section{نمودار سه‌بعدی}
+\label{sec:advanced-3d}
+
+نمودار \cref{fig:3d-surface} یک سطح سه‌بعدی را نشان
+می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=12cm, height=9cm,
+    width=\textwidth, height=8cm,
     xlabel={$x$},
     ylabel={$y$},
     zlabel={$f(x,y)$},
@@ -459,24 +609,20 @@
 \label{fig:3d-surface}
 \end{figure}
 
-\section{نمودار دایره‌ای (\lr{Pie Chart})}
+\section{نمودار دایره‌ای}
+\label{sec:advanced-pie}
+
+نمودار \cref{fig:pie-chart} توزیع استفاده از زبان‌های
+برنامه‌نویسی را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
-  % Define colors for slices
-  \definecolor{slice1}{RGB}{41, 128, 185}
-  \definecolor{slice2}{RGB}{39, 174, 96}
-  \definecolor{slice3}{RGB}{230, 126, 34}
-  \definecolor{slice4}{RGB}{231, 76, 60}
-  \definecolor{slice5}{RGB}{142, 68, 173}
-  
-  % Draw pie chart
   \pie[
-    radius=3.5,
+    radius=3,
     text=legend,
-    color={slice1, slice2, slice3, slice4, slice5}
+    color={matinblue, matingreen, matinorange, matinred, matinpurple}
   ]{
     35/Python,
     25/JavaScript,
@@ -490,79 +636,144 @@
 \label{fig:pie-chart}
 \end{figure}
 
-\section{خط زمانی (\lr{Timeline})}
+\section{خط زمانی}
+\label{sec:advanced-timeline}
+
+خط زمانی \cref{fig:timeline} تاریخچه‌ی زبان‌های
+برنامه‌نویسی را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}[
+  xscale=0.7,
   timeline/.style={thick,->,>=stealth},
   event/.style={rectangle, draw=matindarkblue, fill=matinlightblue!30,
-                text width=3.5cm, text centered, rounded corners,
-                minimum height=1.5cm, font=\small}
+                text width=2.2cm, text centered, rounded corners,
+                minimum height=1cm, inner sep=3pt, font=\footnotesize},
+  arrow/.style={thick,->,>=stealth}
 ]
-  % Draw main timeline
   \draw[timeline] (0,0) -- (14,0);
-  
-  % Add year markers
+
   \foreach \x/\year in {0/1990, 3.5/2000, 7/2010, 10.5/2020, 14/2025} {
     \draw[thick] (\x,-0.2) -- (\x,0.2);
     \node[below] at (\x,-0.3) {\small\year};
   }
-  
-  % Add events
-  \node[event, above] at (0,1.5) {Python\\Created};
-  \node[event, above] at (3.5,1.5) {C\#\\Released};
-  \node[event, above] at (7,1.5) {Rust\\First Stable};
-  \node[event, below] at (7,-1.5) {Go\\Released};
-  \node[event, above] at (10.5,1.5) {TypeScript\\Released};
-  \node[event, below] at (14,-1.5) {AI/ML\\Boom};
-  
-  % Draw connections
-  \draw[arrow] (0,0.3) -- (0,0.7);
-  \draw[arrow] (3.5,0.3) -- (3.5,0.7);
-  \draw[arrow] (7,0.3) -- (7,0.7);
-  \draw[arrow] (7,-0.3) -- (7,-0.7);
-  \draw[arrow] (10.5,0.3) -- (10.5,0.7);
-  \draw[arrow] (14,-0.3) -- (14,-0.7);
+
+  \node[event, above] at (0,1.2) {Python\\Created};
+  \node[event, above] at (3.5,1.2) {C\#\\Released};
+  \node[event, above] at (7,1.2) {Rust\\First Stable};
+  \node[event, below] at (7,-1.2) {Go\\Released};
+  \node[event, above] at (10.5,1.2) {TypeScript\\Released};
+  \node[event, below] at (14,-1.2) {AI/ML\\Boom};
+
+  \draw[arrow] (0,0.3) -- (0,0.5);
+  \draw[arrow] (3.5,0.3) -- (3.5,0.5);
+  \draw[arrow] (7,0.3) -- (7,0.5);
+  \draw[arrow] (7,-0.3) -- (7,-0.5);
+  \draw[arrow] (10.5,0.3) -- (10.5,0.5);
+  \draw[arrow] (14,-0.3) -- (14,-0.5);
 \end{tikzpicture}
 \end{latin}
 \caption{خط زمانی تاریخچه زبان‌های برنامه‌نویسی}
 \label{fig:timeline}
 \end{figure}
 
-%----------------------------------------
-% Summary
-%----------------------------------------
-\chapter{خلاصه نتایج}
+%========================================================================
+% CHAPTER 6 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
 
 \section{وضعیت سیستم گرافیک}
+\label{sec:summary-status}
 
-\begin{table}[h]
-\centering
-\caption{وضعیت قابلیت‌های گرافیکی}
-\label{tab:graphics-status}
-\begin{tabular}{|c|C{6cm}|c|}
-\hline
-\textbf{نوع نمودار} & \textbf{موارد آزمایش شده} & \textbf{وضعیت} \\
-\hline
-توابع ریاضی & ۳ نمودار (پایه، مثلثاتی، فعال‌سازی) & \textcolor{matingreen}{✅} \\
-نمودار آماری & میله‌ای، خطی، پراکندگی & \textcolor{matingreen}{✅} \\
-فلوچارت & اعتبارسنجی داده + معماری نرم‌افزار & \textcolor{matingreen}{✅} \\
-درخت & \lr{BST} + درخت بیان ریاضی & \textcolor{matingreen}{✅} \\
-گراف & گراف وزن‌دار جهت‌دار & \textcolor{matingreen}{✅} \\
-سه‌بعدی & نمودار سطح \lr{3D} & \textcolor{matingreen}{✅} \\
-دایره‌ای & نمودار \lr{Pie Chart} & \textcolor{matingreen}{✅} \\
-خط زمانی & تاریخچه زبان‌های برنامه‌نویسی & \textcolor{matingreen}{✅} \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:graphics-status} وضعیت قابلیت‌های گرافیکی
+\lr{MatinBook} را نشان می‌دهد.
 
-\section{نتیجه}
+\begin{matintable}{وضعیت قابلیت‌های گرافیکی}{tab:graphics-status}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع نمودار & موارد آزمایش‌شده & وضعیت \\
+توابع ریاضی & ۳ نمودار (پایه، مثلثاتی، فعال‌سازی) & \textcolor{matingreen}{فعال} \\
+نمودار آماری & میله‌ای، خطی، پراکندگی & \textcolor{matingreen}{فعال} \\
+فلوچارت & اعتبارسنجی داده + معماری نرم‌افزار & \textcolor{matingreen}{فعال} \\
+درخت & \lr{BST} + درخت بیان ریاضی & \textcolor{matingreen}{فعال} \\
+گراف & گراف وزن‌دار جهت‌دار & \textcolor{matingreen}{فعال} \\
+سه‌بعدی & نمودار سطح \lr{3D} & \textcolor{matingreen}{فعال} \\
+دایره‌ای & نمودار \lr{Pie Chart} & \textcolor{matingreen}{فعال} \\
+خط زمانی & تاریخچه زبان‌های برنامه‌نویسی & \textcolor{matingreen}{فعال} \\
+\end{tblr}
+\end{matintable}
 
-\textbf{ماژول گرافیک \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
-۱۲ نمودار مختلف شامل توابع ریاضی، نمودارهای آماری،
-فلوچارت، درخت، گراف، نمودار سه‌بعدی و خط زمانی
-به درستی رسم می‌شوند. 🎉
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
+
+در این آزمون، سیستم گرافیک \lr{MatinBook} بر اساس پنج
+معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{کیفیت ترسیم}: دقت و زیبایی نمودارها.
+    \item \textbf{رنگ‌آمیزی}: هماهنگی با پالت \lr{MatinBook}.
+    \item \textbf{کپشن فارسی}: متن‌های گویا و ارجاع‌پذیر.
+    \item \textbf{تنوع}: پوشش انواع رایج نمودار.
+    \item \textbf{پایداری}: رفتار یکنواخت در همه‌ی نمودارها.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام زیرسیستم‌های گرافیک \lr{MatinBook} نسخه‌ی
+\lr{\matinbookversion} با موفقیت بارگذاری و آزمایش شدند.
+دوازده نمودار مختلف شامل توابع ریاضی، نمودارهای آماری،
+فلوچارت، درخت، گراف، نمودار سه‌بعدی، نمودار دایره‌ای
+و خط زمانی، همگی به‌درستی رسم می‌شوند.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، دهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item نمودار توابع ریاضی
+        \item نمودارهای آماری
+        \item فلوچارت‌ها
+        \item درخت‌ها
+        \item گراف‌ها
+        \item نمودار سه‌بعدی
+        \item نمودار دایره‌ای
+        \item خط زمانی
+    \end{itemize}
+}
 
 \end{document}
