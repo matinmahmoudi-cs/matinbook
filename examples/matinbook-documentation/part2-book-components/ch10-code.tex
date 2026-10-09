@@ -34,24 +34,6 @@
 داخل محیط \env{latin} استفاده کنید:
 
 \begin{latin}
-\begin{minted}{latex}
-\begin{latin}
-\begin{minted}{python}
-def factorial(n: int) -> int:
-    """Calculate n! recursively."""
-    if n <= 1:
-        return 1
-    return n * factorial(n - 1)
-\end{minted}
-\end{latin}
-\codecaption{|\pc{تابع فاکتوریل بازگشتی}|}
-\label{code:factorial}
-\end{minted}
-\end{latin}
-
-خروجی:
-
-\begin{latin}
 \begin{minted}{python}
 def factorial(n: int) -> int:
     """Calculate n! recursively."""
@@ -61,7 +43,7 @@ def factorial(n: int) -> int:
 \end{minted}
 \end{latin}
 \codecaption{تابع فاکتوریل بازگشتی}
-\label{code:factorial-ch10}
+\label{code:factorial}
 
 \mnote{محیط \lr{minted} باید همیشه داخل \lr{\textbackslash begin\{latin\}} قرار گیرد. این کار جهت کد را لاتین نگه می‌دارد.}
 
@@ -69,14 +51,17 @@ def factorial(n: int) -> int:
 \label{sec:code-caption}
 
 برای افزودن کپشن به کد، از دستور \cmd{codecaption}
-استفاده کنید:
+استفاده کنید. این دستور باید \textbf{بعد از}
+محیط \env{minted} قرار گیرد:
 
 \begin{latin}
-\begin{minted}{latex}
-\codecaption{|\pc{کپشن کد}|}
-\label{code:my-code}
+\begin{minted}{python}
+x = 5
+y = 10
 \end{minted}
 \end{latin}
+\codecaption{تعریف دو متغیر}
+\label{code:two-vars}
 
 \mnote{دستور \lr{\textbackslash codecaption} یک شمارنده‌ی مستقل برای کدها ایجاد می‌کند که به‌صورت «فصل.شماره» نمایش داده می‌شود.}
 
@@ -88,12 +73,11 @@ def factorial(n: int) -> int:
 
 \begin{latin}
 \begin{minted}{latex}
-|\pc{همان‌طور که در}|\cref{code:factorial}|\pc{می‌بینیم...}|%
+\cref{code:factorial}
 \end{minted}
 \end{latin}
 
-خروجی: همان‌طور که در \cref{code:factorial-ch10}
-می‌بینیم...
+خروجی: \cref{code:factorial}.
 
 \mnote{دستور \lr{\textbackslash cref} به‌طور خودکار نوع مرجع را تشخیص می‌دهد و پیشوند «کد» را اضافه می‌کند.}
 
@@ -117,8 +101,7 @@ def factorial(n: int) -> int:
 \subsection{کامنت فارسی در پایتون}
 \label{sec:code-pcc}
 
-برای کامنت فارسی در پایتون، از \cmd{pcc} داخل
-\lr{|...|} استفاده کنید:
+برای کامنت فارسی در پایتون، کد زیر را بنویسید:
 
 \begin{latin}
 \begin{minted}{python}
@@ -127,40 +110,16 @@ y = 10  |\pcc{مقدار دیگر}|
 result = x + y  |\pcc{جمع دو متغیر}|
 \end{minted}
 \end{latin}
-
-
-خروجی:
-
-\begin{latin}
-\begin{minted}{python}
-x = 5  |\pcc{مقدار متغیر}|
-y = 10  |\pcc{مقدار دیگر}|
-result = x + y  |\pcc{جمع دو متغیر}|
-\end{minted}
-\end{latin}
+\codecaption{جمع دو متغیر با کامنت فارسی}
+\label{code:sum-persian}
 
 \mnote{اگر به‌جای \lr{\textbackslash pcc} از \lr{\# |\textbackslash pc\{...\}|} استفاده کنید، \lr{Pygments} علامت \lr{\#} را به‌عنوان شروع کامنت می‌بیند و \lr{|} را نادیده می‌گیرد. نتیجه، مربع‌های خالی است.}
 
 \subsection{متن فارسی در \lr{LaTeX}}
 \label{sec:code-pc}
 
-برای متن فارسی غیرکامنت (مثلاً در \lr{LaTeX})،
-از \cmd{pc} استفاده کنید:
-
-\begin{latin}
-\begin{minted}{latex}
-\begin{latin}
-\begin{minted}{latex}
-\documentclass{matinbook}
-\begin{document}
-\chapter{|\pc{فصل نمونه}|}
-\end{document}
-\end{minted}
-\end{latin}
-\end{minted}
-\end{latin}
-
-خروجی:
+برای متن فارسی غیرکامنت در \lr{LaTeX}، کد زیر
+را بنویسید:
 
 \begin{latin}
 \begin{minted}{latex}
@@ -170,6 +129,8 @@ result = x + y  |\pcc{جمع دو متغیر}|
 \end{document}
 \end{minted}
 \end{latin}
+\codecaption{یک سند ساده‌ی \lr{LaTeX} با متن فارسی}
+\label{code:latex-persian}
 
 \mnote{دستور \lr{\textbackslash pc} باید همیشه داخل \lr{|...|} قرار گیرد. اگر بیرون از \lr{|...|} باشد، به‌عنوان متن خام نمایش داده می‌شود.}
 
@@ -201,16 +162,9 @@ result = x + y  |\pcc{جمع دو متغیر}|
 \label{sec:code-inline}
 
 برای ارجاع به یک تابع یا متغیر در متن، از
-دستور \cmd{inlcode} استفاده کنید:
+دستور \cmd{inlcode} استفاده کنید. مثال:
 
-\begin{latin}
-\begin{minted}{latex}
-|\pc{تابع}|\inlcode{factorial()}|\pc{یک تابع بازگشتی است.}|%
-\end{minted}
-\end{latin}
-
-خروجی: تابع \inlcode{factorial()} یک تابع
-بازگشتی است.
+تابع \inlcode{factorial()} یک تابع بازگشتی است.
 
 \mnote{دستور \lr{\textbackslash inlcode} فونت مونواسپیس را در متن اعمال می‌کند و برای کدهای کوتاه (کمتر از ۴۰ کاراکتر) مناسب است.}
 
@@ -225,39 +179,9 @@ result = x + y  |\pcc{جمع دو متغیر}|
 باید داخل \env{latin} قرار گیرد:
 
 \begin{latin}
-\begin{minted}{latex}
-\begin{latin}
-\begin{algorithm}
-\caption{|\pc{جستجوی دودویی}|}
-\label{alg:binary}
-\begin{algorithmic}[1]
-    \Require Sorted array $A$ of $n$ elements
-    \Require Target value $x$
-    \Ensure Index of $x$ in $A$, or $-1$
-    \State $left \gets 0$, $right \gets n - 1$
-    \While{$left \leq right$}
-        \State $mid \gets (left + right) / 2$
-        \If{$A[mid] = x$}
-            \State \Return $mid$
-        \ElsIf{$A[mid] < x$}
-            \State $left \gets mid + 1$
-        \Else
-            \State $right \gets mid - 1$
-        \EndIf
-    \EndWhile
-    \State \Return $-1$
-\end{algorithmic}
-\end{algorithm}
-\end{latin}
-\end{minted}
-\end{latin}
-
-خروجی:
-
-\begin{latin}
 \begin{algorithm}
 \caption{جستجوی دودویی}
-\label{alg:binary-ch10}
+\label{alg:binary}
 \begin{algorithmic}[1]
     \Require Sorted array $A$ of $n$ elements
     \Require Target value $x$
@@ -285,22 +209,6 @@ result = x + y  |\pcc{جمع دو متغیر}|
 
 برای کامنت فارسی در الگوریتم، از \cmd{pc} داخل
 \lr{|...|} استفاده کنید:
-
-\begin{latin}
-\begin{minted}{latex}
-\begin{algorithmic}[1]
-    \Require Sorted array $A$
-    \While{$left \leq right$}
-        \State $mid \gets (left + right) / 2$
-        \If{$A[mid] = x$}
-            \State \Return $mid$  \Comment{|\pc{یافتن مقدار}|}
-        \EndIf
-    \EndWhile
-\end{algorithmic}
-\end{minted}
-\end{latin}
-
-خروجی:
 
 \begin{latin}
 \begin{algorithm}
@@ -358,15 +266,7 @@ result = x + y  |\pcc{جمع دو متغیر}|
 \label{sec:code-algorithm-reference}
 
 برای ارجاع به الگوریتم، از \cmd{cref} استفاده
-کنید:
-
-\begin{latin}
-\begin{minted}{latex}
-|\pc{الگوریتم}|\cref{alg:binary}|\pc{فرآیند جستجو را نشان می‌دهد.}|%
-\end{minted}
-\end{latin}
-
-خروجی: الگوریتم \cref{alg:binary-ch10} فرآیند
+کنید. مثال: الگوریتم \cref{alg:binary} فرآیند
 جستجو را نشان می‌دهد.
 
 \mnote{برای فهرست الگوریتم‌ها، از \lr{\textbackslash listofalgorithms} در پیش‌متن استفاده کنید.}
@@ -428,58 +328,44 @@ result = x + y  |\pcc{جمع دو متغیر}|
 
 اگر کد را داخل \env{latin} قرار ندهید، ممکن
 است جهت کد به‌هم بریزد و شماره‌های خطوط
-جابه‌جا شوند:
+جابه‌جا شوند.
 
-\begin{latin}
-\begin{minted}{latex}
-% |\pc{اشتباه}|:
-\begin{minted}{python}
-x = 5  |\pcc{مقدار}|
-\end{minted}
-
-% |\pc{درست}|:
-\begin{latin}
-\begin{minted}{python}
-x = 5  |\pcc{مقدار}|
-\end{minted}
-\end{latin}
-\end{minted}
-\end{latin}
+\textbf{راه‌حل:} همیشه کد را داخل
+\cmd{begin\{latin\}...\textbackslash end\{latin\}}
+قرار دهید.
 
 \subsection{فراموش کردن \cmd{pcc} در پایتون}
 \label{sec:code-mistake-pcc}
 
-اگر در پایتون از \lr{\# |\textbackslash pc\{...\}|}
-استفاده کنید، \lr{Pygments} علامت \lr{\#} را
-به‌عنوان شروع کامنت می‌بیند و \lr{|} را نادیده
-می‌گیرد:
+اگر در پایتون از \lr{\#} قبل از \cmd{pc} استفاده
+کنید، \lr{Pygments} علامت \lr{\#} را به‌عنوان
+شروع کامنت می‌بیند و \lr{|} را نادیده می‌گیرد.
+نتیجه، مربع‌های خالی است.
 
-\begin{latin}
-\begin{minted}{latex}
-% |\pc{اشتباه}|:
-x = 5  # |\pc{مقدار متغیر}|
-
-% |\pc{درست}|:
-x = 5  |\pcc{مقدار متغیر}|
-\end{minted}
-\end{latin}
+\textbf{راه‌حل:} به‌جای \lr{\# |\textbackslash pc\{...\}|}،
+از \lr{|\textbackslash pcc\{...\}|} استفاده کنید.
 
 \subsection{فراموش کردن \cmd{pc} در \lr{LaTeX}}
 \label{sec:code-mistake-pc}
 
 اگر در \lr{LaTeX} متن فارسی را بدون \cmd{pc}
 بنویسید، نتیجه به‌صورت مربع‌های خالی نمایش
-داده می‌شود:
+داده می‌شود.
 
-\begin{latin}
-\begin{minted}{latex}
-% |\pc{اشتباه}|:
-\chapter{فصل نمونه}
+\textbf{راه‌حل:} متن فارسی را داخل \lr{|\textbackslash pc\{...\}|}
+قرار دهید.
 
-% |\pc{درست}|:
-\chapter{|\pc{فصل نمونه}|}
-\end{minted}
-\end{latin}
+\subsection{کد تودرتو \lr{(nested minted)}}
+\label{sec:code-mistake-nested}
+
+هرگز یک بلوک \env{minted} را داخل بلوک
+\env{minted} دیگر قرار ندهید. این کار باعث
+خطاهای \lr{Extra \textbackslash endgroup}
+می‌شود، چون \lr{fvextra} از \lr{VerbatimOut}
+استفاده می‌کند که نمی‌تواند تودرتو باشد.
+
+\textbf{راه‌حل:} کد نهایی را مستقیماً نمایش دهید،
+نه کدِ نوشتنِ کد را.
 
 \section{تمرین‌ها}
 \label{sec:code-exercises}
@@ -537,9 +423,12 @@ x = 5  |\pcc{مقدار متغیر}|
     \cmd{Comment\{|\cmd{pc}\{...\}|\}} نوشته
     می‌شود.
 
+    \item هرگز \env{minted} را داخل \env{minted}
+    قرار ندهید.
+
     \item خطاهای رایج شامل فراموش کردن
-    \env{latin}، \cmd{pcc} در پایتون، و \cmd{pc}
-    در \lr{LaTeX} است.
+    \env{latin}، \cmd{pcc} در پایتون، \cmd{pc}
+    در \lr{LaTeX}، و کد تودرتو است.
 \end{itemize}
 
 در فصل بعدی (\cref{chap:graphics})، با نمودار
