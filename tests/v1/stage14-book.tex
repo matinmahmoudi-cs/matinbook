@@ -1,188 +1,216 @@
 %========================================
-% MatinBook - Stage 14: Complete Book Test
-% Test: ALL Modules + Bibliography + Index + Cover
-% Purpose: Full integration test of all MatinBook features
+% MatinBook — Stage 14: Complete Book Test
+% Version: v1.1
+% Purpose:
+%   Full integration test of all MatinBook v1.1 features:
+%     1. Full book structure (cover, frontmatter, mainmatter,
+%        backmatter, back cover)
+%     2. All box families (matinbox, matin-outline)
+%     3. Math environments and operators
+%     4. Code listings (minted) with Python
+%     5. Algorithms with Persian captions
+%     6. Graphics (TikZ + PGFPlots)
+%     7. Bibliography (biblatex + biber)
+%     8. Index (xindy with Persian sorting)
+%     9. Cross-references (\cref)
+%    10. Margin notes (\mnote)
+%
+% Compilation:
+%   xelatex -shell-escape stage14-book.tex
+%   biber stage14-book
+%   xelatex -shell-escape stage14-book.tex
+%   xelatex -shell-escape stage14-book.tex
+%   (full cycle required for bibliography + index + cover)
+%
+% Expected outcome:
+%   A complete, professionally typeset book demonstrating
+%   that all MatinBook modules work together coherently.
 %========================================
 
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
-%----------------------------------------
-% Bibliography
-%----------------------------------------
+%------------------------------------------------------------------------
+% Bibliography Resource
+%------------------------------------------------------------------------
 \addbibresource{../references.bib}
 
-%----------------------------------------
+%------------------------------------------------------------------------
 % Book Metadata
-%----------------------------------------
+%------------------------------------------------------------------------
 \title{راهنمای جامع برنامه‌نویسی و الگوریتم}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{راهنمای جامع برنامه‌نویسی و الگوریتم}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%========================================
-% COVER
-%========================================
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
 \makecover
-{راهنمای جامع\\برنامه‌نویسی و الگوریتم}
-{از مفاهیم پایه تا پیشرفته}
-{تیم توسعه MatinBook}
-{تابستان ۱۴۰۵}
+    {راهنمای جامع برنامه‌نویسی و الگوریتم}
+    {از مفاهیم پایه تا پیشرفته}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
 
-\makebackcover{%
-    این کتاب راهنمای کاملی برای یادگیری برنامه‌نویسی
-    و الگوریتم است که با استفاده از کلاس \lr{MatinBook}
-    نسخه ۱ حروف‌چینی شده است.
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
 
-    \textbf{ویژگی‌های کتاب:}
-    \begin{itemize}
-        \item آموزش گام‌به‌گام برنامه‌نویسی پایتون
-        \item پیاده‌سازی الگوریتم‌های کلاسیک
-        \item تحلیل پیچیدگی و مقایسه الگوریتم‌ها
-        \item نمودارها و شبه‌کدهای استاندارد
-        \item تمرین‌های متنوع با راه حل تشریحی
-        \item منابع معتبر و نمایه جامع
-    \end{itemize}
-
-    مناسب برای دانشجویان، مدرسان و علاقه‌مندان
-    به علوم کامپیوتر.
-
-    \textbf{ساخته شده با \lr{MatinBook} نسخه ۱}
-}
-
-%========================================
-% TITLE PAGE
-%========================================
+% Title page
 \maketitle
 
-%========================================
-% COPYRIGHT
-%========================================
+% Copyright / Colophon
 \thispagestyle{empty}
-\vspace*{6cm}
+\vfill
 \begin{center}
-    {\large\textbf{حقوق نشر}}\\[1cm]
-    تمامی حقوق این کتاب برای تیم \lr{MatinBook} محفوظ است.\\
-    هرگونه کپی‌برداری، تکثیر و انتشار بدون اجازه کتبی ممنوع است.\\[1cm]
-    نسخه ۱.۰ --- تابستان ۱۴۰۵\\[1cm]
-    \lr{Copyright \copyright\ 2026 MatinBook Project}\\
+    {\large\textbf{حقوق نشر}}
+
+    \vspace{1cm}
+
+    تمامی حقوق این کتاب برای تیم \lr{MatinBook} محفوظ است.
+    هرگونه کپی‌برداری، تکثیر و انتشار بدون اجازه‌ی کتبی ممنوع است.
+
+    \vspace{1cm}
+
+    نسخه \matinbookversion\ — \matinbookdate
+
+    \vspace{1cm}
+
+    \lr{Copyright \copyright\ 2026 MatinBook Project} \\
     \lr{Licensed under the MIT License}
 \end{center}
 \clearpage
 
-%========================================
-% DEDICATION
-%========================================
+% Dedication
 \thispagestyle{empty}
 \vfill
 \begin{flushright}
     {\Large\itshape
         تقدیم به تمام جویندگان دانش\\
-        که هیچ‌گاه از یادگیری\\
-        دست نمی‌کشند.
+        که هیچ‌گاه از یادگیری دست نمی‌کشند.
     }
 \end{flushright}
 \clearpage
-\frontmatter
 
-%========================================
-% PREFACE
-%========================================
+% Preface
 \chapter*{پیشگفتار}
 \addcontentsline{toc}{chapter}{پیشگفتار}
 
-\section*{درباره این کتاب}
+\section*{درباره‌ی این کتاب}
 
-این کتاب حاصل ماه‌ها تلاش تیم \lr{MatinBook}
-برای ایجاد یک منبع آموزشی کامل در زمینه
-برنامه‌نویسی و الگوریتم است. هدف ما ارائه
-مطالبی دقیق، روان و کاربردی با استفاده از
-ابزارهای حروف‌چینی مدرن فارسی است.
+این کتاب حاصل ماه‌ها تلاش تیم \lr{MatinBook} برای ایجاد
+یک منبع آموزشی کامل در زمینه‌ی برنامه‌نویسی و الگوریتم
+است. هدف ما ارائه‌ی مطالبی دقیق، روان و کاربردی با
+استفاده از ابزارهای حروف‌چینی مدرن فارسی است.
 
 \section*{ساختار کتاب}
 
 کتاب در سه بخش اصلی سازماندهی شده است:
 
 \begin{enumerate}
-    \item \textbf{بخش اول --- مبانی برنامه‌نویسی:}
-    آشنایی با پایتون، ساختارهای داده و کنترل جریان
-    
-    \item \textbf{بخش دوم --- الگوریتم‌ها:}
-    الگوریتم‌های جستجو، مرتب‌سازی و تحلیل پیچیدگی
-    
-    \item \textbf{بخش سوم --- مفاهیم پیشرفته:}
-    برنامه‌نویسی شیءگرا، ساختمان داده‌های پیشرفته
-    و الگوریتم‌های گراف
+    \item \textbf{بخش اول — مبانی برنامه‌نویسی:}
+    آشنایی با پایتون، ساختارهای داده و کنترل جریان.
+    \item \textbf{بخش دوم — الگوریتم‌ها:}
+    الگوریتم‌های جستجو، مرتب‌سازی و تحلیل پیچیدگی.
+    \item \textbf{بخش سوم — مفاهیم پیشرفته:}
+    برنامه‌نویسی شیءگرا، ساختمان داده‌های پیشرفته و
+    الگوریتم‌های گراف.
 \end{enumerate}
 
-\section*{نحوه استفاده}
+\section*{نحوه‌ی استفاده}
 
-هر فصل شامل توضیحات نظری، کدهای نمونه،
-نمودارهای آموزشی و تمرین‌های عملی است.
-توصیه می‌شود خواننده علاوه بر مطالعه متن،
-کدها را اجرا و تمرین‌ها را حل کند.
+هر فصل شامل توضیحات نظری، کدهای نمونه، نمودارهای
+آموزشی و تمرین‌های عملی است. توصیه می‌شود خواننده
+علاوه بر مطالعه‌ی متن، کدها را اجرا و تمرین‌ها را
+حل کند.
 
 \vspace{1cm}
 \begin{flushleft}
-    \textbf{تیم توسعه MatinBook}\\
-    تابستان ۱۴۰۵
+    \textbf{تیم توسعه MatinBook} \\
+    مهر ۱۴۰۵
 \end{flushleft}
 
 \clearpage
 
-%========================================
-% TABLE OF CONTENTS
-%========================================
+% Table of Contents
 \tableofcontents
 \clearpage
 
+% List of Figures
 \listoffigures
 \clearpage
 
+% List of Tables
 \listoftables
 \clearpage
 
+% List of Algorithms
 \listofalgorithms
 \clearpage
-\mainmatter
 
-%========================================
-% PART 1: PROGRAMMING BASICS
-%========================================
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% PART 1 — PROGRAMMING BASICS
+%========================================================================
 \part{مبانی برنامه‌نویسی}
 
-%========================================
-% CHAPTER 1: Python Fundamentals
-%========================================
+%========================================================================
+% CHAPTER 1 — PYTHON FUNDAMENTALS
+%========================================================================
 \chapter{مبانی پایتون}
 \label{chap:python}
 
 \section{معرفی زبان پایتون}
+\label{sec:python-intro}
 
-پایتون\index{پایتون} یک زبان برنامه‌نویسی
-سطح بالا، تفسیری و همه‌منظوره است که توسط
-خیدو فان روسوم\index{فان روسوم، خیدو}
-در سال ۱۹۹۱ میلادی ساخته شد. این زبان
-بر خوانایی کد و سادگی نحو تأکید دارد
-و امروزه در حوزه‌های مختلفی از جمله
-علم داده\index{علم داده}،
-هوش مصنوعی\index{هوش مصنوعی}،
-توسعه وب\index{توسعه وب} و
-خودکارسازی\index{خودکارسازی} استفاده می‌شود.
+پایتون\index{پایتون} یک زبان برنامه‌نویسی سطح بالا،
+تفسیری و همه‌منظوره است که توسط خیدو فان
+روسوم\index{فان روسوم، خیدو} در سال ۱۹۹۱ میلادی
+ساخته شد. این زبان بر خوانایی کد و سادگی نحو تأکید
+دارد و امروزه در حوزه‌های مختلفی از جمله علم
+داده\index{علم داده}، هوش مصنوعی\index{هوش مصنوعی}،
+توسعه‌ی وب\index{توسعه وب} و خودکارسازی\index{خودکارسازی}
+استفاده می‌شود.
+
+\mnote{پایتون در سال ۲۰۲۴ محبوب‌ترین زبان برنامه‌نویسی جهان بوده است.}
 
 \begin{definition}[پایتون]
-    پایتون یک زبان برنامه‌نویسی شیءگرا،
-    تفسیری و با نوع‌دهی پویا (\lr{dynamic typing})
-    است که فلسفه طراحی آن بر خوانایی کد
-    و کاهش پیچیدگی نحو استوار است.
+    پایتون یک زبان برنامه‌نویسی شیءگرا، تفسیری و با
+    نوع‌دهی پویا (\lr{dynamic typing}) است که فلسفه‌ی
+    طراحی آن بر خوانایی کد و کاهش پیچیدگی نحو استوار
+    است.
     \label{def:python}
 \end{definition}
 
 \section{انواع داده و متغیرها}
+\label{sec:python-datatypes}
+
+انواع داده‌ی پایه در پایتون در \cref{code:data-types}
+نمایش داده شده است:
 
 \begin{latin}
 \begin{minted}{python}
@@ -207,23 +235,26 @@ print(f"Height: {height}, Student: {is_student}")
 \label{code:data-types}
 
 \section{ساختارهای کنترلی}
+\label{sec:python-control}
 
 \begin{definition}[ساختار شرطی]
-    ساختار شرطی\index{ساختار شرطی} به برنامه
-    اجازه می‌دهد بر اساس شرایط مختلف،
-    مسیرهای متفاوتی را اجرا کند.
+    ساختار شرطی\index{ساختار شرطی} به برنامه اجازه
+    می‌دهد بر اساس شرایط مختلف، مسیرهای متفاوتی را
+    اجرا کند.
     \label{def:conditional}
 \end{definition}
+
+نمونه‌ای از ساختار شرطی در \cref{code:conditional}:
 
 \begin{latin}
 \begin{minted}{python}
 def classify_number(n: int) -> str:
     """
     Classify a number as positive, negative, or zero.
-    
+
     Args:
         n: An integer to classify.
-    
+
     Returns:
         A string describing the number.
     """
@@ -245,6 +276,9 @@ for num in test_numbers:
 \label{code:conditional}
 
 \section{حلقه‌ها و تکرار}
+\label{sec:python-loops}
+
+انواع حلقه‌ها در \cref{code:loops}:
 
 \begin{latin}
 \begin{minted}{python}
@@ -268,37 +302,40 @@ print(f"\nSquares: {squares}")
 \codecaption{انواع حلقه‌ها در پایتون}
 \label{code:loops}
 
-%========================================
-% CHAPTER 2: Functions and Modules
-%========================================
+%========================================================================
+% CHAPTER 2 — FUNCTIONS AND MODULES
+%========================================================================
 \chapter{توابع و ماژول‌ها}
 \label{chap:functions}
 
 \section{تعریف تابع}
+\label{sec:functions-definition}
 
-تابع\index{تابع} بلوکی از کد است که
-می‌تواند ورودی دریافت کند، عملیاتی
-روی آن انجام دهد و خروجی تولید کند.
+تابع\index{تابع} بلوکی از کد است که می‌تواند ورودی
+دریافت کند، عملیاتی روی آن انجام دهد و خروجی تولید
+کند.
 
 \begin{definition}[تابع در پایتون]
-    تابع با کلمه کلیدی \inlcode{def} تعریف می‌شود
+    تابع با کلمه‌ی کلیدی \inlcode{def} تعریف می‌شود
     و می‌تواند پارامترهای ورودی، مستندات
     (\lr{docstring}) و مقدار بازگشتی داشته باشد.
     \label{def:function}
 \end{definition}
+
+نمونه‌ی تابع بازگشتی در \cref{code:factorial}:
 
 \begin{latin}
 \begin{minted}{python}
 def factorial(n: int) -> int:
     """
     Calculate the factorial of n recursively.
-    
+
     Args:
         n: A non-negative integer.
-    
+
     Returns:
         n! = n * (n-1) * ... * 1
-    
+
     Raises:
         ValueError: If n is negative.
     """
@@ -318,7 +355,7 @@ for i in range(10):
 \label{code:factorial}
 
 \begin{example}
-    خروجی تابع \coderef{code:factorial}:
+    خروجی تابع \cref{code:factorial}:
     \begin{align*}
         0! &= 1 \\
         5! &= 5 \times 4 \times 3 \times 2 \times 1 = 120 \\
@@ -328,6 +365,9 @@ for i in range(10):
 \end{example}
 
 \section{آرگومان‌های تابع}
+\label{sec:functions-arguments}
+
+آرگومان‌های متغیر در \cref{code:arguments}:
 
 \begin{latin}
 \begin{minted}{python}
@@ -339,27 +379,18 @@ def describe_person(
 ) -> str:
     """
     Create a description of a person.
-    
-    Args:
-        name: Person's full name.
-        age: Person's age (default: 0).
-        *hobbies: Variable number of hobbies.
-        **details: Additional key-value details.
-    
-    Returns:
-        A formatted description string.
     """
     parts = [f"Name: {name}"]
-    
+
     if age > 0:
         parts.append(f"Age: {age}")
-    
+
     if hobbies:
         parts.append(f"Hobbies: {', '.join(hobbies)}")
-    
+
     for key, value in details.items():
         parts.append(f"{key}: {value}")
-    
+
     return "\n".join(parts)
 
 
@@ -372,31 +403,34 @@ print(describe_person("Sara", job="Engineer", city="Tehran"))
 \codecaption{آرگومان‌های متغیر در پایتون}
 \label{code:arguments}
 
-%========================================
-% PART 2: ALGORITHMS
-%========================================
+%========================================================================
+% PART 2 — ALGORITHMS
+%========================================================================
 \part{الگوریتم‌ها}
 
-%========================================
-% CHAPTER 3: Search Algorithms
-%========================================
+%========================================================================
+% CHAPTER 3 — SEARCH ALGORITHMS
+%========================================================================
 \chapter{الگوریتم‌های جستجو}
 \label{chap:search}
 
 \section{جستجوی خطی}
+\label{sec:search-linear}
 
 الگوریتم جستجوی خطی\index{الگوریتم!جستجوی خطی}
-ساده‌ترین روش جستجو است. در این روش،
-تک‌تک عناصر آرایه بررسی می‌شوند
-تا عنصر مورد نظر پیدا شود.
+ساده‌ترین روش جستجو است. در این روش، تک‌تک عناصر
+آرایه بررسی می‌شوند تا عنصر مورد نظر پیدا شود
+(\cref{alg:linear}).
 
 \begin{latin}
 \begin{algorithm}
+\caption{جستجوی خطی}
+\label{alg:linear}
 \begin{algorithmic}[1]
     \Require $A[1..n]$: array of $n$ elements
     \Require $x$: target value to find
     \Ensure Index of $x$ in $A$, or $-1$ if not found
-    
+
     \For{$i \gets 1$ \textbf{to} $n$}
         \If{$A[i] = x$}
             \State \Return $i$
@@ -405,28 +439,30 @@ print(describe_person("Sara", job="Engineer", city="Tehran"))
     \State \Return $-1$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:linear]{جستجوی خطی}
 \end{latin}
 
 \begin{theorem}[پیچیدگی جستجوی خطی]
-    الگوریتم \algref{alg:linear} در بدترین حالت
-    $O(n)$ مقایسه انجام می‌دهد.
+    الگوریتم \cref{alg:linear} در بدترین حالت
+    \lr{$O(n)$} مقایسه انجام می‌دهد.
     \label{thm:linear-complexity}
 \end{theorem}
 
 \section{جستجوی دودویی}
+\label{sec:search-binary}
 
-برای آرایه‌های \textbf{مرتب}،
-جستجوی دودویی\index{الگوریتم!جستجوی دودویی}
-بسیار کارآمدتر است.
+برای آرایه‌های \textbf{مرتب}، جستجوی
+دودویی\index{الگوریتم!جستجوی دودویی} بسیار
+کارآمدتر است (\cref{alg:binary}).
 
 \begin{latin}
 \begin{algorithm}
+\caption{جستجوی دودویی}
+\label{alg:binary}
 \begin{algorithmic}[1]
     \Require $A[1..n]$: sorted array (ascending)
     \Require $x$: target value to find
     \Ensure Index of $x$ in $A$, or $-1$ if not found
-    
+
     \State $left \gets 1$, $right \gets n$
     \While{$left \leq right$}
         \State $mid \gets \lfloor (left + right) / 2 \rfloor$
@@ -441,15 +477,17 @@ print(describe_person("Sara", job="Engineer", city="Tehran"))
     \State \Return $-1$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:binary]{جستجوی دودویی}
 \end{latin}
+
+نمودار \cref{fig:search-comparison} رشد پیچیدگی دو
+الگوریتم را مقایسه می‌کند:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=12cm, height=7cm,
+    width=\textwidth, height=6.5cm,
     xlabel={Input Size ($n$)},
     ylabel={Number of Comparisons},
     title={Search Algorithm Comparison},
@@ -470,27 +508,30 @@ print(describe_person("Sara", job="Engineer", city="Tehran"))
 \end{figure}
 
 \begin{remark}
-    جستجوی دودویی (\algref{alg:binary})
-    فقط روی آرایه‌های \textbf{مرتب} کار می‌کند.
-    اگر آرایه مرتب نباشد، ابتدا باید آن را
-    مرتب کرد که خود هزینه $O(n \log n)$ دارد.
+    جستجوی دودویی (\cref{alg:binary}) فقط روی
+    آرایه‌های \textbf{مرتب} کار می‌کند. اگر آرایه
+    مرتب نباشد، ابتدا باید آن را مرتب کرد که خود
+    هزینه‌ی \lr{$O(n \log n)$} دارد.
     \label{rem:binary-requirement}
 \end{remark}
 
-%========================================
-% CHAPTER 4: Sorting Algorithms
-%========================================
+%========================================================================
+% CHAPTER 4 — SORTING ALGORITHMS
+%========================================================================
 \chapter{الگوریتم‌های مرتب‌سازی}
 \label{chap:sorting}
 
 \section{مرتب‌سازی سریع}
+\label{sec:sorting-quicksort}
 
-\lr{Quick Sort}\index{الگوریتم!مرتب‌سازی سریع}
-از الگوریتم‌های تقسیم و حل\index{تقسیم و حل}
-است که در عمل بسیار سریع عمل می‌کند.
+\lr{Quick Sort}\index{الگوریتم!مرتب‌سازی سریع} از
+الگوریتم‌های تقسیم و حل\index{تقسیم و حل} است که
+در عمل بسیار سریع عمل می‌کند (\cref{alg:quicksort}).
 
 \begin{latin}
 \begin{algorithm}
+\caption{مرتب‌سازی سریع}
+\label{alg:quicksort}
 \begin{algorithmic}[1]
     \Function{QuickSort}{$A$, $low$, $high$}
         \If{$low < high$}
@@ -501,13 +542,18 @@ print(describe_person("Sara", job="Engineer", city="Tehran"))
     \EndFunction
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:quicksort]{مرتب‌سازی سریع}
 \end{latin}
 
 \section{الگوریتم اقلیدس}
+\label{sec:sorting-euclidean}
+
+الگوریتم اقلیدس (\cref{alg:euclidean}) برای محاسبه‌ی
+بزرگ‌ترین مقسوم‌علیه مشترک:
 
 \begin{latin}
 \begin{algorithm}
+\caption{الگوریتم اقلیدس}
+\label{alg:euclidean}
 \begin{algorithmic}[1]
     \Require Non-negative integers $a, b$
     \Ensure $\gcd(a, b)$
@@ -519,64 +565,70 @@ print(describe_person("Sara", job="Engineer", city="Tehran"))
     \State \Return $a$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:euclidean]{الگوریتم اقلیدس}
 \end{latin}
 
 \section{جدول مقایسه}
+\label{sec:sorting-comparison}
 
-\begin{table}[h]
-\centering
-\caption{مقایسه پیچیدگی الگوریتم‌های مرتب‌سازی}
-\label{tab:sorting-comparison}
-\begin{tabular}{|c|c|c|c|c|}
-\hline
-\textbf{الگوریتم} & \textbf{بهترین} & \textbf{متوسط} & \textbf{بدترین} & \textbf{فضا} \\
-\hline
-حبابی & $O(n)$ & $O(n^2)$ & $O(n^2)$ & $O(1)$ \\
-ادغامی & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $O(n)$ \\
-سریع & $O(n \log n)$ & $O(n \log n)$ & $O(n^2)$ & $O(\log n)$ \\
-هیپی & $O(n \log n)$ & $O(n \log n)$ & $O(n \log n)$ & $O(1)$ \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:sorting-comparison} پیچیدگی
+الگوریتم‌های مرتب‌سازی را مقایسه می‌کند:
 
-%========================================
-% PART 3: ADVANCED TOPICS
-%========================================
+\begin{matintable}{مقایسه پیچیدگی الگوریتم‌های مرتب‌سازی}{tab:sorting-comparison}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c] X[c] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+الگوریتم & بهترین & متوسط & بدترین & فضا \\
+حبابی & \lr{$O(n)$} & \lr{$O(n^2)$} & \lr{$O(n^2)$} & \lr{$O(1)$} \\
+ادغامی & \lr{$O(n \log n)$} & \lr{$O(n \log n)$} & \lr{$O(n \log n)$} & \lr{$O(n)$} \\
+سریع & \lr{$O(n \log n)$} & \lr{$O(n \log n)$} & \lr{$O(n^2)$} & \lr{$O(\log n)$} \\
+هیپی & \lr{$O(n \log n)$} & \lr{$O(n \log n)$} & \lr{$O(n \log n)$} & \lr{$O(1)$} \\
+\end{tblr}
+\end{matintable}
+
+%========================================================================
+% PART 3 — ADVANCED TOPICS
+%========================================================================
 \part{مفاهیم پیشرفته}
 
-%========================================
-% CHAPTER 5: Object-Oriented Programming
-%========================================
+%========================================================================
+% CHAPTER 5 — OBJECT-ORIENTED PROGRAMMING
+%========================================================================
 \chapter{برنامه‌نویسی شیءگرا}
 \label{chap:oop}
 
 \section{کلاس و شیء}
+\label{sec:oop-classes}
 
 برنامه‌نویسی شیءگرا\index{برنامه‌نویسی شیءگرا}
-(\lr{OOP}) روشی برای سازمان‌دهی کد
-بر اساس مفاهیم «کلاس»\index{کلاس} و «شیء»\index{شیء}
-است.
+(\lr{OOP}) روشی برای سازمان‌دهی کد بر اساس مفاهیم
+«کلاس»\index{کلاس} و «شیء»\index{شیء} است.
 
 \begin{definition}[کلاس]
-    کلاس\index{کلاس!تعریف} قالبی برای ساخت اشیاء است
-    که ویژگی‌ها (\lr{attributes}) و رفتارهای
+    کلاس\index{کلاس!تعریف} قالبی برای ساخت اشیاء
+    است که ویژگی‌ها (\lr{attributes}) و رفتارهای
     (\lr{methods}) مشترک را تعریف می‌کند.
     \label{def:class}
 \end{definition}
+
+نمونه‌ی کلاس در \cref{code:bank-account}:
 
 \begin{latin}
 \begin{minted}{python}
 class BankAccount:
     """
     A simple bank account class.
-    
+
     Attributes:
         account_number: Unique account identifier.
         owner: Name of the account owner.
         balance: Current account balance.
     """
-    
+
     def __init__(
         self,
         account_number: str,
@@ -586,12 +638,12 @@ class BankAccount:
         self.account_number = account_number
         self.owner = owner
         self.balance = initial_balance
-    
+
     def deposit(self, amount: float) -> None:
         """Add money to the account."""
         if amount > 0:
             self.balance += amount
-    
+
     def withdraw(self, amount: float) -> bool:
         """Withdraw money if sufficient balance."""
         if 0 < amount <= self.balance:
@@ -611,34 +663,38 @@ print(f"Balance: {account.balance}")  # 1300
 \label{code:bank-account}
 
 \section{مفاهیم اصلی OOP}
+\label{sec:oop-concepts}
 
 \begin{itemize}
     \item \textbf{کپسوله‌سازی}\index{کپسوله‌سازی}:
-    پنهان‌سازی جزئیات پیاده‌سازی
-    \item \textbf{وراثت}\index{وراثت}:
-    ایجاد کلاس جدید بر اساس کلاس موجود
-    \item \textbf{چندریختی}\index{چندریختی}:
-    استفاده از یک رابط برای انواع مختلف
+    پنهان‌سازی جزئیات پیاده‌سازی.
+    \item \textbf{وراثت}\index{وراثت}: ایجاد کلاس
+    جدید بر اساس کلاس موجود.
+    \item \textbf{چندریختی}\index{چندریختی}: استفاده
+    از یک رابط برای انواع مختلف.
 \end{itemize}
 
-%========================================
-% CHAPTER 6: Data Structures
-%========================================
+%========================================================================
+% CHAPTER 6 — DATA STRUCTURES
+%========================================================================
 \chapter{ساختمان داده‌های پیشرفته}
 \label{chap:data-structures}
 
 \section{درخت جستجوی دودویی}
+\label{sec:ds-bst}
 
 درخت جستجوی دودویی\index{درخت!جستجوی دودویی}
-(\lr{BST}) ساختمان داده‌ای است که در آن
-هر گره حداکثر دو فرزند دارد و مقدار
-فرزند چپ کوچکتر و فرزند راست بزرگتر
-از گره والد است.
+(\lr{BST}) ساختمان داده‌ای است که در آن هر گره
+حداکثر دو فرزند دارد و مقدار فرزند چپ کوچک‌تر و
+فرزند راست بزرگ‌تر از گره والد است
+(\cref{fig:bst}).
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}[
+  scale=0.9,
+  transform shape,
   level distance=2cm,
   level 1/.style={sibling distance=4cm},
   level 2/.style={sibling distance=2cm}
@@ -665,43 +721,52 @@ print(f"Balance: {account.balance}")  # 1300
 \end{figure}
 
 \section{صف و پشته}
+\label{sec:ds-queue-stack}
 
-\begin{table}[h]
-\centering
-\caption{مقایسه صف و پشته}
-\label{tab:queue-stack}
-\begin{tabular}{|c|C{4cm}|C{4cm}|}
-\hline
-\textbf{ویژگی} & \textbf{صف (\lr{Queue})} & \textbf{پشته (\lr{Stack})} \\
-\hline
+جدول \cref{tab:queue-stack} صف و پشته را مقایسه می‌کند:
+
+\begin{matintable}{مقایسه صف و پشته}{tab:queue-stack}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+ویژگی & صف (\lr{Queue}) & پشته (\lr{Stack}) \\
 اصل & \lr{FIFO}\index{FIFO} & \lr{LIFO}\index{LIFO} \\
 درج & انتها (\lr{enqueue}) & بالا (\lr{push}) \\
 حذف & ابتدا (\lr{dequeue}) & بالا (\lr{pop}) \\
 کاربرد & صف چاپ، \lr{BFS} & بازگشت، \lr{DFS} \\
-\hline
-\end{tabular}
-\end{table}
+\end{tblr}
+\end{matintable}
 
-%========================================
-% CHAPTER 7: Graph Algorithms
-%========================================
+%========================================================================
+% CHAPTER 7 — GRAPH ALGORITHMS
+%========================================================================
 \chapter{الگوریتم‌های گراف}
 \label{chap:graphs}
 
 \section{جستجوی اول سطح}
+\label{sec:graphs-bfs}
+
+جستجوی اول سطح (\cref{alg:bfs}):
 
 \begin{latin}
 \begin{algorithm}
+\caption{جستجوی اول سطح (\lr{BFS})}
+\label{alg:bfs}
 \begin{algorithmic}[1]
     \Require Graph $G = (V, E)$, start vertex $s$
     \Ensure Shortest distances from $s$ to all vertices
-    
+
     \ForAll{$v \in V$}
         \State $dist[v] \gets \infty$
     \EndFor
     \State $dist[s] \gets 0$
     \State Queue $Q \gets [s]$
-    
+
     \While{$Q$ is not empty}
         \State $u \gets Q.\text{dequeue}()$
         \ForAll{neighbors $v$ of $u$}
@@ -714,23 +779,27 @@ print(f"Balance: {account.balance}")  # 1300
     \State \Return $dist$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:bfs]{جستجوی اول سطح (\lr{BFS})}
 \end{latin}
 
 \section{الگوریتم دایکسترا}
+\label{sec:graphs-dijkstra}
+
+الگوریتم دایکسترا (\cref{alg:dijkstra}):
 
 \begin{latin}
 \begin{algorithm}
+\caption{الگوریتم دایکسترا}
+\label{alg:dijkstra}
 \begin{algorithmic}[1]
     \Require Weighted graph $G = (V, E)$, source $s$
     \Ensure Shortest distances from $s$
-    
+
     \ForAll{$v \in V$}
         \State $dist[v] \gets \infty$
     \EndFor
     \State $dist[s] \gets 0$
     \State $PQ \gets$ priority queue of $(dist[v], v)$
-    
+
     \While{$PQ$ is not empty}
         \State $(d, u) \gets PQ.\text{extract\_min}()$
         \If{$d > dist[u]$} \textbf{continue} \EndIf
@@ -744,21 +813,21 @@ print(f"Balance: {account.balance}")  # 1300
     \State \Return $dist$
 \end{algorithmic}
 \end{algorithm}
-\algcaption[alg:dijkstra]{الگوریتم دایکسترا}
 \end{latin}
 
-%========================================
-% CHAPTER 8: Exercises
-%========================================
+%========================================================================
+% CHAPTER 8 — EXERCISES
+%========================================================================
 \chapter{تمرین‌های پایانی}
 \label{chap:exercises}
 
 \section{تمرین‌های برنامه‌نویسی}
+\label{sec:exercises-programming}
 
 \begin{exercise}
-    تابعی به نام \inlcode{is\_prime} بنویسید
-    که یک عدد صحیح دریافت کند و مشخص کند
-    آیا آن عدد اول است یا خیر.
+    تابعی به نام \inlcode{is_prime} بنویسید که یک
+    عدد صحیح دریافت کند و مشخص کند آیا آن عدد اول
+    است یا خیر.
     \label{exc:is-prime}
 \end{exercise}
 
@@ -782,8 +851,8 @@ print(is_prime(100)) # False
 \end{solution}
 
 \begin{exercise}
-    الگوریتم جستجوی دودویی (\algref{alg:binary})
-    را به صورت تابع پایتون پیاده‌سازی کنید.
+    الگوریتم جستجوی دودویی (\cref{alg:binary}) را
+    به‌صورت تابع پایتون پیاده‌سازی کنید.
     \label{exc:binary-search}
 \end{exercise}
 
@@ -811,6 +880,7 @@ print(binary_search(arr, 7))  # 3
 \end{solution}
 
 \section{تمرین‌های ریاضی}
+\label{sec:exercises-math}
 
 \begin{exercise}
     ثابت کنید $\sqrt{2}$ عددی گنگ است.
@@ -818,54 +888,88 @@ print(binary_search(arr, 7))  # 3
 \end{exercise}
 
 \begin{proof}
-    از برهان خلف استفاده می‌کنیم.
-    فرض کنید $\sqrt{2}$ گویا باشد:
-    $\sqrt{2} = \frac{a}{b}$ که $\gcd(a,b) = 1$.
+    از برهان خلف استفاده می‌کنیم. فرض کنید $\sqrt{2}$
+    گویا باشد: $\sqrt{2} = \frac{a}{b}$ که
+    $\gcd(a,b) = 1$.
 
-    $2 = \frac{a^{2}}{b^{2}} \implies a^{2} = 2b^{2}$
+    \[
+    2 = \frac{a^{2}}{b^{2}} \implies a^{2} = 2b^{2}
+    \]
 
-    بنابراین $a^{2}$ زوج است $\implies$ $a$ زوج است.
+    بنابراین $a^{2}$ زوج است، پس $a$ زوج است.
     $a = 2k \implies a^{2} = 4k^{2} = 2b^{2}
-    \implies b^{2} = 2k^{2}$
+    \implies b^{2} = 2k^{2}$.
 
-    بنابراین $b$ نیز زوج است.
-    اما $\gcd(a,b) \geq 2$ با فرض $\gcd(a,b) = 1$
-    تناقض دارد. $\therefore$ $\sqrt{2}$ گنگ است.
+    بنابراین $b$ نیز زوج است. اما $\gcd(a,b) \geq 2$
+    با فرض $\gcd(a,b) = 1$ تناقض دارد.
+    پس $\sqrt{2}$ گنگ است.
 \end{proof}
 
-%========================================
-% CONCLUSION
-%========================================
+%========================================================================
+% CHAPTER 9 — CONCLUSION
+%========================================================================
 \chapter{نتیجه‌گیری}
 \label{chap:conclusion}
 
-در این کتاب، سفری از مبانی برنامه‌نویسی
-تا الگوریتم‌های پیشرفته داشتیم.
-از پایتون\index{پایتون} شروع کردیم،
-با الگوریتم‌های جستجو\index{الگوریتم!جستجو}
-و مرتب‌سازی\index{الگوریتم!مرتب‌سازی} ادامه دادیم،
-و در نهایت به ساختمان داده‌های پیشرفته\index{ساختمان داده}
+در این کتاب، سفری از مبانی برنامه‌نویسی تا
+الگوریتم‌های پیشرفته داشتیم. از پایتون\index{پایتون}
+شروع کردیم، با الگوریتم‌های
+جستجو\index{الگوریتم!جستجو} و
+مرتب‌سازی\index{الگوریتم!مرتب‌سازی} ادامه دادیم، و
+در نهایت به ساختمان داده‌های پیشرفته\index{ساختمان داده}
 و الگوریتم‌های گراف\index{الگوریتم!گراف} رسیدیم.
 
-برای مطالعه بیشتر، منابع معرفی شده
-در بخش کتابنامه (\cite{knuth1984,cormen2009})
-توصیه می‌شوند.
+برای مطالعه‌ی بیشتر، منابع معرفی‌شده در بخش
+کتاب‌نامه (\cite{knuth1984,cormen2009}) توصیه
+می‌شوند.
 
 \begin{flushleft}
-    \textbf{پایان}\\
-    تابستان ۱۴۰۵
+    \textbf{پایان} \\
+    مهر ۱۴۰۵
 \end{flushleft}
 
-%========================================
-% BIBLIOGRAPHY
-%========================================
-\begin{latin}
-\printbibliography[title={منابع و مراجع}]
-\end{latin}
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
 
-%========================================
-% INDEX
-%========================================
+% Bibliography — NOT wrapped in \begin{latin}
+\printbibliography[title={منابع و مراجع}]
+
+% Index
 \printindex
+
+%------------------------------------------------------------------------
+% BACK COVER (must be at the very end)
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و
+    برنامه‌نویسان فارسی‌زبان است که با هدف ارائه‌ی یک
+    راه‌حل حرفه‌ای برای حروف‌چینی کتاب‌های فنی فارسی
+    فعالیت می‌کند. این پروژه حاصل سال‌ها تجربه در حوزه‌ی
+    نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این کتاب راهنمای کاملی برای یادگیری برنامه‌نویسی
+    و الگوریتم است که با استفاده از کلاس \lr{MatinBook}
+    نسخه‌ی \lr{\matinbookversion} حروف‌چینی شده است.
+
+    \vspace{0.5cm}
+
+    \textbf{ویژگی‌های کتاب:}
+    \begin{itemize}
+        \item آموزش گام‌به‌گام برنامه‌نویسی پایتون
+        \item پیاده‌سازی الگوریتم‌های کلاسیک
+        \item تحلیل پیچیدگی و مقایسه الگوریتم‌ها
+        \item نمودارها و شبه‌کدهای استاندارد
+        \item تمرین‌های متنوع با راه‌حل تشریحی
+        \item منابع معتبر و نمایه‌ی جامع
+    \end{itemize}
+
+    مناسب برای دانشجویان، مدرسان و علاقه‌مندان
+    به علوم کامپیوتر.
+}
 
 \end{document}
