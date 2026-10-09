@@ -1,0 +1,39 @@
+%%
+%% frontmatter/dedication.tex
+%%
+%% Dedication page.
+%%
+%% NOTE on RTL:
+%%   In an RTL document, `flushright` aligns to the START of
+%%   the text (the right edge of the page), which is what we
+%%   want for the dedication body. `flushleft` aligns to the
+%%   END of the text (the left edge), which is what we want
+%%   for the signature at the bottom.
+%%
+
+\thispagestyle{empty}
+\vspace*{5cm}
+
+% Body of the dedication — right-aligned in RTL
+\begin{flushright}
+    {\Large\itshape
+        تقدیم به\\
+        تمام نویسندگانی که\\
+        با کلمات، دنیایی تازه می‌سازند\\
+        و\\
+        به تمام خوانندگانی که\\
+        با هر صفحه، دانشی می‌آموزند.
+    }
+\end{flushright}
+
+\vfill
+
+% Signature — left-aligned in RTL
+\begin{flushleft}
+    {\large\itshape
+        متین محمودی\\
+        مهر ۱۴۰۵
+    }
+\end{flushleft}
+
+\clearpage
