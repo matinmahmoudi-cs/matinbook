@@ -1,0 +1,378 @@
+%%
+%% part2-book-components/ch05-cover.tex
+%%
+%% Chapter 5: Cover and Back Cover — Full-color front cover
+%% and static two-block back cover with author bio.
+%%
+
+\chapter{جلد و پشت جلد}
+\label{chap:cover}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:cover-why}
+
+جلد کتاب، اولین چیزی است که خواننده می‌بیند و
+نقش مهمی در جذب مخاطب دارد. در کتاب‌های فنی و
+علمی، جلد حرفه‌ای نشان‌دهنده‌ی کیفیت محتواست و
+اعتماد خواننده را جلب می‌کند.
+
+\lr{MatinBook} یک سیستم جلد کامل ارائه می‌دهد که
+شامل جلد جلو تمام‌رنگی و جلد عقب با دو بلوک
+ایستاتیک است. هدف این فصل، آموزش نحوه‌ی استفاده
+و شخصی‌سازی این سیستم است.
+
+\mnote{جلد \lr{MatinBook} با \lr{TikZ} ساخته می‌شود و به حداقل دو بار کامپایل نیاز دارد.}
+
+\section{جلد جلو}
+\label{sec:cover-front}
+
+جلد جلو با دستور \cmd{makecover} ساخته می‌شود.
+این دستور چهار آرگومان می‌گیرد:
+
+\begin{latin}
+\begin{minted}{latex}
+\makecover
+    {|\pc{عنوان کتاب}|}
+    {|\pc{زیرعنوان کتاب}|}
+    {|\pc{نام نویسنده}|}
+    {|\pc{مهر ۱۴۰۵}|}
+\end{minted}
+\end{latin}
+
+\begin{enumerate}
+    \item \textbf{عنوان کتاب:} عنوان اصلی.
+    \item \textbf{زیرعنوان:} توضیح کوتاه یا شعار.
+    \item \textbf{نام نویسنده:} نویسنده یا نویسندگان.
+    \item \textbf{تاریخ یا نسخه:} تاریخ یا شماره‌ی نسخه.
+\end{enumerate}
+
+\mnote{اگر زیرعنوان خالی باشد، از \lr{\{\}} استفاده کنید: \lr{\textbackslash makecover\{عنوان\}\{\}\{نویسنده\}\{تاریخ\}}.}
+
+\subsection{عناصر بصری جلد جلو}
+\label{sec:cover-front-elements}
+
+جلد جلو \lr{MatinBook} از عناصر زیر تشکیل شده
+است:
+
+\begin{itemize}
+    \item \textbf{پس‌زمینه‌ی سرمه‌ای:} رنگ اصلی جلد
+    که با \lr{matinnavy} تعریف شده است.
+    \item \textbf{گوه‌ی قرمز:} یک مثلث قرمز در
+    گوشه‌ی بالا-چپ.
+    \item \textbf{بیضی طلایی:} یک بیضی طلایی
+    در گوشه‌ی پایین-راست.
+    \item \textbf{شبکه‌ی مختصات:} یک شبکه‌ی
+    کم‌کنتراست برای بافت.
+    \item \textbf{نمونه‌کد C++:} یک نمونه‌ی کد
+    با فریم طلایی.
+    \item \textbf{معادلات ریاضی:} چهار معادله‌ی
+    معروف.
+    \item \textbf{فلش‌ها و نقاط:} عناصر تزئینی.
+\end{itemize}
+
+\mnote{همه‌ی این عناصر در فایل \lr{mb-theme-cover.sty} تعریف شده‌اند. برای شخصی‌سازی، این فایل را ویرایش کنید.}
+
+\subsection{نمای ساده‌شده‌ی جلد}
+\label{sec:cover-front-mockup}
+
+شکل \cref{fig:cover-mockup} نمای ساده‌شده‌ای
+از جلد جلو را نشان می‌دهد:
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}[scale=0.5]
+  % Background
+  \fill[matinnavy] (0,0) rectangle (10,14);
+  % Crimson wedge
+  \fill[matincrimson] (0,14) -- (5.5,14) -- (3,11.5) -- cycle;
+  % White frame
+  \draw[white, opacity=0.6, line width=0.6pt]
+      (0.4,0.4) rectangle (9.6,13.6);
+  % Gold ellipse
+  \draw[covergold, opacity=0.4, line width=1pt, rotate=-18]
+      (7,3) ellipse (3.5 and 1.8);
+  % Title area
+  \node[white, font=\Large\bfseries] at (7,9) {\rl{عنوان کتاب}};
+  \draw[covergold, line width=1pt] (6,8) -- (9,8);
+  \node[white, font=\small] at (7.5,7.5) {\rl{زیرعنوان}};
+  % Author
+  \node[white, font=\bfseries] at (7,4.5) {\rl{نام نویسنده}};
+  % MatinBook label
+  \node[white, font=\footnotesize, anchor=west] at (1,0.8) {MatinBook};
+  \node[white, font=\footnotesize, anchor=east] at (9,0.8) {github.com/...};
+\end{tikzpicture}
+\end{latin}
+\caption{نمای ساده‌شده‌ی جلد جلو}
+\label{fig:cover-mockup}
+\end{figure}
+
+\mnote{در \lr{tikzpicture}، متن فارسی باید داخل \lr{\textbackslash rl\{...\}} قرار گیرد.}
+
+\subsection{شخصی‌سازی جلد جلو}
+\label{sec:cover-front-custom}
+
+برای شخصی‌سازی جلد جلو، سه راه دارید:
+
+\textbf{راه ۱ — تغییر آرگومان‌ها:} فقط محتوای
+\cmd{makecover} را تغییر دهید.
+
+\textbf{راه ۲ — تغییر رنگ‌ها:} در
+\file{mb-theme-cover.sty}، رنگ‌های
+\lr{coverprimary}، \lr{coveraccent}، \lr{covergold}
+و \lr{coverpaper} را تغییر دهید.
+
+\textbf{راه ۳ — تغییر طرح:} فایل
+\file{mb-theme-cover.sty} را ویرایش کنید و
+عناصر جدید اضافه یا حذف کنید.
+
+\mnote{برای تغییرات ساده، راه ۱ و ۲ کافی است. برای طراحی کاملاً جدید، راه ۳ را انتخاب کنید.}
+
+\section{جلد عقب}
+\label{sec:cover-back}
+
+جلد عقب با دستور \cmd{makebackcover} ساخته
+می‌شود. این دستور یک آرگومان می‌گیرد:
+
+\begin{latin}
+\begin{minted}{latex}
+\makebackcover{|\pc{توضیحات پشت جلد...}|}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash makebackcover} باید در انتهای سند، پیش از \lr{\textbackslash end\{document\}} قرار گیرد.}
+
+\subsection{ساختار دو بلوکی}
+\label{sec:cover-back-two-blocks}
+
+جلد عقب \lr{MatinBook} از دو بلوک ایستاتیک
+تشکیل شده است:
+
+\begin{enumerate}
+    \item \textbf{بلوک اول — درباره این کتاب:}
+    با عنوان \lr{\textbackslash coverabout} و متن
+    توضیحات.
+    \item \textbf{بلوک دوم — درباره این نویسنده:}
+    با عنوان \lr{\textbackslash coverauthorbio} و
+    متن زندگی‌نامه.
+\end{enumerate}
+
+فاصله‌ی بین دو بلوک، دقیقاً \pnum{۰.۷}
+سانتی‌متر است.
+
+\mnote{هر دو بلوک در یک \lr{minipage} با ارتفاع ثابت قرار می‌گیرند تا متن طولانی باعث سرریز به صفحه‌ی دوم نشود.}
+
+\subsection{افزودن زندگی‌نامه نویسنده}
+\label{sec:cover-back-authorbio}
+
+برای افزودن زندگی‌نامه‌ی نویسنده، از دستور
+\cmd{authorbio} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\authorbio{%
+    |\pc{نام نویسنده، پژوهشگر حوزه‌ی الگوریتم و ریاضیات است.}|%
+    |\pc{او سال‌ها در زمینه‌ی آموزش برنامه‌نویسی فعالیت کرده است.}|%
+}
+
+\makebackcover{%
+    |\pc{توضیحات پشت جلد...}|%
+}
+\end{minted}
+\end{latin}
+
+\mnote{اگر \lr{\textbackslash authorbio} را فراخوانی نکنید، بلوک دوم به‌کلی حذف می‌شود و فقط بلوک کتاب نمایش داده می‌شود.}
+
+\subsection{شخصی‌سازی جلد عقب}
+\label{sec:cover-back-custom}
+
+برای شخصی‌سازی جلد عقب:
+
+\begin{itemize}
+    \item \textbf{تغییر عنوان‌ها:} با
+    \cmd{renewcommand} می‌توانید
+    \lr{\textbackslash coverabout} و
+    \lr{\textbackslash coverauthorbio} را تغییر دهید.
+    \item \textbf{تغییر رنگ‌ها:} در
+    \file{mb-theme-cover.sty}، رنگ‌های
+    \lr{coveraccent} و \lr{coverprimary} را
+    تغییر دهید.
+    \item \textbf{تغییر متن:} فقط آرگومان‌های
+    \cmd{makebackcover} و \cmd{authorbio} را
+    تغییر دهید.
+\end{itemize}
+
+\mnote{عنوان‌های \lr{\textbackslash coverabout} و \lr{\textbackslash coverauthorbio} در فایل \lr{fa-IR.sty} تعریف شده‌اند.}
+
+\section{اطلاعات مخزن}
+\label{sec:cover-repository}
+
+جلد \lr{MatinBook} آدرس مخزن پروژه را نمایش
+می‌دهد. برای تغییر آن:
+
+\begin{latin}
+\begin{minted}{latex}
+\renewcommand{\repository}{github.com/username/repo}
+\end{minted}
+\end{latin}
+
+\mnote{مقدار پیش‌فرض \lr{github.com/matinmahmoudi-cs/matinbook} است.}
+
+\section{اطلاعات نسخه}
+\label{sec:cover-version}
+
+جلد \lr{MatinBook} نسخه‌ی کلاس را نمایش می‌دهد.
+این مقدار در \file{matinbook.cls} تعریف شده است:
+
+\begin{latin}
+\begin{minted}{latex}
+\def\matinbookversion{1.2}
+\def\matinbookdate{2026/10/08}
+\end{minted}
+\end{latin}
+
+\mnote{نسخه‌ی \lr{MatinBook} در صفحه‌ی شناسنامه و روی جلد نمایش داده می‌شود.}
+
+\section{رنگ‌های جلد}
+\label{sec:cover-colors}
+
+جلد \lr{MatinBook} از رنگ‌های زیر استفاده می‌کند
+که در \file{mb-theme-cover.sty} تعریف شده‌اند:
+
+\begin{matintable}{رنگ‌های جلد \lr{MatinBook}}{tab:cover-colors}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام & نقش & مقدار \lr{RGB} \\
+\lr{coverprimary} & پس‌زمینه‌ی جلد جلو & \lr{(30, 42, 58)} \\
+\lr{coveraccent} & گوه و عناصر تزئینی & \lr{(166, 25, 46)} \\
+\lr{covergold} & بیضی و متن طلایی & \lr{(201, 162, 39)} \\
+\lr{coverpaper} & پس‌زمینه‌ی جلد عقب & \lr{(242, 238, 227)} \\
+\lr{covergray} & متن‌های ثانویه & \lr{(145, 151, 157)} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{این رنگ‌ها با پالت \lr{CMYK} کتاب هماهنگ هستند تا جلد با محتوای داخلی یکپارچه باشد.}
+
+\section{کامپایل جلد}
+\label{sec:cover-compile}
+
+جلد \lr{MatinBook} با \lr{TikZ} ساخته می‌شود و
+از \lr{remember picture, overlay} استفاده می‌کند.
+این یعنی حداقل \textbf{دو بار کامپایل} لازم است:
+
+\begin{latin}
+\begin{minted}{bash}
+# |\pc{مرحله‌ی اول: نوشتن موقعیت}| \lr{TikZ}
+xelatex -shell-escape document.tex
+
+# |\pc{مرحله‌ی دوم: استفاده از موقعیت}|
+xelatex -shell-escape document.tex
+\end{minted}
+\end{latin}
+
+\mnote{اگر جلد ناقص یا جابه‌جا ظاهر شد، یک بار دیگر کامپایل کنید.}
+
+\section{خطاهای رایج}
+\label{sec:cover-mistakes}
+
+\subsection{قرار دادن \cmd{makebackcover} در ابتدای سند}
+\label{sec:cover-mistake-position}
+
+اگر \cmd{makebackcover} را در ابتدای سند قرار
+دهید، جلد عقب روی صفحه‌ی دوم ظاهر می‌شود و
+بقیه‌ی کتاب به‌هم می‌ریزد.
+
+\textbf{راه‌حل:} همیشه \cmd{makebackcover} را در
+انتهای سند قرار دهید.
+
+\subsection{فراموش کردن \cmd{authorbio}}
+\label{sec:cover-mistake-authorbio}
+
+اگر \cmd{authorbio} را فراموش کنید، بلوک «درباره
+این نویسنده» حذف می‌شود و جلد عقب فقط یک بلوک
+خواهد داشت.
+
+\textbf{راه‌حل:} اگر می‌خواهید زندگی‌نامه‌ی نویسنده
+نمایش داده شود، \cmd{authorbio} را پیش از
+\cmd{makebackcover} قرار دهید.
+
+\subsection{سرریز متن جلد عقب به صفحه‌ی دوم}
+\label{sec:cover-mistake-overflow}
+
+اگر متن جلد عقب بسیار طولانی باشد، ممکن است
+به صفحه‌ی دوم سرریز کند. \lr{MatinBook} این
+مشکل را با \lr{minipage} با ارتفاع ثابت حل
+کرده است، ولی اگر متن بسیار طولانی باشد،
+ممکن است همچنان سرریز رخ دهد.
+
+\textbf{راه‌حل:} متن را کوتاه‌تر کنید یا از
+\cmd{small} برای کاهش اندازه‌ی فونت استفاده کنید.
+
+\section{تمرین‌ها}
+\label{sec:cover-exercises}
+
+\begin{exercise}
+    یک جلد جلو با عنوان، زیرعنوان، نام نویسنده
+    و تاریخ بسازید. آیا همه‌ی عناصر به‌درستی
+    نمایش داده می‌شوند؟
+    \label{exc:cover-front}
+\end{exercise}
+
+\begin{exercise}
+    یک جلد عقب با دو بلوک بسازید و از
+    \cmd{authorbio} استفاده کنید.
+    \label{exc:cover-back}
+\end{exercise}
+
+\begin{exercise}
+    رنگ‌های جلد را تغییر دهید و کتاب را
+    دوباره کامپایل کنید. آیا رنگ‌ها اعمال
+    می‌شوند؟
+    \label{exc:cover-colors}
+\end{exercise}
+
+\begin{exercise}
+    یک جلد عقب با متن بسیار طولانی بسازید.
+    آیا به صفحه‌ی دوم سرریز می‌کند؟
+    \label{exc:cover-overflow}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:cover-summary}
+
+در این فصل، سیستم جلد \lr{MatinBook} را بررسی
+کردیم:
+
+\begin{itemize}
+    \item جلد جلو با \cmd{makecover} و چهار
+    آرگومان ساخته می‌شود.
+
+    \item جلد جلو شامل پس‌زمینه‌ی سرمه‌ای، گوه‌ی
+    قرمز، بیضی طلایی و عناصر تزئینی است.
+
+    \item جلد عقب با \cmd{makebackcover} و یک
+    آرگومان ساخته می‌شود.
+
+    \item جلد عقب دو بلوک ایستاتیک دارد:
+    «درباره این کتاب» و «درباره این نویسنده».
+
+    \item زندگی‌نامه‌ی نویسنده با \cmd{authorbio}
+    اضافه می‌شود.
+
+    \item جلد با \lr{TikZ} ساخته می‌شود و به
+    حداقل دو بار کامپایل نیاز دارد.
+
+    \item خطاهای رایج شامل قرار دادن
+    \cmd{makebackcover} در ابتدای سند، فراموش
+    کردن \cmd{authorbio} و سرریز متن است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:chapters})، با فصل‌ها
+و بخش‌ها آشنا می‌شوید و یاد می‌گیرید که چگونه
+ساختار کتاب خود را سازمان‌دهی کنید.
