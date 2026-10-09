@@ -11,7 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-(Nothing yet.)
+- **`mb-code.sty`:** Added `\pcc{...}` helper for Persian
+  comments in Python (and similar languages) where the
+  escape character `|` is not recognized when it appears
+  immediately after `#`. The `\pcc` macro expands to
+  `\pc{\#~#1}` and must be used inside `|...|`:
+
+    x = 5  |\pcc{مقدار متغیر}|
+
+  which renders as:
+
+    x = 5  # مقدار متغیر
 
 ### Changed
 
@@ -19,7 +29,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-(Nothing yet.)
+- **`mb-code.sty`:** Fixed the `\pc` helper to use a
+  double `\rl` group. A single `\rl` was not enough
+  inside a minted block because minted wraps the escaped
+  text in its own LTR group, which confuses bidi. The
+  second `\rl` forces bidi to re-detect the RTL context.
+  This is a known quirk of the xepersian + minted
+  combination.
+
+- **`mb-code.sty`:** Fixed the `\pcc` helper to not carry
+  its own `|...|` delimiters. The delimiters must be
+  written explicitly by the user:
+
+    x = 5  |\pcc{مقدار متغیر}|
+
+  The previous definition `|\pc{\#~#1}|` caused minted to
+  render the bare macro name `\pcc` as plain text.
+
 
 ---
 

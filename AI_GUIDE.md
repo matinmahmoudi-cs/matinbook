@@ -637,11 +637,39 @@ These helpers are provided by `mb-theorem.sty` and delegate to `\cref`:
 | Command | Usage | Description |
 |---------|-------|-------------|
 | `\inlcode{text}` | `\inlcode{print()}` | Inline monospace code |
-| `\pc{text}` | `\pc{متن فارسی}` | Persian text inside minted code |
+| `\pc{text}` | `\pc{متن فارسی}` | Persian text inside a minted block |
+| `\pcc{text}` | `\pcc{متن فارسی}` | Persian comment (with `#`) inside a minted block |
 | `\codecaption{title}` | `\codecaption{عنوان کد}` | Code caption with numbering |
 | `\coderef{label}` | `\coderef{code:hello}` | Reference to code listing |
 
-> **Note:** For code blocks, use the standard `minted` environment inside `\begin{latin}...\end{latin}`. Then add `\codecaption{}` and `\label{}` after the environment.
+> **Note on `\pc` and `\pcc`:**
+>
+> Both helpers must be used inside the `|...|` delimiters of a
+> minted block (`escapeinside=||`).
+>
+> - `\pc{...}` is for Persian text that is **not** a comment.
+>   Example: `x = 5  |\pc{مقدار متغیر}|`
+>
+> - `\pcc{...}` is for Persian **comments** in Python (and
+>   similar languages). It inserts the leading `#` and
+>   escapes it as `\#` so that Pygments does not treat it as
+>   a comment start.
+>   Example: `x = 5  |\pcc{مقدار متغیر}|`
+>
+> **Why two helpers?**
+> In some Pygments lexers (notably Python), the escape
+> character `|` is not recognized when it appears
+> immediately after `#`. `\pcc` solves this by placing the
+> `#` *inside* the escaped region.
+>
+> **Why double `\rl`?**
+> The `\pc` macro wraps its argument in `\rl` twice
+> (`\rl{\persiancodingfont\rl{#1}}`). A single `\rl` is
+> not enough inside a minted block because minted wraps
+> the escaped text in its own LTR group, which confuses
+> bidi. The second `\rl` forces bidi to re-detect the RTL
+> context. This is a known quirk of the xepersian + minted
+> combination.
 
 ### Algorithm Commands
 
@@ -1389,7 +1417,36 @@ These commands **automatically scale** with `\left` and `\right`:
 ### Persian Code Font
 
 ```latex
+\defpersianfont\persiancod### Persian Code Font
+
+```latex
 \defpersianfont\persiancodingfont{DejaVu Sans Mono}[Script=Arabic,Scale=0.9]
+\newcommand{\pc}[1]{\rl{\persiancodingfont\rl{#1}}}
+\newcommand{\pcc}[1]{\pc{\#~#1}}
+```
+
+> **Note:** This is wrapped in `\AtBeginDocument` because
+> `mb-code` is loaded before `xepersian`.
+>
+> **Double `\rl`:** The `\pc` macro wraps its argument in
+> `\rl` **twice**. A single `\rl` is not enough inside a
+> minted block because minted wraps the escaped text in its
+> own LTR group, which confuses bidi. The second `\rl`
+> forces bidi to re-detect the RTL context. This is a known
+> quirk of the xepersian + minted combination.
+>
+> **`\pcc`:** A thin wrapper around `\pc` for Python comments.
+> It expands to `\pc{\#~#1}` and must be used inside `|...|`:
+>
+> ```latex
+> x = 5  |\pcc{مقدار متغیر}|
+> ```
+>
+> which renders as:
+>
+> ```
+> x = 5  # مقدار متغیر
+> ```ingfont{DejaVu Sans Mono}[Script=Arabic,Scale=0.9]
 \newcommand{\pc}[1]{\rl{\persiancodingfont #1}}
 ```
 
@@ -1412,14 +1469,15 @@ def factorial(n: int) -> int:
 \label{code:factorial}
 ```
 
-### Code with Persian Comments (using `\pc`)
+### Code with Persian Comments (using `\pc` or `\pcc`)
+
+For **non-comment** Persian text inside code, use `|\pc{...}|`:
 
 ```latex
 \begin{latin}
 \begin{minted}{python}
 def greet(name: str) -> str:
     """|\pc{تابع سلام}|"""
-    # |\pc{فراخوانی تابع با نام فارسی}|
     return f"Hello, {name}!"
 \end{minted}
 \end{latin}
@@ -1427,7 +1485,31 @@ def greet(name: str) -> str:
 \label{code:greet}
 ```
 
-> **CRITICAL:** Persian comments inside code MUST use `|\pc{...}|` syntax (with `escapeinside=||`).
+For **comments** in Python, use `|\pcc{...}|`:
+
+```latex
+\begin{latin}
+\begin{minted}{python}
+x = 5  |\pcc{مقدار متغیر}|
+y = 10  |\pcc{مقدار دیگر}|
+result = x + y  |\pcc{جمع دو متغیر}|
+\end{minted}
+\end{latin}
+\codecaption{جمع دو متغیر}
+\label{code:sum}
+```
+
+> **CRITICAL:** Persian text inside a minted block MUST be
+> wrapped in `|...|` (the `escapeinside` delimiters).
+>
+> - Use `|\pc{...}|` for non-comment Persian text.
+> - Use `|\pcc{...}|` for Persian comments in Python (and
+>   similar languages). The `#` is inserted automatically.
+>
+> **Why not `# |\pc{...}|`?** In Python, Pygments treats `#`
+> as the start of a comment and swallows the following `|`,
+> so the escape is never recognized. `\pcc` solves this by
+> placing the `#` inside the escaped region.
 
 ### Inline Code
 
@@ -3277,15 +3359,32 @@ Large blocks of English text, code, algorithms, and TikZ diagrams must be wrappe
 
 ALL comments inside `minted` code blocks MUST be in English (unless using `|\pc{...}|`).
 
-### RULE 5: Persian Comments in Code via `\pc{}`
+### RULE 5: Persian Comments in Code via `\pcc{}`
+
+For Persian comments in Python (and similar languages),
+use `|\pcc{...}|`:
 
 ```latex
 \begin{latin}
 \begin{minted}{python}
-x = 5  # |\pc{مقدار متغیر}|
+x = 5  |\pcc{مقدار متغیر}|
 \end{minted}
 \end{latin}
 ```
+
+For non-comment Persian text in any language, use
+`|\pc{...}|`:
+
+```latex
+\begin{latin}
+\begin{minted}{latex}
+\chapter{|\pc{فصل نمونه}|}
+\end{minted}
+\end{latin}
+```
+
+**Do NOT write** `# |\pc{...}|` in Python: Pygments treats
+`#` as a comment start and swallows the following `|`.
 
 ### RULE 6: Algorithm Captions Inside the Environment
 
@@ -4081,11 +4180,21 @@ Quicksort & مرتب‌سازی سریع & \lr{$O(n \log n)$} \\
 
 **Solution:** Ensure every opening block has a matching close.
 
-### Error 5: "Undefined control sequence" with `\pc`
+### Error 5: `\pc` or `\pcc` renders as plain text
 
-**Cause:** Using `\pc` without `escapeinside=||`.
+**Cause:** Using `\pc` or `\pcc` **outside** the `|...|`
+delimiters of a minted block. Minted only recognizes
+`\pc` and `\pcc` when they appear inside `|...|`.
 
-**Solution:** Ensure `escapeinside=||` is set (MatinBook does this by default).
+**Symptom:** The output shows the literal text
+`\pc{...}` or `\pcc{...}` instead of the Persian text.
+
+**Solution:**
+- Wrap the macro in `|...|`:
+    * `|\pc{متن}|`
+    * `|\pcc{متن}|`
+- Make sure the minted block is inside `\begin{latin}...\end{latin}`.
+- Make sure `escapeinside=||` is set (MatinBook does this by default).
 
 ### Error 6: References showing "??"
 
@@ -4243,6 +4352,24 @@ slash in Persian numbers (e.g. "1.2" → "2.1", "3/14" → "14/3").
 **Solution:** The redesigned back cover (v1.2) places all content
 inside a fixed-height `minipage`. If you have an old back cover,
 replace it with the new one.
+
+### Error 28: Persian comment in Python renders as empty boxes
+
+**Cause:** Using `# |\pc{...}|` in a Python code block.
+Pygments treats `#` as the start of a comment and does
+not recognize the following `|` as an escape. The Persian
+text is therefore never processed by `\pc`.
+
+**Symptom:** The output shows:
+```
+x = 5  # □□□□□ □□□□□
+```
+(empty boxes instead of Persian text).
+
+**Solution:** Use `|\pcc{...}|` instead:
+```latex
+x = 5  |\pcc{مقدار متغیر}|
+```
 ---
 
 ## 32. Complete Example

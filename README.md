@@ -382,13 +382,22 @@ def hello():
     print("Hello, World!")
 \end{minted}
 
-% With Persian comment:
+% With Persian comment (Python):
 \begin{minted}{python}
-x = 5  # |\pc{مقدار متغیر}|
+x = 5  |\pcc{مقدار متغیر}|
+\end{minted}
+
+% With Persian non-comment text (any language):
+\begin{minted}{latex}
+\chapter{|\pc{فصل نمونه}|}
 \end{minted}
 
 \inlcode{print("inline")}
 ```
+
+> **Note:** Use `|\pc{...}|` for non-comment Persian text
+> and `|\pcc{...}|` for Persian comments in Python. Both
+> must be inside the `|...|` delimiters of a minted block.
 
 #### Algorithms
 
