@@ -1,0 +1,410 @@
+%%
+%% part2-book-components/ch15-index.tex
+%%
+%% Chapter 15: Index — xindy with Persian sorting, main
+%% entries, sub-entries, and cross-references.
+%%
+
+\chapter{نمایه}
+\label{chap:index}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:index-why}
+
+نمایه یکی از ابزارهای مهم ناوبری در کتاب‌های
+فنی و علمی است. یک نمایه‌ی حرفه‌ای به خواننده
+کمک می‌کند که مفاهیم مورد نظر را سریع پیدا
+کند و مسیر خود را در کتاب گم نکند.
+
+\lr{MatinBook} از \lr{xindy} با ماژول
+\lr{persian-variant2} برای ساخت نمایه استفاده
+می‌کند. این ترکیب، مرتب‌سازی صحیح فارسی را
+تضمین می‌کند.
+
+\mnote{بسته‌ی \lr{makeindex} نمی‌تواند فارسی را درست مرتب کند و حروف پ، چ، ژ، گ، ک را اشتباه می‌چیند. به همین دلیل \lr{MatinBook} از \lr{xindy} استفاده می‌کند.}
+
+\section{ساختار نمایه}
+\label{sec:index-structure}
+
+نمایه از چند نوع مدخل تشکیل شده است:
+
+\begin{itemize}
+    \item \textbf{مدخل اصلی:} یک واژه یا عبارت
+    که در نمایه ظاهر می‌شود.
+    \item \textbf{زیرمدخل:} یک مدخل فرعی که
+    زیر مدخل اصلی قرار می‌گیرد.
+    \item \textbf{زیرزیرمدخل:} عمیق‌ترین سطح
+    مدخل.
+    \item \textbf{ارجاع «نگاه کنید به»:} ارجاع
+    از یک واژه به واژه‌ی دیگر.
+    \item \textbf{ارجاع «همچنین نگاه کنید به»:}
+    ارجاع تکمیلی.
+\end{itemize}
+
+\mnote{مرتب‌سازی نمایه در \lr{MatinBook} بر اساس الفبای فارسی انجام می‌شود و با \lr{xindy} به‌درستی کار می‌کند.}
+
+\section{مدخل اصلی}
+\label{sec:index-main}
+
+برای ایجاد یک مدخل اصلی، از دستور \cmd{index}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{الگوریتم}|\index{|\pc{الگوریتم}|}|\pc{یک مفهوم اساسی است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: الگوریتم\index{الگوریتم} یک مفهوم اساسی است.
+
+\mnote{دستور \lr{\textbackslash index} واژه را در نمایه ثبت می‌کند ولی در متن چیزی نمایش نمی‌دهد.}
+
+\section{زیرمدخل}
+\label{sec:index-sub}
+
+برای ایجاد یک زیرمدخل، از علامت \lr{!} استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{برنامه‌نویسی}|\index{|\pc{برنامه‌نویسی!پایتون}|}|\pc{یک زبان محبوب است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: برنامه‌نویسی\index{برنامه‌نویسی!پایتون} یک
+زبان محبوب است.
+
+\mnote{در نمایه، این مدخل به‌صورت «برنامه‌نویسی ← پایتون» نمایش داده می‌شود.}
+
+\subsection{زیرزیرمدخل}
+\label{sec:index-subsub}
+
+برای زیرزیرمدخل، دو علامت \lr{!} استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{ریاضیات}|\index{|\pc{ریاضیات!جبر!گروه}|}|\pc{شاخه‌ای از ریاضیات است.}|%
+\end{minted}
+\end{latin}
+
+\mnote{توصیه می‌شود بیش از دو سطح زیرمدخل نداشته باشید، چون نمایه پیچیده می‌شود.}
+
+\section{دستورات کمکی}
+\label{sec:index-helpers}
+
+\lr{MatinBook} چند دستور کمکی برای نمایه ارائه
+می‌دهد. جدول \cref{tab:index-helpers} این
+دستورات را خلاصه می‌کند.
+
+\begin{matintable}{دستورات کمکی نمایه}{tab:index-helpers}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دستور & کاربرد \\
+\lr{\textbackslash idxbold\{...\}} & مدخل با فونت سیاه \\
+\lr{\textbackslash idxitalic\{...\}} & مدخل با فونت مورب \\
+\lr{\textbackslash idxsee\{...\}\{...\}} & ارجاع «نگاه کنید به» \\
+\lr{\textbackslash idxseealso\{...\}\{...\}} & ارجاع «همچنین نگاه کنید به» \\
+\lr{\textbackslash idxsub\{...\}\{...\}} & زیرمدخل سریع \\
+\lr{\textbackslash idxsubsub\{...\}\{...\}\{...\}} & زیرزیرمدخل سریع \\
+\end{tblr}
+\end{matintable}
+
+\subsection{مدخل با فونت سیاه}
+\label{sec:index-bold}
+
+برای نمایش یک مدخل با فونت سیاه، از
+\cmd{idxbold} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{مفهوم مهم}|\idxbold{|\pc{مفهوم مهم}|}%
+\end{minted}
+\end{latin}
+
+\mnote{مدخل‌های سیاه برای مفاهیم کلیدی استفاده می‌شوند و در نمایه برجسته‌تر دیده می‌شوند.}
+
+\subsection{ارجاع «نگاه کنید به»}
+\label{sec:index-see}
+
+برای ارجاع از یک واژه به واژه‌ی دیگر، از
+\cmd{idxsee} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\idxsee{|\pc{پایتون}|}{|\pc{زبان برنامه‌نویسی}|}%
+\end{minted}
+\end{latin}
+
+خروجی: در نمایه، این مدخل به‌صورت «پایتون ← نگاه
+کنید به زبان برنامه‌نویسی» نمایش داده می‌شود.
+
+\mnote{ارجاع «نگاه کنید به» برای واژه‌های مترادف یا مفاهیم مرتبط استفاده می‌شود.}
+
+\subsection{ارجاع «همچنین نگاه کنید به»}
+\label{sec:index-seealso}
+
+برای ارجاع تکمیلی، از \cmd{idxseealso} استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\idxseealso{|\pc{برنامه‌نویسی}|}{|\pc{الگوریتم}|}%
+\end{minted}
+\end{latin}
+
+\mnote{ارجاع «همچنین نگاه کنید به» برای مفاهیم مرتبط ولی نه مترادف استفاده می‌شود.}
+
+\subsection{زیرمدخل سریع}
+\label{sec:index-subfast}
+
+برای ایجاد زیرمدخل سریع، از \cmd{idxsub}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\idxsub{|\pc{ریاضیات}|}{|\pc{آنالیز}|}%
+\end{minted}
+\end{latin}
+
+خروجی: این دستور معادل
+\cmd{index\{ریاضیات!آنالیز\}} است.
+
+\mnote{دستور \lr{\textbackslash idxsub} معادل \lr{\textbackslash index\{اصلی!زیر\}} است و کوتاه‌تر نوشته می‌شود.}
+
+\section{مرتب‌سازی فارسی}
+\label{sec:index-sorting}
+
+مرتب‌سازی نمایه در \lr{MatinBook} با \lr{xindy}
+و ماژول \lr{persian-variant2} انجام می‌شود.
+این ماژول، ترتیب صحیح حروف فارسی را رعایت
+می‌کند.
+
+جدول \cref{tab:index-sorting} ترتیب حروف
+مشکل‌دار در فارسی را نشان می‌دهد.
+
+\begin{matintable}{ترتیب حروف مشکل‌دار در فارسی}{tab:index-sorting}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {c X[l] X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+حرف & ترتیب صحیح & ترتیب \lr{makeindex} \\
+پ & بعد از ب & اشتباه \\
+چ & بعد از ج & اشتباه \\
+ژ & بعد از ز & اشتباه \\
+گ & بعد از ک & اشتباه \\
+ک & بعد از گ & اشتباه \\
+\end{tblr}
+\end{matintable}
+
+\mnote{اگر از \lr{makeindex} استفاده کنید، این حروف در جای اشتباه قرار می‌گیرند و نمایه نامرتب می‌شود.}
+
+\section{چاپ نمایه}
+\label{sec:index-print}
+
+برای چاپ نمایه، از دستور \cmd{printindex} در
+\lr{backmatter} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\backmatter
+\frontmattergeometry
+
+\printbibliography[title={|\pc{منابع و مراجع}|}]
+
+\printindex
+\end{minted}
+\end{latin}
+
+\mnote{گزینه‌ی \lr{intoc} در \lr{mb-index.sty} باعث می‌شود نمایه در فهرست مطالب ظاهر شود.}
+
+\section{چرخه‌ی کامپایل}
+\label{sec:index-compile}
+
+برای ساخت نمایه، باید چرخه‌ی کامل کامپایل را
+اجرا کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+# |\pc{مرحله‌ی اول: کامپایل اول}|%
+xelatex -shell-escape main.tex
+
+# |\pc{مرحله‌ی دوم: پردازش نمایه}|%
+# |\pc{\lr{xindy} به‌طور خودکار توسط \lr{imakeidx} اجرا می‌شود}|%
+
+# |\pc{مرحله‌ی سوم: کامپایل دوم}|%
+xelatex -shell-escape main.tex
+
+# |\pc{مرحله‌ی چهارم: کامپایل سوم}|%
+xelatex -shell-escape main.tex
+\end{minted}
+\end{latin}
+
+\mnote{اگر از \lr{-shell-escape} استفاده نکنید، \lr{xindy} اجرا نمی‌شود و نمایه خالی می‌ماند.}
+
+\section{تنظیمات نمایه}
+\label{sec:index-settings}
+
+تنظیمات نمایه در فایل \file{mb-index.sty} تعریف
+شده است:
+
+\begin{latin}
+\begin{minted}{latex}
+\makeindex[
+    intoc,
+    program=xindy,
+    options={-L persian-variant2 -C utf8
+             -M texindy -M page-ranges}
+]
+\end{minted}
+\end{latin}
+
+\mnote{گزینه‌ی \lr{intoc} نمایه را به فهرست مطالب اضافه می‌کند. \lr{persian-variant2} نیز مرتب‌سازی صحیح فارسی را تضمین می‌کند.}
+
+\section{مثال کامل}
+\label{sec:index-example}
+
+در ادامه، یک مثال کامل از استفاده‌ی نمایه در
+یک فصل آورده شده است:
+
+\begin{latin}
+\begin{minted}{latex}
+\chapter{|\pc{مفاهیم برنامه‌نویسی}|}
+
+\section{|\pc{زبان‌های برنامه‌نویسی}|}
+
+|\pc{پایتون}|\index{|\pc{پایتون}|}|\pc{یک زبان سطح بالا است.}|%
+
+|\pc{برنامه‌نویسی شیءگرا}|\index{|\pc{برنامه‌نویسی!شیءگرا}|}%
+|\pc{یک پارادایم است.}|%
+
+\idxsee{|\pc{جاوااسکریپت}|}{|\pc{زبان برنامه‌نویسی وب}|}%
+
+\idxseealso{|\pc{الگوریتم}|}{|\pc{ساختمان داده}|}%
+\end{minted}
+\end{latin}
+
+\mnote{هر چه مدخل‌های بیشتری در کتاب داشته باشید، نمایه مفصل‌تر و کاربردی‌تر خواهد بود.}
+
+\section{خطاهای رایج}
+\label{sec:index-mistakes}
+
+\subsection{استفاده از \lr{makeindex} به‌جای \lr{xindy}}
+\label{sec:index-mistake-makeindex}
+
+\textbf{مشکل:} اگر از \lr{makeindex} استفاده
+کنید، حروف پ، چ، ژ، گ، ک اشتباه مرتب می‌شوند.
+
+\textbf{راه‌حل:} همیشه از \lr{xindy} استفاده
+کنید. این تنظیم در \file{mb-index.sty} از پیش
+انجام شده است.
+
+\subsection{فراموش کردن \lr{-shell-escape}}
+\label{sec:index-mistake-shellescape}
+
+\textbf{مشکل:} اگر \lr{-shell-escape} را
+فراموش کنید، \lr{xindy} اجرا نمی‌شود و نمایه
+خالی می‌ماند.
+
+\textbf{راه‌حل:} همیشه از
+\lr{xelatex -shell-escape} استفاده کنید.
+
+\subsection{مدخل‌های تکراری}
+\label{sec:index-mistake-duplicate}
+
+\textbf{مشکل:} اگر یک واژه را چند بار با
+\cmd{index} علامت‌گذاری کنید، در نمایه چند
+بار ظاهر می‌شود.
+
+\textbf{راه‌حل:} واژه را فقط در محل اصلی
+تعریف کنید و در جاهای دیگر به آن ارجاع دهید.
+
+\subsection{مدخل‌های بسیار زیاد}
+\label{sec:index-mistake-toomany}
+
+\textbf{مشکل:} اگر مدخل‌های نمایه بسیار زیاد
+باشند، نمایه از حد معمول بزرگ‌تر می‌شود و
+کاربردی‌بودن خود را از دست می‌دهد.
+
+\textbf{راه‌حل:} فقط مفاهیم کلیدی را در نمایه
+بگنجانید. قاعده‌ی تجربی: ۵ تا ۱۰ مدخل در هر
+صفحه.
+
+\section{تمرین‌ها}
+\label{sec:index-exercises}
+
+\begin{exercise}
+    یک فصل ساده با سه مدخل اصلی و دو زیرمدخل
+    بنویسید و نمایه را چاپ کنید.
+    \label{exc:index-basic}
+\end{exercise}
+
+\begin{exercise}
+    یک مدخل با فونت سیاه و یک مدخل با فونت
+    مورب بسازید.
+    \label{exc:index-bold}
+\end{exercise}
+
+\begin{exercise}
+    از \cmd{idxsee} و \cmd{idxseealso} برای
+    ارجاع بین مدخل‌ها استفاده کنید.
+    \label{exc:index-see}
+\end{exercise}
+
+\begin{exercise}
+    نمایه‌ی خود را با نمایه‌ی یک کتاب فارسی
+    دیگر مقایسه کنید. آیا ترتیب حروف
+    یکسان است؟
+    \label{exc:index-compare}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:index-summary}
+
+در این فصل، با نمایه در \lr{MatinBook} آشنا
+شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از \lr{xindy} با
+    ماژول \lr{persian-variant2} برای مرتب‌سازی
+    صحیح فارسی استفاده می‌کند.
+
+    \item \lr{makeindex} نمی‌تواند فارسی را
+    درست مرتب کند و باید از \lr{xindy} استفاده
+    کرد.
+
+    \item مدخل اصلی با \cmd{index\{...\}}.
+
+    \item زیرمدخل با \cmd{index\{اصلی!زیر\}}.
+
+    \item زیرزیرمدخل با
+    \cmd{index\{اصلی!زیر!زیر\}}.
+
+    \item دستورات کمکی: \cmd{idxbold}،
+    \cmd{idxitalic}، \cmd{idxsee}،
+    \cmd{idxseealso}، \cmd{idxsub}،
+    \cmd{idxsubsub}.
+
+    \item نمایه با \cmd{printindex} در
+    \lr{backmatter} چاپ می‌شود.
+
+    \item خطاهای رایج شامل استفاده از
+    \lr{makeindex}، فراموش کردن
+    \lr{-shell-escape}، مدخل‌های تکراری، و
+    مدخل‌های بسیار زیاد است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:cross-refs})، با
+ارجاع هوشمند در \lr{MatinBook} آشنا می‌شوید
+و یاد می‌گیرید که چگونه به عناصر مختلف کتاب
+ارجاع دهید.
