@@ -11,6 +11,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+(Nothing yet.)
+
+### Changed
+
+(Nothing yet.)
+
+### Fixed
+
+(Nothing yet.)
+
+---
+
+## [1.2.0] — 2026-10-09 (مهر ۱۴۰۵)
+
+### Added
+
 #### Core
 
 - **`mb-utils.sty`:** Added `\pnum{...}` helper for Persian numbers
@@ -74,12 +90,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     fragment of a broken box.
   - `underlay last` draws ONLY the bottom rule on the last
     fragment of a broken box.
-  - `borderline east` / `borderline west` draws the vertical rule
-    on the outer margin, on every fragment.
+  - `borderline east` draws the vertical rule on the east side.
   - All three rules are now 2pt thick, per project decision.
-  - The parity dispatcher was renamed from `\matin@outline@apply`
-    to `\matinOutlineApply` (no `@`), to avoid requiring
-    `\makeatletter` in the `.sty` file.
+  - The parity dispatcher was removed. The vertical rule is now
+    always on the same side (east), instead of being mirrored on
+    even pages. This simplifies the implementation and gives the
+    box a consistent visual identity on every page.
   - The previous implementation relied on `overlay last` for the
     bottom rule, which drew it ON TOP of the content, and omitted
     `underlay unbroken`, which silently dropped both rules from
@@ -87,27 +103,59 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Tests Rewritten
 
-- **`tests/v1/stage01-basic.tex`:** Rewritten in v1.1 style:
-  - Full book skeleton (cover, frontmatter, mainmatter,
-    backmatter, back cover).
-  - Added `\booktitle`, `\repository`, `\authorbio`.
-  - Added preface, ToC, LoF, LoT.
-  - New chapter documenting the back cover API.
-  - Replaced `\meqref` with `\cref` throughout.
-  - Added `\mnote` in the Persian font chapter.
-  - All Persian decimal numbers wrapped in `\pnum{...}`.
+- **`tests/v1.2/`:** All 15 tests rewritten in v1.1/v1.2 style.
+  The previous test suite (`tests/v1/`, 15 tests) was renamed
+  to `tests/v1.2/` and each test was updated to match the
+  conventions established in v1.2:
 
-- **`tests/v1/stage02-fonts.tex`:** Rewritten in v1.1 style:
-  - Full book skeleton.
-  - Reorganized into six chapters (Persian, Latin, Math, Code,
-    Multilingual, Summary).
-  - Replaced `\meqref` with `\cref`.
-  - Added `\mnote`.
-  - Font status table rewritten with `tblr` (tabularray):
-    `width = \textwidth`, `colspec = {l l X[c] X[c]}`,
-    `hlines, vlines`, `colsep = 8pt`, `rowsep = 4pt`.
-  - All Persian decimal numbers wrapped in `\pnum{...}`.
-  - Removed emoji from the summary and conclusion.
+  - `stage01-basic.tex` — Colors, fonts, math, box families.
+  - `stage02-fonts.tex` — Persian, Latin, math, monospace, code.
+  - `stage03-layout.tex` — Page geometry, headers, footers,
+    margin notes, frontmatter/mainmatter split.
+  - `stage04-typography.tex` — Microtype, line breaking,
+    widow/orphan control, draft mode.
+  - `stage05-math.tex` — Equations, matrices, delimiters,
+    operators, number sets.
+  - `stage06-theorems.tex` — All 10 theorem environments,
+    two box families, shared counter, cross-references.
+  - `stage07-boxes.tex` — Two box families, all 10 colored
+    box types, color guide corrections.
+  - `stage08-code.tex` — Python, C++, minted, inline code,
+    Persian comments, code captions.
+  - `stage09-algorithms.tex` — Pseudocode, Persian captions,
+    list of algorithms, cross-references.
+  - `stage10-tikz.tex` — PGFPlots, flowcharts, trees, graphs,
+    3D plots, pie charts, timelines.
+  - `stage11-references.tex` — `\cref`, `\crefrange`,
+    hyperref, all reference commands.
+  - `stage12-biblatex.tex` — biblatex + biber, citation
+    commands, bibliography display.
+  - `stage13-index.tex` — xindy, sub-entries, see/see-also,
+    bold entries.
+  - `stage14-book.tex` — Full book integration: all modules
+    together.
+  - `stage15-cover.tex` — Front cover, back cover, author bio.
+
+  Each test now uses:
+    - Full book skeleton (cover, frontmatter, mainmatter,
+      backmatter, back cover).
+    - `\booktitle`, `\repository`, `\authorbio`.
+    - `\mnote` for margin notes.
+    - `matintable` + `tblr` for tables (not `tabular`).
+    - `\pnum{...}` for Persian decimal numbers.
+    - `\cref` for all cross-references.
+    - No emoji in formal text.
+    - No obsolete commands (`\algcaption`, `\meqref`,
+      `\figref`, `\tabref`, `\chref`, `\secref`).
+
+- **`tests/v1.2/run-all-tests.sh`:** New test runner script.
+  - Compiles all 15 tests in numeric order.
+  - Runs `biber` for stage12, stage14, stage15.
+  - Runs `texindy` for stage13, stage14, stage15.
+  - Preserves the `.log` file of any failed test for
+    inspection.
+  - Supports running a single test by pattern:
+    `./run-all-tests.sh stage08`.
 
 - **`main.tex`:** Added an `\authorbio{...}` example before
   `\makebackcover`.
@@ -125,6 +173,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **`matinbook.cls`:** Updated the module count in the welcome
   message from "18 modules" to "19 modules".
+
+- **`tests/v1/` → `tests/v1.2/`:** Renamed the active test suite
+  to match the current version.
+
+- **`tests/v1.1/` → `tests/archive/v1.1/`:** Moved the obsolete
+  v1.1 test suite to the archive. It was written for an earlier
+  API (before the removal of `\algcaption`, `\meqref`,
+  `\figref`, `\tabref`, `\chref`, `\secref`) and cannot be
+  compiled against the current class.
 
 ### Fixed
 
@@ -152,6 +209,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Package array: Illegal pream-token (\TX@col@width): 'c' used`.
   Switched to `tabularray`, which is RTL-native.
 
+- **`tests/v1.2/stage08-code.tex`:** Fixed a typo in the
+  font-status table. The color name was written as
+  `matinggreen` (with two 'e's) instead of `matingreen`
+  (with one 'e'), which produced four xcolor errors during
+  compilation:
+
+    Package xcolor Error: Undefined color `matinggreen'.
+
 ### Known Issues
 
 - **`mb-table`:** The `tabularray` package requires TeX Live 2021
@@ -159,7 +224,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `tlmgr install tabularray ninecolors`.
 
 - **`mb-theorem`:** `\theoremstyle{remark}` produces italic title
-  for 'نکته'. To be fixed in v1.2.
+  for 'نکته'. To be fixed in v1.3.
 
 - **`mb-code`:** `bgcolorpadding` not available in TeX Live 2023's
   `fvextra`.
@@ -170,7 +235,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`mb-layout`:** `\mnote` uses `\marginpar`, which cannot be
   used inside `tcolorbox` or `figure`.
 
-### Planned for v1.2
+### Planned for v1.3
 
 - **`matinbook.cls`:** Add `\DeclareRelease` for backward
   compatibility with v1.0.
@@ -184,12 +249,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   color tool for precise values.
 - **`main.tex`:** Enable Bismillah page and Latin title page by
   default.
-- **`tests/`:** Replace `run-all-tests.sh` with a modern test
-  runner.
-- **`tests/v1/`:** Rewrite the remaining 13 tests (`stage03` to
-  `stage15`) in v1.1 style.
 - **`examples/`:** Rewrite `matinbook-documentation.tex` and
-  `advanced-algorithms-book.tex` in v1.1 style.
+  `advanced-algorithms-book.tex` in v1.2 style.
+- **`tests/v1.2/`:** Add a `compile.sh` wrapper for
+  compatibility with the old test runner.
 
 ---
 
@@ -373,7 +436,9 @@ into other modules or handled automatically by `xepersian`:
 
 #### Tests
 
-- **24 integration tests** in `tests/v1.1/`:
+- **24 integration tests** originally in `tests/v1.1/` (now
+  moved to `tests/archive/v1.1/` and superseded by the v1.2
+  test suite in `tests/v1.2/`):
   - `compile.sh` — modern test compiler
   - `stage-cls-01.tex` — basic infrastructure
   - `stage-packages-01.tex` — package loading conventions
@@ -502,7 +567,7 @@ into other modules or handled automatically by `xepersian`:
 
 ### ⚠️ Known Issues
 
-- **`mb-theorem`:** `\theoremstyle{remark}` produces italic title for 'نکته'. To be fixed in v1.2.
+- **`mb-theorem`:** `\theoremstyle{remark}` produces italic title for 'نکته'. To be fixed in v1.3.
 - **`mb-code`:** `bgcolorpadding` not available in TeX Live 2023's `fvextra`.
 - **`mb-theme-colors`:** CMYK values are approximate (converted from RGB).
 - **`mb-theme-cover`:** Cover still uses many decorative elements.
