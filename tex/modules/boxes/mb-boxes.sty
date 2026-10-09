@@ -19,8 +19,8 @@
 %
 % Two design families:
 %   1. "matinbox"      — Boyer-style: solid colored title bar, white body
-%   2. "matin-outline" — Outline style: two horizontal rules + one
-%                        vertical rule on the outer margin
+%   2. "matin-outline" — Outline style: right vertical line + two
+%                        horizontal rules (under title and under content)
 %
 % Design family 1 (matinbox) — used by:
 %   theorem, lemma, corollary, proposition, definition, remark, exercise
@@ -33,9 +33,10 @@
 %
 % RTL note:
 %   In matin-outline, the vertical line is drawn on the RIGHT side
-%   (east side in LTR coordinates) on odd pages, and on the LEFT side
-%   (west) on even pages, so that the decorative rule always sits on
-%   the OUTER margin of the printed page.
+%   (east side in LTR coordinates, which is the visual right side
+%   in RTL typesetting). Unlike an earlier design, the line is NOT
+%   mirrored on even pages: it is always on the right, to keep the
+%   visual identity of the box consistent across the whole book.
 %
 % Color note:
 %   In matin-outline, the title text is BLACK (coltitle=black),
@@ -45,7 +46,7 @@
 %   Per project decision, ALL three rules (top horizontal, bottom
 %   horizontal, and vertical) are drawn at 2pt.
 %
-% Visual specification (RTL, odd page):
+% Visual specification (RTL):
 %
 %       ──────────────────────────────────┤ EXAMPLE 1
 %                                         │
@@ -58,9 +59,9 @@
 %       (i.e., under "EXAMPLE 1", "PROOF", "SOLUTION", ...).
 %     - A 2pt horizontal rule immediately under the content
 %       (at the bottom of the box).
-%     - A 2pt vertical rule on the outer margin, spanning the
-%       full height of the box, present on every fragment if the
-%       box is broken across pages.
+%     - A 2pt vertical rule on the RIGHT side, spanning the
+%       full height of the box, present on every fragment if
+%       the box is broken across pages.
 %
 % Breakable handling:
 %   Three underlay hooks are used, one per breakage state:
@@ -74,13 +75,15 @@
 %     - `underlay last`: draws ONLY the bottom rule.
 %       Applies to the last fragment of a broken box.
 %
-%   The vertical rule is drawn with `borderline`, which survives all
-%   breakage states and is not affected by `frame hidden`.
+%   The vertical rule is drawn with `borderline east`, which
+%   survives all breakage states and is not affected by
+%   `frame hidden`.
 %
-%   Earlier revisions used `overlay last` for the bottom rule, which
-%   drew it ON TOP of the content and made it look wrong; and they
-%   omitted `underlay unbroken`, which caused both horizontal rules
-%   to be silently dropped from unbroken boxes.
+%   Earlier revisions used a per-page parity switch to mirror
+%   the vertical rule on even pages. That design was removed:
+%   the visual identity of the box is more important than
+%   alignment with the outer margin, and the parity logic
+%   was fragile across tcolorbox versions.
 %
 %========================================================================
 
@@ -157,10 +160,14 @@
 %========================================================================
 
 %------------------------------------------------------------------------
-% Odd-page style — vertical rule on the EAST (right) side
+% Base Outline Style
+%------------------------------------------------------------------------
+% The vertical rule is always on the east (visual right) side.
+% No parity logic. No mirroring. This keeps the visual identity
+% of the box identical on every page.
 %------------------------------------------------------------------------
 \tcbset{
-    matin-outline-odd/.style={
+    matin-outline/.style={
         enhanced,
         breakable,
         frame hidden,
@@ -218,121 +225,21 @@
 
 
 %------------------------------------------------------------------------
-% Even-page style — vertical rule on the WEST (left) side
-%------------------------------------------------------------------------
-\tcbset{
-    matin-outline-even/.style={
-        enhanced,
-        breakable,
-        frame hidden,
-        boxrule=0pt,
-        colback=white,
-        colframe=#1,
-        coltitle=black,
-        colbacktitle=white,
-        fonttitle=\bfseries\normalsize,
-        titlerule=0pt,
-        left=14pt,
-        right=10pt,
-        top=8pt,
-        bottom=8pt,
-        toptitle=4pt,
-        bottomtitle=4pt,
-        before skip=10pt,
-        after skip=10pt,
-        parbox=false,
-        %--------------------------------------------------------------
-        % Unbroken box: draw BOTH horizontal rules.
-        %--------------------------------------------------------------
-        underlay unbroken={%
-            % Top rule — under the title
-            \draw[#1, line width=2pt]
-                ([yshift=0pt]title.south west) --
-                ([yshift=0pt]title.south east);
-            % Bottom rule — under the content
-            \draw[#1, line width=2pt]
-                ([yshift=0pt]frame.south west) --
-                ([yshift=0pt]frame.south east);
-        },
-        %--------------------------------------------------------------
-        % First fragment of a broken box: draw ONLY the top rule.
-        %--------------------------------------------------------------
-        underlay first={%
-            \draw[#1, line width=2pt]
-                ([yshift=0pt]title.south west) --
-                ([yshift=0pt]title.south east);
-        },
-        %--------------------------------------------------------------
-        % Last fragment of a broken box: draw ONLY the bottom rule.
-        %--------------------------------------------------------------
-        underlay last={%
-            \draw[#1, line width=2pt]
-                ([yshift=0pt]frame.south west) --
-                ([yshift=0pt]frame.south east);
-        },
-        %--------------------------------------------------------------
-        % Vertical rule on the west (left) side — 2pt, always present.
-        %--------------------------------------------------------------
-        borderline west={0pt}{0pt}{#1, line width=2pt}
-    }
-}
-
-
-%------------------------------------------------------------------------
-% Parity dispatcher (TeX-level)
-%------------------------------------------------------------------------
-% \matinOutlineApply{#1} applies the correct parity-specific style at
-% box instantiation time. It uses \ifodd\value{page} to decide whether
-% the vertical rule goes on the east (odd) or west (even) side.
-%
-% Note: the macro name deliberately contains NO `@` character, so it
-% can be used without \makeatletter / \makeatother in this file.
-%------------------------------------------------------------------------
-\newcommand{\matinOutlineApply}[1]{%
-    \ifodd\value{page}%
-        \tcbset{matin-outline-odd=#1}%
-    \else
-        \tcbset{matin-outline-even=#1}%
-    \fi
-}
-
-
-%------------------------------------------------------------------------
 % Public outline styles (used by mb-theorem)
 %------------------------------------------------------------------------
-% Defined with `/.code` so that arbitrary TeX (the parity dispatch)
-% can run inside. A `/.style` body would be interpreted by pgfkeys as
-% a list of key=value pairs in the /tcb/ namespace, causing the
-% "I do not know the key '/tcb/matin-outline'" error.
+% These are the styles that mb-theorem references. Since there is
+% no parity dispatch anymore, they can be plain `/.style` entries.
 %------------------------------------------------------------------------
 \tcbset{
-    matin-example-outline/.code={%
-        \matinOutlineApply{matinorange!90!black}%
-    },
-    matin-proof-outline/.code={%
-        \matinOutlineApply{matindarkgray}%
-    },
-    matin-solution-outline/.code={%
-        \matinOutlineApply{matingreen!70!black}%
-    }
-}
-
-%------------------------------------------------------------------------
-% Generic outline style (public API)
-%------------------------------------------------------------------------
-% Usage: \tcbset{matin-outline=mycolor}
-%   or:  matin-outline=mycolor  inside another style
-%------------------------------------------------------------------------
-\tcbset{
-    matin-outline/.code={%
-        \matinOutlineApply{#1}%
-    }
+    matin-example-outline/.style={matin-outline=matinorange!90!black},
+    matin-proof-outline/.style={matin-outline=matindarkgray},
+    matin-solution-outline/.style={matin-outline=matingreen!70!black}
 }
 
 
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-boxes}{Box styles loaded (2 families: matinbox, matin-outline RTL, breakable, parity-aware, 2pt rules)}
+\PackageInfo{mb-boxes}{Box styles loaded (2 families: matinbox, matin-outline RTL, breakable, 2pt rules, no parity mirroring)}
 
 \endinput

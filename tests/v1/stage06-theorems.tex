@@ -1,402 +1,603 @@
 %========================================
-% MatinBook - Stage 06: Theorem System Test
-% Test: All Theorem Environments + Boxes + References
-% Purpose: Validate theorem, definition, example, proof, and all box types
+% MatinBook — Stage 06: Theorem System Test
+% Version: v1.1
+% Purpose:
+%   Validate the theorem system of MatinBook v1.1:
+%     1. All theorem-like environments (theorem, lemma,
+%        corollary, proposition, definition, example,
+%        remark, exercise, solution, proof)
+%     2. Both box families (matinbox and matin-outline)
+%     3. Shared counter behavior
+%     4. Cross-references with \cref
+%     5. Index entries inside boxes
+%
+% Compilation:
+%   xelatex -shell-escape stage06-theorems.tex
+%   xelatex -shell-escape stage06-theorems.tex
+%   xelatex -shell-escape stage06-theorems.tex
+%   (3 passes recommended for index)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that every
+%   theorem environment renders correctly, that the shared
+%   counter produces continuous numbering, and that
+%   cross-references resolve to the correct names.
 %========================================
 
-% Add parent directory to search path
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون سیستم قضایا و محیط‌های علمی}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون سیستم قضایا و محیط‌های علمی}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
-    
-    %----------------------------------------
-    % Title Page
-    %----------------------------------------
-    \maketitle
-    
-    %----------------------------------------
-    % Chapter 1: Number Theory
-    %----------------------------------------
-    \chapter{نظریه اعداد}
-    
-    \section{اعداد اول}
-    
-    \begin{definition}[عدد اول]
-        عدد طبیعی $n > 1$ را \textbf{اول}\index{عدد اول} گوییم
-        هرگاه تنها مقسوم‌علیه‌های مثبت آن ۱ و خود $n$ باشند.
-        اعدادی که اول نباشند را \textbf{مرکب} گوییم.
-        \label{def:prime}
-    \end{definition}
-    
-    طبق \defref{def:prime}، عدد ۱ نه اول است و نه مرکب.
-    این قرارداد برای سادگی در بیان قضایا اتخاذ شده است.
-    
-    \begin{example}
-        اعداد اول کوچکتر از ۵۰ عبارتند از:
-        \[
-        2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
-        \]
-        \label{ex:primes-under-50}
-    \end{example}
-    
-    \begin{example}
-        عدد ۶ اول نیست (مرکب است) زیرا $6 = 2 \times 3$.
-        مقسوم‌علیه‌های عدد ۶ عبارتند از: ۱، ۲، ۳، ۶.
-        \label{ex:not-prime}
-    \end{example}
-    
-    \section{قضیه اساسی حساب}
-    
-    \begin{theorem}[قضیه اساسی حساب]
-        هر عدد طبیعی $n > 1$ را می‌توان به‌طور یکتا
-        (صرف‌نظر از ترتیب عوامل) به صورت حاصلضرب اعداد اول نوشت:
-        \[
-        n = p_{1}^{e_{1}} \cdot p_{2}^{e_{2}} \cdots p_{k}^{e_{k}}
-        \]
-        که در آن $p_{1} < p_{2} < \cdots < p_{k}$ اعداد اول
-        و $e_{i} \geq 1$ اعداد صحیح هستند.
-        \label{thm:fundamental}
-    \end{theorem}
-    
-    طبق \thmref{thm:fundamental}، هر عدد طبیعی بزرگتر از ۱
-    دارای یک تجزیه یکتا به عوامل اول است. برای مثال:
+
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون سیستم قضایا و محیط‌های علمی}
+    {ارزیابی محیط‌های علمی، جعبه‌ها و ارجاع هوشمند}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
+\maketitle
+
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون سیستم قضایا و محیط‌های علمی \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، ششمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+\lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است. هدف آن،
+اعتبارسنجی کامل سیستم محیط‌های علمی کلاس در پنج حوزه‌ی
+متمایز است: محیط‌های قضیه‌ای، خانواده‌های جعبه، شمارنده‌ی
+مشترک، ارجاع هوشمند با \lr{\textbackslash cref}، و
+ورودی‌های نمایه داخل جعبه‌ها.
+
+در کتاب‌های ریاضی و فنی، محیط‌های علمی ستون فقرات
+ساختاردهی محتوا هستند. قضیه، لم، نتیجه، گزاره، تعریف،
+مثال، نکته، تمرین، راه‌حل و اثبات، هر یک نقش معنایی
+مشخصی دارند و باید در قالب بصری متمایز نمایش داده شوند.
+\lr{MatinBook} با دو خانواده‌ی جعبه‌ی \lr{matinbox} و
+\lr{matin-outline}، این تمایز را ایجاد می‌کند.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل
+همراه است تا خواننده بتواند درستی رفتار هر زیرسیستم را
+در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — NUMBER THEORY
+%========================================================================
+\chapter{نظریه اعداد}
+\label{chap:numbertheory}
+
+\section{اعداد اول}
+\label{sec:numbertheory-primes}
+
+\begin{definition}[عدد اول]
+    عدد طبیعی $n > 1$ را \textbf{اول}\index{عدد اول} گوییم
+    هرگاه تنها مقسوم‌علیه‌های مثبت آن ۱ و خود $n$ باشند.
+    اعدادی که اول نباشند را \textbf{مرکب} گوییم.
+    \label{def:prime}
+\end{definition}
+
+طبق \cref{def:prime}، عدد ۱ نه اول است و نه مرکب. این
+قرارداد برای سادگی در بیان قضایا اتخاذ شده است.
+
+\mnote{عدد ۱ نه اول است و نه مرکب. این قرارداد در نظریه اعداد استاندارد است.}
+
+\begin{example}
+    اعداد اول کوچک‌تر از ۵۰ عبارت‌اند از:
     \[
-    60 = 2^{2} \times 3 \times 5
+    2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47
     \]
-    
-    \begin{proof}
-        ابتدا \textbf{وجود} تجزیه را با استقرای قوی اثبات می‌کنیم.
-        
-        \textbf{پایه:} عدد ۲ اول است و تجزیه آن خودش می‌باشد.
-        
-        \textbf{گام استقرا:} فرض کنید هر عدد $m$ با $2 \leq m < n$
-        قابل تجزیه به عوامل اول باشد. برای $n$ دو حالت داریم:
-        \begin{enumerate}
-            \item اگر $n$ اول باشد، تجزیه آن خودش است.
-            \item اگر $n$ مرکب باشد، $n = a \cdot b$ که $2 \leq a, b < n$.
-            طبق فرض استقرا، $a$ و $b$ هر یک به عوامل اول تجزیه می‌شوند.
-            از ضرب این دو تجزیه، تجزیه $n$ به‌دست می‌آید.
-        \end{enumerate}
-        
-        برای اثبات \textbf{یکتایی} از لم اقلیدس (\lemref{lem:euclid})
-        استفاده می‌شود که در ادامه خواهیم دید.
-    \end{proof}
-    
-    \section{لم اقلیدس}
-    
-    \begin{lemma}[لم اقلیدس]
-        اگر $p$ عددی اول باشد و $p \mid ab$، آنگاه
-        $p \mid a$ یا $p \mid b$.
-        \label{lem:euclid}
-    \end{lemma}
-    
-    \begin{proof}
-        فرض کنید $p \nmid a$. آنگاه $\gcd(p, a) = 1$
-        (چون $p$ اول است). طبق قضیه بزو (\lr{Bezout})،
-        اعداد صحیح $x$ و $y$ وجود دارند که:
-        \[
-        px + ay = 1
-        \]
-        با ضرب طرفین در $b$:
-        \[
-        pbx + aby = b
-        \]
-        از آنجا که $p \mid p$ و $p \mid ab$،
-        نتیجه می‌شود $p \mid b$.
-    \end{proof}
-    
-    \begin{corollary}
-        اگر $p$ عددی اول باشد و $p \mid a_{1}a_{2} \cdots a_{n}$،
-        آنگاه $p$ حداقل یکی از $a_{i}$ها را می‌شمارد
-        (بر آن بخش‌پذیر است).
-        \label{cor:euclid-general}
-    \end{corollary}
-    
-    \begin{proposition}
-        کوچکترین مقسوم‌علیه بزرگتر از ۱ هر عدد طبیعی $n > 1$،
-        یک عدد اول است.
-        \label{prop:smallest-divisor}
-    \end{proposition}
-    
-    \section{نکات مهم}
-    
-    \begin{remark}
-        لم اقلیدس (\lemref{lem:euclid}) یکی از پایه‌های
-        اساسی نظریه اعداد است و در اثبات بسیاری از قضایا
-        از جمله یکتایی تجزیه در قضیه اساسی حساب
-        (\thmref{thm:fundamental}) به کار می‌رود.
-        \label{rem:euclid-importance}
-    \end{remark}
-    
-    \begin{remark}
-        عدد ۲ تنها عدد اول زوج است. تمام اعداد اول دیگر فرد هستند،
-        زیرا اگر یک عدد زوج بزرگتر از ۲ اول می‌بود،
-        باید بر ۲ بخش‌پذیر می‌بود که با تعریف عدد اول
-        در تناقض است.
-        \label{rem:two-is-special}
-    \end{remark}
-    
-    %----------------------------------------
-    % Chapter 2: Group Theory
-    %----------------------------------------
-    \chapter{مبانی نظریه گروه‌ها}
-    
-    \section{تعریف گروه}
-    
-    \begin{definition}[گروه]
-        یک \textbf{گروه}\index{گروه} $(G, *)$ شامل یک مجموعه
-        ناتهی $G$ و یک عمل دوتایی $*$ روی $G$ است
-        که در چهار شرط زیر صدق کند:
-        \begin{enumerate}
-            \item \textbf{بسته بودن:}
-            $\forall a, b \in G: a * b \in G$
-            \item \textbf{شرکت‌پذیری:}
-            $\forall a, b, c \in G: (a * b) * c = a * (b * c)$
-            \item \textbf{وجود عضو خنثی:}
-            $\exists e \in G: \forall a \in G: e * a = a * e = a$
-            \item \textbf{وجود عضو وارون:}
-            $\forall a \in G: \exists a^{-1} \in G: a * a^{-1} = a^{-1} * a = e$
-        \end{enumerate}
-        \label{def:group}
-    \end{definition}
-    
-    \begin{example}
-        مجموعه اعداد صحیح $\Z$ با عمل جمع معمولی یک گروه است:
-        \begin{itemize}
-            \item عضو خنثی: $0$
-            \item وارون $a$: $-a$
-        \end{itemize}
-        \label{ex:z-group}
-    \end{example}
-    
-    \begin{example}
-        مجموعه اعداد حقیقی غیرصفر $\R \setminus \{0\}$
-        با عمل ضرب معمولی یک گروه است:
-        \begin{itemize}
-            \item عضو خنثی: $1$
-            \item وارون $a$: $\frac{1}{a}$
-        \end{itemize}
-        \label{ex:r-group}
-    \end{example}
-    
-    \section{قضایای مقدماتی}
-    
-    \begin{theorem}[یکتایی عضو خنثی]
-        عضو خنثی در هر گروه یکتاست.
-        \label{thm:unique-identity}
-    \end{theorem}
-    
-    \begin{proof}
-        فرض کنید $e$ و $e'$ هر دو عضو خنثی گروه $G$ باشند.
-        آنگاه:
-        \[
-        e = e * e' \quad \text{(چون $e'$ خنثی است)}
-        \]
-        \[
-        e * e' = e' \quad \text{(چون $e$ خنثی است)}
-        \]
-        بنابراین $e = e'$ و عضو خنثی یکتاست.
-    \end{proof}
-    
-    \begin{theorem}[یکتایی عضو وارون]
-        وارون هر عضو در یک گروه یکتاست.
-        \label{thm:unique-inverse}
-    \end{theorem}
-    
-    \begin{proof}
-        فرض کنید $a \in G$ و $b$ و $c$ دو وارون $a$ باشند:
-        \begin{align*}
-            b &= b * e \quad \text{(خنثی)} \\
-            &= b * (a * c) \quad \text{($c$ وارون $a$ است)} \\
-            &= (b * a) * c \quad \text{(شرکت‌پذیری)} \\
-            &= e * c \quad \text{($b$ وارون $a$ است)} \\
-            &= c \quad \text{(خنثی)}
-        \end{align*}
-        بنابراین $b = c$ و عضو وارون یکتاست.
-    \end{proof}
-    
-    \section{تمرین‌ها}
-    
-    \begin{exercise}
-        ثابت کنید که در هر گروه $G$، معادله $a * x = b$
-        همواره دارای جواب یکتاست.
-        \label{exc:group-equation}
-    \end{exercise}
-    
-    \begin{solution}
-        \textbf{وجود جواب:} $x = a^{-1} * b$ یک جواب است زیرا:
-        \[
-        a * (a^{-1} * b) = (a * a^{-1}) * b = e * b = b
-        \]
-        
-        \textbf{یکتایی:} فرض کنید $x_{1}$ و $x_{2}$ دو جواب باشند:
-        \begin{align*}
-            a * x_{1} &= b \\
-            a * x_{2} &= b
-        \end{align*}
-        با برابر قرار دادن و ضرب از چپ در $a^{-1}$:
-        \[
-        a^{-1} * (a * x_{1}) = a^{-1} * (a * x_{2})
-        \implies x_{1} = x_{2}
-        \]
-        بنابراین جواب یکتاست.
-    \end{solution}
-    
-    \begin{exercise}
-        ثابت کنید که $(\Z_{n}, +_{n})$ یک گروه است
-        (مجموعه اعداد صحیح به پیمانه $n$ با عمل جمع پیمانه‌ای).
-        \label{exc:zn-group}
-    \end{exercise}
-    
-    %----------------------------------------
-    % Chapter 3: Cross-References Test
-    %----------------------------------------
-    \chapter{آزمون ارجاع متقابل}
-    
-    \section{ارجاع به تمام محیط‌ها}
-    
-    در این بخش، توانایی ارجاع به انواع مختلف محیط‌های
-    علمی را آزمایش می‌کنیم:
-    
+    \label{ex:primes-under-50}
+\end{example}
+
+\begin{example}
+    عدد ۶ اول نیست (مرکب است) زیرا $6 = 2 \times 3$.
+    مقسوم‌علیه‌های عدد ۶ عبارت‌اند از: ۱، ۲، ۳، ۶.
+    \label{ex:not-prime}
+\end{example}
+
+\section{قضیه‌ی اساسی حساب}
+\label{sec:numbertheory-fundamental}
+
+\begin{theorem}[قضیه‌ی اساسی حساب]
+    هر عدد طبیعی $n > 1$ را می‌توان به‌طور یکتا
+    (صرف‌نظر از ترتیب عوامل) به‌صورت حاصل‌ضرب اعداد اول نوشت:
+    \[
+    n = p_{1}^{e_{1}} \cdot p_{2}^{e_{2}} \cdots p_{k}^{e_{k}}
+    \]
+    که در آن $p_{1} < p_{2} < \cdots < p_{k}$ اعداد اول
+    و $e_{i} \geq 1$ اعداد صحیح هستند.
+    \label{thm:fundamental}
+\end{theorem}
+
+طبق \cref{thm:fundamental}، هر عدد طبیعی بزرگ‌تر از ۱
+دارای یک تجزیه‌ی یکتا به عوامل اول است. برای مثال:
+\[
+60 = 2^{2} \times 3 \times 5
+\]
+
+\begin{proof}
+    ابتدا \textbf{وجود} تجزیه را با استقرای قوی اثبات می‌کنیم.
+
+    \textbf{پایه:} عدد ۲ اول است و تجزیه‌ی آن خودش می‌باشد.
+
+    \textbf{گام استقرا:} فرض کنید هر عدد $m$ با $2 \leq m < n$
+    قابل تجزیه به عوامل اول باشد. برای $n$ دو حالت داریم:
+
+    \begin{enumerate}
+        \item اگر $n$ اول باشد، تجزیه‌ی آن خودش است.
+        \item اگر $n$ مرکب باشد، $n = a \cdot b$ که
+        $2 \leq a, b < n$. طبق فرض استقرا، $a$ و $b$
+        هر یک به عوامل اول تجزیه می‌شوند. از ضرب این دو
+        تجزیه، تجزیه‌ی $n$ به‌دست می‌آید.
+    \end{enumerate}
+
+    برای اثبات \textbf{یکتایی} از لم اقلیدس
+    (\cref{lem:euclid}) استفاده می‌شود که در ادامه
+    خواهیم دید.
+\end{proof}
+
+\section{لم اقلیدس}
+\label{sec:numbertheory-euclid}
+
+\begin{lemma}[لم اقلیدس]
+    اگر $p$ عددی اول باشد و $p \mid ab$، آنگاه
+    $p \mid a$ یا $p \mid b$.
+    \label{lem:euclid}
+\end{lemma}
+
+\begin{proof}
+    فرض کنید $p \nmid a$. آنگاه $\gcd(p, a) = 1$
+    (چون $p$ اول است). طبق قضیه‌ی بزو (\lr{Bezout})،
+    اعداد صحیح $x$ و $y$ وجود دارند که:
+    \[
+    px + ay = 1
+    \]
+    با ضرب طرفین در $b$:
+    \[
+    pbx + aby = b
+    \]
+    از آنجا که $p \mid p$ و $p \mid ab$، نتیجه می‌شود
+    $p \mid b$.
+\end{proof}
+
+\begin{corollary}
+    اگر $p$ عددی اول باشد و $p \mid a_{1}a_{2} \cdots a_{n}$،
+    آنگاه $p$ حداقل یکی از $a_{i}$ها را می‌شمارد
+    (بر آن بخش‌پذیر است).
+    \label{cor:euclid-general}
+\end{corollary}
+
+\begin{proposition}
+    کوچک‌ترین مقسوم‌علیه بزرگ‌تر از ۱ هر عدد طبیعی $n > 1$،
+    یک عدد اول است.
+    \label{prop:smallest-divisor}
+\end{proposition}
+
+\section{نکات مهم}
+\label{sec:numbertheory-remarks}
+
+\begin{remark}
+    لم اقلیدس (\cref{lem:euclid}) یکی از پایه‌های اساسی
+    نظریه‌ی اعداد است و در اثبات بسیاری از قضایا از جمله
+    یکتایی تجزیه در قضیه‌ی اساسی حساب
+    (\cref{thm:fundamental}) به کار می‌رود.
+    \label{rem:euclid-importance}
+\end{remark}
+
+\begin{remark}
+    عدد ۲ تنها عدد اول زوج است. تمام اعداد اول دیگر فرد
+    هستند، زیرا اگر یک عدد زوج بزرگ‌تر از ۲ اول می‌بود،
+    باید بر ۲ بخش‌پذیر می‌بود که با تعریف عدد اول در
+    تناقض است.
+    \label{rem:two-is-special}
+\end{remark}
+
+%========================================================================
+% CHAPTER 2 — GROUP THEORY
+%========================================================================
+\chapter{مبانی نظریه‌ی گروه‌ها}
+\label{chap:grouptheory}
+
+\section{تعریف گروه}
+\label{sec:grouptheory-definition}
+
+\begin{definition}[گروه]
+    یک \textbf{گروه}\index{گروه} $(G, *)$ شامل یک مجموعه‌ی
+    ناتهی $G$ و یک عمل دوتایی $*$ روی $G$ است که در چهار
+    شرط زیر صدق کند:
+
+    \begin{enumerate}
+        \item \textbf{بسته بودن:}
+        $\forall a, b \in G: a * b \in G$
+        \item \textbf{شرکت‌پذیری:}
+        $\forall a, b, c \in G: (a * b) * c = a * (b * c)$
+        \item \textbf{وجود عضو خنثی:}
+        $\exists e \in G: \forall a \in G: e * a = a * e = a$
+        \item \textbf{وجود عضو وارون:}
+        $\forall a \in G: \exists a^{-1} \in G:
+        a * a^{-1} = a^{-1} * a = e$
+    \end{enumerate}
+    \label{def:group}
+\end{definition}
+
+\begin{example}
+    مجموعه‌ی اعداد صحیح $\Z$ با عمل جمع معمولی یک گروه است:
+
     \begin{itemize}
-        \item \textbf{قضیه:} \thmref{thm:fundamental} می‌گوید
-        هر عدد طبیعی بزرگتر از ۱ به صورت حاصلضرب اعداد اول
-        قابل تجزیه است.
-        
-        \item \textbf{تعریف:} طبق \defref{def:prime}، عدد اول
-        عددی است که دقیقاً دو مقسوم‌علیه مثبت داشته باشد.
-        
-        \item \textbf{لم:} \lemref{lem:euclid} یک لم کلیدی
-        در نظریه اعداد است.
-        
-        \item \textbf{نتیجه:} \corref{cor:euclid-general}
-        تعمیم لم اقلیدس به چند عامل است.
-        
-        \item \textbf{گزاره:} \ref{prop:smallest-divisor}
-        کوچکترین مقسوم‌علیه را معرفی می‌کند.
-        
-        \item \textbf{مثال:} \exref{ex:primes-under-50}
-        اعداد اول کوچکتر از ۵۰ را فهرست کرده است.
-        
-        \item \textbf{نکته:} \ref{rem:euclid-importance}
-        اهمیت لم اقلیدس را توضیح می‌دهد.
-        
-        \item \textbf{تمرین:} \exref{exc:group-equation}
-        حل معادله در گروه را می‌طلبد.
+        \item عضو خنثی: $0$
+        \item وارون $a$: $-a$
     \end{itemize}
-    
-    \section{ارجاع بین فصلی}
-    
-    در \chref{chap:analysis} (فصل بعدی)،
-    مفاهیم حد و پیوستگی را بررسی خواهیم کرد.
-    
-    همچنین در \exref{exc:zn-group} (فصل قبل)،
-    از شما خواسته شد گروه $\Z_{n}$ را بررسی کنید.
-    
-    %----------------------------------------
-    % Chapter 4: Real Analysis
-    %----------------------------------------
-    \chapter{مبانی آنالیز حقیقی}
-    \label{chap:analysis}
-    
-    \section{حد و همگرایی}
-    
-    \begin{definition}[حد دنباله]
-        دنباله $(a_{n})_{n=1}^{\infty}$ به عدد حقیقی $L$
-        \textbf{همگرا} است اگر:
-        \[
-        \forall \varepsilon > 0, \;
-        \exists N \in \N, \;
-        \forall n \geq N: \abs{a_{n} - L} < \varepsilon
-        \]
-        در این صورت می‌نویسیم $\lim_{n \to \infty} a_{n} = L$.
-        \label{def:limit}
-    \end{definition}
-    
-    \begin{example}
-        دنباله $a_{n} = \frac{1}{n}$ به صفر همگراست، زیرا:
-        \[
-        \forall \varepsilon > 0, \;
-        \text{با انتخاب } N > \frac{1}{\varepsilon}, \;
-        \forall n \geq N: \abs{\frac{1}{n} - 0} < \varepsilon
-        \]
-        \label{ex:convergent-1over}
-    \end{example}
-    
-    \begin{theorem}[یکتایی حد]
-        اگر دنباله‌ای همگرا باشد، حد آن یکتاست.
-        \label{thm:unique-limit}
-    \end{theorem}
-    
-    \begin{proof}
-        فرض کنید $\lim a_{n} = L_{1}$ و $\lim a_{n} = L_{2}$
-        با $L_{1} \neq L_{2}$. قرار دهید
-        $\varepsilon = \frac{\abs{L_{1} - L_{2}}}{2} > 0$.
-        
-        طبق تعریف حد (\defref{def:limit})، عدد $N_{1}$ وجود دارد
-        که برای $n \geq N_{1}$، $\abs{a_{n} - L_{1}} < \varepsilon$.
-        همچنین عدد $N_{2}$ وجود دارد که برای $n \geq N_{2}$،
-        $\abs{a_{n} - L_{2}} < \varepsilon$.
-        
-        برای $n \geq \max(N_{1}, N_{2})$:
-        \begin{align*}
-            \abs{L_{1} - L_{2}}
-            &= \abs{(L_{1} - a_{n}) + (a_{n} - L_{2})} \\
-            &\leq \abs{L_{1} - a_{n}} + \abs{a_{n} - L_{2}} \\
-            &< \varepsilon + \varepsilon = \abs{L_{1} - L_{2}}
-        \end{align*}
-        که تناقض است. بنابراین $L_{1} = L_{2}$.
-    \end{proof}
-    
-    \begin{remark}
-        عکس قضیه \thmref{thm:unique-limit} لزوماً برقرار نیست:
-        یکتایی حد شرط کافی برای همگرایی نیست.
-        دنباله $a_{n} = (-1)^{n}$ حد ندارد،
-        با اینکه اگر داشت یکتا می‌بود.
-        \label{rem:limit-converse}
-    \end{remark}
-    
-    %----------------------------------------
-    % Summary
-    %----------------------------------------
-    \chapter{خلاصه نتایج}
-    
-    \section{آمار محیط‌های استفاده شده}
-    
-    \begin{table}[h]
-        \centering
-        \caption{محیط‌های علمی استفاده شده در این آزمون}
-        \label{tab:environments-used}
-        \begin{tabular}{|c|C{4cm}|c|}
-            \hline
-            \textbf{محیط} & \textbf{تعداد} & \textbf{وضعیت} \\
-            \hline
-            \lr{theorem} & قضیه اساسی حساب، یکتایی خنثی، یکتایی وارون، یکتایی حد & \textcolor{matingreen}{✅} \\
-            \lr{definition} & عدد اول، گروه، حد دنباله & \textcolor{matingreen}{✅} \\
-            \lr{lemma} & لم اقلیدس & \textcolor{matingreen}{✅} \\
-            \lr{corollary} & تعمیم لم اقلیدس & \textcolor{matingreen}{✅} \\
-            \lr{proposition} & کوچکترین مقسوم‌علیه & \textcolor{matingreen}{✅} \\
-            \lr{example} & اعداد اول، ۶، $\Z$، $\R$، همگرایی & \textcolor{matingreen}{✅} \\
-            \lr{remark} & اهمیت لم اقلیدس، ویژگی عدد ۲، عکس یکتایی حد & \textcolor{matingreen}{✅} \\
-            \lr{proof} & قضیه اساسی، لم اقلیدس، یکتایی خنثی، یکتایی وارون، یکتایی حد & \textcolor{matingreen}{✅} \\
-            \lr{exercise} & حل معادله در گروه، گروه $\Z_{n}$ & \textcolor{matingreen}{✅} \\
-            \lr{solution} & حل معادله گروه & \textcolor{matingreen}{✅} \\
-            \hline
-        \end{tabular}
-    \end{table}
-    
-    \section{نتیجه}
-    
-    \textbf{تمام محیط‌های علمی \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شدند.}
-    ۱۰ نوع جعبه رنگی، ارجاع‌های هوشمند، و اثبات‌های ریاضی
-    همگی به درستی کار می‌کنند. 🎉
-    
+    \label{ex:z-group}
+\end{example}
+
+\begin{example}
+    مجموعه‌ی اعداد حقیقی غیرصفر $\R \setminus \{0\}$ با
+    عمل ضرب معمولی یک گروه است:
+
+    \begin{itemize}
+        \item عضو خنثی: $1$
+        \item وارون $a$: $\frac{1}{a}$
+    \end{itemize}
+    \label{ex:r-group}
+\end{example}
+
+\section{قضایای مقدماتی}
+\label{sec:grouptheory-basic}
+
+\begin{theorem}[یکتایی عضو خنثی]
+    عضو خنثی در هر گروه یکتاست.
+    \label{thm:unique-identity}
+\end{theorem}
+
+\begin{proof}
+    فرض کنید $e$ و $e'$ هر دو عضو خنثی گروه $G$ باشند.
+    آنگاه:
+    \[
+    e = e * e' \quad \text{(چون $e'$ خنثی است)}
+    \]
+    \[
+    e * e' = e' \quad \text{(چون $e$ خنثی است)}
+    \]
+    بنابراین $e = e'$ و عضو خنثی یکتاست.
+\end{proof}
+
+\begin{theorem}[یکتایی عضو وارون]
+    وارون هر عضو در یک گروه یکتاست.
+    \label{thm:unique-inverse}
+\end{theorem}
+
+\begin{proof}
+    فرض کنید $a \in G$ و $b$ و $c$ دو وارون $a$ باشند:
+
+    \begin{align*}
+        b &= b * e \quad \text{(خنثی)} \\
+        &= b * (a * c) \quad \text{($c$ وارون $a$ است)} \\
+        &= (b * a) * c \quad \text{(شرکت‌پذیری)} \\
+        &= e * c \quad \text{($b$ وارون $a$ است)} \\
+        &= c \quad \text{(خنثی)}
+    \end{align*}
+
+    بنابراین $b = c$ و عضو وارون یکتاست.
+\end{proof}
+
+\section{تمرین‌ها}
+\label{sec:grouptheory-exercises}
+
+\begin{exercise}
+    ثابت کنید که در هر گروه $G$، معادله‌ی $a * x = b$
+    همواره دارای جواب یکتاست.
+    \label{exc:group-equation}
+\end{exercise}
+
+\begin{solution}
+    \textbf{وجود جواب:} $x = a^{-1} * b$ یک جواب است زیرا:
+    \[
+    a * (a^{-1} * b) = (a * a^{-1}) * b = e * b = b
+    \]
+
+    \textbf{یکتایی:} فرض کنید $x_{1}$ و $x_{2}$ دو جواب باشند:
+    \begin{align*}
+        a * x_{1} &= b \\
+        a * x_{2} &= b
+    \end{align*}
+    با برابر قرار دادن و ضرب از چپ در $a^{-1}$:
+    \[
+    a^{-1} * (a * x_{1}) = a^{-1} * (a * x_{2})
+    \implies x_{1} = x_{2}
+    \]
+    بنابراین جواب یکتاست.
+\end{solution}
+
+\begin{exercise}
+    ثابت کنید که $(\Z_{n}, +_{n})$ یک گروه است (مجموعه‌ی
+    اعداد صحیح به پیمانه‌ی $n$ با عمل جمع پیمانه‌ای).
+    \label{exc:zn-group}
+\end{exercise}
+
+%========================================================================
+% CHAPTER 3 — CROSS-REFERENCES TEST
+%========================================================================
+\chapter{آزمون ارجاع متقابل}
+\label{chap:cref}
+
+\section{ارجاع به تمام محیط‌ها}
+\label{sec:cref-all}
+
+در این بخش، توانایی ارجاع به انواع مختلف محیط‌های علمی
+را آزمایش می‌کنیم:
+
+\begin{itemize}
+    \item \textbf{قضیه:} \cref{thm:fundamental} می‌گوید هر
+    عدد طبیعی بزرگ‌تر از ۱ به‌صورت حاصل‌ضرب اعداد اول
+    قابل تجزیه است.
+
+    \item \textbf{تعریف:} طبق \cref{def:prime}، عدد اول
+    عددی است که دقیقاً دو مقسوم‌علیه مثبت داشته باشد.
+
+    \item \textbf{لم:} \cref{lem:euclid} یک لم کلیدی در
+    نظریه‌ی اعداد است.
+
+    \item \textbf{نتیجه:} \cref{cor:euclid-general} تعمیم
+    لم اقلیدس به چند عامل است.
+
+    \item \textbf{گزاره:} \cref{prop:smallest-divisor}
+    کوچک‌ترین مقسوم‌علیه را معرفی می‌کند.
+
+    \item \textbf{مثال:} \cref{ex:primes-under-50} اعداد
+    اول کوچک‌تر از ۵۰ را فهرست کرده است.
+
+    \item \textbf{نکته:} \cref{rem:euclid-importance}
+    اهمیت لم اقلیدس را توضیح می‌دهد.
+
+    \item \textbf{تمرین:} \cref{exc:group-equation} حل
+    معادله در گروه را می‌طلبد.
+\end{itemize}
+
+\section{ارجاع بین فصلی}
+\label{sec:cref-cross-chapter}
+
+در \cref{chap:analysis} (فصل بعدی)، مفاهیم حد و پیوستگی
+را بررسی خواهیم کرد. همچنین در \cref{exc:zn-group}
+(فصل قبل)، از شما خواسته شد گروه $\Z_{n}$ را بررسی کنید.
+
+\section{ارجاع گروهی و بازه‌ای}
+\label{sec:cref-group}
+
+می‌توان به چند مرجع به‌طور هم‌زمان ارجاع داد:
+\cref{thm:unique-identity,thm:unique-inverse} هر دو به
+یکتایی در گروه اشاره دارند.
+
+%========================================================================
+% CHAPTER 4 — REAL ANALYSIS
+%========================================================================
+\chapter{مبانی آنالیز حقیقی}
+\label{chap:analysis}
+
+\section{حد و همگرایی}
+\label{sec:analysis-limit}
+
+\begin{definition}[حد دنباله]
+    دنباله‌ی $(a_{n})_{n=1}^{\infty}$ به عدد حقیقی $L$
+    \textbf{همگرا} است اگر:
+    \[
+    \forall \varepsilon > 0, \;
+    \exists N \in \N, \;
+    \forall n \geq N: \abs{a_{n} - L} < \varepsilon
+    \]
+    در این صورت می‌نویسیم $\lim_{n \to \infty} a_{n} = L$.
+    \label{def:limit}
+\end{definition}
+
+\begin{example}
+    دنباله‌ی $a_{n} = \frac{1}{n}$ به صفر همگراست، زیرا:
+    \[
+    \forall \varepsilon > 0, \;
+    \text{با انتخاب } N > \frac{1}{\varepsilon}, \;
+    \forall n \geq N: \abs{\frac{1}{n} - 0} < \varepsilon
+    \]
+    \label{ex:convergent-1over}
+\end{example}
+
+\begin{theorem}[یکتایی حد]
+    اگر دنباله‌ای همگرا باشد، حد آن یکتاست.
+    \label{thm:unique-limit}
+\end{theorem}
+
+\begin{proof}
+    فرض کنید $\lim a_{n} = L_{1}$ و $\lim a_{n} = L_{2}$
+    با $L_{1} \neq L_{2}$. قرار دهید
+    $\varepsilon = \frac{\abs{L_{1} - L_{2}}}{2} > 0$.
+
+    طبق تعریف حد (\cref{def:limit})، عدد $N_{1}$ وجود دارد
+    که برای $n \geq N_{1}$، $\abs{a_{n} - L_{1}} < \varepsilon$.
+    همچنین عدد $N_{2}$ وجود دارد که برای $n \geq N_{2}$،
+    $\abs{a_{n} - L_{2}} < \varepsilon$.
+
+    برای $n \geq \max(N_{1}, N_{2})$:
+    \begin{align*}
+        \abs{L_{1} - L_{2}}
+        &= \abs{(L_{1} - a_{n}) + (a_{n} - L_{2})} \\
+        &\leq \abs{L_{1} - a_{n}} + \abs{a_{n} - L_{2}} \\
+        &< \varepsilon + \varepsilon = \abs{L_{1} - L_{2}}
+    \end{align*}
+    که تناقض است. بنابراین $L_{1} = L_{2}$.
+\end{proof}
+
+\begin{remark}
+    عکس \cref{thm:unique-limit} لزوماً برقرار نیست: یکتایی
+    حد شرط کافی برای همگرایی نیست. دنباله‌ی
+    $a_{n} = (-1)^{n}$ حد ندارد، با اینکه اگر داشت
+    یکتا می‌بود.
+    \label{rem:limit-converse}
+\end{remark}
+
+%========================================================================
+% CHAPTER 5 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
+
+\section{آمار محیط‌های استفاده شده}
+\label{sec:summary-environments}
+
+جدول \cref{tab:environments-used} محیط‌های علمی استفاده‌شده
+در این آزمون را نشان می‌دهد.
+
+\begin{matintable}{محیط‌های علمی استفاده‌شده در این آزمون}{tab:environments-used}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+محیط & تعداد & وضعیت \\
+\lr{theorem} & ۴ & \textcolor{matingreen}{فعال} \\
+\lr{definition} & ۳ & \textcolor{matingreen}{فعال} \\
+\lr{lemma} & ۱ & \textcolor{matingreen}{فعال} \\
+\lr{corollary} & ۱ & \textcolor{matingreen}{فعال} \\
+\lr{proposition} & ۱ & \textcolor{matingreen}{فعال} \\
+\lr{example} & ۵ & \textcolor{matingreen}{فعال} \\
+\lr{remark} & ۳ & \textcolor{matingreen}{فعال} \\
+\lr{proof} & ۵ & \textcolor{matingreen}{فعال} \\
+\lr{exercise} & ۲ & \textcolor{matingreen}{فعال} \\
+\lr{solution} & ۱ & \textcolor{matingreen}{فعال} \\
+\end{tblr}
+\end{matintable}
+
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
+
+در این آزمون، سیستم محیط‌های علمی \lr{MatinBook} بر اساس
+پنج معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{ظاهر بصری}: تمایز دو خانواده‌ی جعبه.
+    \item \textbf{شمارنده‌ی مشترک}: شماره‌گذاری پیوسته.
+    \item \textbf{ارجاع هوشمند}: \lr{\textbackslash cref} با نام‌های فارسی.
+    \item \textbf{شکست صفحات}: رفتار جعبه‌های بلند.
+    \item \textbf{نمایه}: ورودی‌های \lr{\textbackslash index} داخل جعبه‌ها.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام محیط‌های علمی \lr{MatinBook} نسخه‌ی
+\lr{\matinbookversion} با موفقیت بارگذاری و آزمایش شدند.
+ده نوع جعبه‌ی رنگی، شمارنده‌ی مشترک، ارجاع هوشمند و
+اثبات‌های ریاضی، همگی به‌درستی کار می‌کنند.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، ششمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item محیط‌های قضیه‌ای (۱۰ نوع)
+        \item دو خانواده‌ی جعبه
+        \item شمارنده‌ی مشترک
+        \item ارجاع هوشمند
+        \item ورودی‌های نمایه
+    \end{itemize}
+}
+
 \end{document}
