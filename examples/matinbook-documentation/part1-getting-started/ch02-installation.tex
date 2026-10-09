@@ -1,0 +1,419 @@
+%%
+%% part1-getting-started/ch02-installation.tex
+%%
+%% Chapter 2: Installation and Setup — How to install XeLaTeX,
+%% fonts, Python dependencies, and MatinBook itself.
+%%
+
+\chapter{نصب و راه‌اندازی}
+\label{chap:installation}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:installation-why}
+
+قبل از اینکه بتوانید اولین کتاب خود را با
+\lr{MatinBook} بسازید، باید چند ابزار را روی
+سیستم خود نصب کنید. این ابزارها شامل موتور
+حروف‌چینی \lr{XeLaTeX}، فونت‌های فارسی، بسته‌های
+\lr{LaTeX}، و چند ابزار جانبی مانند \lr{biber} و
+\lr{xindy} هستند.
+
+نصب نادرست یا ناقص، شایع‌ترین دلیل خطاهای اولیه
+در \lr{MatinBook} است. بنابراین این فصل را
+با دقت بخوانید و هر گام را به‌ترتیب انجام دهید.
+
+\mnote{اگر با \lr{LaTeX} و ابزارهای آن آشنایی دارید، می‌توانید مستقیماً به \cref{sec:installation-matinbook} بروید.}
+
+\section{پیش‌نیازها}
+\label{sec:installation-prerequisites}
+
+برای کار با \lr{MatinBook}، به ابزارهای زیر
+نیاز دارید:
+
+\begin{enumerate}
+    \item \textbf{\lr{TeX Live}:} توزیع اصلی
+    \lr{LaTeX} که شامل \lr{XeLaTeX} و اکثر بسته‌ها
+    است. نسخه‌ی ۲۰۲۳ یا جدیدتر توصیه می‌شود.
+
+    \item \textbf{\lr{XeLaTeX}:} موتور حروف‌چینی
+    که از فونت‌های \lr{OpenType} و حروف‌چینی
+    راست‌به‌چپ پشتیبانی می‌کند.
+
+    \item \textbf{\lr{biber}:} ابزار پردازش
+    کتاب‌نامه برای \lr{biblatex}.
+
+    \item \textbf{\lr{xindy} و \lr{texindy}:}
+    ابزار ساخت نمایه با پشتیبانی از مرتب‌سازی
+    فارسی.
+
+    \item \textbf{\lr{Python 3} و \lr{Pygments}:}
+    برای رنگ‌آمیزی کد در \lr{minted}.
+
+    \item \textbf{فونت‌های فارسی و لاتین:} شامل
+    \lr{XB Niloofar}، \lr{XITS Math}، و
+    \lr{DejaVu Sans Mono}.
+\end{enumerate}
+
+\mnote{اگر از ویندوز استفاده می‌کنید، نصب \lr{TeX Live} ممکن است چند ساعت طول بکشد. صبور باشید!}
+
+\section{نصب \lr{TeX Live}}
+\label{sec:installation-texlive}
+
+\lr{TeX Live} توزیع استاندارد \lr{LaTeX} است
+که برای \lr{Linux}، \lr{macOS} و \lr{Windows}
+در دسترس است.
+
+\subsection{نصب روی \lr{Linux}}
+\label{sec:installation-texlive-linux}
+
+روی \lr{Debian} و \lr{Ubuntu}:
+
+\begin{latin}
+\begin{minted}{bash}
+sudo apt update
+sudo apt install texlive-full
+\end{minted}
+\end{latin}
+
+\mnote{بسته‌ی \lr{texlive-full} تمام بسته‌های \lr{LaTeX} را نصب می‌کند و حدود ۵ گیگابایت فضا می‌گیرد. اگر فضا محدود دارید، از \lr{texlive-xetex} و بسته‌های موردنیاز دیگر استفاده کنید.}
+
+\subsection{نصب روی \lr{macOS}}
+\label{sec:installation-texlive-macos}
+
+روش توصیه‌شده، استفاده از \lr{MacTeX} است:
+
+\begin{latin}
+\begin{minted}{bash}
+# با Homebrew
+brew install --cask mactex
+\end{minted}
+\end{latin}
+
+\subsection{نصب روی \lr{Windows}}
+\label{sec:installation-texlive-windows}
+
+از سایت رسمی \lr{TeX Live}، فایل \lr{install-tl-windows.exe}
+را دانلود و اجرا کنید.
+
+\section{نصب فونت‌ها}
+\label{sec:installation-fonts}
+
+\lr{MatinBook} به چند فونت نیاز دارد که برخی
+از آن‌ها ممکن است روی سیستم شما نصب نباشند.
+
+\subsection{فونت \lr{XB Niloofar}}
+\label{sec:installation-font-niloofar}
+
+\lr{XB Niloofar} فونت پیش‌فرض متن فارسی در
+\lr{MatinBook} است. اگر در مخزن پروژه هستید:
+
+\begin{latin}
+\begin{minted}{bash}
+mkdir -p ~/.local/share/fonts
+cp fonts/niloofar/*.ttf ~/.local/share/fonts/
+fc-cache -fv
+\end{minted}
+\end{latin}
+
+\mnote{در \lr{macOS}، مسیر \lr{\textasciitilde/Library/Fonts} است. در \lr{Windows}، روی فایل \lr{.ttf} راست‌کلیک کرده و \lr{Install} بزنید.}
+
+برای بررسی نصب:
+
+\begin{latin}
+\begin{minted}{bash}
+fc-list | grep -i niloofar
+\end{minted}
+\end{latin}
+
+\subsection{فونت \lr{XITS Math}}
+\label{sec:installation-font-xits}
+
+فونت ریاضی \lr{XITS Math} برای نمایش فرمول‌های
+ریاضی استفاده می‌شود:
+
+\begin{latin}
+\begin{minted}{bash}
+# Debian/Ubuntu
+sudo apt install fonts-xits
+
+# macOS
+brew install --cask font-xits
+\end{minted}
+\end{latin}
+
+\subsection{فونت \lr{DejaVu Sans Mono}}
+\label{sec:installation-font-dejavu}
+
+فونت \lr{DejaVu Sans Mono} برای نمایش کد و
+متن فارسی داخل کد استفاده می‌شود:
+
+\begin{latin}
+\begin{minted}{bash}
+# Debian/Ubuntu
+sudo apt install fonts-dejavu
+\end{minted}
+\end{latin}
+
+\mnote{فونت \lr{DejaVu Sans Mono} روی اکثر توزیع‌های \lr{Linux} به‌طور پیش‌فرض نصب است.}
+
+\subsection{فونت‌های اختیاری}
+\label{sec:installation-font-optional}
+
+\lr{MatinBook} از چهار فونت فارسی دیگر نیز
+پشتیبانی می‌کند که نصب آن‌ها اختیاری است:
+
+\begin{itemize}
+    \item \lr{Vazirmatn}
+    \item \lr{Sahel}
+    \item \lr{IR Lotus}
+    \item \lr{B Nazanin} (تجاری)
+\end{itemize}
+
+\section{نصب \lr{Python} و \lr{Pygments}}
+\label{sec:installation-python}
+
+برای رنگ‌آمیزی کد با \lr{minted}، به \lr{Python 3}
+و \lr{Pygments} نیاز دارید:
+
+\begin{latin}
+\begin{minted}{bash}
+# Debian/Ubuntu
+sudo apt install python3 python3-pip
+pip3 install pygments
+
+# macOS
+brew install python3
+pip3 install pygments
+\end{minted}
+\end{latin}
+
+برای بررسی نصب:
+
+\begin{latin}
+\begin{minted}{bash}
+pygmentize -V
+\end{minted}
+\end{latin}
+
+باید نسخه‌ی \lr{Pygments} را نمایش دهد (مثلاً
+\lr{2.17.2}).
+
+\mnote{اگر از \lr{TeX Live 2024} یا جدیدتر استفاده می‌کنید، ممکن است به‌جای \lr{pygments} به \lr{latexminted} هم نیاز داشته باشید. با \lr{pip install latexminted} نصب کنید.}
+
+\section{نصب \lr{MatinBook}}
+\label{sec:installation-matinbook}
+
+پس از نصب پیش‌نیازها، نوبت به نصب خود
+\lr{MatinBook} می‌رسد. سه روش برای این کار
+وجود دارد:
+
+\subsection{روش ۱ — نصب در \lr{texmf} (توصیه‌شده)}
+\label{sec:installation-texmf}
+
+این روش، استانداردترین و پایدارترین روش است:
+
+\begin{latin}
+\begin{minted}{bash}
+mkdir -p ~/texmf/tex/latex/matinbook
+cp matinbook.cls ~/texmf/tex/latex/matinbook/
+find tex -name "*.sty" -exec cp {} ~/texmf/tex/latex/matinbook/ \;
+texhash ~/texmf
+\end{minted}
+\end{latin}
+
+\mnote{مسیر \lr{\textasciitilde/texmf} در \lr{TeX Live} به‌عنوان \lr{TEXMFHOME} شناخته می‌شود و به‌طور خودکار جستجو می‌شود.}
+
+برای بررسی نصب:
+
+\begin{latin}
+\begin{minted}{bash}
+kpsewhich matinbook.cls
+\end{minted}
+\end{latin}
+
+باید مسیر فایل را نمایش دهد.
+
+\subsection{روش ۲ — استفاده از \lr{TEXINPUTS}}
+\label{sec:installation-texinputs}
+
+اگر نمی‌خواهید فایل‌ها را در \lr{texmf} کپی کنید،
+می‌توانید مسیر پروژه را به \lr{TEXINPUTS} اضافه کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+export TEXINPUTS="/path/to/matinbook//:"
+\end{minted}
+\end{latin}
+
+\mnote{دو اسلش \lr{//} یعنی «همه‌ی زیرپوشه‌ها به‌صورت بازگشتی». این روش برای توسعه‌ی پروژه مفید است ولی برای استفاده‌ی نهایی توصیه نمی‌شود.}
+
+\subsection{روش ۳ — نصب در پروژه‌ی محلی}
+\label{sec:installation-local}
+
+اگر فقط می‌خواهید در یک پروژه‌ی خاص از
+\lr{MatinBook} استفاده کنید، می‌توانید فایل‌ها
+را کنار \file{main.tex} قرار دهید. اما این
+روش، پایداری کمتری دارد.
+
+\section{تست نصب}
+\label{sec:installation-test}
+
+برای اطمینان از نصب درست، یک فایل ساده بسازید:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+
+\title{|\pc{تست نصب}|}
+\author{|\pc{من}|}
+\date{|\pc{مهر ۱۴۰۵}|}
+
+\begin{document}
+
+\maketitle
+
+\chapter{|\pc{فصل اول}|}
+
+|\pc{این یک متن فارسی ساده است.}|
+
+\begin{theorem}
+    |\pc{این یک قضیه‌ی آزمایشی است.}|
+\end{theorem}
+
+\end{document}
+\end{minted}
+\end{latin}
+
+\mnote{نام فایل را \lr{test.tex} بگذارید و با \lr{xelatex -shell-escape test.tex} کامپایل کنید.}
+
+سپس با دستور زیر کامپایل کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+xelatex -shell-escape test.tex
+\end{minted}
+\end{latin}
+
+اگر یک فایل \lr{test.pdf} ساخته شد و شامل
+متن فارسی و قضیه‌ی رنگی بود، نصب شما موفق
+بوده است.
+
+\section{عیب‌یابی نصب}
+\label{sec:installation-troubleshooting}
+
+در این بخش، چند خطای رایج نصب و راه‌حل آن‌ها
+را بررسی می‌کنیم.
+
+\subsection{خطای \lr{File matinbook.cls not found}}
+\label{sec:installation-error-cls}
+
+\textbf{علت:} فایل \file{matinbook.cls} در مسیر
+جستجوی \lr{LaTeX} نیست.
+
+\textbf{راه‌حل:}
+\begin{itemize}
+    \item اگر از روش ۱ استفاده می‌کنید،
+    \lr{texhash} را اجرا کنید.
+    \item اگر از روش ۲ استفاده می‌کنید،
+    \lr{TEXINPUTS} را بررسی کنید.
+\end{itemize}
+
+\subsection{خطای \lr{Font XB Niloofar not found}}
+\label{sec:installation-error-font}
+
+\textbf{علت:} فونت نصب نشده یا \lr{fc-cache}
+اجرا نشده است.
+
+\textbf{راه‌حل:}
+\begin{latin}
+\begin{minted}{bash}
+fc-cache -fv
+fc-list | grep -i niloofar
+\end{minted}
+\end{latin}
+
+\subsection{خطای \lr{Package minted Error}}
+\label{sec:installation-error-minted}
+
+\textbf{علت:} فراموش کردن \lr{-shell-escape}
+یا نصب نبودن \lr{Pygments}.
+
+\textbf{راه‌حل:}
+\begin{itemize}
+    \item از \lr{xelatex -shell-escape} استفاده کنید.
+    \item \lr{Pygments} را نصب کنید:
+    \lr{pip3 install pygments}.
+\end{itemize}
+
+\subsection{خطای \lr{xindy: command not found}}
+\label{sec:installation-error-xindy}
+
+\textbf{علت:} \lr{xindy} نصب نیست.
+
+\textbf{راه‌حل:}
+\begin{latin}
+\begin{minted}{bash}
+sudo apt install xindy
+\end{minted}
+\end{latin}
+
+\mnote{خطاهای بیشتر در \cref{app:troubleshooting} بررسی می‌شوند.}
+
+\section{تمرین‌ها}
+\label{sec:installation-exercises}
+
+\begin{exercise}
+    \lr{TeX Live} را روی سیستم خود نصب کنید
+    و با دستور \lr{xelatex -v} نسخه‌ی آن را
+    بررسی کنید.
+    \label{exc:installation-texlive}
+\end{exercise}
+
+\begin{exercise}
+    سه فونت اصلی \lr{MatinBook} (\lr{XB Niloofar}،
+    \lr{XITS Math}، \lr{DejaVu Sans Mono}) را نصب
+    کنید و با \lr{fc-list} نصب آن‌ها را تأیید کنید.
+    \label{exc:installation-fonts}
+\end{exercise}
+
+\begin{exercise}
+    یک فایل \lr{test.tex} ساده بسازید و آن را
+    با \lr{xelatex -shell-escape} کامپایل کنید.
+    اگر خطایی گرفتید، آن را در \cref{sec:installation-troubleshooting}
+    جستجو کنید.
+    \label{exc:installation-test}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:installation-summary}
+
+در این فصل، یاد گرفتیم که:
+
+\begin{itemize}
+    \item پیش‌نیازهای \lr{MatinBook} شامل
+    \lr{TeX Live}، \lr{biber}، \lr{xindy}،
+    \lr{Python} و فونت‌های فارسی و لاتین است.
+
+    \item \lr{TeX Live} روی سه سیستم‌عامل
+    \lr{Linux}، \lr{macOS} و \lr{Windows} نصب
+    می‌شود.
+
+    \item فونت‌های موردنیاز شامل
+    \lr{XB Niloofar}، \lr{XITS Math} و
+    \lr{DejaVu Sans Mono} هستند.
+
+    \item \lr{MatinBook} به سه روش نصب می‌شود:
+    \lr{texmf} (توصیه‌شده)، \lr{TEXINPUTS} و
+    پروژه‌ی محلی.
+
+    \item برای تست نصب، یک فایل ساده بسازید
+    و با \lr{xelatex -shell-escape} کامپایل کنید.
+
+    \item خطاهای رایج نصب شامل «فایل پیدا نشد»،
+    «فونت پیدا نشد»، «خطای \lr{minted}» و
+    «\lr{xindy} پیدا نشد» است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:first-book})، اولین
+کتاب خود را با \lr{MatinBook} می‌سازید و
+با ساختار پایه‌ی کتاب آشنا می‌شوید.
