@@ -1,0 +1,491 @@
+%%
+%% part1-getting-started/ch04-book-structure.tex
+%%
+%% Chapter 4: Book Structure — A detailed look at the
+%% frontmatter, mainmatter, and backmatter split, and how
+%% each part of a MatinBook project is organized.
+%%
+
+\chapter{ساختار یک کتاب}
+\label{chap:book-structure}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:book-structure-why}
+
+در فصل قبل، یک کتاب ساده ساختیم و با پنج بخش
+اصلی آن آشنا شدیم. در این فصل، نگاهی عمیق‌تر به
+ساختار یک کتاب \lr{MatinBook} می‌اندازیم.
+
+درک درست از ساختار کتاب، به شما کمک می‌کند که:
+
+\begin{itemize}
+    \item بدانید هر عنصر کتاب کجا قرار می‌گیرد.
+    \item بتوانید کتاب‌های بزرگ را به‌راحتی مدیریت کنید.
+    \item از خطاهای رایج جلوگیری کنید.
+    \item کتاب خود را حرفه‌ای‌تر سازمان‌دهی کنید.
+\end{itemize}
+
+\mnote{اگر با ساختار \lr{LaTeX} آشنا هستید، می‌دانید که \lr{\textbackslash frontmatter}، \lr{\textbackslash mainmatter} و \lr{\textbackslash backmatter} از کلاس \lr{book} استاندارد می‌آیند.}
+
+\section{سه بخش اصلی کتاب}
+\label{sec:book-structure-three-parts}
+
+هر کتاب \lr{MatinBook} از سه بخش اصلی تشکیل شده
+است که با سه دستور مشخص می‌شوند:
+
+\begin{enumerate}
+    \item \textbf{پیش‌متن} (\lr{\textbackslash frontmatter}):
+    بخش‌هایی که پیش از متن اصلی می‌آیند.
+    \item \textbf{متن اصلی} (\lr{\textbackslash mainmatter}):
+    فصل‌های اصلی کتاب.
+    \item \textbf{پس‌متن} (\lr{\textbackslash backmatter}):
+    بخش‌هایی که پس از متن اصلی می‌آیند.
+\end{enumerate}
+
+\mnote{هر یک از این سه دستور، شماره‌گذاری صفحات را تغییر می‌دهد: پیش‌متن با حروف ابجد، متن اصلی با اعداد عربی، پس‌متن بدون شماره.}
+
+\section{پیش‌متن}
+\label{sec:book-structure-frontmatter}
+
+پیش‌متن، بخش‌هایی است که پیش از فصل‌های اصلی
+کتاب قرار می‌گیرند. این بخش‌ها شامل موارد زیر
+هستند:
+
+\begin{itemize}
+    \item \textbf{صفحه‌ی عنوان:} با \cmd{maketitle}.
+    \item \textbf{شناسنامه:} صفحه‌ی حقوق و
+    اطلاعات نشر.
+    \item \textbf{تقدیم‌نامه:} صفحه‌ی تقدیم.
+    \item \textbf{پیشگفتار:} متن مقدمه.
+    \item \textbf{فهرست مطالب:} با
+    \cmd{tableofcontents}.
+    \item \textbf{فهرست تصاویر:} با
+    \cmd{listoffigures}.
+    \item \textbf{فهرست جداول:} با
+    \cmd{listoftables}.
+    \item \textbf{فهرست الگوریتم‌ها:} با
+    \cmd{listofalgorithms}.
+\end{itemize}
+
+\subsection{شماره‌گذاری صفحات در پیش‌متن}
+\label{sec:book-structure-frontmatter-numbering}
+
+در پیش‌متن، شماره‌گذاری صفحات با \textbf{حروف
+ابجد فارسی} انجام می‌شود: الف، ب، پ، ت، ث، ج،
+چ، ح، خ، د، ذ، ر، ز، ژ، س، ش، ص، ض، ط، ظ، ع،
+غ، ف، ق، ک، گ، ل، م، ن، و، ه، ی.
+
+این کار، مطابق استاندارد نشر ایران است و باعث
+می‌شود که پیش‌متن، مستقل از متن اصلی شماره‌گذاری
+شود.
+
+\mnote{اگر پیش‌متن طولانی باشد، ممکن است حروف ابجد تمام شوند. \lr{xepersian} به‌طور خودکار از ترکیب‌های جدید استفاده می‌کند.}
+
+\subsection{هندسه‌ی صفحه در پیش‌متن}
+\label{sec:book-structure-frontmatter-geometry}
+
+در پیش‌متن، حاشیه‌ی بیرونی پهن وجود ندارد و
+صفحه، حالت \textbf{متقارن} دارد:
+
+\begin{itemize}
+    \item حاشیه‌ی داخلی: \pnum{۱.۵} سانتی‌متر.
+    \item حاشیه‌ی بیرونی: \pnum{۱.۵} سانتی‌متر.
+    \item عرض متن: حدود \pnum{۱۴.۳} سانتی‌متر.
+\end{itemize}
+
+برای فعال‌سازی این حالت، از دستور
+\cmd{frontmattergeometry} استفاده کنید.
+
+\mnote{دلیل حذف حاشیه‌ی پهن در پیش‌متن این است که این بخش‌ها به یادداشت حاشیه‌ای نیاز ندارند و می‌توانند از عرض کامل متن استفاده کنند.}
+
+\subsection{ساختار یک پیش‌متن نمونه}
+\label{sec:book-structure-frontmatter-example}
+
+یک پیش‌متن نمونه در \lr{MatinBook} به این صورت است:
+
+\begin{latin}
+\begin{minted}{latex}
+\frontmatter
+\frontmattergeometry
+
+% |\pc{صفحه‌ی عنوان}|
+\maketitle
+
+% |\pc{شناسنامه}|
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    |\pc{تمامی حقوق محفوظ است.}|
+\end{center}
+\clearpage
+
+% |\pc{تقدیم‌نامه}|
+\thispagestyle{empty}
+\vfill
+\begin{flushright}
+    |\pc{تقدیم به ...}|
+\end{flushright}
+\clearpage
+
+% |\pc{پیشگفتار}|
+\chapter*{|\pc{پیشگفتار}|}
+\addcontentsline{toc}{chapter}{|\pc{پیشگفتار}|}
+|\pc{متن پیشگفتار...}|
+
+% |\pc{فهرست‌ها}|
+\tableofcontents
+\clearpage
+\listoffigures
+\clearpage
+\listoftables
+\clearpage
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash chapter*} یک فصل بدون شماره می‌سازد. برای پیشگفتار و پیوست‌های بدون شماره مناسب است.}
+
+\subsection{دستور \cmd{chapter*} در پیش‌متن}
+\label{sec:book-structure-chapter-star}
+
+برای بخش‌هایی مانند پیشگفتار که نباید شماره‌ی
+فصل داشته باشند، از دستور \cmd{chapter*} استفاده
+می‌کنیم. این دستور، یک عنوان بدون شماره می‌سازد.
+
+برای اینکه این بخش در فهرست مطالب هم بیاید،
+باید دستور \cmd{addcontentsline} را نیز اضافه
+کنیم:
+
+\begin{latin}
+\begin{minted}{latex}
+\chapter*{|\pc{پیشگفتار}|}
+\addcontentsline{toc}{chapter}{|\pc{پیشگفتار}|}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash addcontentsline} سه آرگومان می‌گیرد: فایل فهرست (\lr{toc})، سطح (\lr{chapter})، و متن.}
+
+\section{متن اصلی}
+\label{sec:book-structure-mainmatter}
+
+متن اصلی، بخش اصلی کتاب است و شامل فصل‌های
+اصلی می‌شود. این بخش با دستور \cmd{mainmatter}
+شروع می‌شود.
+
+\subsection{شماره‌گذاری صفحات در متن اصلی}
+\label{sec:book-structure-mainmatter-numbering}
+
+در متن اصلی، شماره‌گذاری صفحات با \textbf{اعداد
+عربی} انجام می‌شود: ۱، ۲، ۳، ...
+
+\subsection{هندسه‌ی صفحه در متن اصلی}
+\label{sec:book-structure-mainmatter-geometry}
+
+در متن اصلی، حاشیه‌ی بیرونی پهن (به‌طور پیش‌فرض
+\pnum{۵.۹} سانتی‌متر) فعال می‌شود:
+
+\begin{itemize}
+    \item حاشیه‌ی داخلی: \pnum{۱.۵} سانتی‌متر.
+    \item حاشیه‌ی بیرونی: \pnum{۵.۹} سانتی‌متر.
+    \item عرض متن: حدود \pnum{۱۰.۳} سانتی‌متر.
+\end{itemize}
+
+برای فعال‌سازی این حالت، از دستور
+\cmd{mainmattergeometry} استفاده کنید.
+
+\mnote{حاشیه‌ی پهن برای یادداشت‌های حاشیه‌ای، شکل‌های کوچک و فرمول‌های مکمل طراحی شده است.}
+
+\subsection{ساختار یک فصل نمونه}
+\label{sec:book-structure-chapter-example}
+
+یک فصل نمونه در \lr{MatinBook} به این صورت است:
+
+\begin{latin}
+\begin{minted}{latex}
+\chapter{|\pc{فصل اول}|}
+\label{chap:first}
+
+\section{|\pc{مقدمه}|}
+\label{sec:first-intro}
+
+|\pc{متن مقدمه...}|
+
+\section{|\pc{مفهوم اصلی}|}
+\label{sec:first-main}
+
+|\pc{متن بخش اصلی...}|
+
+\begin{theorem}[|\pc{قضیه‌ی نمونه}|]
+    |\pc{متن قضیه...}|
+    \label{thm:first}
+\end{theorem}
+
+\begin{proof}
+    |\pc{اثبات قضیه...}|
+\end{proof}
+
+\section{|\pc{نتیجه‌گیری}|}
+\label{sec:first-conclusion}
+
+|\pc{متن نتیجه‌گیری...}|
+\end{minted}
+\end{latin}
+
+\mnote{هر فصل باید حداقل یک \lr{\textbackslash label} داشته باشد تا بتوان به آن ارجاع داد.}
+
+\section{پس‌متن}
+\label{sec:book-structure-backmatter}
+
+پس‌متن، بخش‌هایی است که پس از فصل‌های اصلی
+کتاب قرار می‌گیرند. این بخش‌ها شامل موارد زیر
+هستند:
+
+\begin{itemize}
+    \item \textbf{منابع و مراجع:} با
+    \cmd{printbibliography}.
+    \item \textbf{نمایه:} با \cmd{printindex}.
+    \item \textbf{پیوست‌ها:} با \cmd{appendix}.
+\end{itemize}
+
+\subsection{شماره‌گذاری صفحات در پس‌متن}
+\label{sec:book-structure-backmatter-numbering}
+
+در پس‌متن، شماره‌گذاری صفحات همانند متن اصلی
+با اعداد عربی ادامه می‌یابد.
+
+\subsection{هندسه‌ی صفحه در پس‌متن}
+\label{sec:book-structure-backmatter-geometry}
+
+در پس‌متن، هندسه‌ی صفحه به حالت \textbf{متقارن}
+برمی‌گردد (همانند پیش‌متن). برای این کار، از
+دستور \cmd{frontmattergeometry} استفاده می‌کنیم.
+
+\mnote{استفاده از \lr{\textbackslash frontmattergeometry} در پس‌متن، کمی گیج‌کننده است. این دستور فقط «هندسه‌ی متقارن» را فعال می‌کند، نه «حالت پیش‌متن» را.}
+
+\subsection{پیوست‌ها}
+\label{sec:book-structure-appendices}
+
+پیوست‌ها بخش‌هایی هستند که در انتهای کتاب
+می‌آیند و معمولاً شامل مطالب تکمیلی، جدول‌ها،
+یا کدهای طولانی هستند. برای شروع پیوست‌ها،
+از دستور \cmd{appendix} استفاده می‌کنیم:
+
+\begin{latin}
+\begin{minted}{latex}
+\appendix
+
+\chapter{|\pc{پیوست الف}|}
+\label{app:first}
+
+|\pc{متن پیوست...}|
+\end{minted}
+\end{latin}
+
+پس از \cmd{appendix}، شماره‌گذاری فصل‌ها به
+حروف ابجد لاتین (A, B, C, ...) تغییر می‌کند.
+
+\mnote{پیوست‌ها معمولاً در \lr{\textbackslash mainmatter} قرار می‌گیرند، نه در \lr{\textbackslash backmatter}.}
+
+\subsection{ساختار یک پس‌متن نمونه}
+\label{sec:book-structure-backmatter-example}
+
+یک پس‌متن نمونه در \lr{MatinBook} به این صورت
+است:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{پیوست‌ها}| (|\pc{در متن اصلی}|)
+\appendix
+
+\chapter{|\pc{پیوست الف}|}
+\label{app:a}
+
+|\pc{متن پیوست...}|
+
+% |\pc{پس‌متن}| (|\pc{بدون شماره}|)
+\backmatter
+\frontmattergeometry
+
+% |\pc{منابع}| (|\pc{بدون}|\lr{latin})
+\printbibliography[title={|\pc{منابع و مراجع}|}]
+
+% |\pc{نمایه}|
+\printindex
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash printbibliography} را داخل \lr{latin} قرار ندهید. \lr{xepersian} جهت متن را به‌درستی مدیریت می‌کند.}
+
+\section{جدول مقایسه سه بخش}
+\label{sec:book-structure-comparison}
+
+جدول \cref{tab:book-structure} مقایسه‌ی خلاصه‌ای
+بین سه بخش اصلی کتاب را نشان می‌دهد.
+
+\begin{matintable}{مقایسه‌ی سه بخش اصلی کتاب}{tab:book-structure}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {X[l] X[c] X[c] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+ویژگی & پیش‌متن & متن اصلی & پس‌متن \\
+دستور شروع & \lr{\textbackslash frontmatter} & \lr{\textbackslash mainmatter} & \lr{\textbackslash backmatter} \\
+شماره‌گذاری & حروف ابجد & اعداد عربی & اعداد عربی \\
+هندسه & متقارن & حاشیه‌ی پهن & متقارن \\
+محتوا & پیشگفتار، فهرست & فصل‌ها & منابع، نمایه \\
+شماره‌ی فصل & ندارد & دارد & ندارد \\
+\end{tblr}
+\end{matintable}
+
+\section{ترتیب دقیق عناصر}
+\label{sec:book-structure-order}
+
+ترتیب دقیق عناصر کتاب در \lr{MatinBook} به
+این صورت است:
+
+\begin{enumerate}
+    \item \textbf{جلد جلو:} \cmd{makecover}.
+    \item \textbf{پیش‌متن:} \cmd{frontmatter} +
+    \cmd{frontmattergeometry}.
+    \begin{enumerate}
+        \item صفحه‌ی عنوان: \cmd{maketitle}.
+        \item شناسنامه.
+        \item تقدیم‌نامه.
+        \item پیشگفتار: \cmd{chapter*} +
+        \cmd{addcontentsline}.
+        \item فهرست مطالب: \cmd{tableofcontents}.
+        \item فهرست تصاویر: \cmd{listoffigures}.
+        \item فهرست جداول: \cmd{listoftables}.
+        \item فهرست الگوریتم‌ها: \cmd{listofalgorithms}.
+    \end{enumerate}
+    \item \textbf{متن اصلی:} \cmd{mainmatter} +
+    \cmd{mainmattergeometry}.
+    \begin{enumerate}
+        \item بخش‌ها: \cmd{part}.
+        \item فصل‌ها: \cmd{chapter}.
+        \item پیوست‌ها: \cmd{appendix} +
+        \cmd{chapter}.
+    \end{enumerate}
+    \item \textbf{پس‌متن:} \cmd{backmatter} +
+    \cmd{frontmattergeometry}.
+    \begin{enumerate}
+        \item منابع: \cmd{printbibliography}.
+        \item نمایه: \cmd{printindex}.
+    \end{enumerate}
+    \item \textbf{جلد عقب:} \cmd{makebackcover}.
+\end{enumerate}
+
+\mnote{ترتیب دقیق این عناصر، یکی از مهم‌ترین عوامل در تولید کتاب حرفه‌ای است.}
+
+\section{خطاهای رایج}
+\label{sec:book-structure-mistakes}
+
+\subsection{فراموش کردن \cmd{frontmattergeometry}}
+\label{sec:book-structure-mistake-frontgeo}
+
+اگر \cmd{frontmattergeometry} را فراموش کنید،
+پیش‌متن با حاشیه‌ی پهن نمایش داده می‌شود که
+برای فهرست مطالب و پیشگفتار مناسب نیست.
+
+\textbf{راه‌حل:} همیشه \cmd{frontmattergeometry} را
+پس از \cmd{frontmatter} قرار دهید.
+
+\subsection{فراموش کردن \cmd{mainmattergeometry}}
+\label{sec:book-structure-mistake-maingeo}
+
+اگر \cmd{mainmattergeometry} را فراموش کنید،
+متن اصلی با حاشیه‌ی متقارن (بدون حاشیه‌ی پهن)
+نمایش داده می‌شود که برای یادداشت‌های حاشیه‌ای
+مشکل ایجاد می‌کند.
+
+\textbf{راه‌حل:} همیشه \cmd{mainmattergeometry} را
+پس از \cmd{mainmatter} قرار دهید.
+
+\subsection{قرار دادن پیوست‌ها در پس‌متن}
+\label{sec:book-structure-mistake-appendix}
+
+پیوست‌ها باید در متن اصلی قرار گیرند، نه در
+پس‌متن. اگر پیوست‌ها را در پس‌متن قرار دهید،
+شماره‌گذاری آن‌ها به‌درستی انجام نمی‌شود.
+
+\textbf{راه‌حل:} پیوست‌ها را پس از فصل‌های اصلی
+و پیش از \cmd{backmatter} قرار دهید.
+
+\subsection{فراموش کردن \cmd{addcontentsline} برای \cmd{chapter*}}
+\label{sec:book-structure-mistake-addcontentsline}
+
+اگر از \cmd{chapter*} برای پیشگفتار استفاده
+کنید و \cmd{addcontentsline} را فراموش کنید،
+پیشگفتار در فهرست مطالب ظاهر نمی‌شود.
+
+\textbf{راه‌حل:} همیشه \cmd{addcontentsline} را
+پس از \cmd{chapter*} قرار دهید.
+
+\section{تمرین‌ها}
+\label{sec:book-structure-exercises}
+
+\begin{exercise}
+    یک کتاب با پیش‌متن کامل (شناسنامه، تقدیم،
+    پیشگفتار، فهرست مطالب) بسازید. آیا
+    شماره‌گذاری صفحات با حروف ابجد انجام
+    می‌شود؟
+    \label{exc:book-structure-frontmatter}
+\end{exercise}
+
+\begin{exercise}
+    یک کتاب با دو بخش و چهار فصل بسازید.
+    از دستور \cmd{part} برای ایجاد بخش‌ها
+    استفاده کنید.
+    \label{exc:book-structure-parts}
+\end{exercise}
+
+\begin{exercise}
+    یک پیوست به کتاب خود اضافه کنید و
+    شماره‌گذاری آن را بررسی کنید.
+    \label{exc:book-structure-appendix}
+\end{exercise}
+
+\begin{exercise}
+    جدول \cref{tab:book-structure} را با
+    کتاب خود مقایسه کنید. آیا همه‌ی
+    ویژگی‌ها را رعایت کرده‌اید؟
+    \label{exc:book-structure-compare}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:book-structure-summary}
+
+در این فصل، ساختار یک کتاب \lr{MatinBook} را
+به‌طور مفصل بررسی کردیم:
+
+\begin{itemize}
+    \item یک کتاب از سه بخش اصلی تشکیل شده:
+    پیش‌متن، متن اصلی، پس‌متن.
+
+    \item پیش‌متن با حروف ابجد فارسی و هندسه‌ی
+    متقارن شماره‌گذاری می‌شود.
+
+    \item متن اصلی با اعداد عربی و حاشیه‌ی پهن
+    شماره‌گذاری می‌شود.
+
+    \item پس‌متن با اعداد عربی و هندسه‌ی متقارن
+    شماره‌گذاری می‌شود.
+
+    \item پیوست‌ها در متن اصلی قرار می‌گیرند،
+    نه در پس‌متن.
+
+    \item برای بخش‌های بدون شماره، از
+    \cmd{chapter*} همراه با \cmd{addcontentsline}
+    استفاده می‌شود.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{frontmattergeometry}، \cmd{mainmattergeometry}،
+    قرار دادن پیوست‌ها در پس‌متن، و فراموش
+    کردن \cmd{addcontentsline} است.
+\end{itemize}
+
+این فصل، آخرین فصل از بخش اول کتاب (شروع به
+کار) بود. در بخش دوم (اجزای کتاب)، هر یک از
+اجزای کتاب را به‌طور مفصل بررسی خواهیم کرد.
