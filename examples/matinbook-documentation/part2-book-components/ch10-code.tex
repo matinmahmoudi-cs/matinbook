@@ -1,0 +1,548 @@
+%%
+%% part2-book-components/ch10-code.tex
+%%
+%% Chapter 10: Code and Algorithms — Syntax-highlighted
+%% code with minted, and pseudocode with algorithm.
+%%
+
+\chapter{کد و الگوریتم}
+\label{chap:code}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:code-why}
+
+در کتاب‌های برنامه‌نویسی، نمایش حرفه‌ای کد
+اهمیت ویژه‌ای دارد. کد باید با رنگ‌آمیزی نحوی
+مناسب، فونت خوانا، شماره‌گذاری منظم و کپشن‌های
+گویا نمایش داده شود.
+
+\lr{MatinBook} از بسته‌ی \lr{minted} برای نمایش
+کد و از بسته‌ی استاندارد \lr{algorithm} برای
+شبه‌کد استفاده می‌کند. در این فصل، با هر دو
+آشنا می‌شوید و یاد می‌گیرید که چگونه کدهای
+فارسی و لاتین را با هم ترکیب کنید.
+
+\mnote{کدها با \lr{minted} و \lr{Pygments} رنگ‌آمیزی می‌شوند که از بیش از ۳۰۰ زبان برنامه‌نویسی پشتیبانی می‌کند.}
+
+\section{نمایش کد با \lr{minted}}
+\label{sec:code-minted}
+
+\subsection{بلوک کد پایه}
+\label{sec:code-basic}
+
+برای نمایش یک بلوک کد، از محیط \env{minted}
+داخل محیط \env{latin} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{latin}
+\begin{minted}{python}
+def factorial(n: int) -> int:
+    """Calculate n! recursively."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+\end{minted}
+\end{latin}
+\codecaption{|\pc{تابع فاکتوریل بازگشتی}|}
+\label{code:factorial}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{latin}
+\begin{minted}{python}
+def factorial(n: int) -> int:
+    """Calculate n! recursively."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+\end{minted}
+\end{latin}
+\codecaption{تابع فاکتوریل بازگشتی}
+\label{code:factorial-ch10}
+
+\mnote{محیط \lr{minted} باید همیشه داخل \lr{\textbackslash begin\{latin\}} قرار گیرد. این کار جهت کد را لاتین نگه می‌دارد.}
+
+\subsection{کپشن کد}
+\label{sec:code-caption}
+
+برای افزودن کپشن به کد، از دستور \cmd{codecaption}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\codecaption{|\pc{کپشن کد}|}
+\label{code:my-code}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash codecaption} یک شمارنده‌ی مستقل برای کدها ایجاد می‌کند که به‌صورت «فصل.شماره» نمایش داده می‌شود.}
+
+\subsection{ارجاع به کد}
+\label{sec:code-reference}
+
+برای ارجاع به کد، از دستور \cmd{cref} استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{همان‌طور که در}|\cref{code:factorial}|\pc{می‌بینیم...}|%
+\end{minted}
+\end{latin}
+
+خروجی: همان‌طور که در \cref{code:factorial-ch10}
+می‌بینیم...
+
+\mnote{دستور \lr{\textbackslash cref} به‌طور خودکار نوع مرجع را تشخیص می‌دهد و پیشوند «کد» را اضافه می‌کند.}
+
+\section{کامنت فارسی در کد}
+\label{sec:code-persian-comments}
+
+یکی از ویژگی‌های مهم \lr{MatinBook}، پشتیبانی
+از کامنت فارسی در کد است. برای این کار، از دو
+دستور استفاده می‌کنیم:
+
+\begin{itemize}
+    \item \cmd{pcc\{...\}}: برای کامنت فارسی
+    در پایتون (و زبان‌های مشابه که \lr{\#}
+    دارند).
+    \item \cmd{pc\{...\}}: برای متن فارسی غیرکامنت
+    (مثل \lr{LaTeX}، \lr{bash}).
+\end{itemize}
+
+\mnote{دستور \lr{\textbackslash pcc} علامت \lr{\#} را به‌طور خودکار اضافه می‌کند. دستور \lr{\textbackslash pc} فقط متن فارسی را با فونت مناسب نمایش می‌دهد.}
+
+\subsection{کامنت فارسی در پایتون}
+\label{sec:code-pcc}
+
+برای کامنت فارسی در پایتون، از \cmd{pcc} داخل
+\lr{|...|} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{python}
+x = 5  |\pcc{مقدار متغیر}|
+y = 10  |\pcc{مقدار دیگر}|
+result = x + y  |\pcc{جمع دو متغیر}|
+\end{minted}
+\end{latin}
+
+
+خروجی:
+
+\begin{latin}
+\begin{minted}{python}
+x = 5  |\pcc{مقدار متغیر}|
+y = 10  |\pcc{مقدار دیگر}|
+result = x + y  |\pcc{جمع دو متغیر}|
+\end{minted}
+\end{latin}
+
+\mnote{اگر به‌جای \lr{\textbackslash pcc} از \lr{\# |\textbackslash pc\{...\}|} استفاده کنید، \lr{Pygments} علامت \lr{\#} را به‌عنوان شروع کامنت می‌بیند و \lr{|} را نادیده می‌گیرد. نتیجه، مربع‌های خالی است.}
+
+\subsection{متن فارسی در \lr{LaTeX}}
+\label{sec:code-pc}
+
+برای متن فارسی غیرکامنت (مثلاً در \lr{LaTeX})،
+از \cmd{pc} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+\begin{document}
+\chapter{|\pc{فصل نمونه}|}
+\end{document}
+\end{minted}
+\end{latin}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+\begin{document}
+\chapter{|\pc{فصل نمونه}|}
+\end{document}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash pc} باید همیشه داخل \lr{|...|} قرار گیرد. اگر بیرون از \lr{|...|} باشد، به‌عنوان متن خام نمایش داده می‌شود.}
+
+\subsection{جدول تصمیم‌گیری}
+\label{sec:code-decision-table}
+
+جدول \cref{tab:code-persian} به شما کمک می‌کند
+که در هر موقعیت، از کدام دستور استفاده کنید.
+
+\begin{matintable}{انتخاب دستور مناسب برای فارسی در کد}{tab:code-persian}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {X[l] X[c] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+موقعیت & زبان & دستور \\
+کامنت فارسی & پایتون & \lr{|\textbackslash pcc\{...\}|} \\
+کامنت فارسی & \lr{C++}، \lr{Java} & \lr{|\textbackslash pcc\{...\}|} \\
+کامنت فارسی & \lr{LaTeX}، \lr{bash} & \lr{|\textbackslash pc\{\textbackslash\# ...\}|} \\
+متن فارسی غیرکامنت & همه & \lr{|\textbackslash pc\{...\}|} \\
+کد کاملاً لاتین & همه & بدون \lr{\textbackslash pc} \\
+\end{tblr}
+\end{matintable}
+
+\section{کد درون‌خطی}
+\label{sec:code-inline}
+
+برای ارجاع به یک تابع یا متغیر در متن، از
+دستور \cmd{inlcode} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{تابع}|\inlcode{factorial()}|\pc{یک تابع بازگشتی است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: تابع \inlcode{factorial()} یک تابع
+بازگشتی است.
+
+\mnote{دستور \lr{\textbackslash inlcode} فونت مونواسپیس را در متن اعمال می‌کند و برای کدهای کوتاه (کمتر از ۴۰ کاراکتر) مناسب است.}
+
+\section{الگوریتم‌ها}
+\label{sec:code-algorithms}
+
+\subsection{محیط \lr{algorithm}}
+\label{sec:code-algorithm-basic}
+
+برای نمایش شبه‌کد، از بسته‌ی استاندارد
+\lr{algorithm} استفاده می‌کنیم. این محیط
+باید داخل \env{latin} قرار گیرد:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{latin}
+\begin{algorithm}
+\caption{|\pc{جستجوی دودویی}|}
+\label{alg:binary}
+\begin{algorithmic}[1]
+    \Require Sorted array $A$ of $n$ elements
+    \Require Target value $x$
+    \Ensure Index of $x$ in $A$, or $-1$
+    \State $left \gets 0$, $right \gets n - 1$
+    \While{$left \leq right$}
+        \State $mid \gets (left + right) / 2$
+        \If{$A[mid] = x$}
+            \State \Return $mid$
+        \ElsIf{$A[mid] < x$}
+            \State $left \gets mid + 1$
+        \Else
+            \State $right \gets mid - 1$
+        \EndIf
+    \EndWhile
+    \State \Return $-1$
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{latin}
+\begin{algorithm}
+\caption{جستجوی دودویی}
+\label{alg:binary-ch10}
+\begin{algorithmic}[1]
+    \Require Sorted array $A$ of $n$ elements
+    \Require Target value $x$
+    \Ensure Index of $x$ in $A$, or $-1$
+    \State $left \gets 0$, $right \gets n - 1$
+    \While{$left \leq right$}
+        \State $mid \gets (left + right) / 2$
+        \If{$A[mid] = x$}
+            \State \Return $mid$
+        \ElsIf{$A[mid] < x$}
+            \State $left \gets mid + 1$
+        \Else
+            \State $right \gets mid - 1$
+        \EndIf
+    \EndWhile
+    \State \Return $-1$
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+\mnote{عنوان الگوریتم (\lr{\textbackslash caption}) می‌تواند فارسی باشد، ولی متن داخل \lr{algorithmic} باید لاتین باشد.}
+
+\subsection{کامنت فارسی در الگوریتم}
+\label{sec:code-algorithm-comment}
+
+برای کامنت فارسی در الگوریتم، از \cmd{pc} داخل
+\lr{|...|} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{algorithmic}[1]
+    \Require Sorted array $A$
+    \While{$left \leq right$}
+        \State $mid \gets (left + right) / 2$
+        \If{$A[mid] = x$}
+            \State \Return $mid$  \Comment{|\pc{یافتن مقدار}|}
+        \EndIf
+    \EndWhile
+\end{algorithmic}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{latin}
+\begin{algorithm}
+\caption{جستجو با کامنت فارسی}
+\label{alg:binary-comment}
+\begin{algorithmic}[1]
+    \Require Sorted array $A$
+    \State $left \gets 0$, $right \gets n - 1$
+    \While{$left \leq right$}
+        \State $mid \gets (left + right) / 2$
+        \If{$A[mid] = x$}
+            \State \Return $mid$  \Comment{|\pc{یافتن مقدار}|}
+        \ElsIf{$A[mid] < x$}
+            \State $left \gets mid + 1$  \Comment{|\pc{نیمه‌ی راست}|}
+        \EndIf
+    \EndWhile
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+\mnote{کامنت‌های الگوریتم با \lr{\textbackslash Comment\{|\textbackslash pc\{...\}|\}} نوشته می‌شوند.}
+
+\subsection{دستورات \lr{algorithmic}}
+\label{sec:code-algorithm-commands}
+
+جدول \cref{tab:algorithm-commands} دستورات
+اصلی \env{algorithmic} را خلاصه می‌کند.
+
+\begin{matintable}{دستورات اصلی \lr{algorithmic}}{tab:algorithm-commands}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دستور & کاربرد \\
+\lr{\textbackslash Require} & پیش‌نیاز الگوریتم \\
+\lr{\textbackslash Ensure} & خروجی الگوریتم \\
+\lr{\textbackslash State} & یک دستور ساده \\
+\lr{\textbackslash Statex} & دستور بدون شماره \\
+\lr{\textbackslash If} / \lr{\textbackslash ElsIf} / \lr{\textbackslash Else} & شرط \\
+\lr{\textbackslash EndIf} & پایان شرط \\
+\lr{\textbackslash For} / \lr{\textbackslash EndFor} & حلقه‌ی \lr{for} \\
+\lr{\textbackslash While} / \lr{\textbackslash EndWhile} & حلقه‌ی \lr{while} \\
+\lr{\textbackslash Function} / \lr{\textbackslash EndFunction} & تعریف تابع \\
+\lr{\textbackslash Call\{name\}\{args\}} & فراخوانی تابع \\
+\lr{\textbackslash Return} & بازگشت مقدار \\
+\lr{\textbackslash Comment\{...\}} & کامنت \\
+\end{tblr}
+\end{matintable}
+
+\subsection{ارجاع به الگوریتم}
+\label{sec:code-algorithm-reference}
+
+برای ارجاع به الگوریتم، از \cmd{cref} استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{الگوریتم}|\cref{alg:binary}|\pc{فرآیند جستجو را نشان می‌دهد.}|%
+\end{minted}
+\end{latin}
+
+خروجی: الگوریتم \cref{alg:binary-ch10} فرآیند
+جستجو را نشان می‌دهد.
+
+\mnote{برای فهرست الگوریتم‌ها، از \lr{\textbackslash listofalgorithms} در پیش‌متن استفاده کنید.}
+
+\section{تنظیمات پیش‌فرض \lr{minted}}
+\label{sec:code-settings}
+
+\lr{MatinBook} تنظیمات زیر را برای \lr{minted}
+اعمال می‌کند:
+
+\begin{itemize}
+    \item \textbf{فونت:} \lr{JetBrains Mono} با
+    اندازه‌ی \lr{footnotesize}.
+    \item \textbf{شماره خطوط:} فعال
+    (\lr{linenos=true}).
+    \item \textbf{شکستن خطوط:} فعال
+    (\lr{breaklines=true}).
+    \item \textbf{کادر:} خطوط بالا و پایین
+    (\lr{frame=lines}).
+    \item \textbf{پس‌زمینه:} \lr{matinlightgray!30}.
+    \item \textbf{اندازه Tab:} ۴ فاصله
+    (\lr{tabsize=4}).
+    \item \textbf{حذف تورفتگی مشترک:} فعال
+    (\lr{autogobble=true}).
+    \item \textbf{استایل رنگ‌آمیزی:} \lr{friendly}.
+\end{itemize}
+
+\mnote{برای شخصی‌سازی این تنظیمات، فایل \lr{mb-code.sty} را ویرایش کنید.}
+
+\section{زبان‌های پشتیبانی‌شده}
+\label{sec:code-languages}
+
+\lr{minted} از بیش از ۳۰۰ زبان برنامه‌نویسی
+پشتیبانی می‌کند. چند زبان پرکاربرد:
+
+\begin{itemize}
+    \item \textbf{برنامه‌نویسی:} \lr{python}،
+    \lr{cpp}، \lr{c}، \lr{java}،
+    \lr{javascript}، \lr{typescript}،
+    \lr{rust}، \lr{go}.
+    \item \textbf{نشانه‌گذاری:} \lr{html}،
+    \lr{xml}، \lr{markdown}، \lr{latex}،
+    \lr{yaml}، \lr{json}.
+    \item \textbf{پوسته:} \lr{bash}، \lr{zsh}،
+    \lr{powershell}.
+    \item \textbf{پایگاه داده:} \lr{sql}،
+    \lr{postgresql}، \lr{mysql}.
+    \item \textbf{سایر:} \lr{text} (ساده)،
+    \lr{diff}، \lr{makefile}، \lr{docker}.
+\end{itemize}
+
+\mnote{برای دیدن فهرست کامل زبان‌ها، از \lr{pygmentize -L lexers} استفاده کنید.}
+
+\section{خطاهای رایج}
+\label{sec:code-mistakes}
+
+\subsection{فراموش کردن \env{latin}}
+\label{sec:code-mistake-latin}
+
+اگر کد را داخل \env{latin} قرار ندهید، ممکن
+است جهت کد به‌هم بریزد و شماره‌های خطوط
+جابه‌جا شوند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+\begin{minted}{python}
+x = 5  |\pcc{مقدار}|
+\end{minted}
+
+% |\pc{درست}|:
+\begin{latin}
+\begin{minted}{python}
+x = 5  |\pcc{مقدار}|
+\end{minted}
+\end{latin}
+\end{minted}
+\end{latin}
+
+\subsection{فراموش کردن \cmd{pcc} در پایتون}
+\label{sec:code-mistake-pcc}
+
+اگر در پایتون از \lr{\# |\textbackslash pc\{...\}|}
+استفاده کنید، \lr{Pygments} علامت \lr{\#} را
+به‌عنوان شروع کامنت می‌بیند و \lr{|} را نادیده
+می‌گیرد:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+x = 5  # |\pc{مقدار متغیر}|
+
+% |\pc{درست}|:
+x = 5  |\pcc{مقدار متغیر}|
+\end{minted}
+\end{latin}
+
+\subsection{فراموش کردن \cmd{pc} در \lr{LaTeX}}
+\label{sec:code-mistake-pc}
+
+اگر در \lr{LaTeX} متن فارسی را بدون \cmd{pc}
+بنویسید، نتیجه به‌صورت مربع‌های خالی نمایش
+داده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+\chapter{فصل نمونه}
+
+% |\pc{درست}|:
+\chapter{|\pc{فصل نمونه}|}
+\end{minted}
+\end{latin}
+
+\section{تمرین‌ها}
+\label{sec:code-exercises}
+
+\begin{exercise}
+    یک تابع پایتون با کامنت فارسی بنویسید
+    و آن را با \cmd{pcc} پیچیده کنید.
+    \label{exc:code-python}
+\end{exercise}
+
+\begin{exercise}
+    یک الگوریتم با عنوان فارسی و متن لاتین
+    بنویسید و به آن ارجاع دهید.
+    \label{exc:code-algorithm}
+\end{exercise}
+
+\begin{exercise}
+    یک نمونه‌ی \lr{LaTeX} با متن فارسی بنویسید
+    و از \cmd{pc} استفاده کنید.
+    \label{exc:code-latex}
+\end{exercise}
+
+\begin{exercise}
+    یک کد \lr{C++} با کامنت فارسی بنویسید.
+    \label{exc:code-cpp}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:code-summary}
+
+در این فصل، با کد و الگوریتم در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item کد با محیط \env{minted} داخل
+    \env{latin} نمایش داده می‌شود.
+
+    \item برای کپشن کد، از \cmd{codecaption}
+    استفاده کنید.
+
+    \item برای کامنت فارسی در پایتون، از
+    \cmd{pcc} داخل \lr{|...|} استفاده کنید.
+
+    \item برای متن فارسی غیرکامنت در
+    \lr{LaTeX} یا \lr{bash}، از \cmd{pc} استفاده
+    کنید.
+
+    \item برای کد درون‌خطی، از \cmd{inlcode}
+    استفاده کنید.
+
+    \item الگوریتم‌ها با محیط \env{algorithm}
+    نمایش داده می‌شوند.
+
+    \item کامنت فارسی در الگوریتم با
+    \cmd{Comment\{|\cmd{pc}\{...\}|\}} نوشته
+    می‌شود.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \env{latin}، \cmd{pcc} در پایتون، و \cmd{pc}
+    در \lr{LaTeX} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:graphics})، با نمودار
+و شکل در \lr{MatinBook} آشنا می‌شوید و
+یاد می‌گیرید که چگونه نمودارهای حرفه‌ای
+بسازید.
