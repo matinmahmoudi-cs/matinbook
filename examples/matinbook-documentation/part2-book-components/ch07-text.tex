@@ -1,0 +1,442 @@
+%%
+%% part2-book-components/ch07-text.tex
+%%
+%% Chapter 7: Text and Paragraphs — How to write Persian
+%% text, mix it with Latin text, and control paragraph
+%% formatting.
+%%
+
+\chapter{متن و پاراگراف}
+\label{chap:text}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:text-why}
+
+متن، بخش اصلی هر کتاب است. در کتاب‌های فنی
+فارسی، متن ترکیبی از فارسی و لاتین است و
+مدیریت درست این ترکیب، کیفیت نهایی کتاب را
+تعیین می‌کند.
+
+\lr{MatinBook} با استفاده از \lr{xepersian} و
+تنظیمات دقیق تایپوگرافی، این ترکیب را به‌درستی
+مدیریت می‌کند. هدف این فصل، آموزش نحوه‌ی نوشتن
+متن فارسی، ترکیب آن با لاتین، و کنترل پاراگراف‌ها
+است.
+
+\mnote{تایپوگرافی خوب، خوانایی را افزایش می‌دهد و خستگی چشم خواننده را کاهش می‌دهد.}
+
+\section{متن فارسی}
+\label{sec:text-persian}
+
+نوشتن متن فارسی در \lr{MatinBook}، ساده‌ترین
+کار ممکن است: فقط متن را به فارسی بنویسید و
+\lr{LaTeX} بقیه‌ی کارها را انجام می‌دهد.
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این یک متن فارسی ساده است. لاتک به‌طور خودکار}|%
+|\pc{جهت متن را راست‌به‌چپ تشخیص می‌دهد.}|%
+\end{minted}
+\end{latin}
+
+\mnote{نیازی به هیچ دستور خاصی برای متن فارسی نیست. فقط متن را بنویسید.}
+
+\subsection{فاصله‌گذاری در فارسی}
+\label{sec:text-persian-spacing}
+
+در فارسی، فاصله‌ی میان کلمات و نشانه‌های نگارشی،
+قواعد خاصی دارد:
+
+\begin{itemize}
+    \item \textbf{فاصله‌ی معمولی:} بین کلمات.
+    \item \textbf{نیم‌فاصله (\lr{ZWNJ}):} در کلماتی
+    مانند «می‌رود»، «کتاب‌ها»، «برنامه‌نویسی».
+    \item \textbf{فاصله‌ی نشکن (\lr{\textasciitilde}):}
+    برای جلوگیری از شکستن خط.
+\end{itemize}
+
+\mnote{نیم‌فاصله را می‌توانید با \lr{Ctrl+Shift+2} در ویندوز یا \lr{Shift+Space} در لینوکس تایپ کنید.}
+
+\subsection{نشانه‌های نگارشی فارسی}
+\label{sec:text-persian-punctuation}
+
+\lr{MatinBook} از تمام نشانه‌های نگارشی فارسی
+پشتیبانی می‌کند:
+
+\begin{itemize}
+    \item \textbf{گیومه:} «نقل قول مستقیم».
+    \item \textbf{گیومه‌ی تکی:} ‹نقل قول درونی›.
+    \item \textbf{پرانتز:} (متن داخل پرانتز).
+    \item \textbf{کروشه:} [متن داخل کروشه].
+    \item \textbf{نقطه‌ویرگول:} نشانه‌ی مکث؛ ادامه.
+    \item \textbf{ویرگول:} جداسازی، ادامه.
+    \item \textbf{علامت سؤال:} چرا؟
+    \item \textbf{علامت تعجب:} شگفت‌انگیز!
+\end{itemize}
+
+\mnote{در فارسی، نقطه‌ویرگول «؛» و ویرگول «،» با نسخه‌ی لاتین متفاوت هستند. \lr{xepersian} این تفاوت را به‌درستی مدیریت می‌کند.}
+
+\section{ترکیب فارسی و لاتین}
+\label{sec:text-latin}
+
+در کتاب‌های فنی، ترکیب متن فارسی با واژگان
+لاتین امری اجتناب‌ناپذیر است. \lr{MatinBook}
+سه روش برای این ترکیب ارائه می‌دهد:
+
+\begin{enumerate}
+    \item \cmd{lr\{...\}}: برای واژگان و
+    عبارات کوتاه لاتین در متن فارسی.
+    \item \cmd{rl\{...\}}: برای متن فارسی در
+    محیط لاتین (مخصوص \lr{tikzpicture}).
+    \item \cmd{begin\{latin\}}: برای پاراگراف‌های
+    کامل لاتین.
+\end{enumerate}
+
+\subsection{واژگان لاتین در متن فارسی}
+\label{sec:text-latin-inline}
+
+برای واژگان و عبارات کوتاه لاتین، از دستور
+\cmd{lr\{...\}} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این کتاب درباره}|\lr{machine learning}|\pc{و}|\lr{deep learning}|\pc{است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: این کتاب درباره \lr{machine learning}
+و \lr{deep learning} است.
+
+\mnote{فراموش کردن \lr{\textbackslash lr} باعث می‌شود واژه‌ی لاتین با متن فارسی قاطی شود و به‌صورت نامفهوم نمایش داده شود.}
+
+\subsection{متن فارسی در محیط لاتین}
+\label{sec:text-persian-in-latin}
+
+برای متن فارسی در محیط لاتین (مخصوص
+\lr{tikzpicture})، از دستور \cmd{rl\{...\}}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tikzpicture}
+    \node {|\rl{متن فارسی}|};
+\end{tikzpicture}
+\end{minted}
+\end{latin}
+
+\mnote{در \lr{tikzpicture}، جهت متن به‌طور خودکار لاتین است. برای متن فارسی، از \lr{\textbackslash rl} استفاده کنید.}
+
+\subsection{پاراگراف‌های کامل لاتین}
+\label{sec:text-latin-block}
+
+برای پاراگراف‌های کامل لاتین (مثلاً یک متن
+انگلیسی چند خطی)، از محیط \env{latin} استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{latin}
+This is a complete English paragraph.
+It can span multiple lines and will be
+typeset left-to-right.
+\end{latin}
+\end{minted}
+\end{latin}
+
+\mnote{محیط \lr{latin} برای کد، الگوریتم، نمودار و هر متن لاتین طولانی مناسب است.}
+
+\subsection{جدول تصمیم‌گیری}
+\label{sec:text-decision-table}
+
+جدول \cref{tab:latin-decision} به شما کمک می‌کند
+که در هر موقعیت، از کدام دستور استفاده کنید.
+
+\begin{matintable}{انتخاب دستور مناسب برای ترکیب فارسی و لاتین}{tab:latin-decision}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+موقعیت & دستور \\
+واژه‌ی لاتین در متن فارسی & \lr{\textbackslash lr\{...\}} \\
+عبارت کوتاه لاتین & \lr{\textbackslash lr\{...\}} \\
+پاراگراف کامل لاتین & \lr{\textbackslash begin\{latin\}} \\
+متن فارسی در \lr{tikzpicture} & \lr{\textbackslash rl\{...\}} \\
+کد برنامه‌نویسی & \lr{\textbackslash begin\{latin\}} + \lr{minted} \\
+الگوریتم & \lr{\textbackslash begin\{latin\}} + \lr{algorithm} \\
+فرمول ریاضی & \lr{\textbackslash lr\{...\}} در متن فارسی \\
+\lr{URL} & \lr{\textbackslash lr\{...\}} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{اگر شک دارید، از \lr{\textbackslash lr} استفاده کنید. این دستور در ۹۰٪ موارد کار می‌کند.}
+
+\section{پاراگراف‌ها}
+\label{sec:text-paragraphs}
+
+پاراگراف، واحد اصلی متن است. \lr{MatinBook}
+تنظیمات زیر را برای پاراگراف‌ها اعمال می‌کند:
+
+\begin{itemize}
+    \item \textbf{تورفتگی:} \pnum{۱em} برای
+    پاراگراف‌های دوم به بعد.
+    \item \textbf{فاصله‌ی بین پاراگراف‌ها:}
+    \pnum{۰pt} (بدون فاصله‌ی اضافی).
+    \item \textbf{فاصله‌ی خطوط:} \pnum{۱.۱۵}.
+\end{itemize}
+
+\mnote{پاراگراف اول هر بخش، تورفتگی ندارد. این یک استاندارد در حروف‌چینی فارسی است.}
+
+\subsection{شکستن پاراگراف}
+\label{sec:text-paragraph-break}
+
+برای شکستن پاراگراف، یک خط خالی بین دو متن
+قرار دهید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این پاراگراف اول است.}|%
+
+|\pc{این پاراگراف دوم است.}|%
+\end{minted}
+\end{latin}
+
+\mnote{هرگز از \lr{\textbackslash\textbackslash} برای شکستن پاراگراف استفاده نکنید. این دستور برای شکستن خط در یک پاراگراف است، نه برای ایجاد پاراگراف جدید.}
+
+\subsection{طول پاراگراف}
+\label{sec:text-paragraph-length}
+
+طبق اصول نگارش حرفه‌ای:
+
+\begin{itemize}
+    \item \textbf{طول ایده‌آل:} ۳ تا ۷ جمله.
+    \item \textbf{حداکثر:} ۱۰ جمله.
+    \item \textbf{حداقل:} ۲ جمله.
+\end{itemize}
+
+\mnote{اگر پاراگراف بیش از ۱۰ جمله است، آن را به دو پاراگراف تقسیم کنید. اگر فقط یک جمله است، آن را با پاراگراف بعدی ادغام کنید.}
+
+\section{متن تأکیدی}
+\label{sec:text-emphasis}
+
+\lr{MatinBook} از دستورات استاندارد \lr{LaTeX}
+برای تأکید پشتیبانی می‌کند. جدول
+\cref{tab:emphasis-commands} این دستورات را
+خلاصه می‌کند:
+
+\begin{matintable}{دستورات تأکید در متن}{tab:emphasis-commands}
+\begin{tblr}{
+    width = 0.7\textwidth,
+    colspec = {l X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع تأکید & دستور \\
+پررنگ & \lr{\textbackslash textbf\{...\}} \\
+مورب & \lr{\textbackslash textit\{...\}} \\
+زیرخط‌دار & \lr{\textbackslash underline\{...\}} \\
+مونواسپیس & \lr{\textbackslash texttt\{...\}} \\
+\end{tblr}
+\end{matintable}
+
+در ادامه، هر یک را با یک مثال نشان می‌دهیم.
+
+\subsection{متن پررنگ}
+
+برای پررنگ کردن متن، از دستور \cmd{textbf}
+استفاده کنید. مثال:
+
+\begin{quote}
+    این متن \textbf{پررنگ} است.
+\end{quote}
+
+\mnote{در متن فارسی، \lr{\textbackslash textbf} به‌درستی کار می‌کند و متن را پررنگ نمایش می‌دهد.}
+
+\subsection{متن مورب}
+
+برای مورب کردن متن، از دستور \cmd{textit}
+استفاده کنید. مثال:
+
+\begin{quote}
+    این متن \textit{مورب} است.
+\end{quote}
+
+\mnote{متن مورب در فارسی کمتر استفاده می‌شود، چون خوانایی را کاهش می‌دهد. برای تأکید، از پررنگ استفاده کنید.}
+
+\subsection{متن زیرخط‌دار}
+
+برای زیرخط‌دار کردن متن، از دستور \cmd{underline}
+استفاده کنید. مثال:
+
+\begin{quote}
+    این متن \underline{زیرخط‌دار} است.
+\end{quote}
+
+\mnote{استفاده از زیرخط در متن رسمی توصیه نمی‌شود، چون با لینک‌های \lr{hyperref} اشتباه می‌شود.}
+
+\subsection{متن مونواسپیس}
+
+برای نمایش متن با فونت مونواسپیس، از دستور
+\cmd{texttt} استفاده کنید. مثال:
+
+\begin{quote}
+    این متن \texttt{monospace} است.
+\end{quote}
+
+\mnote{برای متن مونواسپیس فارسی، از \lr{\textbackslash texttt} استفاده نکنید، چون فونت مونواسپیس ممکن است فارسی را پشتیبانی نکند.}
+
+\section{فهرست‌ها}
+\label{sec:text-lists}
+
+\lr{MatinBook} از سه نوع فهرست پشتیبانی می‌کند.
+هر یک را با یک مثال نشان می‌دهیم.
+
+\subsection{فهرست نشانه‌دار}
+
+فهرست نشانه‌دار، پرکاربردترین نوع فهرست است.
+مثال:
+
+\begin{quote}
+    \begin{itemize}
+        \item مورد اول.
+        \item مورد دوم.
+        \item مورد سوم.
+    \end{itemize}
+\end{quote}
+
+\mnote{از فهرست نشانه‌دار برای موارد بدون ترتیب مشخص استفاده کنید.}
+
+\subsection{فهرست شماره‌دار}
+
+فهرست شماره‌دار، برای مواردی که ترتیب مهم
+است، استفاده می‌شود. مثال:
+
+\begin{quote}
+    \begin{enumerate}
+        \item مورد اول.
+        \item مورد دوم.
+        \item مورد سوم.
+    \end{enumerate}
+\end{quote}
+
+\mnote{از فهرست شماره‌دار برای مراحل، دستورالعمل‌ها یا اولویت‌ها استفاده کنید.}
+
+\subsection{فهرست توصیفی}
+
+فهرست توصیفی، برای تعریف اصطلاحات استفاده
+می‌شود. مثال:
+
+\begin{quote}
+    \begin{description}
+        \item[اصطلاح اول:] توضیح اول.
+        \item[اصطلاح دوم:] توضیح دوم.
+    \end{description}
+\end{quote}
+
+\mnote{از فهرست توصیفی برای واژه‌نامه یا تعریف اصطلاحات استفاده کنید.}
+
+\mnote{در همه‌ی فهرست‌ها، آیتم‌ها باید ساختار گرامری یکسان داشته باشند. این اصل «ساختار موازی» نام دارد.}
+
+\section{خطاهای رایج}
+\label{sec:text-mistakes}
+
+\subsection{فراموش کردن \cmd{lr}}
+\label{sec:text-mistake-lr}
+
+اگر \cmd{lr} را برای واژگان لاتین فراموش کنید،
+نتیجه به‌صورت نامفهوم نمایش داده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+|\pc{این کتاب درباره}|machine learning|\pc{است.}|%
+
+% |\pc{درست}|:
+|\pc{این کتاب درباره}|\lr{machine learning}|\pc{است.}|%
+\end{minted}
+\end{latin}
+
+\subsection{استفاده از \cmd{\textbackslash\textbackslash} برای پاراگراف}
+\label{sec:text-mistake-parbreak}
+
+دستور \cmd{\textbackslash\textbackslash} برای شکستن
+خط در یک پاراگراف است، نه برای ایجاد پاراگراف
+جدید. برای پاراگراف جدید، از یک خط خالی
+استفاده کنید.
+
+\subsection{پاراگراف بسیار طولانی}
+\label{sec:text-mistake-longpara}
+
+پاراگراف‌های بیش از ۱۰ جمله، خواننده را خسته
+می‌کنند. آن‌ها را به پاراگراف‌های کوچک‌تر
+تقسیم کنید.
+
+\section{تمرین‌ها}
+\label{sec:text-exercises}
+
+\begin{exercise}
+    یک پاراگراف فارسی با پنج جمله بنویسید
+    که شامل سه واژه‌ی لاتین باشد. از
+    \cmd{lr} برای واژگان لاتین استفاده کنید.
+    \label{exc:text-paragraph}
+\end{exercise}
+
+\begin{exercise}
+    یک فهرست نشانه‌دار با پنج مورد بنویسید
+    که همه‌ی موارد ساختار گرامری یکسان داشته
+    باشند.
+    \label{exc:text-list}
+\end{exercise}
+
+\begin{exercise}
+    یک پاراگراف لاتین با محیط \env{latin}
+    بنویسید و آن را با متن فارسی ترکیب کنید.
+    \label{exc:text-latin}
+\end{exercise}
+
+\begin{exercise}
+    یک متن فارسی با نشانه‌های نگارشی مختلف
+    (گیومه، پرانتز، کروشه، نقطه‌ویرگول) بنویسید.
+    \label{exc:text-punctuation}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:text-summary}
+
+در این فصل، با متن و پاراگراف در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item متن فارسی به‌طور ساده نوشته می‌شود و
+    \lr{LaTeX} جهت را خودکار تشخیص می‌دهد.
+
+    \item برای واژگان لاتین در متن فارسی، از
+    \cmd{lr\{...\}} استفاده کنید.
+
+    \item برای متن فارسی در محیط لاتین، از
+    \cmd{rl\{...\}} استفاده کنید.
+
+    \item برای پاراگراف‌های کامل لاتین، از
+    محیط \env{latin} استفاده کنید.
+
+    \item پاراگراف‌ها با یک خط خالی از هم جدا
+    می‌شوند.
+
+    \item طول ایده‌آل پاراگراف، ۳ تا ۷ جمله
+    است.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{lr}، استفاده از \cmd{\textbackslash\textbackslash}
+    برای پاراگراف، و پاراگراف‌های بسیار طولانی
+    است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:environments})، با
+محیط‌های علمی (قضیه، لم، تعریف، مثال، اثبات)
+آشنا می‌شوید و یاد می‌گیرید که چگونه از آن‌ها
+استفاده کنید.
