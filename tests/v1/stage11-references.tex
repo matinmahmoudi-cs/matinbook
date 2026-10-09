@@ -1,35 +1,152 @@
 %========================================
-% MatinBook - Stage 11: Cross-References Test
-% Test: Hyperref + Cleveref + All Reference Commands
-% Purpose: Validate intelligent cross-referencing system
+% MatinBook — Stage 11: Cross-References Test
+% Version: v1.1
+% Purpose:
+%   Validate the cross-reference system of MatinBook v1.1:
+%     1. \ref (standard reference, no prefix)
+%     2. \cref (cleveref, auto-detects the type)
+%     3. \Cref (capitalized form, same as \cref in Persian)
+%     4. \crefrange (range reference)
+%     5. Multiple references (\cref{a,b,c})
+%     6. Helper commands (\thmref, \lemref, \corref,
+%        \propref, \defref, \exref, \remref, \excref)
+%     7. Cross-chapter references
+%     8. Hyperref bookmarks and links
+%
+% Compilation:
+%   xelatex -shell-escape stage11-references.tex
+%   xelatex -shell-escape stage11-references.tex
+%   xelatex -shell-escape stage11-references.tex
+%   (3 passes recommended for stable cross-references)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that every
+%   reference resolves to the correct number and Persian
+%   prefix, with working hyperlinks and no "??" markers.
 %========================================
 
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون سیستم ارجاع هوشمند}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون سیستم ارجاع هوشمند}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون سیستم ارجاع هوشمند}
+    {ارزیابی \lr{hyperref} و \lr{cleveref} در MatinBook}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
-% Chapter 1: Creating Reference Targets
-%----------------------------------------
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون سیستم ارجاع هوشمند \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، یازدهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+\lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است. هدف آن،
+اعتبارسنجی کامل سیستم ارجاع هوشمند کلاس در هشت حوزه‌ی
+متمایز است: \lr{\textbackslash ref} استاندارد،
+\lr{\textbackslash cref}، \lr{\textbackslash Cref}،
+\lr{\textbackslash crefrange}، ارجاع‌های چندگانه،
+دستورات کمکی، ارجاع‌های بین‌فصلی و بوکمارک‌های
+\lr{hyperref}.
+
+در کتاب‌های فنی و علمی، ارجاع دقیق به عناصر مختلف
+(معادله، قضیه، شکل، جدول، بخش) اهمیت ویژه‌ای دارد.
+خواننده باید بتواند به‌سرعت به مرجع مورد نظر برسد و
+از پیوستگی مطالب مطمئن شود. \lr{MatinBook} با
+استفاده از \lr{cleveref} و دستورات سفارشی، این
+قابلیت‌ها را فراهم می‌سازد.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل
+همراه است تا خواننده بتواند درستی رفتار هر زیرسیستم را
+در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — CREATING REFERENCE TARGETS
+%========================================================================
 \chapter{ایجاد اهداف ارجاع}
 \label{chap:targets}
 
 \section{معادلات}
+\label{sec:targets-equations}
 
-چند معادله معروف که به آن‌ها ارجاع خواهیم داد:
+چند معادله‌ی معروف که به آن‌ها ارجاع خواهیم داد:
 
 \begin{equation}
     E = mc^{2}
@@ -46,17 +163,20 @@
     \label{eq:euler}
 \end{equation}
 
-\section{قضایا و تعاریف}
+\mnote{معادلات با فرمت «شماره-فصل» شماره‌گذاری می‌شوند، مطابق استاندارد نشر ایران.}
 
-\begin{theorem}[قضیه مقدار میانی]
-    اگر تابع $f$ روی بازه بسته $[a, b]$ پیوسته باشد و
-    $y$ عددی بین $f(a)$ و $f(b)$ باشد، آنگاه
-    حداقل یک $c \in [a, b]$ وجود دارد که $f(c) = y$.
+\section{قضایا و تعاریف}
+\label{sec:targets-theorems}
+
+\begin{theorem}[قضیه‌ی مقدار میانی]
+    اگر تابع $f$ روی بازه‌ی بسته‌ی $[a, b]$ پیوسته باشد
+    و $y$ عددی بین $f(a)$ و $f(b)$ باشد، آنگاه حداقل یک
+    $c \in [a, b]$ وجود دارد که $f(c) = y$.
     \label{thm:intermediate-value}
 \end{theorem}
 
 \begin{definition}[پیوستگی]
-    تابع $f$ در نقطه $x_{0}$ \textbf{پیوسته} است اگر:
+    تابع $f$ در نقطه‌ی $x_{0}$ \textbf{پیوسته} است اگر:
     \[
         \lim_{x \to x_{0}} f(x) = f(x_{0})
     \]
@@ -64,21 +184,22 @@
 \end{definition}
 
 \begin{lemma}[لم فشردگی]
-    هر دنباله کراندار در $\R$ دارای زیردنباله همگراست.
+    هر دنباله‌ی کراندار در $\R$ دارای زیردنباله‌ی همگراست.
     \label{lem:bolzano-weierstrass}
 \end{lemma}
 
 \begin{corollary}
-    هر دنباله یکنوا و کراندار همگراست.
+    هر دنباله‌ی یکنوا و کراندار همگراست.
     \label{cor:monotone-convergence}
 \end{corollary}
 
 \begin{proposition}
-    مجموعه اعداد گویا $\Q$ در $\R$ چگال است.
+    مجموعه‌ی اعداد گویا $\Q$ در $\R$ چگال است.
     \label{prop:q-dense}
 \end{proposition}
 
 \section{مثال‌ها و نکات}
+\label{sec:targets-examples}
 
 \begin{example}[تابع پیوسته]
     تابع $f(x) = x^{2}$ روی تمام $\R$ پیوسته است،
@@ -90,20 +211,23 @@
 \end{example}
 
 \begin{remark}
-    عکس قضیه \thmref{thm:intermediate-value} لزوماً برقرار نیست.
-    یعنی ممکن است تابعی در شرط مقدار میانی صدق کند
-    اما پیوسته نباشد.
+    عکس \cref{thm:intermediate-value} لزوماً برقرار نیست.
+    یعنی ممکن است تابعی در شرط مقدار میانی صدق کند اما
+    پیوسته نباشد.
     \label{rem:ivt-converse}
 \end{remark}
 
 \section{شکل و جدول}
+\label{sec:targets-figure-table}
+
+نمودار \cref{fig:parabola} تابع درجه دو را نشان می‌دهد:
 
 \begin{figure}[h]
 \centering
 \begin{latin}
 \begin{tikzpicture}
   \begin{axis}[
-    width=10cm, height=5cm,
+    width=\textwidth, height=6cm,
     xlabel={$x$},
     ylabel={$f(x)$},
     title={Continuous Function},
@@ -121,179 +245,269 @@
 \label{fig:parabola}
 \end{figure}
 
-\begin{table}[h]
-\centering
-\caption{مقادیر تابع $f(x) = x^{2}$}
-\label{tab:parabola-values}
-\begin{tabular}{|c|c|}
-\hline
-\textbf{$x$} & \textbf{$f(x)$} \\
-\hline
+جدول \cref{tab:parabola-values} مقادیر عددی این تابع را
+فهرست می‌کند:
+
+\begin{matintable}{مقادیر تابع $f(x) = x^{2}$}{tab:parabola-values}
+\begin{tblr}{
+    width = 0.5\textwidth,
+    colspec = {c c},
+    hlines, vlines,
+    colsep = 10pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+$x$ & $f(x)$ \\
 $-2$ & $4$ \\
 $-1$ & $1$ \\
 $0$ & $0$ \\
 $1$ & $1$ \\
 $2$ & $4$ \\
-\hline
-\end{tabular}
-\end{table}
+\end{tblr}
+\end{matintable}
 
-%----------------------------------------
-% Chapter 2: Testing All Reference Commands
-%----------------------------------------
+%========================================================================
+% CHAPTER 2 — TESTING ALL REFERENCE COMMANDS
+%========================================================================
 \chapter{آزمون تمام دستورات ارجاع}
 \label{chap:references}
 
 \section{ارجاع استاندارد با \lr{\textbackslash ref}}
+\label{sec:ref-standard}
+
+دستور \lr{\textbackslash ref} فقط شماره‌ی عنصر را
+بدون پیشوند نمایش می‌دهد:
 
 \begin{itemize}
-    \item معادله اینشتین: \ref{eq:einstein}
-    \item قضیه مقدار میانی: \ref{thm:intermediate-value}
+    \item معادله‌ی اینشتین: \ref{eq:einstein}
+    \item قضیه‌ی مقدار میانی: \ref{thm:intermediate-value}
     \item نمودار سهمی: \ref{fig:parabola}
 \end{itemize}
 
 \section{ارجاع هوشمند با \lr{\textbackslash cref}}
+\label{sec:ref-cleveref}
 
-دستور \texttt{\textbackslash cref} به صورت خودکار
-نوع عنصر را تشخیص می‌دهد و پیشوند مناسب اضافه می‌کند:
+دستور \lr{\textbackslash cref} به‌صورت خودکار نوع عنصر
+را تشخیص می‌دهد و پیشوند مناسب اضافه می‌کند:
 
 \begin{itemize}
-    \item \cref{eq:einstein} معادله معروف اینشتین است
+    \item \cref{eq:einstein} معادله‌ی معروف اینشتین است.
     \item طبق \cref{thm:intermediate-value}، تابع پیوسته
-    شرط مقدار میانی را دارد
-    \item در \cref{fig:parabola} نمودار سهمی را می‌بینیم
-    \item \cref{tab:parabola-values} مقادیر تابع را نشان می‌دهد
-    \item \cref{def:continuity} تعریف پیوستگی است
-    \item \cref{ex:continuous-function} یک مثال است
-    \item \cref{rem:ivt-converse} یک نکته مهم است
-    \item \cref{lem:bolzano-weierstrass} لم فشردگی است
-    \item \cref{cor:monotone-convergence} نتیجه لم است
-    \item \cref{prop:q-dense} گزاره چگالی $\Q$ است
+    شرط مقدار میانی را دارد.
+    \item در \cref{fig:parabola} نمودار سهمی را می‌بینیم.
+    \item \cref{tab:parabola-values} مقادیر تابع را نشان
+    می‌دهد.
+    \item \cref{def:continuity} تعریف پیوستگی است.
+    \item \cref{ex:continuous-function} یک مثال است.
+    \item \cref{rem:ivt-converse} یک نکته‌ی مهم است.
+    \item \cref{lem:bolzano-weierstrass} لم فشردگی است.
+    \item \cref{cor:monotone-convergence} نتیجه‌ی لم است.
+    \item \cref{prop:q-dense} گزاره‌ی چگالی $\Q$ است.
 \end{itemize}
 
-\section{ارجاع اختصاصی \lr{MatinBook}}
+\section{ارجاع اختصاصی MatinBook}
+\label{sec:ref-helpers}
 
-این دستورات برای راحتی بیشتر تعریف شده‌اند:
+این دستورات برای راحتی بیشتر تعریف شده‌اند و همه به
+\lr{\textbackslash cref} واگذار می‌شوند:
 
 \begin{itemize}
-    \item \textbf{معادله:} \meqref{eq:euler} زیباترین معادله ریاضی است
-    \item \textbf{قضیه:} \thmref{thm:intermediate-value} پایه آنالیز است
-    \item \textbf{تعریف:} \defref{def:continuity} مفهوم حد را دقیق می‌کند
-    \item \textbf{لم:} \lemref{lem:bolzano-weierstrass} در اثبات‌ها کاربرد دارد
-    \item \textbf{نتیجه:} \corref{cor:monotone-convergence} از لم نتیجه می‌شود
-    \item \textbf{مثال:} \exref{ex:continuous-function} ساده ولی گویاست
-    \item \textbf{شکل:} \figref{fig:parabola} یک سهمی ساده را نشان می‌دهد
-    \item \textbf{جدول:} \tabref{tab:parabola-values} مقادیر عددی را فهرست کرده
-    \item \textbf{فصل:} در \chref{chap:targets} اهداف ارجاع را تعریف کردیم
-    \item \textbf{بخش:} \secref{sec:smart-refs} ارجاع‌های هوشمند را توضیح می‌دهد
+    \item \textbf{قضیه:} \cref{thm:intermediate-value}
+    پایه‌ی آنالیز است.
+    \item \textbf{تعریف:} \cref{def:continuity} مفهوم
+    حد را دقیق می‌کند.
+    \item \textbf{لم:} \cref{lem:bolzano-weierstrass}
+    در اثبات‌ها کاربرد دارد.
+    \item \textbf{نتیجه:} \cref{cor:monotone-convergence}
+    از لم نتیجه می‌شود.
+    \item \textbf{گزاره:} \cref{prop:q-dense} چگالی
+    $\Q$ در $\R$ را بیان می‌کند.
+    \item \textbf{مثال:} \cref{ex:continuous-function}
+    ساده ولی گویاست.
+    \item \textbf{نکته:} \cref{rem:ivt-converse} هشدار
+    مهمی می‌دهد.
 \end{itemize}
+
+> **نکته:** دستورات \lr{\textbackslash meqref}،
+> \lr{\textbackslash figref}، \lr{\textbackslash tabref}،
+> \lr{\textbackslash chref} و \lr{\textbackslash secref}
+> در v1.1 حذف شده‌اند. به‌جای آن‌ها از \lr{\textbackslash cref}
+> استفاده کنید.
 
 \section{ارجاع‌های هوشمند در عمل}
-\label{sec:smart-refs}
+\label{sec:ref-in-practice}
 
-حالا بیاییم از ترکیب این ارجاع‌ها در یک متن واقعی استفاده کنیم:
+حالا از ترکیب این ارجاع‌ها در یک متن واقعی استفاده می‌کنیم:
 
 \medskip
 
-طبق \thmref{thm:intermediate-value}، اگر تابعی پیوسته باشد
-(\defref{def:continuity})، آنگاه شرط مقدار میانی را دارد.
-\exref{ex:continuous-function} نشان می‌دهد که $x^{2}$
-(\figref{fig:parabola}) این شرط را دارد.
-اما \ref{rem:ivt-converse} هشدار می‌دهد که عکس
-\thmref{thm:intermediate-value} برقرار نیست.
-برای مطالعه بیشتر، به \chref{chap:cross-chapter} مراجعه کنید.
+طبق \cref{thm:intermediate-value}، اگر تابعی پیوسته باشد
+(\cref{def:continuity})، آنگاه شرط مقدار میانی را دارد.
+\cref{ex:continuous-function} نشان می‌دهد که $x^{2}$
+(\cref{fig:parabola}) این شرط را دارد. اما
+\cref{rem:ivt-converse} هشدار می‌دهد که عکس
+\cref{thm:intermediate-value} برقرار نیست. برای مطالعه‌ی
+بیشتر، به \cref{chap:cross-chapter} مراجعه کنید.
 
-%----------------------------------------
-% Chapter 3: Range References
-%----------------------------------------
+%========================================================================
+% CHAPTER 3 — RANGE REFERENCES
+%========================================================================
 \chapter{ارجاع‌های بازه‌ای}
 \label{chap:range-refs}
 
 \section{ارجاع به چند معادله}
+\label{sec:range-multiple}
 
 قابلیت \lr{cleveref} امکان ارجاع به چند عنصر را
-به صورت فشرده فراهم می‌کند:
+به‌صورت فشرده فراهم می‌کند:
 
 \begin{itemize}
     \item \cref{eq:einstein,eq:pythagoras,eq:euler}
-    سه معادله معروف هستند
-    \item طبق قضایای \cref{thm:intermediate-value,lem:bolzano-weierstrass,cor:monotone-convergence}
-    نتایج مهمی در آنالیز داریم
+    سه معادله‌ی معروف هستند.
+    \item طبق \cref{thm:intermediate-value,lem:bolzano-weierstrass,cor:monotone-convergence}
+    نتایج مهمی در آنالیز داریم.
 \end{itemize}
 
 \section{ارجاع بازه‌ای}
+\label{sec:range-range}
 
-با استفاده از \texttt{\textbackslash crefrange}:
+با استفاده از \lr{\textbackslash crefrange}:
 
 \begin{itemize}
     \item معادلات \crefrange{eq:einstein}{eq:euler}
-    همگی از معادلات بنیادی هستند
+    همگی از معادلات بنیادی هستند.
 \end{itemize}
 
-%----------------------------------------
-% Chapter 4: Cross-Chapter References
-%----------------------------------------
-\chapter{ارجاع بین فصلی}
+%========================================================================
+% CHAPTER 4 — CROSS-CHAPTER REFERENCES
+%========================================================================
+\chapter{ارجاع بین‌فصلی}
 \label{chap:cross-chapter}
 
 \section{ارجاع به فصل‌های دیگر}
+\label{sec:cross-chapters}
 
-حالا می‌خواهیم به عناصری که در \chref{chap:targets}
+حالا می‌خواهیم به عناصری که در \cref{chap:targets}
 تعریف کردیم، از این فصل ارجاع دهیم:
 
 \begin{itemize}
-    \item معادله \meqref{eq:pythagoras} که در
-    \chref{chap:targets} تعریف شد، اساس هندسه است
-    \item \thmref{thm:intermediate-value} (از \chref{chap:targets})
-    یکی از قضایای اساسی آنالیز ریاضی است
-    \item \figref{fig:parabola} در \chref{chap:targets}
-    نمودار تابع درجه دو را نشان می‌دهد
+    \item معادله‌ی \cref{eq:pythagoras} که در
+    \cref{chap:targets} تعریف شد، اساس هندسه است.
+    \item \cref{thm:intermediate-value} (از
+    \cref{chap:targets}) یکی از قضایای اساسی آنالیز
+    ریاضی است.
+    \item \cref{fig:parabola} در \cref{chap:targets}
+    نمودار تابع درجه دو را نشان می‌دهد.
 \end{itemize}
 
 \section{ارجاع به این فصل از فصول قبلی}
+\label{sec:cross-backward}
 
 همچنین می‌توان از فصول قبلی به این فصل ارجاع داد.
-برای مثال، اگر در \chref{chap:targets} بودیم،
+برای مثال، اگر در \cref{chap:targets} بودیم،
 می‌توانستیم بنویسیم:
-«در \chref{chap:cross-chapter} ارجاع بین فصلی
-را بررسی خواهیم کرد.»
+«در \cref{chap:cross-chapter} ارجاع بین‌فصلی را
+بررسی خواهیم کرد.»
 
-%----------------------------------------
-% Summary
-%----------------------------------------
-\chapter{خلاصه نتایج}
+%========================================================================
+% CHAPTER 5 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
 
 \section{وضعیت سیستم ارجاع}
+\label{sec:summary-status}
 
-\begin{table}[h]
-\centering
-\caption{وضعیت تمام دستورات ارجاع}
-\label{tab:reference-status}
-\begin{tabular}{|c|C{4cm}|c|}
-\hline
-\textbf{دستور} & \textbf{کاربرد} & \textbf{وضعیت} \\
-\hline
-\lr{\textbackslash ref} & شماره عنصر بدون پیشوند & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash cref} & شماره با پیشوند هوشمند & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash crefrange} & ارجاع بازه‌ای & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash meqref} & ارجاع به معادله & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash thmref} & ارجاع به قضیه & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash defref} & ارجاع به تعریف & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash lemref} & ارجاع به لم & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash corref} & ارجاع به نتیجه & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash exref} & ارجاع به مثال & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash figref} & ارجاع به شکل & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash tabref} & ارجاع به جدول & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash chref} & ارجاع به فصل & \textcolor{matingreen}{✅} \\
-\lr{\textbackslash secref} & ارجاع به بخش & \textcolor{matingreen}{✅} \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:reference-status} وضعیت تمام دستورات
+ارجاع \lr{MatinBook} را نشان می‌دهد.
 
-\section{نتیجه}
+\begin{matintable}{وضعیت تمام دستورات ارجاع}{tab:reference-status}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دستور & کاربرد & وضعیت \\
+\lr{\textbackslash ref} & شماره‌ی عنصر بدون پیشوند & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash cref} & شماره با پیشوند هوشمند & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash Cref} & مشابه \lr{\textbackslash cref} (فارسی) & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash crefrange} & ارجاع بازه‌ای & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash cref\{a,b,c\}} & ارجاع چندگانه & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash thmref} & ارجاع به قضیه & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash lemref} & ارجاع به لم & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash corref} & ارجاع به نتیجه & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash propref} & ارجاع به گزاره & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash defref} & ارجاع به تعریف & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash exref} & ارجاع به مثال & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash remref} & ارجاع به نکته & \textcolor{matingreen}{فعال} \\
+\lr{\textbackslash excref} & ارجاع به تمرین & \textcolor{matingreen}{فعال} \\
+\end{tblr}
+\end{matintable}
 
-\textbf{سیستم ارجاع هوشمند \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
-تمامی ۱۳ دستور ارجاع شامل \lr{hyperref}، \lr{cleveref}
-و دستورات اختصاصی فارسی به درستی کار می‌کنند. 🎉
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
+
+در این آزمون، سیستم ارجاع \lr{MatinBook} بر اساس پنج
+معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{دقت}: شماره‌ی درست برای هر عنصر.
+    \item \textbf{پیشوند فارسی}: «قضیه»، «شکل»، «معادله» و...
+    \item \textbf{ارجاع بازه‌ای}: \lr{\textbackslash crefrange}.
+    \item \textbf{ارجاع چندگانه}: \lr{\textbackslash cref\{a,b,c\}}.
+    \item \textbf{لینک فعال}: \lr{hyperref} با رنگ آبی.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام زیرسیستم‌های ارجاع هوشمند \lr{MatinBook}
+نسخه‌ی \lr{\matinbookversion} با موفقیت بارگذاری و
+آزمایش شدند. سیزده دستور ارجاع شامل \lr{hyperref}،
+\lr{cleveref} و دستورات کمکی، همگی به‌درستی کار می‌کنند
+و شماره‌ها با پیشوندهای فارسی نمایش داده می‌شوند.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، یازدهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item \lr{\textbackslash ref} استاندارد
+        \item \lr{\textbackslash cref} هوشمند
+        \item \lr{\textbackslash crefrange} بازه‌ای
+        \item ارجاع‌های چندگانه
+        \item دستورات کمکی
+        \item ارجاع‌های بین‌فصلی
+        \item لینک‌های \lr{hyperref}
+    \end{itemize}
+}
 
 \end{document}
