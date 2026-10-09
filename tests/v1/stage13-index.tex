@@ -1,64 +1,185 @@
 %========================================
-% MatinBook - Stage 13: Index Test
-% Test: makeindex + Index Entries + Subentries + Cross-references
-% Purpose: Validate index generation system
+% MatinBook — Stage 13: Index Test
+% Version: v1.1
+% Purpose:
+%   Validate the index system of MatinBook v1.1:
+%     1. Main index entries (\index{term})
+%     2. Sub-entries (\index{term!sub})
+%     3. Sub-sub-entries (\index{term!sub!subsub})
+%     4. Bold entries (\idxbold)
+%     5. See references (\idxsee)
+%     6. See also references (\idxseealso)
+%     7. xindy with Persian sorting (persian-variant2)
+%     8. \printindex in the back matter
+%
+% Compilation:
+%   xelatex -shell-escape stage13-index.tex
+%   xelatex -shell-escape stage13-index.tex
+%   xelatex -shell-escape stage13-index.tex
+%   (xindy is called automatically via -shell-escape;
+%    3 passes recommended for a stable index)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that the
+%   index is generated correctly with Persian sorting,
+%   sub-entries are properly nested, and see/see-also
+%   references resolve to the correct entries.
 %========================================
 
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون سیستم نمایه}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون سیستم نمایه}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون سیستم نمایه}
+    {ارزیابی مدخل، زیرمدخل و ارجاع در MatinBook}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
-% Chapter 1: Programming Concepts
-%----------------------------------------
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون سیستم نمایه \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، سیزدهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+\lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است. هدف آن،
+اعتبارسنجی کامل سیستم نمایه‌ی کلاس در هشت حوزه‌ی متمایز
+است: مدخل اصلی، زیرمدخل، زیرزیرمدخل، مدخل با فونت
+سیاه، ارجاع «نگاه کنید به»، ارجاع «همچنین نگاه کنید
+به»، مرتب‌سازی فارسی با \lr{xindy}، و چاپ نمایه با
+\lr{\textbackslash printindex}.
+
+در کتاب‌های فنی و علمی، نمایه یکی از ابزارهای مهم
+ناوبری است که به خواننده کمک می‌کند مفاهیم مورد نظر
+را سریع پیدا کند. یک نمایه‌ی حرفه‌ای باید با
+مرتب‌سازی دقیق، زیرمدخل‌های سلسله‌مراتبی و ارجاع‌های
+متقابل، تجربه‌ی خواندن را بهبود ببخشد. \lr{MatinBook}
+با استفاده از \lr{xindy} و ماژول \lr{persian-variant2}،
+این اهداف را محقق می‌سازد.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل
+همراه است تا خواننده بتواند درستی رفتار هر زیرسیستم را
+در بافت واقعی یک کتاب ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — PROGRAMMING CONCEPTS
+%========================================================================
 \chapter{مفاهیم برنامه‌نویسی}
+\label{chap:programming}
 
 \section{زبان‌های برنامه‌نویسی}
+\label{sec:programming-languages}
 
 \subsection{پایتون}
+\label{sec:programming-python}
 
-پایتون\index{پایتون} یک زبان برنامه‌نویسی
-سطح بالا، تفسیری و همه‌منظوره است.
-این زبان توسط خیدو فان روسوم\index{فان روسوم، خیدو}
-در سال ۱۹۹۱ ساخته شد.
+پایتون\index{پایتون} یک زبان برنامه‌نویسی سطح بالا،
+تفسیری و همه‌منظوره است. این زبان توسط خیدو فان
+روسوم\index{فان روسوم، خیدو} در سال ۱۹۹۱ ساخته شد.
 
-ویژگی‌های اصلی پایتون\index{پایتون!ویژگی‌ها}
-عبارتند از:
+\mnote{پایتون در سال ۲۰۲۴ محبوب‌ترین زبان برنامه‌نویسی جهان بوده است.}
+
+ویژگی‌های اصلی پایتون\index{پایتون!ویژگی‌ها} عبارت‌اند از:
 
 \begin{itemize}
     \item \textbf{خوانایی بالا:} نحو ساده و شبیه به
     زبان طبیعی\index{پایتون!نحو}
-    \item \textbf{کتابخانه غنی:} کتابخانه استاندارد
+    \item \textbf{کتابخانه‌ی غنی:} کتابخانه‌ی استاندارد
     گسترده\index{پایتون!کتابخانه استاندارد}
     \item \textbf{چندسکویی:} اجرا روی سیستم‌عامل‌های
     مختلف\index{چندسکویی}
 \end{itemize}
 
 \subsection{زبان C++}
+\label{sec:programming-cpp}
 
-C++\index{C++} یک زبان برنامه‌نویسی
-سطح میانی با قابلیت‌های شیءگرایی\index{شیءگرایی}
-است. این زبان توسط بیارنه استراستروپ\index{استراستروپ، بیارنه}
-در سال ۱۹۸۵ توسعه یافت.
+\lr{C++}\index{C++} یک زبان برنامه‌نویسی سطح میانی
+با قابلیت‌های شیءگرایی\index{شیءگرایی} است. این زبان
+توسط بیارنه استراستروپ\index{استراستروپ، بیارنه} در
+سال ۱۹۸۵ توسعه یافت.
 
-ویژگی‌های C++\index{C++!ویژگی‌ها}:
+ویژگی‌های \lr{C++}\index{C++!ویژگی‌ها}:
 
 \begin{itemize}
-    \item \textbf{سرعت بالا:} کامپایل مستقیم به کد ماشین
-    \index{C++!سرعت}
+    \item \textbf{سرعت بالا:} کامپایل مستقیم به کد
+    ماشین\index{C++!سرعت}
     \item \textbf{مدیریت حافظه:} کنترل دستی حافظه
     \index{مدیریت حافظه}
     \item \textbf{برنامه‌نویسی جنریک:} قالب‌ها
@@ -66,30 +187,31 @@ C++\index{C++} یک زبان برنامه‌نویسی
 \end{itemize}
 
 \section{الگوریتم‌ها}
+\label{sec:programming-algorithms}
 
 الگوریتم\index{الگوریتم} مجموعه‌ای از دستورالعمل‌های
 گام‌به‌گام برای حل یک مسئله است.
 
 \subsection{انواع الگوریتم‌ها}
+\label{sec:programming-algorithms-types}
 
 \begin{itemize}
-    \item \textbf{جستجو:}
-    جستجوی خطی\index{الگوریتم!جستجوی خطی} و
-    جستجوی دودویی\index{الگوریتم!جستجوی دودویی}
-    از الگوریتم‌های پایه جستجو هستند.
-    
-    \item \textbf{مرتب‌سازی:}
-    مرتب‌سازی سریع\index{الگوریتم!مرتب‌سازی سریع} و
-    مرتب‌سازی ادغامی\index{الگوریتم!مرتب‌سازی ادغامی}
+    \item \textbf{جستجو:} جستجوی خطی\index{الگوریتم!جستجوی خطی}
+    و جستجوی دودویی\index{الگوریتم!جستجوی دودویی} از
+    الگوریتم‌های پایه‌ی جستجو هستند.
+
+    \item \textbf{مرتب‌سازی:} مرتب‌سازی سریع\index{الگوریتم!مرتب‌سازی سریع}
+    و مرتب‌سازی ادغامی\index{الگوریتم!مرتب‌سازی ادغامی}
     از پرکاربردترین الگوریتم‌های مرتب‌سازی هستند.
-    
-    \item \textbf{گراف:}
-    الگوریتم دایکسترا\index{الگوریتم!دایکسترا} برای
-    یافتن کوتاه‌ترین مسیر\index{کوتاه‌ترین مسیر}
-    در گراف‌های وزن‌دار\index{گراف!وزن‌دار} استفاده می‌شود.
+
+    \item \textbf{گراف:} الگوریتم دایکسترا\index{الگوریتم!دایکسترا}
+    برای یافتن کوتاه‌ترین مسیر\index{کوتاه‌ترین مسیر}
+    در گراف‌های وزن‌دار\index{گراف!وزن‌دار} استفاده
+    می‌شود.
 \end{itemize}
 
 \section{ساختمان داده‌ها}
+\label{sec:programming-datastructures}
 
 ساختمان داده\index{ساختمان داده} روشی برای
 سازمان‌دهی و ذخیره‌سازی داده‌ها در کامپیوتر است.
@@ -97,129 +219,134 @@ C++\index{C++} یک زبان برنامه‌نویسی
 انواع ساختمان داده\index{ساختمان داده!انواع}:
 
 \begin{itemize}
-    \item \textbf{آرایه}\index{آرایه}:
-    مجموعه‌ای از عناصر با اندیس\index{اندیس} عددی
+    \item \textbf{آرایه}\index{آرایه}: مجموعه‌ای از
+    عناصر با اندیس\index{اندیس} عددی
     \item \textbf{لیست پیوندی}\index{لیست پیوندی}:
-    مجموعه‌ای از گره‌ها\index{گره} که هر کدام
-    به عنصر بعدی اشاره می‌کنند
-    \item \textbf{پشته}\index{پشته}:
-    ساختار \lr{LIFO}\index{LIFO}
-    (آخرین ورودی، اولین خروجی)
-    \item \textbf{صف}\index{صف}:
-    ساختار \lr{FIFO}\index{FIFO}
-    (اولین ورودی، اولین خروجی)
-    \item \textbf{درخت}\index{درخت}:
-    ساختار سلسله‌مراتبی\index{ساختار سلسله‌مراتبی}
-    با ریشه\index{ریشه} و برگ‌ها\index{برگ}
-    \item \textbf{گراف}\index{گراف}:
-    مجموعه‌ای از رئوس\index{رأس} و یال‌ها\index{یال}
+    مجموعه‌ای از گره‌ها\index{گره} که هر کدام به عنصر
+    بعدی اشاره می‌کنند
+    \item \textbf{پشته}\index{پشته}: ساختار
+    \lr{LIFO}\index{LIFO} (آخرین ورودی، اولین خروجی)
+    \item \textbf{صف}\index{صف}: ساختار
+    \lr{FIFO}\index{FIFO} (اولین ورودی، اولین خروجی)
+    \item \textbf{درخت}\index{درخت}: ساختار
+    سلسله‌مراتبی\index{ساختار سلسله‌مراتبی} با
+    ریشه\index{ریشه} و برگ‌ها\index{برگ}
+    \item \textbf{گراف}\index{گراف}: مجموعه‌ای از
+    رئوس\index{رأس} و یال‌ها\index{یال}
     \item \textbf{جدول درهم‌سازی}\index{جدول درهم‌سازی}:
-    ساختار کلید-مقدار\index{کلید-مقدار} با دسترسی $O(1)$
+    ساختار کلید-مقدار\index{کلید-مقدار} با دسترسی
+    \lr{$O(1)$}
 \end{itemize}
 
-%----------------------------------------
-% Chapter 2: Mathematical Concepts
-%----------------------------------------
+%========================================================================
+% CHAPTER 2 — MATHEMATICAL CONCEPTS
+%========================================================================
 \chapter{مفاهیم ریاضی}
+\label{chap:mathematics}
 
-\section{نظریه اعداد}
+\section{نظریه‌ی اعداد}
+\label{sec:math-numbertheory}
 
-نظریه اعداد\index{نظریه اعداد} شاخه‌ای از
-ریاضیات\index{ریاضیات} است که به مطالعه
-اعداد صحیح\index{اعداد صحیح} می‌پردازد.
+نظریه‌ی اعداد\index{نظریه اعداد} شاخه‌ای از
+ریاضیات\index{ریاضیات} است که به مطالعه‌ی اعداد
+صحیح\index{اعداد صحیح} می‌پردازد.
 
 \subsection{اعداد اول}
+\label{sec:math-primes}
 
-عدد اول\index{عدد اول} عددی طبیعی بزرگتر از ۱
-است که فقط بر ۱ و خودش بخش‌پذیر باشد.
+عدد اول\index{عدد اول} عددی طبیعی بزرگ‌تر از ۱ است
+که فقط بر ۱ و خودش بخش‌پذیر باشد.
 
-قضیه اساسی حساب\index{قضیه!اساسی حساب}
-بیان می‌کند که هر عدد طبیعی بزرگتر از ۱
-به صورت حاصلضرب اعداد اول\index{اعداد اول!تجزیه}
-قابل نمایش است.
+قضیه‌ی اساسی حساب\index{قضیه!اساسی حساب} بیان
+می‌کند که هر عدد طبیعی بزرگ‌تر از ۱ به‌صورت
+حاصل‌ضرب اعداد اول\index{اعداد اول!تجزیه} قابل
+نمایش است.
 
-\subsection{بزرگترین مقسوم‌علیه مشترک}
+\subsection{بزرگ‌ترین مقسوم‌علیه مشترک}
+\label{sec:math-gcd}
 
-بزرگترین مقسوم‌علیه مشترک\index{GCD}
-یا \lr{GCD}\index{GCD|seealso{بزرگترین مقسوم‌علیه مشترک}}
-دو عدد، بزرگترین عددی است که هر دو را می‌شمارد.
+بزرگ‌ترین مقسوم‌علیه مشترک\index{GCD} یا \lr{GCD}
+دو عدد، بزرگ‌ترین عددی است که هر دو را می‌شمارد.
 
-الگوریتم اقلیدس\index{اقلیدس!الگوریتم}
-روشی کارآمد برای محاسبه \lr{GCD} است.
+الگوریتم اقلیدس\index{اقلیدس!الگوریتم} روشی کارآمد
+برای محاسبه‌ی \lr{GCD} است.
 
 \section{جبر}
+\label{sec:math-algebra}
 
-جبر\index{جبر} شاخه‌ای از ریاضیات است
-که به مطالعه ساختارهای جبری\index{ساختار جبری}
-می‌پردازد.
+جبر\index{جبر} شاخه‌ای از ریاضیات است که به مطالعه‌ی
+ساختارهای جبری\index{ساختار جبری} می‌پردازد.
 
 \subsection{گروه}
+\label{sec:math-group}
 
-گروه\index{گروه} یک ساختار جبری شامل
-یک مجموعه و یک عمل دوتایی\index{عمل دوتایی}
-با چهار ویژگی بسته بودن\index{گروه!بسته بودن}،
-شرکت‌پذیری\index{گروه!شرکت‌پذیری}،
-وجود عضو خنثی\index{گروه!عضو خنثی} و
-وجود عضو وارون\index{گروه!عضو وارون} است.
+گروه\index{گروه} یک ساختار جبری شامل یک مجموعه و یک
+عمل دوتایی\index{عمل دوتایی} با چهار ویژگی بسته
+بودن\index{گروه!بسته بودن}، شرکت‌پذیری\index{گروه!شرکت‌پذیری}،
+وجود عضو خنثی\index{گروه!عضو خنثی} و وجود عضو
+وارون\index{گروه!عضو وارون} است.
 
 \subsection{ماتریس}
+\label{sec:math-matrix}
 
-ماتریس\index{ماتریس} آرایه‌ای مستطیلی
-از اعداد است. ماتریس‌ها\index{ماتریس!انواع}
-در جبر خطی\index{جبر خطی}،
-گرافیک کامپیوتری\index{گرافیک کامپیوتری}
-و یادگیری ماشین\index{یادگیری ماشین}
-کاربرد دارند.
+ماتریس\index{ماتریس} آرایه‌ای مستطیلی از اعداد است.
+ماتریس‌ها\index{ماتریس!انواع} در جبر خطی\index{جبر خطی}،
+گرافیک کامپیوتری\index{گرافیک کامپیوتری} و یادگیری
+ماشین\index{یادگیری ماشین} کاربرد دارند.
 
 \section{آنالیز ریاضی}
+\label{sec:math-analysis}
 
-آنالیز ریاضی\index{آنالیز ریاضی} به مطالعه
+آنالیز ریاضی\index{آنالیز ریاضی} به مطالعه‌ی
 حد\index{حد}، پیوستگی\index{پیوستگی}،
-مشتق\index{مشتق} و انتگرال\index{انتگرال}
-می‌پردازد.
+مشتق\index{مشتق} و انتگرال\index{انتگرال} می‌پردازد.
 
-قضیه مقدار میانی\index{قضیه!مقدار میانی}
-و قضیه اساسی حسابان\index{قضیه!اساسی حسابان}
-از قضایای مهم آنالیز هستند.
+قضیه‌ی مقدار میانی\index{قضیه!مقدار میانی} و
+قضیه‌ی اساسی حسابان\index{قضیه!اساسی حسابان} از
+قضایای مهم آنالیز هستند.
 
-%----------------------------------------
-% Chapter 3: Using Index Commands
-%----------------------------------------
+%========================================================================
+% CHAPTER 3 — USING INDEX COMMANDS
+%========================================================================
 \chapter{راهنمای استفاده از نمایه}
+\label{chap:index-commands}
 
 \section{دستورات پایه}
+\label{sec:index-basic}
 
 برای ایجاد مدخل در نمایه از دستور
-\texttt{\textbackslash index} استفاده می‌شود:
+\lr{\textbackslash index} استفاده می‌شود:
 
 \begin{itemize}
-    \item \texttt{\textbackslash index\{واژه\}}
-    --- مدخل اصلی\index{مدخل اصلی}
-    \item \texttt{\textbackslash index\{واژه!زیرواژه\}}
-    --- زیرمدخل\index{زیرمدخل}
-    \item \texttt{\textbackslash index\{واژه!زیرواژه!زیرزیرواژه\}}
-    --- زیرزیرمدخل\index{زیرزیرمدخل}
+    \item \lr{\textbackslash index\{واژه\}} —
+    مدخل اصلی\index{مدخل اصلی}
+    \item \lr{\textbackslash index\{واژه!زیرواژه\}} —
+    زیرمدخل\index{زیرمدخل}
+    \item \lr{\textbackslash index\{واژه!زیرواژه!زیرزیرواژه\}} —
+    زیرزیرمدخل\index{زیرزیرمدخل}
 \end{itemize}
 
 \section{دستورات پیشرفته}
+\label{sec:index-advanced}
 
 \lr{MatinBook} دستورات کمکی زیر را برای نمایه
 فراهم می‌کند:
 
 \begin{itemize}
-    \item \texttt{\textbackslash idxbold}:
-    مدخل با فونت سیاه\index{سیاه|textbf}
-    \item \texttt{\textbackslash idxsee}:
-    ارجاع «نگاه کنید به»\index{ارجاع!نگاه کنید به}
-    \item \texttt{\textbackslash idxseealso}:
-    ارجاع «همچنین نگاه کنید به»\index{ارجاع!همچنین نگاه کنید به}
-    \item \texttt{\textbackslash idxsub}:
-    ایجاد زیرمدخل سریع
-    \item \texttt{\textbackslash idxsubsub}:
-    ایجاد زیرزیرمدخل سریع
+    \item \lr{\textbackslash idxbold}: مدخل با
+    فونت سیاه\idxbold{سیاه}
+    \item \lr{\textbackslash idxsee}: ارجاع «نگاه
+    کنید به»\index{ارجاع!نگاه کنید به}
+    \item \lr{\textbackslash idxseealso}: ارجاع
+    «همچنین نگاه کنید به»\index{ارجاع!همچنین نگاه کنید به}
+    \item \lr{\textbackslash idxsub}: ایجاد زیرمدخل
+    سریع
+    \item \lr{\textbackslash idxsubsub}: ایجاد
+    زیرزیرمدخل سریع
 \end{itemize}
 
 \section{نمونه ارجاع‌های نمایه}
+\label{sec:index-examples}
 
 \begin{itemize}
     \item \idxsee{مرتب‌سازی سریع}{الگوریتم!مرتب‌سازی سریع}
@@ -228,42 +355,103 @@ C++\index{C++} یک زبان برنامه‌نویسی
     \item \idxsub{برنامه‌نویسی}{پایتون}
 \end{itemize}
 
-%----------------------------------------
-% Summary and Index
-%----------------------------------------
-\chapter{خلاصه نتایج}
+\mnote{دستورات \lr{\textbackslash idxsee} و \lr{\textbackslash idxseealso} با \lr{xindy} سازگار هستند.}
+
+%========================================================================
+% CHAPTER 4 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
 
 \section{وضعیت سیستم نمایه}
+\label{sec:summary-status}
 
-\begin{table}[h]
-\centering
-\caption{وضعیت قابلیت‌های نمایه}
-\label{tab:index-status}
-\begin{tabular}{|c|C{6cm}|c|}
-\hline
-\textbf{قابلیت} & \textbf{توضیحات} & \textbf{وضعیت} \\
-\hline
-مدخل اصلی & \lr{\textbackslash index\{واژه\}} & \textcolor{matingreen}{✅} \\
-زیرمدخل & \lr{\textbackslash index\{واژه!زیر\}} & \textcolor{matingreen}{✅} \\
-زیرزیرمدخل & \lr{\textbackslash index\{واژه!زیر!زیر\}} & \textcolor{matingreen}{✅} \\
-ارجاع \lr{see} & \lr{\textbackslash idxsee\{از\}\{به\}} & \textcolor{matingreen}{✅} \\
-ارجاع \lr{see also} & \lr{\textbackslash idxseealso\{از\}\{به\}} & \textcolor{matingreen}{✅} \\
-فونت سیاه & \lr{\textbackslash idxbold\{واژه\}} & \textcolor{matingreen}{✅} \\
-زیرمدخل سریع & \lr{\textbackslash idxsub\{اصلی\}\{زیر\}} & \textcolor{matingreen}{✅} \\
-چاپ نمایه & \lr{\textbackslash printindex} & \textcolor{matingreen}{✅} \\
-\hline
-\end{tabular}
-\end{table}
+جدول \cref{tab:index-status} وضعیت قابلیت‌های نمایه‌ی
+\lr{MatinBook} را نشان می‌دهد.
 
-\section{نتیجه}
+\begin{matintable}{وضعیت قابلیت‌های نمایه}{tab:index-status}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+قابلیت & توضیحات & وضعیت \\
+مدخل اصلی & \lr{\textbackslash index\{واژه\}} & \textcolor{matingreen}{فعال} \\
+زیرمدخل & \lr{\textbackslash index\{واژه!زیر\}} & \textcolor{matingreen}{فعال} \\
+زیرزیرمدخل & \lr{\textbackslash index\{واژه!زیر!زیر\}} & \textcolor{matingreen}{فعال} \\
+ارجاع \lr{see} & \lr{\textbackslash idxsee\{از\}\{به\}} & \textcolor{matingreen}{فعال} \\
+ارجاع \lr{see also} & \lr{\textbackslash idxseealso\{از\}\{به\}} & \textcolor{matingreen}{فعال} \\
+فونت سیاه & \lr{\textbackslash idxbold\{واژه\}} & \textcolor{matingreen}{فعال} \\
+زیرمدخل سریع & \lr{\textbackslash idxsub\{اصلی\}\{زیر\}} & \textcolor{matingreen}{فعال} \\
+چاپ نمایه & \lr{\textbackslash printindex} & \textcolor{matingreen}{فعال} \\
+\end{tblr}
+\end{matintable}
 
-\textbf{سیستم نمایه \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شد.}
-بیش از ۶۰ مدخل در ۲ فصل موضوعی با زیرمدخل‌ها
-و ارجاع‌های متقابل به درستی در نمایه ثبت می‌شوند. 🎉
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
 
-%----------------------------------------
-% Print Index
-%----------------------------------------
+در این آزمون، سیستم نمایه‌ی \lr{MatinBook} بر اساس
+پنج معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{مرتب‌سازی فارسی}: با \lr{xindy}.
+    \item \textbf{زیرمدخل‌ها}: سلسله‌مراتب درست.
+    \item \textbf{ارجاع‌ها}: \lr{see} و \lr{see also}.
+    \item \textbf{فونت سیاه}: \lr{\textbackslash idxbold}.
+    \item \textbf{چاپ نمایه}: در \lr{backmatter}.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام زیرسیستم‌های نمایه‌ی \lr{MatinBook}
+نسخه‌ی \lr{\matinbookversion} با موفقیت بارگذاری و
+آزمایش شدند. بیش از ۶۰ مدخل در دو فصل موضوعی با
+زیرمدخل‌ها و ارجاع‌های متقابل، به‌درستی در نمایه
+ثبت می‌شوند و با \lr{xindy} مرتب‌سازی فارسی
+انجام می‌شود.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
 \printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، سیزدهمین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item مدخل اصلی
+        \item زیرمدخل و زیرزیرمدخل
+        \item مدخل با فونت سیاه
+        \item ارجاع \lr{see}
+        \item ارجاع \lr{see also}
+        \item مرتب‌سازی فارسی با \lr{xindy}
+        \item چاپ نمایه در \lr{backmatter}
+    \end{itemize}
+}
 
 \end{document}
