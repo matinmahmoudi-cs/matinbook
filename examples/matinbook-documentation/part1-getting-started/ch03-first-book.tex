@@ -1,0 +1,490 @@
+%%
+%% part1-getting-started/ch03-first-book.tex
+%%
+%% Chapter 3: Your First Book — Build a minimal but complete
+%% book with MatinBook, from cover to back cover.
+%%
+
+\chapter{اولین کتاب}
+\label{chap:first-book}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:first-book-why}
+
+پس از نصب موفق \lr{MatinBook}، وقت آن رسیده که
+اولین کتاب خود را بسازید. هدف این فصل، نه آموزش
+تمام قابلیت‌های \lr{MatinBook}، بلکه آشنایی با
+\textbf{ساختار پایه‌ی یک کتاب} است. پس از خواندن
+این فصل، شما یک کتاب کامل با جلد، پیشگفتار، فصل،
+منابع و نمایه خواهید داشت.
+
+این کتاب کوچک، پایه‌ای خواهد بود که در فصل‌های
+بعدی، با افزودن قابلیت‌های پیشرفته‌تر، آن را
+گسترش خواهید داد.
+
+\mnote{برای شروع، نیازی به دانش عمیق \lr{LaTeX} نیست. کافی است دستورات این فصل را گام‌به‌گام دنبال کنید.}
+
+\section{ساختار یک کتاب کامل}
+\label{sec:first-book-structure}
+
+یک کتاب حرفه‌ای در \lr{MatinBook} از پنج بخش
+اصلی تشکیل شده است:
+
+\begin{enumerate}
+    \item \textbf{جلد جلو:} با دستور \cmd{makecover}.
+    \item \textbf{پیش‌متن:} شامل شناسنامه، تقدیم،
+    پیشگفتار، فهرست مطالب.
+    \item \textbf{متن اصلی:} شامل فصل‌ها.
+    \item \textbf{پس‌متن:} شامل منابع و نمایه.
+    \item \textbf{جلد عقب:} با دستور \cmd{makebackcover}.
+\end{enumerate}
+
+\mnote{ترتیب این پنج بخش مهم است. اگر جابه‌جا شوند، کتاب به‌درستی کامپایل نمی‌شود.}
+
+\section{ساخت فایل اصلی}
+\label{sec:first-book-main}
+
+یک فایل جدید به نام \file{my-first-book.tex} بسازید
+و محتوای زیر را در آن قرار دهید:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+
+\title{|\pc{اولین کتاب من}|}
+\author{|\pc{نام من}|}
+\date{|\pc{مهر ۱۴۰۵}|}
+
+\booktitle{|\pc{اولین کتاب من}|}
+
+\begin{document}
+
+% |\pc{جلد جلو}|
+\makecover
+    {|\pc{اولین کتاب من}|}
+    {|\pc{یک کتاب آزمایشی}|}
+    {|\pc{نام من}|}
+    {|\pc{مهر ۱۴۰۵}|}
+
+% |\pc{پیش‌متن}|
+\frontmatter
+\frontmattergeometry
+
+\maketitle
+\tableofcontents
+
+% |\pc{متن اصلی}|
+\mainmatter
+\mainmattergeometry
+
+\chapter{|\pc{فصل اول}|}
+\label{chap:first}
+
+|\pc{این یک متن ساده است.}|
+
+% |\pc{پس‌متن}|
+\backmatter
+\frontmattergeometry
+
+% |\pc{جلد عقب}|
+\makebackcover{|\pc{توضیحات پشت جلد...}|}
+
+\end{document}
+\end{minted}
+\end{latin}
+
+\mnote{نام فایل را می‌توانید هر چه می‌خواهید بگذارید. در این کتاب از \lr{my-first-book.tex} استفاده می‌کنیم.}
+
+\section{کامپایل اولین کتاب}
+\label{sec:first-book-compile}
+
+برای ساخت فایل \lr{PDF}، از دستور زیر استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+xelatex -shell-escape my-first-book.tex
+xelatex -shell-escape my-first-book.tex
+\end{minted}
+\end{latin}
+
+\mnote{دو بار کامپایل لازم است چون جلد با \lr{TikZ} ساخته می‌شود و به دو مرحله نیاز دارد.}
+
+پس از اجرای این دستورات، یک فایل
+\file{my-first-book.pdf} ساخته می‌شود. آن را باز
+کنید و نتیجه را ببینید.
+
+\mnote{اگر خطایی گرفتید، به \cref{app:troubleshooting} مراجعه کنید.}
+
+\section{آشنایی با ساختار}
+\label{sec:first-book-tour}
+
+حالا که اولین کتاب خود را ساختید، بگذارید
+ساختار آن را بخش‌به‌بخش بررسی کنیم.
+
+\subsection{فرمان \cmd{documentclass}}
+\label{sec:first-book-documentclass}
+
+اولین خط هر سند \lr{LaTeX}، دستور
+\cmd{documentclass} است:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+\end{minted}
+\end{latin}
+
+این دستور به \lr{LaTeX} می‌گوید که از کلاس
+\lr{MatinBook} استفاده کند. می‌توانید آپشن‌هایی
+مانند \opt{draft} یا \opt{vazirmatn} را هم اضافه
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[draft, vazirmatn]{matinbook}
+\end{minted}
+\end{latin}
+
+\mnote{آپشن‌ها با کاما از هم جدا می‌شوند. ترتیب آن‌ها مهم نیست.}
+
+\subsection{فراداده کتاب}
+\label{sec:first-book-metadata}
+
+بعد از \cmd{documentclass}، فراداده‌ی کتاب را
+تعریف می‌کنیم:
+
+\begin{latin}
+\begin{minted}{latex}
+\title{|\pc{اولین کتاب من}|}
+\author{|\pc{نام من}|}
+\date{|\pc{مهر ۱۴۰۵}|}
+
+\booktitle{|\pc{اولین کتاب من}|}
+\end{minted}
+\end{latin}
+
+\begin{itemize}
+    \item \cmd{title}: عنوان کتاب (برای صفحه‌ی
+    عنوان).
+    \item \cmd{author}: نام نویسنده.
+    \item \cmd{date}: تاریخ.
+    \item \cmd{booktitle}: عنوان کتاب برای
+    سرصفحه‌ی صفحات زوج.
+\end{itemize}
+
+\mnote{فراداده‌ی \cmd{title} و آرگومان اول \cmd{makecover} باید یکسان باشند. برای جلوگیری از ناسازگاری، آن‌ها را هماهنگ نگه دارید.}
+
+\subsection{جلد جلو}
+\label{sec:first-book-frontcover}
+
+جلد جلو با دستور \cmd{makecover} ساخته می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\makecover
+    {|\pc{اولین کتاب من}|}
+    {|\pc{یک کتاب آزمایشی}|}
+    {|\pc{نام من}|}
+    {|\pc{مهر ۱۴۰۵}|}
+\end{minted}
+\end{latin}
+
+این دستور چهار آرگومان می‌گیرد:
+
+\begin{enumerate}
+    \item عنوان کتاب.
+    \item زیرعنوان.
+    \item نام نویسنده.
+    \item تاریخ یا نسخه.
+\end{enumerate}
+
+\subsection{پیش‌متن}
+\label{sec:first-book-frontmatter}
+
+پیش‌متن با دستور \cmd{frontmatter} شروع می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\frontmatter
+\frontmattergeometry
+\end{minted}
+\end{latin}
+
+دستور \cmd{frontmatter} شماره‌گذاری صفحات را به
+حروف ابجد فارسی (الف، ب، ج، ...) تغییر می‌دهد.
+دستور \cmd{frontmattergeometry} نیز هندسه‌ی
+صفحه را به حالت متقارن تغییر می‌دهد.
+
+\mnote{در پیش‌متن، حاشیه‌ی بیرونی پهن وجود ندارد. این حالت برای فهرست مطالب و پیشگفتار مناسب‌تر است.}
+
+\subsection{صفحه‌ی عنوان}
+\label{sec:first-book-titlepage}
+
+صفحه‌ی عنوان با دستور \cmd{maketitle} ساخته می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\maketitle
+\end{minted}
+\end{latin}
+
+این دستور از فراداده‌ی \cmd{title}، \cmd{author} و
+\cmd{date} استفاده می‌کند.
+
+\subsection{فهرست مطالب}
+\label{sec:first-book-toc}
+
+فهرست مطالب با دستور \cmd{tableofcontents} ساخته
+می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\tableofcontents
+\end{minted}
+\end{latin}
+
+\mnote{برای فهرست تصاویر و جداول، از \lr{\textbackslash listoffigures} و \lr{\textbackslash listoftables} استفاده کنید.}
+
+\subsection{متن اصلی}
+\label{sec:first-book-mainmatter}
+
+متن اصلی با دستور \cmd{mainmatter} شروع می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\mainmatter
+\mainmattergeometry
+\end{minted}
+\end{latin}
+
+دستور \cmd{mainmatter} شماره‌گذاری صفحات را به
+اعداد عربی (۱، ۲، ۳، ...) تغییر می‌دهد.
+دستور \cmd{mainmattergeometry} نیز هندسه‌ی
+صفحه را به حالت حاشیه‌ی پهن برمی‌گرداند.
+
+\subsection{فصل}
+\label{sec:first-book-chapter}
+
+فصل با دستور \cmd{chapter} شروع می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\chapter{|\pc{فصل اول}|}
+\label{chap:first}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash label} برای ارجاع به فصل استفاده می‌شود. همیشه یک برچسب معنادار بدهید.}
+
+\subsection{پس‌متن}
+\label{sec:first-book-backmatter}
+
+پس‌متن با دستور \cmd{backmatter} شروع می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\backmatter
+\frontmattergeometry
+\end{minted}
+\end{latin}
+
+در پس‌متن، معمولاً منابع و نمایه قرار می‌گیرند.
+
+\subsection{جلد عقب}
+\label{sec:first-book-backcover}
+
+جلد عقب با دستور \cmd{makebackcover} ساخته
+می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\makebackcover{|\pc{توضیحات پشت جلد...}|}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash makebackcover} باید حتماً در انتهای سند باشد، پیش از \lr{\textbackslash end\{document\}}.}
+
+\section{افزودن منابع و نمایه}
+\label{sec:first-book-bibliography-index}
+
+کتاب شما اکنون کامل است، ولی هنوز منابع و نمایه
+ندارد. در این بخش، آن‌ها را اضافه می‌کنیم.
+
+\subsection{افزودن کتاب‌نامه}
+\label{sec:first-book-bibliography}
+
+برای افزودن کتاب‌نامه، در بخش پیش از
+\cmd{begin\{document\}}، این خط را اضافه کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\addbibresource{references.bib}
+\end{minted}
+\end{latin}
+
+و در پس‌متن، این دستور را اضافه کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\printbibliography[title={|\pc{منابع و مراجع}|}]
+\end{minted}
+\end{latin}
+
+\mnote{کتاب‌نامه را داخل \lr{latin} قرار ندهید. \lr{xepersian} جهت متن را به‌درستی مدیریت می‌کند.}
+
+\subsection{افزودن نمایه}
+\label{sec:first-book-index}
+
+برای افزودن نمایه، کافی است یک کلمه را با دستور
+\cmd{index} علامت‌گذاری کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{برنامه‌نویسی}|\index{|\pc{برنامه‌نویسی}|}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash index} متن فارسی را مستقیماً در متن عادی می‌پذیرد و نیازی به \lr{\textbackslash pc} در متن عادی ندارد.}
+
+و در پس‌متن، این دستور را اضافه کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\printindex
+\end{minted}
+\end{latin}
+
+\mnote{نمایه با \lr{xindy} ساخته می‌شود و مرتب‌سازی فارسی را به‌درستی انجام می‌دهد.}
+
+\section{ساختار فایل‌های یک پروژه}
+\label{sec:first-book-project-structure}
+
+برای کتاب‌های بزرگ‌تر، بهتر است فایل‌ها را به
+چند بخش تقسیم کنید:
+
+\begin{latin}
+\begin{minted}{text}
+my-book/
+├── main.tex
+├── references.bib
+├── chapters/
+│   ├── chapter-01.tex
+│   ├── chapter-02.tex
+│   └── chapter-03.tex
+├── figures/
+│   ├── figure-01.pdf
+│   └── figure-02.pdf
+└── bibliography/
+    └── references.bib
+\end{minted}
+\end{latin}
+
+\mnote{تقسیم فایل‌ها به بخش‌های کوچک، مدیریت پروژه را بسیار آسان‌تر می‌کند. هر فصل در یک فایل جداگانه.}
+
+سپس در \file{main.tex}:
+
+\begin{latin}
+\begin{minted}{latex}
+\input{chapters/chapter-01}
+\input{chapters/chapter-02}
+\input{chapters/chapter-03}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash input} فایل را در همان‌جا وارد می‌کند. برای فایل‌های بزرگ، از \lr{\textbackslash include} استفاده کنید که صفحه‌ی جدید ایجاد می‌کند.}
+
+\section{خطاهای رایج}
+\label{sec:first-book-mistakes}
+
+\subsection{فراموش کردن \cmd{frontmatter} یا \cmd{mainmatter}}
+\label{sec:first-book-mistake-frontmain}
+
+اگر \cmd{frontmatter} و \cmd{mainmatter} را
+فراموش کنید، شماره‌گذاری صفحات به‌درستی انجام
+نمی‌شود و ممکن است شماره‌ها به‌صورت عربی از
+ابتدای سند شروع شوند.
+
+\textbf{راه‌حل:} ترتیب صحیح را رعایت کنید:
+\cmd{frontmatter}، \cmd{mainmatter}، \cmd{backmatter}.
+
+\subsection{قرار دادن \cmd{makebackcover} در ابتدای سند}
+\label{sec:first-book-mistake-backcover}
+
+اگر \cmd{makebackcover} را در ابتدای سند قرار
+دهید، جلد عقب روی صفحه‌ی دوم ظاهر می‌شود و
+بقیه‌ی کتاب به‌هم می‌ریزد.
+
+\textbf{راه‌حل:} همیشه \cmd{makebackcover} را در
+انتهای سند، پیش از \cmd{end\{document\}} قرار دهید.
+
+\subsection{فراموش کردن \cmd{addbibresource}}
+\label{sec:first-book-mistake-bibresource}
+
+اگر \cmd{addbibresource} را فراموش کنید،
+کتاب‌نامه خالی خواهد بود و استنادها به‌صورت
+«؟؟» نمایش داده می‌شوند.
+
+\textbf{راه‌حل:} همیشه \cmd{addbibresource} را
+در پیش از \cmd{begin\{document\}} قرار دهید.
+
+\section{تمرین‌ها}
+\label{sec:first-book-exercises}
+
+\begin{exercise}
+    فایل \lr{my-first-book.tex} را بسازید و
+    آن را کامپایل کنید. آیا فایل \lr{PDF} بدون
+    خطا ساخته می‌شود؟
+    \label{exc:first-book-compile}
+\end{exercise}
+
+\begin{exercise}
+    یک فصل دوم اضافه کنید و در فهرست مطالب
+    آن را ببینید. آیا شماره‌گذاری صفحات به‌درستی
+    انجام می‌شود؟
+    \label{exc:first-book-second-chapter}
+\end{exercise}
+
+\begin{exercise}
+    یک کتاب‌نامه‌ی کوچک با دو منبع بسازید
+    و با \cmd{cite} به آن‌ها استناد کنید.
+    \label{exc:first-book-bibliography}
+\end{exercise}
+
+\begin{exercise}
+    برای کتاب خود یک نمایه با سه مدخل بسازید.
+    آیا مرتب‌سازی فارسی به‌درستی انجام می‌شود؟
+    \label{exc:first-book-index}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:first-book-summary}
+
+در این فصل، اولین کتاب خود را ساختیم:
+
+\begin{itemize}
+    \item یک کتاب کامل در \lr{MatinBook} از پنج
+    بخش تشکیل شده: جلد جلو، پیش‌متن، متن اصلی،
+    پس‌متن، جلد عقب.
+
+    \item ترتیب این بخش‌ها مهم است و باید رعایت
+    شود.
+
+    \item کتاب‌نامه با \cmd{addbibresource} و
+    \cmd{printbibliography} اضافه می‌شود.
+
+    \item نمایه با \cmd{index} و \cmd{printindex}
+    اضافه می‌شود.
+
+    \item برای کتاب‌های بزرگ، بهتر است فایل‌ها
+    را به چند بخش تقسیم کنید.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{frontmatter}، \cmd{mainmatter}،
+    \cmd{backmatter}، \cmd{makebackcover} در
+    انتهای سند، و \cmd{addbibresource} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:book-structure})،
+ساختار کامل یک کتاب را به‌طور مفصل بررسی
+می‌کنیم و یاد می‌گیرید که هر بخش را چطور
+شخصی‌سازی کنید.
