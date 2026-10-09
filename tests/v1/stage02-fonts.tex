@@ -1,64 +1,202 @@
 %========================================
-% MatinBook - Stage 02: Font System Test
-% Test: Persian, Latin, Math, Code Fonts
-% Purpose: Validate all font families render correctly
+% MatinBook — Stage 02: Font System Test
+% Version: v1.1
+% Purpose:
+%   Validate the entire font system of MatinBook v1.1:
+%     1. Persian body font (XB Niloofar)
+%     2. Latin body font (Times New Roman)
+%     3. Math font (XITS Math)
+%     4. Monospace font (DejaVu Sans Mono)
+%     5. Code font (JetBrains Mono) with ligatures
+%     6. Mixed Persian/Latin paragraphs
+%     7. Multilingual quotations
+%     8. Font comparison table
+%
+% Compilation:
+%   xelatex -shell-escape stage02-fonts.tex
+%   xelatex -shell-escape stage02-fonts.tex
+%   (2 passes required for cover + cross-references)
+%
+% Expected outcome:
+%   A professionally typeset PDF demonstrating that every font
+%   family used by MatinBook renders correctly, with proper
+%   kerning, ligatures, and mixed-direction handling.
 %========================================
 
-% Add parent directory to search path
+%------------------------------------------------------------------------
+% Search Path (for tests directory)
+%------------------------------------------------------------------------
 \makeatletter
 \def\input@path{{../}}
 \makeatother
 
+%------------------------------------------------------------------------
+% Document Class
+%------------------------------------------------------------------------
 \documentclass{matinbook}
 
+%------------------------------------------------------------------------
+% Book Metadata
+%------------------------------------------------------------------------
 \title{آزمون سیستم فونت‌ها}
 \author{تیم توسعه MatinBook}
-\date{تابستان ۱۴۰۵}
+\date{مهر ۱۴۰۵}
 
+\booktitle{آزمون سیستم فونت‌ها}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
 \begin{document}
 
-%----------------------------------------
-% Title Page
-%----------------------------------------
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {آزمون سیستم فونت‌ها}
+    {ارزیابی خانواده‌های فونت در MatinBook}
+    {تیم توسعه MatinBook}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
 \maketitle
 
-%----------------------------------------
-% Chapter 1: Persian Font
-%----------------------------------------
+% Copyright / Colophon
+\thispagestyle{empty}
+\vfill
+\begin{center}
+    {\large\textbf{شناسنامه آزمون}}
+
+    \vspace{0.8cm}
+
+    \begin{tabular}{rl}
+        عنوان: & آزمون سیستم فونت‌ها \\
+        نسخه: & \matinbookversion \\
+        تاریخ: & \matinbookdate \\
+        موتور: & \lr{XeLaTeX} \\
+        مجوز: & \lr{MIT} \\
+    \end{tabular}
+
+    \vspace{0.8cm}
+
+    {\small این سند بخشی از مجموعه آزمون‌های یکپارچگی \lr{MatinBook} است.}
+\end{center}
+\clearpage
+
+% Preface
+\chapter*{پیشگفتار}
+\addcontentsline{toc}{chapter}{پیشگفتار}
+
+این سند، دومین آزمون از مجموعه‌ی آزمون‌های یکپارچگی \lr{MatinBook}
+نسخه‌ی \lr{\matinbookversion} است. هدف آن، اعتبارسنجی کامل سیستم
+فونت‌های کلاس در چهار حوزه‌ی متمایز است: متن فارسی، متن لاتین،
+ریاضیات و کد.
+
+در یک کتاب فنی فارسی، هماهنگی میان این چهار حوزه، تعیین‌کننده‌ی
+کیفیت نهایی حروف‌چینی است. فونت فارسی باید در کنار فونت لاتین
+تعادل بصری داشته باشد؛ فونت ریاضی باید نمادهای پیچیده را بدون
+افت کیفیت نمایش دهد؛ و فونت کد باید لیگچرهای برنامه‌نویسی را
+به‌درستی پشتیبانی کند.
+
+هر بخش از این آزمون، با مثال‌های عملی و ارجاعات متقابل همراه است
+تا خواننده بتواند درستی رفتار هر فونت را در بافت واقعی یک کتاب
+فنی ارزیابی کند.
+
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% CHAPTER 1 — PERSIAN FONT
+%========================================================================
 \chapter{فونت فارسی}
+\label{chap:font-persian}
 
-\section{خوانایی و زیبایی}
+\section{فلسفه‌ی انتخاب فونت}
+\label{sec:font-persian-philosophy}
 
-این یک پاراگراف طولانی فارسی برای ارزیابی خوانایی فونت \lr{XB Niloofar} است.
-فونت فارسی باید به گونه‌ای طراحی شده باشد که خواننده بتواند ساعت‌های طولانی
-بدون خستگی چشم مطالعه کند. فاصله بین حروف، اندازه نقاط، و شکل منحنی‌ها
-همگی در خوانایی متن تأثیرگذار هستند. ما در \lr{MatinBook} فونت پیش‌فرض را
-با مقیاس ۱.۲ تنظیم کرده‌ایم تا هماهنگی بهتری با فونت لاتین داشته باشد.
+فونت پیش‌فرض متن فارسی در \lr{MatinBook}، \lr{XB Niloofar} است
+که با مقیاس \pnum{۱.۲} بارگذاری می‌شود. این فونت به‌دلیل پوشش کامل
+حروف فارسی، خوانایی بالا در متون فنی، و تعادل بصری با فونت لاتین
+\lr{Times New Roman} انتخاب شده است.
+
+مقیاس \pnum{۱.۲} به این معناست که اندازه‌ی فونت فارسی، ۲۰٪ بزرگ‌تر از
+اندازه‌ی پایه‌ی سند (\pnum{۱۰pt}) است. این تنظیم، نتیجه‌ی سال‌ها تجربه‌ی
+نشر فارسی است: فونت‌های فارسی به‌دلیل ساختار منحنی‌دارشان، در
+اندازه‌های کوچک، خوانایی کمتری نسبت به فونت‌های لاتین دارند.
+
+\mnote{مقیاس \pnum{۱.۲} برای فونت فارسی، استاندارد نشر فنی ایران است.}
+
+\section{خوانایی در متن طولانی}
+\label{sec:font-persian-readability}
+
+این یک پاراگراف طولانی فارسی برای ارزیابی خوانایی فونت
+\lr{XB Niloofar} است. فونت فارسی باید به گونه‌ای طراحی شده باشد
+که خواننده بتواند ساعت‌های طولانی بدون خستگی چشم مطالعه کند.
+فاصله بین حروف، اندازه نقاط، و شکل منحنی‌ها همگی در خوانایی
+متن تأثیرگذار هستند.
+
+طراحی حروف در \lr{XB Niloofar} بر پایه‌ی اصول سنتی خط نسخ است،
+اما با تنظیمات مدرن برای نمایش دیجیتال. این ترکیب، هم حس
+آشنایی برای خواننده‌ی فارسی‌زبان ایجاد می‌کند و هم در چاپ
+دیجیتال، کیفیت بالایی دارد.
 
 \section{حروف خاص فارسی}
+\label{sec:font-persian-special}
 
-حروف فارسی شامل ۳۲ حرف اصلی است. حروفی که در عربی وجود ندارند:
+حروف فارسی شامل ۳۲ حرف اصلی است. چهار حرف در فارسی وجود دارند
+که در عربی معادل ندارند و به همین دلیل، پشتیبانی فونت از آن‌ها
+معیار مهمی برای کیفیت است:
 
 \begin{itemize}
-    \item \textbf{«گ»} --- مانند: گفتگو، بزرگ، برگ
-    \item \textbf{«چ»} --- مانند: چرا، هیچ، کاغذ
-    \item \textbf{«پ»} --- مانند: پدر، پاسخ، پرونده
-    \item \textbf{«ژ»} --- مانند: ژرف، مژده، پژوهش
+    \item \textbf{«گ»} — مانند: گفتگو، بزرگ، برگ، گرگ
+    \item \textbf{«چ»} — مانند: چرا، هیچ، کاغذ، چراغ
+    \item \textbf{«پ»} — مانند: پدر، پاسخ، پرونده، پژواک
+    \item \textbf{«ژ»} — مانند: ژرف، مژده، پژوهش، ژاله
 \end{itemize}
 
 \section{اعداد فارسی}
+\label{sec:font-persian-numbers}
 
-اعداد فارسی باید در تمام حالت‌ها به درستی نمایش داده شوند:
+اعداد فارسی باید در تمام حالت‌ها به‌درستی نمایش داده شوند.
+این شامل اعداد ساده، دو رقمی، چند رقمی، اعشاری و درصدی است:
 
 \begin{itemize}
     \item اعداد ساده: ۰ ۱ ۲ ۳ ۴ ۵ ۶ ۷ ۸ ۹
     \item اعداد دو رقمی: ۱۰ ۲۵ ۴۸ ۷۳ ۹۹
     \item اعداد چند رقمی: ۱۴۰۴ ۲۰۲۶ ۱۲۳۴۵۶ ۹۸۷۶۵۴۳۲۱۰
-    \item اعداد اعشاری: ۳/۱۴ ۲/۷۱۸ ۱/۶۱۸
+    \item اعداد اعشاری: \pnum{۳/۱۴}، \pnum{۲/۷۱۸}، \pnum{۱/۶۱۸}
     \item درصد: ۲۵٪ ۵۰٪ ۷۵٪ ۱۰۰٪
 \end{itemize}
 
-\section{نویسه‌های ویژه}
+\section{نویسه‌های نگارشی}
+\label{sec:font-persian-punctuation}
+
+نویسه‌های ویژه‌ی فارسی و نشانه‌گذاری:
 
 \begin{itemize}
     \item گیومه فارسی: «نقل قول مستقیم»
@@ -66,11 +204,15 @@
     \item پرانتز: (متن داخل پرانتز)
     \item کروشه: [متن داخل کروشه]
     \item آکولاد: \{متن داخل آکولاد\}
-    \item ممیز فارسی: ۳/۱۴۱۵۹۲
-    \item جداکننده هزارگان: ۱٬۰۰۰٬۰۰۰
+    \item ممیز فارسی: \pnum{۳/۱۴۱۵۹۲}
+    \item جداکننده هزارگان: \pnum{۱٬۰۰۰٬۰۰۰}
 \end{itemize}
 
-\section{متن شعرگونه}
+\section{نمونه‌ی متن ادبی}
+\label{sec:font-persian-poetry}
+
+برای ارزیابی زیبایی‌شناختی فونت در متن‌های ادبی، دو بیت از
+شعر کلاسیک فارسی در ادامه آمده است:
 
 \begin{flushright}
     \textbf{توانا بود هر که دانا بود}\\
@@ -81,108 +223,134 @@
     کزین برتر اندیشه برنگذرد
 \end{flushright}
 
-%----------------------------------------
-% Chapter 2: Latin Font
-%----------------------------------------
+%========================================================================
+% CHAPTER 2 — LATIN FONT
+%========================================================================
 \chapter{فونت لاتین}
+\label{chap:font-latin}
 
-\section{\lr{Times New Roman}}
-
-\begin{latin}
-    This chapter demonstrates the Latin font \textbf{Times New Roman},
-    which is the default Latin font in MatinBook. This serif font is
-    widely used in academic and technical publications due to its
-    excellent readability and professional appearance.
-
-    \subsection*{Pangrams (All Letters Test)}
-
-    The quick brown fox jumps over the lazy dog.
-
-    Pack my box with five dozen liquor jugs.
-
-    How vexingly quick daft zebras jump!
-
-    \subsection*{Ligatures Test}
-
-    Common ligatures in English text:
-
-    \begin{itemize}
-        \item fi --- finance, define, profile
-        \item fl --- flower, reflect, inflate
-        \item ff --- offer, different, difficult
-        \item ffi --- efficient, coefficient
-        \item ffl --- shuffle, waffle
-    \end{itemize}
-
-    \subsection*{Special Characters}
-
-    \begin{itemize}
-        \item Quotes: ``double'' `single'
-        \item Dashes: -- (en-dash), --- (em-dash)
-        \item Symbols: @ \# \$ \% \^{} \& * \_ + = | \~{} < > /
-        \item Brackets: [square] \{curly\} (round)
-    \end{itemize}
-\end{latin}
-
-\section{متن علمی انگلیسی}
+\section{فونت Times New Roman}
+\label{sec:font-latin-times}
 
 \begin{latin}
-    \subsection*{Computer Science Terms}
-
-    The time complexity of the algorithm is \(O(n \log n)\) in the
-    average case and \(O(n^2)\) in the worst case. We use a
-    \texttt{HashMap} data structure for \(O(1)\) lookup time.
-
-    \subsection*{Mathematics Terms}
-
-    The Gaussian integral is defined as:
-    \[\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}\]
-
-    The Riemann zeta function for \(s > 1\):
-    \[\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s}\]
+This chapter demonstrates the Latin font \textbf{Times New Roman},
+which is the default Latin font in MatinBook. This serif font is
+widely used in academic and technical publications due to its
+excellent readability and professional appearance.
 \end{latin}
 
-%----------------------------------------
-% Chapter 3: Math Font
-%----------------------------------------
-\chapter{فونت ریاضی}
+\section{آزمون پانگرام}
+\label{sec:font-latin-pangram}
 
-\section{الفبای یونانی}
-
-\begin{center}
 \begin{latin}
-\begin{tabular}{ccR{3cm}|ccR{3cm}}
-\hline
-\multicolumn{3}{c|}{\textbf{Uppercase}} & \multicolumn{3}{c}{\textbf{Lowercase}} \\
-\hline
-\(\Gamma\) & \texttt{\textbackslash Gamma} & Gamma & \(\alpha\) & \texttt{\textbackslash alpha} & alpha \\
-\(\Delta\) & \texttt{\textbackslash Delta} & Delta & \(\beta\)  & \texttt{\textbackslash beta}  & beta \\
-\(\Theta\) & \texttt{\textbackslash Theta} & Theta & \(\gamma\) & \texttt{\textbackslash gamma} & gamma \\
-\(\Lambda\) & \texttt{\textbackslash Lambda} & Lambda & \(\delta\) & \texttt{\textbackslash delta} & delta \\
-\(\Pi\)    & \texttt{\textbackslash Pi}    & Pi    & \(\epsilon\) & \texttt{\textbackslash epsilon} & epsilon \\
-\(\Sigma\) & \texttt{\textbackslash Sigma} & Sigma & \(\zeta\)  & \texttt{\textbackslash zeta}  & zeta \\
-\(\Phi\)   & \texttt{\textbackslash Phi}   & Phi   & \(\theta\) & \texttt{\textbackslash theta} & theta \\
-\(\Omega\) & \texttt{\textbackslash Omega} & Omega & \(\lambda\) & \texttt{\textbackslash lambda} & lambda \\
-\hline
-\end{tabular}
-\end{latin}
-\end{center}
+A pangram is a sentence that contains every letter of the alphabet
+at least once. The following sentences test the font's handling of
+all 26 letters:
 
-\section{عملگرها و نمادها}
+The quick brown fox jumps over the lazy dog.
+
+Pack my box with five dozen liquor jugs.
+
+How vexingly quick daft zebras jump!
+\end{latin}
+
+\section{لیگچرها}
+\label{sec:font-latin-ligatures}
+
+\begin{latin}
+Common ligatures in English text:
 
 \begin{itemize}
-    \item جمع و ضرب: $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$,
-    $\prod_{k=1}^{n} k = n!$
-    \item انتگرال: $\int_{0}^{\infty} e^{-x} \,dx = 1$,
-    $\iint_{D} f(x,y) \,dA$
+    \item fi --- finance, define, profile
+    \item fl --- flower, reflect, inflate
+    \item ff --- offer, different, difficult
+    \item ffi --- efficient, coefficient
+    \item ffl --- shuffle, waffle
+\end{itemize}
+\end{latin}
+
+\section{نویسه‌های ویژه}
+\label{sec:font-latin-special}
+
+\begin{latin}
+\begin{itemize}
+    \item Quotes: ``double'' and `single'
+    \item Dashes: -- (en-dash) and --- (em-dash)
+    \item Symbols: @ \# \$ \% \^{} \& * \_ + = | \~{} < > /
+    \item Brackets: [square], \{curly\}, (round)
+\end{itemize}
+\end{latin}
+
+\section{متن علمی لاتین}
+\label{sec:font-latin-scientific}
+
+\begin{latin}
+\textbf{Computer Science Terms.}
+The time complexity of the algorithm is \(O(n \log n)\) in the
+average case and \(O(n^2)\) in the worst case. We use a
+\texttt{HashMap} data structure for \(O(1)\) lookup time.
+
+\textbf{Mathematics Terms.}
+The Gaussian integral is defined as:
+\[\int_{-\infty}^{\infty} e^{-x^2}\,dx = \sqrt{\pi}\]
+The Riemann zeta function for \(s > 1\) is:
+\[\zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s}\]
+\end{latin}
+
+%========================================================================
+% CHAPTER 3 — MATH FONT
+%========================================================================
+\chapter{فونت ریاضی}
+\label{chap:font-math}
+
+\section{الفبای یونانی}
+\label{sec:font-math-greek}
+
+جدول \cref{tab:greek-alphabet} الفبای یونانی را با نام
+\lr{LaTeX} هر نماد نشان می‌دهد. این نمادها در فونت \lr{XITS Math}
+با کیفیت بالا رندر می‌شوند.
+
+\begin{table}[h]
+\centering
+\caption{الفبای یونانی در فونت \lr{XITS Math}}
+\label{tab:greek-alphabet}
+\begin{tabular}{cc@{\hspace{1.5cm}}cc}
+\toprule
+\textbf{Uppercase} & \textbf{Command} & \textbf{Lowercase} & \textbf{Command} \\
+\midrule
+\(\Gamma\) & \texttt{\textbackslash Gamma} & \(\alpha\) & \texttt{\textbackslash alpha} \\
+\(\Delta\) & \texttt{\textbackslash Delta} & \(\beta\)  & \texttt{\textbackslash beta} \\
+\(\Theta\) & \texttt{\textbackslash Theta} & \(\gamma\) & \texttt{\textbackslash gamma} \\
+\(\Lambda\) & \texttt{\textbackslash Lambda} & \(\delta\) & \texttt{\textbackslash delta} \\
+\(\Pi\)    & \texttt{\textbackslash Pi}    & \(\epsilon\) & \texttt{\textbackslash epsilon} \\
+\(\Sigma\) & \texttt{\textbackslash Sigma} & \(\zeta\)  & \texttt{\textbackslash zeta} \\
+\(\Phi\)   & \texttt{\textbackslash Phi}   & \(\theta\) & \texttt{\textbackslash theta} \\
+\(\Omega\) & \texttt{\textbackslash Omega} & \(\lambda\) & \texttt{\textbackslash lambda} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{عملگرهای ریاضی}
+\label{sec:font-math-operators}
+
+نمایش نمادهای اصلی ریاضی در فونت \lr{XITS Math}:
+
+\begin{itemize}
+    \item جمع و ضرب: $\sum_{i=1}^{n} i = \frac{n(n+1)}{2}$،
+          $\prod_{k=1}^{n} k = n!$
+    \item انتگرال: $\int_{0}^{\infty} e^{-x} \,dx = 1$،
+          $\iint_{D} f(x,y) \,dA$
     \item حد: $\lim_{x \to \infty} (1 + \frac{1}{x})^{x} = e$
-    \item مشتق: $\frac{d}{dx}(x^{n}) = nx^{n-1}$,
-    $\frac{\partial^{2}f}{\partial x^{2}}$
-    \item رادیکال: $\sqrt{x^{2}+y^{2}}$,
-    $\sqrt[3]{8} = 2$
+    \item مشتق: $\frac{d}{dx}(x^{n}) = nx^{n-1}$،
+          $\frac{\partial^{2}f}{\partial x^{2}}$
+    \item رادیکال: $\sqrt{x^{2}+y^{2}}$،
+          $\sqrt[3]{8} = 2$
 \end{itemize}
 
 \section{ماتریس و بردار}
+\label{sec:font-math-matrices}
+
+نمایش ماتریس و بردار با فونت ریاضی:
 
 \[
 A_{3 \times 3} =
@@ -194,11 +362,19 @@ A_{3 \times 3} =
 \vec{v} = \begin{bmatrix} v_{1} \\ v_{2} \\ v_{3} \end{bmatrix}
 \]
 
+دترمینان ماتریس $A$:
+
 \[
-\det(A) = a_{11}(a_{22}a_{33} - a_{23}a_{32}) - a_{12}(a_{21}a_{33} - a_{23}a_{31}) + a_{13}(a_{21}a_{32} - a_{22}a_{31})
+\det(A) = a_{11}(a_{22}a_{33} - a_{23}a_{32})
+        - a_{12}(a_{21}a_{33} - a_{23}a_{31})
+        + a_{13}(a_{21}a_{32} - a_{22}a_{31})
 \]
 
 \section{معادلات معروف}
+\label{sec:font-math-famous}
+
+چهار معادله‌ی مشهور ریاضی که برای ارزیابی کیفیت فونت
+ریاضی در سطوح مختلف پیچیدگی انتخاب شده‌اند:
 
 \begin{align}
     e^{i\pi} + 1 &= 0 \label{eq:euler} \\
@@ -207,17 +383,28 @@ A_{3 \times 3} =
     \zeta(s) &= \prod_{p \text{ prime}} \frac{1}{1 - p^{-s}} \label{eq:euler-product}
 \end{align}
 
-معادله \meqref{eq:euler} زیباترین معادله ریاضی نامیده می‌شود.
+معادله‌ی \cref{eq:euler}، که به‌عنوان «زیباترین معادله‌ی ریاضی»
+شناخته می‌شود، چهار ثابت بنیادین ریاضی را در یک رابطه‌ی ساده
+به هم پیوند می‌دهد. معادله‌ی \cref{eq:gaussian}، انتگرال گاوسی
+است که در نظریه‌ی احتمال نقش محوری دارد. معادله‌ی
+\cref{eq:basel}، مسئله‌ی بازل است که اویلر در قرن هجدهم حل کرد.
+و معادله‌ی \cref{eq:euler-product}، رابطه‌ی میان تابع زتای
+ریمان و اعداد اول را نشان می‌دهد.
 
-%----------------------------------------
-% Chapter 4: Code Font
-%----------------------------------------
+%========================================================================
+% CHAPTER 4 — CODE FONT
+%========================================================================
 \chapter{فونت کد}
+\label{chap:font-code}
 
-\section{\lr{JetBrains Mono}}
+\section{فونت JetBrains Mono}
+\label{sec:font-code-jetbrains}
 
 \lr{JetBrains Mono} یک فونت \lr{monospace} مدرن است که مخصوص
-برنامه‌نویسی طراحی شده. این فونت دارای لیگچرهای مخصوص کدنویسی است:
+برنامه‌نویسی طراحی شده. این فونت دارای لیگچرهای مخصوص کدنویسی
+است که خوانایی کد را افزایش می‌دهند. لیگچرها ترکیب‌های ویژه‌ای
+از دو یا چند نویسه هستند که به‌صورت یک نماد واحد نمایش داده
+می‌شوند.
 
 \begin{latin}
 \begin{minted}{text}
@@ -229,6 +416,11 @@ A_{3 \times 3} =
 \end{latin}
 
 \section{نمونه کد پایتون}
+\label{sec:font-code-python}
+
+نمونه‌ی \cref{code:greeting} یک تابع پایتون با \lr{type hints}
+و \lr{docstring} را نشان می‌دهد. این نمونه برای ارزیابی
+خوانایی فونت کد در متن‌های واقعی طراحی شده است.
 
 \begin{latin}
 \begin{minted}{python}
@@ -247,26 +439,46 @@ for i, name in enumerate(names, start=1):
 \codecaption{تابع greeting با type hints}
 \label{code:greeting}
 
-\section{مقایسه فونت‌های کد}
+\section{لیگچرهای کد}
+\label{sec:font-code-ligatures}
+
+برای ارزیابی پشتیبانی از لیگچرها، کد زیر ترکیب‌های مختلف را
+نمایش می‌دهد:
 
 \begin{latin}
-\begin{minted}{text}
-    JetBrains Mono:    The quick brown fox  ||  i != 0  ==>  x => y
-    Courier New:       The quick brown fox  ||  i != 0  ==>  x => y
+\begin{minted}{cpp}
+template <typename T>
+constexpr auto compute(T x, T y) -> T {
+    auto result = (x != 0) ? x * y : y / x;
+    return result <= 100 ? result : 100;
+}
 \end{minted}
 \end{latin}
+\codecaption{نمونه کد C++ با لیگچرها}
+\label{code:cpp-ligatures}
 
-%----------------------------------------
-% Chapter 5: Multilingual Text
-%----------------------------------------
+نمونه‌ی \cref{code:cpp-ligatures} شامل لیگچرهای \lr{<=}،
+\lr{!=}، \lr{->}، \lr{?} و \lr{:} است که همگی باید در فونت
+\lr{JetBrains Mono} به‌درستی رندر شوند.
+
+%========================================================================
+% CHAPTER 5 — MULTILINGUAL TEXT
+%========================================================================
 \chapter{متن چندزبانه}
+\label{chap:multilingual}
 
-\section{ترکیب فارسی و انگلیسی}
+\section{ترکیب فارسی و لاتین}
+\label{sec:multilingual-mixing}
+
+در متن‌های فنی فارسی، ترکیب متن فارسی و لاتین امری اجتناب‌ناپذیر
+است. \lr{MatinBook} با استفاده از بسته‌ی \lr{xepersian}، این
+ترکیب را به‌صورت خودکار مدیریت می‌کند: جهت متن بر اساس زبان
+جاری تعیین می‌شود و فونت مناسب برای هر بخش انتخاب می‌شود.
 
 این یک پاراگراف ترکیبی است که در آن از واژگان انگلیسی
 مانند \lr{function}، \lr{variable}، \lr{array}، \lr{loop}،
 \lr{conditional} و \lr{recursion} استفاده شده است.
-همچنین ممکن است اعدادی مانند \lr{3.14159} یا \lr{2.71828}
+همچنین ممکن است اعدادی مانند \pnum{۳/۱۴۱۵۹} یا \pnum{۲/۷۱۸۲۸}
 در متن فارسی ظاهر شوند. عبارات ریاضی مانند $f(x) = x^{2}$
 نیز در متن فارسی قرار می‌گیرند.
 
@@ -274,45 +486,116 @@ for i, name in enumerate(names, start=1):
 \lr{Alan Turing}، \lr{Donald Knuth}، \lr{Ada Lovelace}
 
 \section{نقل قول چندزبانه}
+\label{sec:multilingual-quotes}
+
+نقل قول‌های انگلیسی در متن فارسی، نیازمند مدیریت دقیق جهت
+و فونت هستند. نقل قول زیر، یکی از معروف‌ترین جملات در
+مهندسی نرم‌افزار است:
 
 \begin{latin}
-    \begin{quote}
-        ``Any fool can write code that a computer can understand.
-        Good programmers write code that humans can understand.''
+\begin{quote}
+    ``Any fool can write code that a computer can understand.
+    Good programmers write code that humans can understand.''
 
-        \hfill --- \textit{Martin Fowler}
-    \end{quote}
+    \hfill --- \textit{Martin Fowler}
+\end{quote}
 \end{latin}
 
-ترجمه: «هر احمقی می‌تواند کدی بنویسد که کامپیوتر بفهمد.
-برنامه‌نویسان خوب کدی می‌نویسند که انسان‌ها بفهمند.»
+ترجمه‌ی این نقل قول در ادامه آمده است:
 
-%----------------------------------------
-% Summary
-%----------------------------------------
-\chapter{خلاصه نتایج}
+\begin{flushright}
+    «هر احمقی می‌تواند کدی بنویسد که کامپیوتر بفهمد.
+    برنامه‌نویسان خوب کدی می‌نویسند که انسان‌ها بفهمند.»
+
+    \hfill --- مارتین فاولر
+\end{flushright}
+
+%========================================================================
+% CHAPTER 6 — SUMMARY
+%========================================================================
+\chapter{خلاصه‌ی نتایج}
+\label{chap:summary}
 
 \section{وضعیت فونت‌ها}
+\label{sec:summary-fonts}
+
+جدول \cref{tab:fonts} وضعیت چهار خانواده‌ی فونت \lr{MatinBook}
+را نشان می‌دهد. هر خانواده برای نقش مشخصی در کتاب طراحی شده
+و هماهنگی میان آن‌ها، کیفیت نهایی حروف‌چینی را تعیین می‌کند.
 
 \begin{table}[h]
 \centering
-\caption{وضعیت خانواده فونت‌های MatinBook}
+\caption{وضعیت خانواده‌های فونت \lr{MatinBook}}
 \label{tab:fonts}
-\begin{tabular}{|c|c|c|C{5cm}|}
-    \hline
-    \textbf{نوع} & \textbf{فونت} & \textbf{وضعیت} & \textbf{توضیحات} \\
-    \hline
-    فارسی & \lr{XB Niloofar} & \textcolor{matingreen}{✅ فعال} & مقیاس ۱.۲، خوانایی بالا \\
-    لاتین & \lr{Times New Roman} & \textcolor{matingreen}{✅ فعال} & سریف، استاندارد آکادمیک \\
-    ریاضی & \lr{XITS Math} & \textcolor{matingreen}{✅ فعال} & سازگار با \lr{unicode-math} \\
-    کد & \lr{JetBrains Mono} & \textcolor{matingreen}{✅ فعال} & لیگچرهای برنامه‌نویسی \\
-    \hline
+\begin{tabular}{@{}l l C{3cm} C{4cm}@{}}
+\toprule
+\textbf{نوع} & \textbf{فونت} & \textbf{وضعیت} & \textbf{توضیحات} \\
+\midrule
+فارسی & \lr{XB Niloofar} & \textcolor{matingreen}{فعال} & مقیاس \pnum{۱.۲}، خوانایی بالا \\
+لاتین & \lr{Times New Roman} & \textcolor{matingreen}{فعال} & سریف، استاندارد آکادمیک \\
+ریاضی & \lr{XITS Math} & \textcolor{matingreen}{فعال} & سازگار با \lr{unicode-math} \\
+کد & \lr{JetBrains Mono} & \textcolor{matingreen}{فعال} & لیگچرهای برنامه‌نویسی \\
+\bottomrule
 \end{tabular}
 \end{table}
 
-\section{نتیجه}
+\section{معیارهای ارزیابی}
+\label{sec:summary-criteria}
 
-\textbf{تمام فونت‌های \lr{MatinBook} نسخه ۱ با موفقیت آزمایش شدند.}
-نمایش فارسی، انگلیسی، ریاضی و کد همگی بدون نقص هستند. 🎉
+در این آزمون، هر خانواده‌ی فونت بر اساس چهار معیار ارزیابی شد:
+
+\begin{enumerate}
+    \item \textbf{خوانایی}: در متن‌های طولانی و در اندازه‌های کوچک.
+    \item \textbf{پوشش نویسه}: شامل حروف خاص، اعداد، و نشانه‌گذاری.
+    \item \textbf{هماهنگی}: تعادل بصری با سایر فونت‌های سند.
+    \item \textbf{پشتیبانی فنی}: لیگچرها، اعداد کسری، و نمادهای ویژه.
+\end{enumerate}
+
+\section{نتیجه‌گیری}
+\label{sec:summary-conclusion}
+
+\textbf{تمام چهار خانواده‌ی فونت \lr{MatinBook} نسخه‌ی
+\lr{\matinbookversion} با موفقیت بارگذاری و آزمایش شدند.
+نمایش فارسی، لاتین، ریاضی و کد همگی بدون نقص هستند و
+سیستم فونت کلاس، آماده‌ی استفاده در پروژه‌های واقعی است.}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography (empty placeholder)
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
+\makebackcover{%
+    این سند، دومین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
+    \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
+
+    \vspace{0.5cm}
+
+    \textbf{زیرسیستم‌های آزموده‌شده:}
+    \begin{itemize}
+        \item فونت فارسی \lr{XB Niloofar}
+        \item فونت لاتین \lr{Times New Roman}
+        \item فونت ریاضی \lr{XITS Math}
+        \item فونت مونواسپیس \lr{DejaVu Sans Mono}
+        \item فونت کد \lr{JetBrains Mono}
+        \item متن چندزبانه
+    \end{itemize}
+}
 
 \end{document}
