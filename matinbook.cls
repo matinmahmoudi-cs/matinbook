@@ -120,6 +120,7 @@
 
 \RequirePackage{mb-core}
 \RequirePackage{mb-theme-colors}
+\RequirePackage{mb-table}
 \RequirePackage{mb-math}
 \RequirePackage{mb-boxes}
 \RequirePackage{mb-theorem}
@@ -235,7 +236,7 @@
 \ClassInfo{matinbook}{Font: \matin@fontname}
 \ClassInfo{matinbook}{Mode: \matin@mode}
 \ClassInfo{matinbook}{----------------------------------------}
-\ClassInfo{matinbook}{Total: 18 modules + Theme system}
+\ClassInfo{matinbook}{Total: 19 modules + Theme system}
 \ClassInfo{matinbook}{========================================}
 
 \endinput

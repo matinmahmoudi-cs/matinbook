@@ -523,21 +523,22 @@ constexpr auto compute(T x, T y) -> T {
 را نشان می‌دهد. هر خانواده برای نقش مشخصی در کتاب طراحی شده
 و هماهنگی میان آن‌ها، کیفیت نهایی حروف‌چینی را تعیین می‌کند.
 
-\begin{table}[h]
-\centering
-\caption{وضعیت خانواده‌های فونت \lr{MatinBook}}
-\label{tab:fonts}
-\begin{tabular}{@{}l l C{3cm} C{4cm}@{}}
-\toprule
-\textbf{نوع} & \textbf{فونت} & \textbf{وضعیت} & \textbf{توضیحات} \\
-\midrule
+\begin{matintable}{وضعیت خانواده‌های فونت \lr{MatinBook}}{tab:fonts}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & فونت & وضعیت & توضیحات \\
 فارسی & \lr{XB Niloofar} & \textcolor{matingreen}{فعال} & مقیاس \pnum{۱.۲}، خوانایی بالا \\
 لاتین & \lr{Times New Roman} & \textcolor{matingreen}{فعال} & سریف، استاندارد آکادمیک \\
 ریاضی & \lr{XITS Math} & \textcolor{matingreen}{فعال} & سازگار با \lr{unicode-math} \\
 کد & \lr{JetBrains Mono} & \textcolor{matingreen}{فعال} & لیگچرهای برنامه‌نویسی \\
-\bottomrule
-\end{tabular}
-\end{table}
+\end{tblr}
+\end{matintable}
 
 \section{معیارهای ارزیابی}
 \label{sec:summary-criteria}

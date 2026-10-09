@@ -1,0 +1,202 @@
+%%
+%% This is file `mb-table.sty',
+%% part of the MatinBook project.
+%% 
+%% Copyright (C) 2025-2026 Matin Mahmoudi
+%% 
+%% Repository: https://github.com/matinmahmoudi-cs/matinbook
+%% 
+
+\NeedsTeXFormat{LaTeX2e}[2023/06/01]
+\ProvidesPackage{mb-table}[2026/10/08 v1.1 MatinBook Table System]
+
+%========================================================================
+% MB-TABLE — TABLE CONFIGURATION
+%========================================================================
+%
+% Purpose:
+%   Centralize all table-related configuration for MatinBook:
+%
+%     1. Load tabularray, the modern LaTeX3-based table package,
+%        and configure it for RTL typesetting.
+%
+%     2. Define legacy p-based column types (L, R, C) for bare
+%        `tabular` environments that may still exist in older
+%        documents.
+%
+%     3. Provide a matintable environment that wraps the
+%        boilerplate of a captioned, labelled, centered table.
+%
+% Design notes:
+%   LaTeX's default \tabcolsep is 6pt, and \arraystretch is 1.0.
+%   These defaults were tuned for Latin text at 10pt. For Persian
+%   text typeset at scale 1.2 with fonts that have different
+%   metrics, they are too tight: cell contents touch the column
+%   rules, and rows look cramped.
+%
+%   In tabularray, the spacing is controlled by the `colsep` and
+%   `rowsep` keys inside the tblr environment, not by \tabcolsep
+%   and \arraystretch. The recommended values for MatinBook are:
+%
+%     colsep = 8pt     (cell padding on each side)
+%     rowsep = 4pt     (vertical space above and below each row)
+%
+%   These values are demonstrated in the usage examples and in
+%   the tests, rather than enforced globally, so that individual
+%   tables can override them when needed.
+%
+% Why tabularray and not tabularx?
+%   tabularx relies on an internal macro (\TX@col@width) that is
+%   defined by the `array` package while the table is processed.
+%   The xepersian package (via bidi) redefines the tabular
+%   environment in a way that is incompatible with this internal
+%   mechanism. As a result, tabularx fails with:
+%
+%     Package array: Illegal pream-token (\TX@col@width):
+%     `c' used.
+%
+%   tabularray does not rely on `array`'s internals. It is built
+%   on LaTeX3 and handles direction (LTR/RTL) natively, so it
+%   works correctly inside xepersian. This is the recommended
+%   table package for MatinBook.
+%
+% Loading:
+%   This module MUST be loaded AFTER mb-core (which provides
+%   booktabs, array, and etoolbox) and BEFORE xepersian.
+%   It is loaded in Phase 1 of matinbook.cls.
+%
+% Note on RTL:
+%   tabularray automatically inherits the direction of the
+%   surrounding context. Inside a Persian document (after
+%   xepersian), tables are laid out right-to-left by default.
+%   No special handling is required.
+%
+% Note on legacy \newcolumntype:
+%   The p-based column types L, R, C are defined for backward
+%   compatibility with bare `tabular` environments. They are
+%   NOT used by tblr. In tblr, alignment is specified via
+%   colspec, for example:
+%
+%     colspec = {X[l] X[c] X[r]}
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
+% 1. Load tabularray and its booktabs compatibility library
+%------------------------------------------------------------------------
+% `\UseTblrLibrary{booktabs}` enables \toprule, \midrule, and
+% \bottomrule inside tblr environments, matching the booktabs
+% conventions already used elsewhere in MatinBook.
+%
+% It also provides \cmidrule and other booktabs commands.
+%------------------------------------------------------------------------
+\RequirePackage{tabularray}
+\UseTblrLibrary{booktabs}
+
+
+%------------------------------------------------------------------------
+% 2. Global tabularray defaults
+%------------------------------------------------------------------------
+% The following defaults are applied to every tblr environment
+% in the document. They can be overridden per-table by setting
+% the corresponding key inside the optional argument of tblr.
+%
+% Colsep and rowsep:
+%   Tuned for Persian text at scale 1.2. These are the values
+%   that give tables a comfortable, readable appearance without
+%   making them too wide.
+%
+% Row 1 styling:
+%   By default, we do NOT enforce bold text in row 1. Users
+%   should set `row{1} = {font=\bfseries}` explicitly in each
+%   table, to keep the global configuration minimal and
+%   predictable.
+%------------------------------------------------------------------------
+\SetTblrInner{
+    colsep = 8pt,
+    rowsep = 4pt,
+}
+
+
+%------------------------------------------------------------------------
+% 3. Legacy p-based column types (for bare `tabular`)
+%------------------------------------------------------------------------
+% These are provided for backward compatibility. They are not
+% used by tblr, which has its own mechanism for column widths.
+%
+% L{width} — left-aligned paragraph column
+% R{width} — right-aligned paragraph column (Persian)
+% C{width} — centered paragraph column
+%
+% `\arraybackslash` is required so that `\\` works inside the
+% paragraph column. Without it, `\\` would be interpreted as a
+% line break inside the cell, not as an end-of-row marker.
+%------------------------------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+
+%------------------------------------------------------------------------
+% 4. Convenience environment — matintable
+%------------------------------------------------------------------------
+% \begin{matintable}{caption}{label}
+%   ... a tblr or tabular environment ...
+% \end{matintable}
+%
+% Wraps the boilerplate of a captioned, labelled, centered table:
+%
+%   - \begin{table}[htbp]
+%   - \centering
+%   - \small             (slightly smaller text)
+%   - \caption{...}      (from the first argument)
+%   - \label{...}        (from the second argument)
+%
+% The placement specifier is `htbp` (here, top, bottom, page) so
+% that LaTeX has maximum flexibility in positioning the float.
+%
+% Note: the spacing settings (colsep, rowsep) are configured
+% globally in \SetTblrInner above, not inside matintable. This
+% is because tabularray does not read \tabcolsep or
+% \arraystretch, and applies its own keys at tblr instantiation
+% time. Users who need different spacing for a specific table
+% can override colsep/rowsep inside that table's tblr options.
+%------------------------------------------------------------------------
+\NewDocumentEnvironment{matintable}{m m}{%
+    \begin{table}[htbp]%
+    \centering
+    \small
+    \caption{#1}%
+    \label{#2}%
+}{%
+    \end{table}%
+}
+
+
+%------------------------------------------------------------------------
+% 5. Standalone spacing command (informational)
+%------------------------------------------------------------------------
+% \matintablespacing is retained for backward compatibility with
+% documents that were written for the earlier tabular-based
+% implementation. In tabularray, it has no effect: spacing is
+% controlled by colsep and rowsep in the tblr options.
+%
+% To keep the old command harmless, it is defined as a no-op
+% that emits a package info message the first time it is used.
+%------------------------------------------------------------------------
+\newcommand{\matintablespacing}{%
+    \PackageInfo{mb-table}{%
+        \string\matintablespacing\space has no effect with
+        tabularray. Use colsep and rowsep keys inside tblr
+        instead.%
+    }%
+}
+
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-table}{Table system loaded (tabularray + booktabs library, legacy L/R/C column types, matintable environment)}
+
+\endinput

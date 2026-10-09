@@ -90,13 +90,13 @@
 \doublehyphendemerits=1000000
 \finalhyphendemerits=0
 
-
 %------------------------------------------------------------------------
 % Custom Column Types for Tables
 %------------------------------------------------------------------------
-\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
-\newcolumntype{R}[1]{>{\raggedleft\arraybackslash}p{#1}}
-\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+% The column types L, R, and C are now defined in mb-table.sty,
+% which is loaded in Phase 1 (before xepersian). This keeps all
+% table-related configuration in a single module.
+%------------------------------------------------------------------------
 
 
 %------------------------------------------------------------------------

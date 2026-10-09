@@ -79,11 +79,13 @@
 %------------------------------------------------------------------------
 % 11. Tables
 %------------------------------------------------------------------------
+% NOTE: The basic table packages are loaded here because they are
+% used by multiple modules. The higher-level table configuration
+% (column types, spacing, environment helpers) lives in mb-table.
+%------------------------------------------------------------------------
 \RequirePackage{booktabs}
 \RequirePackage{array}
 \RequirePackage{multirow}
-
-% TODO: move to mb-typography
 
 %------------------------------------------------------------------------
 % 12. Draft Watermark (conditional)
