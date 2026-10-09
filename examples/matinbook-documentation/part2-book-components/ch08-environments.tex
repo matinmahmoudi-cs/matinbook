@@ -1,0 +1,545 @@
+%%
+%% part2-book-components/ch08-environments.tex
+%%
+%% Chapter 8: Scientific Environments — Theorem, lemma,
+%% corollary, proposition, definition, example, remark,
+%% exercise, solution, and proof.
+%%
+
+\chapter{محیط‌های علمی}
+\label{chap:environments}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:environments-why}
+
+در کتاب‌های ریاضی و فنی، محتوا به انواع مختلفی
+تقسیم می‌شود: قضیه، لم، تعریف، مثال، اثبات و...
+هر نوع، نقش معنایی مشخصی دارد و باید در قالب
+بصری متمایز نمایش داده شود تا خواننده بتواند
+به‌سرعت نوع محتوا را تشخیص دهد.
+
+\lr{MatinBook} ده نوع محیط علمی را با دو خانواده‌ی
+بصری متمایز ارائه می‌دهد. در این فصل، با این
+محیط‌ها آشنا می‌شوید و یاد می‌گیرید که چگونه
+از آن‌ها استفاده کنید.
+
+\mnote{استفاده‌ی درست از محیط‌های علمی، یکی از عوامل مهم در کیفیت کتاب‌های ریاضی و فنی است.}
+
+\section{دو خانواده‌ی جعبه}
+\label{sec:environments-families}
+
+محیط‌های علمی \lr{MatinBook} به دو خانواده
+تقسیم می‌شوند:
+
+\begin{enumerate}
+    \item \textbf{خانواده‌ی \lr{matinbox}:}
+    با یک نوار رنگی توپر در بالای جعبه. این
+    خانواده برای محیط‌های نظری و رسمی استفاده
+    می‌شود.
+    \item \textbf{خانواده‌ی \lr{matin-outline}:}
+    با یک خط عمودی در سمت راست و دو خط افقی
+    زیر عنوان و زیر محتوا. این خانواده برای
+    محیط‌های توضیحی و غیررسمی استفاده می‌شود.
+\end{enumerate}
+
+\mnote{تفکیک دو خانواده، بر اساس نوع محتوا است، نه سلیقه. محیط‌های نظری «رسمی» هستند، محیط‌های توضیحی «غیررسمی».}
+
+\subsection{خانواده‌ی \lr{matinbox}}
+\label{sec:environments-matinbox}
+
+خانواده‌ی \lr{matinbox} شامل هفت محیط است:
+
+\begin{itemize}
+    \item \env{theorem} — قضیه.
+    \item \env{lemma} — لم.
+    \item \env{corollary} — نتیجه.
+    \item \env{proposition} — گزاره.
+    \item \env{definition} — تعریف.
+    \item \env{remark} — نکته.
+    \item \env{exercise} — تمرین.
+\end{itemize}
+
+\subsection{خانواده‌ی \lr{matin-outline}}
+\label{sec:environments-outline}
+
+خانواده‌ی \lr{matin-outline} شامل سه محیط است:
+
+\begin{itemize}
+    \item \env{example} — مثال.
+    \item \env{proof} — اثبات.
+    \item \env{solution} — راه‌حل.
+\end{itemize}
+
+\mnote{خانواده‌ی \lr{matin-outline} در نسخه‌ی \lr{1.2} بازطراحی شده و خط عمودی آن همیشه در سمت راست است.}
+
+\section{محیط‌های خانواده‌ی \lr{matinbox}}
+\label{sec:environments-matinbox-detail}
+
+\subsection{قضیه (\lr{theorem})}
+\label{sec:environments-theorem}
+
+قضیه، یک حکم ریاضی است که اثبات شده است.
+برای ایجاد قضیه:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{theorem}[|\pc{قضیه‌ی فیثاغورث}|]
+    |\pc{در هر مثلث قائم‌الزاویه، مربع وتر برابر است با}|%
+    |\pc{مجموع مربعات دو ضلع دیگر:}|%
+    \[
+        a^{2} + b^{2} = c^{2}
+    \]
+    \label{thm:pythagoras}
+\end{theorem}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{theorem}[قضیه‌ی فیثاغورث]
+    در هر مثلث قائم‌الزاویه، مربع وتر برابر است با
+    مجموع مربعات دو ضلع دیگر:
+    \[
+        a^{2} + b^{2} = c^{2}
+    \]
+    \label{thm:pythagoras-ch8}
+\end{theorem}
+
+\mnote{عنوان داخل \lr{[]} اختیاری است. اگر آن را ندهید، فقط «قضیه ۱.۱» نمایش داده می‌شود.}
+
+\subsection{لم (\lr{lemma})}
+\label{sec:environments-lemma}
+
+لم، یک قضیه‌ی کمکی است که برای اثبات قضیه‌های
+بزرگ‌تر استفاده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{lemma}[|\pc{لم اقلیدس}|]
+    |\pc{اگر}|\lr{$p$}|\pc{عددی اول باشد و}|\lr{$p \mid ab$}|\pc{، آنگاه}|%
+    |\lr{$p \mid a$}|\pc{یا}|\lr{$p \mid b$}|\pc{.}|%
+    \label{lem:euclid}
+\end{lemma}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{lemma}[لم اقلیدس]
+    اگر \lr{$p$} عددی اول باشد و \lr{$p \mid ab$}،
+    آنگاه \lr{$p \mid a$} یا \lr{$p \mid b$}.
+    \label{lem:euclid-ch8}
+\end{lemma}
+
+\subsection{نتیجه (\lr{corollary})}
+\label{sec:environments-corollary}
+
+نتیجه، یک حکم است که بلافاصله از یک قضیه یا
+لم نتیجه می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{corollary}
+    |\pc{هر دنباله‌ی یکنوا و کراندار همگراست.}|%
+    \label{cor:monotone}
+\end{corollary}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{corollary}
+    هر دنباله‌ی یکنوا و کراندار همگراست.
+    \label{cor:monotone-ch8}
+\end{corollary}
+
+\subsection{گزاره (\lr{proposition})}
+\label{sec:environments-proposition}
+
+گزاره، یک حکم است که ارزش اثبات دارد ولی
+لزوماً به اندازه‌ی قضیه مهم نیست:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{proposition}
+    |\pc{مجموعه‌ی اعداد گویا}|\lr{$\Q$}|\pc{در}|\lr{$\R$}|\pc{چگال است.}|%
+    \label{prop:q-dense}
+\end{proposition}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{proposition}
+    مجموعه‌ی اعداد گویا \lr{$\Q$} در \lr{$\R$}
+    چگال است.
+    \label{prop:q-dense-ch8}
+\end{proposition}
+
+\subsection{تعریف (\lr{definition})}
+\label{sec:environments-definition}
+
+تعریف، یک مفهوم جدید را معرفی می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{definition}[|\pc{گراف}|]
+    |\pc{گراف}|\lr{$G = (V, E)$}|\pc{مجموعه‌ای از رئوس}|\lr{$V$}|%
+    |\pc{و یال‌های}|\lr{$E$}|\pc{است.}|%
+    \label{def:graph}
+\end{definition}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{definition}[گراف]
+    گراف \lr{$G = (V, E)$} مجموعه‌ای از رئوس
+    \lr{$V$} و یال‌های \lr{$E$} است.
+    \label{def:graph-ch8}
+\end{definition}
+
+\mnote{تعریف‌ها معمولاً در فصل‌های اول کتاب می‌آیند و پایه‌ی مفاهیم بعدی هستند.}
+
+\subsection{نکته (\lr{remark})}
+\label{sec:environments-remark}
+
+نکته، یک توضیح مکمل یا هشدار است:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{remark}
+    |\pc{تقسیم بر صفر تعریف نشده است! هنگام ساده‌سازی}|%
+    |\pc{عبارات کسری، همواره فرض کنید مخرج غیرصفر است.}|%
+    \label{rem:division-zero}
+\end{remark}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{remark}
+    تقسیم بر صفر تعریف نشده است! هنگام ساده‌سازی
+    عبارات کسری، همواره فرض کنید مخرج غیرصفر است.
+    \label{rem:division-zero-ch8}
+\end{remark}
+
+\mnote{استفاده‌ی سنجیده از نکته ضروری است. اگر بیش از حد استفاده شود، اثر هشداردهندگی آن از بین می‌رود.}
+
+\subsection{تمرین (\lr{exercise})}
+\label{sec:environments-exercise}
+
+تمرین، یک مسئله برای حل کردن است:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{exercise}
+    |\pc{ثابت کنید مجموع دو عدد زوج، زوج است.}|%
+    \label{exc:sum-even}
+\end{exercise}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{exercise}
+    ثابت کنید مجموع دو عدد زوج، زوج است.
+    \label{exc:sum-even-ch8}
+\end{exercise}
+
+\section{محیط‌های خانواده‌ی \lr{matin-outline}}
+\label{sec:environments-outline-detail}
+
+\subsection{مثال (\lr{example})}
+\label{sec:environments-example}
+
+مثال، یک نمونه‌ی عملی از یک مفهوم است:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{example}[|\pc{محاسبه‌ی انتگرال}|]
+    |\pc{مساحت زیر نمودار}|\lr{$f(x) = x^{2}$}|\pc{از}|\lr{$x = 0$}|%
+    |\pc{تا}|\lr{$x = 2$}|\pc{:}|%
+    \[
+        \int_{0}^{2} x^{2} \, dx = \left[ \frac{x^{3}}{3} \right]_{0}^{2}
+        = \frac{8}{3} \approx 2.67
+    \]
+    \label{ex:integral-x2}
+\end{example}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{example}[محاسبه‌ی انتگرال]
+    مساحت زیر نمودار \lr{$f(x) = x^{2}$} از
+    \lr{$x = 0$} تا \lr{$x = 2$}:
+    \[
+        \int_{0}^{2} x^{2} \, dx = \left[ \frac{x^{3}}{3} \right]_{0}^{2}
+        = \frac{8}{3} \approx 2.67
+    \]
+    \label{ex:integral-x2-ch8}
+\end{example}
+
+\subsection{اثبات (\lr{proof})}
+\label{sec:environments-proof}
+
+اثبات، استدلال ریاضی برای یک حکم است:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{proof}
+    |\pc{از برهان خلف استفاده می‌کنیم. فرض کنید}|\lr{$\sqrt{2}$}|%
+    |\pc{گویا باشد:}|\lr{$\sqrt{2} = \frac{a}{b}$}|\pc{که}|\lr{$\gcd(a,b) = 1$}|\pc{.}|%
+
+    \[
+    2 = \frac{a^{2}}{b^{2}} \implies a^{2} = 2b^{2}
+    \]
+
+    |\pc{بنابراین}|\lr{$a$}|\pc{زوج است. پس}|\lr{$b$}|\pc{نیز زوج است که}|%
+    |\pc{با فرض}|\lr{$\gcd(a,b) = 1$}|\pc{تناقض دارد.}|%
+\end{proof}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{proof}
+    از برهان خلف استفاده می‌کنیم. فرض کنید \lr{$\sqrt{2}$}
+    گویا باشد: \lr{$\sqrt{2} = \frac{a}{b}$} که
+    \lr{$\gcd(a,b) = 1$}.
+
+    \[
+    2 = \frac{a^{2}}{b^{2}} \implies a^{2} = 2b^{2}
+    \]
+
+    بنابراین \lr{$a$} زوج است. پس \lr{$b$} نیز
+    زوج است که با فرض \lr{$\gcd(a,b) = 1$}
+    تناقض دارد.
+\end{proof}
+
+\mnote{محیط اثبات به‌طور خودکار علامت پایان (□) را در انتهای جعبه اضافه می‌کند.}
+
+\subsection{راه‌حل (\lr{solution})}
+\label{sec:environments-solution}
+
+راه‌حل، پاسخ تشریحی یک تمرین است:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{solution}
+    |\pc{فرض کنید}|\lr{$a = 2m$}|\pc{و}|\lr{$b = 2n$}|\pc{.}|%
+    |\pc{آنگاه}|\lr{$a + b = 2(m + n)$}|\pc{که زوج است.}|%
+\end{solution}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{solution}
+    فرض کنید \lr{$a = 2m$} و \lr{$b = 2n$}.
+    آنگاه \lr{$a + b = 2(m + n)$} که زوج است.
+\end{solution}
+
+\mnote{محیط راه‌حل و اثبات شماره‌گذاری نمی‌شوند، چون به‌طور طبیعی به تمرین یا قضیه‌ی قبلی متصل هستند.}
+
+\section{شمارنده‌ی مشترک}
+\label{sec:environments-counter}
+
+تمام محیط‌های شماره‌دار (قضیه، لم، نتیجه، گزاره،
+تعریف، مثال، نکته، تمرین) از یک \textbf{شمارنده‌ی
+مشترک} استفاده می‌کنند. این یعنی شماره‌گذاری
+پیوسته است:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{definition}[|\pc{گراف}|]   % |\pc{شماره ۱.۱}|%
+    ...
+\end{definition}
+
+\begin{theorem}[|\pc{اویلر}|]   % |\pc{شماره ۱.۲}|%
+    ...
+\end{theorem}
+
+\begin{lemma}[|\pc{دست‌دادن}|]   % |\pc{شماره ۱.۳}|%
+    ...
+\end{lemma}
+
+\begin{example}                % |\pc{شماره ۱.۴}|%
+    ...
+\end{example}
+\end{minted}
+\end{latin}
+
+\mnote{این شمارنده‌گذاری مشترک، یک تصمیم آگاهانه است. جامعه‌ی \lr{LaTeX} فارسی ترجیح می‌دهد شماره‌گذاری پیوسته باشد تا خواننده راحت‌تر مفاهیم را پیدا کند.}
+
+\section{ارجاع به محیط‌ها}
+\label{sec:environments-references}
+
+برای ارجاع به محیط‌های علمی، از دستور \cmd{cref}
+استفاده می‌کنیم:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{ارجاع به قضیه}|%
+\cref{thm:pythagoras}
+
+% |\pc{ارجاع به تعریف}|%
+\cref{def:graph}
+
+% |\pc{ارجاع به چند مرجع}|%
+\cref{thm:pythagoras,def:graph}
+
+% |\pc{ارجاع بازه‌ای}|%
+\crefrange{thm:pythagoras}{def:graph}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash cref} به‌طور خودکار نوع مرجع را تشخیص می‌دهد و پیشوند مناسب (قضیه، تعریف، لم) را اضافه می‌کند.}
+
+\subsection{نام‌گذاری برچسب‌ها}
+\label{sec:environments-labels}
+
+برای برچسب‌ها، از پیشوندهای زیر استفاده کنید:
+
+\begin{itemize}
+    \item \textbf{قضیه:} \lr{thm:xxx}.
+    \item \textbf{لم:} \lr{lem:xxx}.
+    \item \textbf{نتیجه:} \lr{cor:xxx}.
+    \item \textbf{گزاره:} \lr{prop:xxx}.
+    \item \textbf{تعریف:} \lr{def:xxx}.
+    \item \textbf{مثال:} \lr{ex:xxx}.
+    \item \textbf{نکته:} \lr{rem:xxx}.
+    \item \textbf{تمرین:} \lr{exc:xxx}.
+\end{itemize}
+
+\mnote{برچسب‌های معنادار، خواندن فایل‌های \lr{tex} را آسان‌تر می‌کنند و از خطاهای ارجاع جلوگیری می‌کنند.}
+
+\section{جدول خلاصه}
+\label{sec:environments-summary-table}
+
+جدول \cref{tab:environments-summary} خلاصه‌ای از
+ده محیط علمی \lr{MatinBook} را نشان می‌دهد.
+
+\begin{matintable}{خلاصه‌ی محیط‌های علمی \lr{MatinBook}}{tab:environments-summary}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l l X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+محیط & عنوان & خانواده & شماره‌دار \\
+\lr{theorem} & قضیه & \lr{matinbox} & بله \\
+\lr{lemma} & لم & \lr{matinbox} & بله \\
+\lr{corollary} & نتیجه & \lr{matinbox} & بله \\
+\lr{proposition} & گزاره & \lr{matinbox} & بله \\
+\lr{definition} & تعریف & \lr{matinbox} & بله \\
+\lr{remark} & نکته & \lr{matinbox} & بله \\
+\lr{exercise} & تمرین & \lr{matinbox} & بله \\
+\lr{example} & مثال & \lr{matin-outline} & بله \\
+\lr{proof} & اثبات & \lr{matin-outline} & خیر \\
+\lr{solution} & راه‌حل & \lr{matin-outline} & خیر \\
+\end{tblr}
+\end{matintable}
+
+\section{خطاهای رایج}
+\label{sec:environments-mistakes}
+
+\subsection{قرار دادن \cmd{label} بیرون محیط}
+\label{sec:environments-mistake-label}
+
+اگر \cmd{label} را بیرون محیط قرار دهید، ارجاع
+به آن کار نمی‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+\begin{theorem}
+    |\pc{متن قضیه...}|%
+\end{theorem}
+\label{thm:wrong}
+
+% |\pc{درست}|:
+\begin{theorem}
+    |\pc{متن قضیه...}|%
+    \label{thm:correct}
+\end{theorem}
+\end{minted}
+\end{latin}
+
+\subsection{فراموش کردن \cmd{label}}
+\label{sec:environments-mistake-no-label}
+
+اگر \cmd{label} را فراموش کنید، نمی‌توانید به
+آن محیط ارجاع دهید.
+
+\subsection{استفاده از محیط نامناسب}
+\label{sec:environments-mistake-wrong-env}
+
+هر محیط، نقش معنایی مشخصی دارد. استفاده از
+\env{theorem} برای یک تعریف یا \env{definition}
+برای یک قضیه، ساختار کتاب را به‌هم می‌ریزد.
+
+\section{تمرین‌ها}
+\label{sec:environments-exercises}
+
+\begin{exercise}
+    یک قضیه، یک تعریف و یک مثال بنویسید و
+    به هر یک ارجاع دهید.
+    \label{exc:environments-basic}
+\end{exercise}
+
+\begin{exercise}
+    یک لم بنویسید و یک نتیجه از آن استخراج
+    کنید.
+    \label{exc:environments-lemma}
+\end{exercise}
+
+\begin{exercise}
+    یک اثبات برای قضیه‌ی فیثاغورث بنویسید
+    و از محیط \env{proof} استفاده کنید.
+    \label{exc:environments-proof}
+\end{exercise}
+
+\begin{exercise}
+    یک تمرین بنویسید و راه‌حل آن را با محیط
+    \env{solution} ارائه دهید.
+    \label{exc:environments-solution}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:environments-summary}
+
+در این فصل، با محیط‌های علمی \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} ده محیط علمی را در دو
+    خانواده‌ی بصری ارائه می‌دهد.
+
+    \item خانواده‌ی \lr{matinbox} شامل قضیه، لم،
+    نتیجه، گزاره، تعریف، نکته و تمرین است.
+
+    \item خانواده‌ی \lr{matin-outline} شامل مثال،
+    اثبات و راه‌حل است.
+
+    \item تمام محیط‌های شماره‌دار، از یک
+    شمارنده‌ی مشترک استفاده می‌کنند.
+
+    \item اثبات و راه‌حل، شماره‌گذاری نمی‌شوند.
+
+    \item ارجاع به محیط‌ها با \cmd{cref} انجام
+    می‌شود که پیشوند مناسب را خودکار اضافه
+    می‌کند.
+
+    \item خطاهای رایج شامل قرار دادن \cmd{label}
+    بیرون محیط، فراموش کردن \cmd{label}، و
+    استفاده از محیط نامناسب است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:math})، با ریاضیات
+در \lr{MatinBook} آشنا می‌شوید و یاد می‌گیرید
+که چگونه معادلات، ماتریس‌ها و عملگرها را
+بنویسید.
