@@ -1,0 +1,635 @@
+%%
+%% part1-getting-started/ch01-introduction.tex
+%%
+%% Chapter 1: Introduction to MatinBook — What it is, what it
+%% can do, and how it compares to other LaTeX classes.
+%%
+
+\chapter{معرفی و قابلیت‌ها}
+\label{chap:introduction}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:introduction-why}
+
+اگر تا به حال تلاش کرده‌اید یک کتاب فنی فارسی با
+ابزارهای حرفه‌ای حروف‌چینی کنید، احتمالاً با
+چالش‌های متعددی روبه‌رو شده‌اید: فونت‌های فارسی
+که در اندازه‌های کوچک خوانا نیستند، فرمول‌های
+ریاضی که با متن فارسی قاطی می‌شوند، کدهای
+برنامه‌نویسی که جهت متن را به‌هم می‌ریزند، و
+ده‌ها مشکل کوچک و بزرگ دیگر.
+
+\lr{MatinBook} برای حل همین مشکلات طراحی شده است.
+این کلاس \lr{LaTeX}، تمام ابزارهای لازم برای
+تولید یک کتاب فنی فارسی حرفه‌ای را در یک بسته‌ی
+منسجم فراهم می‌کند. هدف این فصل، آشنایی اولیه با
+\lr{MatinBook}، قابلیت‌های کلیدی آن، و تفاوت‌هایش
+با سایر ابزارهای موجود است.
+
+\mnote{\lr{MatinBook} یک کلاس \lr{LaTeX} است، نه یک بسته‌ی ساده. این یعنی تمام قابلیت‌های کتاب‌سازی در آن یکپارچه شده است.}
+
+\mnote{نام \lr{MatinBook} از نام کوچک توسعه‌دهنده‌ی آن، «متین»، گرفته شده است.}
+
+\section{\lr{MatinBook} چیست؟}
+\label{sec:introduction-what}
+
+\lr{MatinBook} یک کلاس \lr{LaTeX} است که به‌طور
+اختصاصی برای نوشتن کتاب‌های فنی و علمی فارسی طراحی
+شده است. این کلاس توسط متین محمودی توسعه یافته و
+تحت مجوز \lr{MIT} منتشر می‌شود.
+
+\begin{definition}[\lr{MatinBook}]
+    \lr{MatinBook} یک کلاس \lr{LaTeX} است که با
+    موتور \lr{XeLaTeX} کامپایل می‌شود و تمام
+    ابزارهای لازم برای تولید کتاب‌های فنی فارسی
+    — از حروف‌چینی راست‌به‌چپ تا نمودارهای پیچیده —
+    را در یک ساختار ماژولار فراهم می‌کند.
+    \label{def:matinbook}
+\end{definition}
+
+\lr{MatinBook} بر پایه‌ی کلاس استاندارد \lr{book}
+ساخته شده است، ولی قابلیت‌های زیادی به آن اضافه
+کرده است:
+
+\begin{itemize}
+    \item پشتیبانی کامل از حروف‌چینی راست‌به‌چپ
+    فارسی با \lr{XePersian}.
+    \item محیط‌های علمی رنگ‌آمیزی‌شده (قضیه، تعریف،
+    مثال، اثبات).
+    \item پشتیبانی از کدهای برنامه‌نویسی با
+    رنگ‌آمیزی نحوی و کامنت فارسی.
+    \item نمودارها و شکل‌های حرفه‌ای با \lr{TikZ} و
+    \lr{PGFPlots}.
+    \item جداول مدرن با \lr{tabularray}.
+    \item مدیریت منابع با \lr{biblatex} و \lr{biber}.
+    \item نمایه‌ی حرفه‌ای با \lr{xindy} و مرتب‌سازی
+    صحیح فارسی.
+    \item جلد تمام‌رنگی با طرح حرفه‌ای.
+    \item یادداشت‌های حاشیه‌ای برای توضیحات مکمل.
+\end{itemize}
+
+\mnote{کلمه‌ی کلیدی اینجا «یکپارچه» است. در ابزارهای دیگر، باید هر قابلیت را دستی پیکربندی کنید.}
+
+\section{قابلیت‌های کلیدی}
+\label{sec:introduction-features}
+
+در این بخش، نگاهی گذرا به مهم‌ترین قابلیت‌های
+\lr{MatinBook} می‌اندازیم. هر یک از این قابلیت‌ها
+در فصل‌های بعدی به‌طور مفصل بررسی خواهد شد.
+
+\subsection{محیط‌های علمی رنگ‌آمیزی‌شده}
+\label{sec:introduction-environments}
+
+\lr{MatinBook} ده نوع محیط علمی را با دو خانواده‌ی
+بصری متمایز ارائه می‌دهد. محیط‌های نظری (قضیه، لم،
+نتیجه، گزاره) از یک نوار رنگی توپر استفاده
+می‌کنند، در حالی که محیط‌های توضیحی (مثال، اثبات،
+راه‌حل) از یک خط عمودی سمت راست بهره می‌برند.
+
+\mnote{تفکیک دو خانواده، بر اساس نوع محتوا است، نه سلیقه. محیط‌های نظری «رسمی» هستند، محیط‌های توضیحی «غیررسمی».}
+
+\begin{theorem}[قضیه‌ی فیثاغورث]
+    در هر مثلث قائم‌الزاویه، مربع وتر برابر است با
+    مجموع مربعات دو ضلع دیگر:
+    \[
+        a^{2} + b^{2} = c^{2}
+    \]
+    \label{thm:pythagoras-intro}
+\end{theorem}
+
+\begin{proof}
+    اثبات این قضیه را در فصل \cref{chap:environments}
+    به‌طور کامل بررسی خواهیم کرد.
+\end{proof}
+
+\begin{example}
+    برای یک مثلث با ضلع‌های $a = 3$ و $b = 4$،
+    وتر برابر است با:
+    \[
+        c = \sqrt{3^{2} + 4^{2}} = \sqrt{25} = 5
+    \]
+    \label{ex:pythagoras-intro}
+\end{example}
+
+\begin{remark}
+    محیط‌های علمی در \lr{MatinBook} از یک شمارنده‌ی
+    مشترک استفاده می‌کنند. یعنی اگر یک تعریف با
+    شماره‌ی ۱.۱ ثبت شود، قضیه‌ی بعدی شماره‌ی ۱.۲
+    خواهد داشت.
+    \label{rem:shared-counter-intro}
+\end{remark}
+
+این محیط‌ها در فصل \cref{chap:environments} به‌طور
+مفصل بررسی می‌شوند.
+
+\subsection{پشتیبانی از ریاضیات}
+\label{sec:introduction-math}
+
+\lr{MatinBook} از تمام قابلیت‌های \lr{amsmath}،
+\lr{mathtools} و \lr{unicode-math} پشتیبانی می‌کند
+و مجموعه‌ای از عملگرها و جداکننده‌های سفارشی را
+نیز اضافه کرده است:
+
+\begin{itemize}
+    \item عملگرهای حسابان برداری: \cmd{grad}،
+    \cmd{curl}، \cmd{diver}.
+    \item عملگرهای جبر خطی: \cmd{rank}، \cmd{trace}،
+    \cmd{diag}.
+    \item مجموعه‌های اعداد: $\N$، $\Z$، $\Q$، $\R$،
+    $\C$.
+    \item جداکننده‌های هوشمند: \cmd{abs}، \cmd{norm}،
+    \cmd{ceil}، \cmd{floor}.
+\end{itemize}
+
+مثال:
+
+\[
+    \grad f = \nabla f, \quad
+    \diver \vec{F} = \nabla \cdot \vec{F}, \quad
+    \norm{\vec{v}} = \sqrt{\inner{\vec{v}}{\vec{v}}}
+\]
+
+\mnote{در متن فارسی، فرمول‌های ریاضی باید داخل \lr{\textbackslash lr\{...\}} قرار گیرند تا جهت‌نمایی درست حفظ شود.}
+
+ریاضیات در \lr{MatinBook} در فصل \cref{chap:math}
+به‌طور کامل بررسی می‌شود.
+
+\subsection{کد و الگوریتم}
+\label{sec:introduction-code}
+
+\lr{MatinBook} از بسته‌ی \lr{minted} برای نمایش کد
+با رنگ‌آمیزی نحوی استفاده می‌کند. این بسته از بیش
+از ۳۰۰ زبان برنامه‌نویسی پشتیبانی می‌کند و امکان
+نوشتن کامنت فارسی داخل کد را نیز فراهم می‌سازد.
+
+برای کامنت فارسی در پایتون، از دستور \cmd{pcc}
+استفاده می‌کنیم که به‌طور خودکار علامت \lr{\#} را
+قبل از متن فارسی قرار می‌دهد:
+
+\begin{latin}
+\begin{minted}{python}
+def factorial(n: int) -> int:
+    """Calculate n! recursively."""
+    if n <= 1:
+        return 1
+    return n * factorial(n - 1)
+
+\pcc{محاسبه‌ی فاکتوریل ۵}
+print(factorial(5))  # 120
+\end{minted}
+\end{latin}
+\codecaption{تابع فاکتوریل بازگشتی در پایتون}
+\label{code:factorial-intro}
+
+\mnote{برای کامنت فارسی در پایتون، \lr{\textbackslash pcc} بهترین گزینه است. برای زبان‌های دیگر (مثل \lr{LaTeX} یا \lr{bash}) می‌توانید از \lr{\textbackslash pc} داخل \lr{|...|} استفاده کنید.}
+
+\mnote{اگر \lr{\textbackslash pcc} را دستی باز کنید، به \lr{|\textbackslash pc\{\textbackslash\#~متن\}|} بسط می‌یابد. این یعنی \lr{\#} داخل \lr{\textbackslash pc} قرار می‌گیرد تا \lr{Pygments} آن را به‌عنوان شروع کامنت نبیند.}
+
+الگوریتم‌ها نیز با بسته‌ی استاندارد \lr{algorithm}
+نمایش داده می‌شوند. نکته‌ی مهم این است که
+\lr{xepersian} عنوان فارسی «الگوریتم» را به‌طور
+خودکار اضافه می‌کند، ولی متن داخل الگوریتم باید
+لاتین باشد (به‌جز کامنت‌هایی که با \cmd{pc} نوشته
+می‌شوند):
+
+\begin{latin}
+\begin{algorithm}
+\caption{جستجوی دودویی}
+\label{alg:binary-intro}
+\begin{algorithmic}[1]
+    \Require Sorted array $A$ of $n$ elements
+    \Require Target value $x$
+    \Ensure Index of $x$ in $A$, or $-1$
+    \State $left \gets 0$, $right \gets n - 1$
+    \While{$left \leq right$}
+        \State $mid \gets (left + right) / 2$
+        \If{$A[mid] = x$}
+            \State \Return $mid$  \Comment{|\pc{یافتن مقدار}|}
+        \ElsIf{$A[mid] < x$}
+            \State $left \gets mid + 1$  \Comment{|\pc{جستجو در نیمه‌ی راست}|}
+        \Else
+            \State $right \gets mid - 1$  \Comment{|\pc{جستجو در نیمه‌ی چپ}|}
+        \EndIf
+    \EndWhile
+    \State \Return $-1$  \Comment{|\pc{یافت نشد}|}
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+\mnote{در الگوریتم‌ها، متن داخل \lr{\textbackslash Comment\{...\}} می‌تواند فارسی باشد، ولی باید با \lr{\textbackslash pc} پیچیده شود.}
+
+کد و الگوریتم در \cref{chap:code} به‌طور مفصل
+بررسی می‌شوند.
+
+\subsection{نمودارها و شکل‌ها}
+\label{sec:introduction-graphics}
+
+\lr{MatinBook} از \lr{TikZ}، \lr{PGFPlots} و
+\lr{pgf-pie} برای ترسیم نمودارها و شکل‌های حرفه‌ای
+استفاده می‌کند. از نمودارهای ساده‌ی توابع تا
+نمودارهای سه‌بعدی، فلوچارت‌ها، درخت‌ها و گراف‌ها،
+همه در \lr{MatinBook} پشتیبانی می‌شوند.
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.8\textwidth, height=5cm,
+    xlabel={$x$},
+    ylabel={$f(x)$},
+    grid=major,
+    legend pos=north west,
+    domain=-2:2,
+    samples=100
+  ]
+    \addplot[matinblue, thick] {x^2};
+    \addlegendentry{$x^2$}
+    \addplot[matinred, thick] {x^3};
+    \addlegendentry{$x^3$}
+  \end{axis}
+\end{tikzpicture}
+\end{latin}
+\caption{نمودار دو تابع $x^{2}$ و $x^{3}$}
+\label{fig:functions-intro}
+\end{figure}
+
+\mnote{برای متن فارسی داخل \lr{tikzpicture}، باید از \lr{\textbackslash rl\{...\}} استفاده کنید.}
+
+نمودار \cref{fig:functions-intro} نمونه‌ای ساده از
+قابلیت‌های گرافیکی \lr{MatinBook} است. این موضوع
+در \cref{chap:graphics} به‌طور کامل بررسی می‌شود.
+
+\subsection{جداول مدرن}
+\label{sec:introduction-tables}
+
+\lr{MatinBook} از بسته‌ی \lr{tabularray} برای
+جداول استفاده می‌کند. این بسته، برخلاف \lr{tabularx}،
+با \lr{xepersian} کاملاً سازگار است و از
+حروف‌چینی راست‌به‌چپ پشتیبانی می‌کند.
+
+\begin{matintable}{مقایسه‌ی سه الگوریتم مرتب‌سازی}{tab:sorting-intro}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+الگوریتم & بهترین حالت & بدترین حالت \\
+مرتب‌سازی سریع & \lr{$O(n \log n)$} & \lr{$O(n^2)$} \\
+مرتب‌سازی ادغامی & \lr{$O(n \log n)$} & \lr{$O(n \log n)$} \\
+مرتب‌سازی حبابی & \lr{$O(n)$} & \lr{$O(n^2)$} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{بسته‌ی \lr{tabularx} با \lr{xepersian} ناسازگار است و خطا می‌دهد. همیشه از \lr{tabularray} استفاده کنید.}
+
+جدول \cref{tab:sorting-intro} نمونه‌ای از جدول‌های
+\lr{MatinBook} است. فصل \cref{chap:tables} به‌طور
+کامل به این موضوع می‌پردازد.
+
+\subsection{جلد حرفه‌ای}
+\label{sec:introduction-cover}
+
+\lr{MatinBook} یک جلد تمام‌رنگی با طرح حرفه‌ای ارائه
+می‌دهد. جلد جلو شامل پس‌زمینه‌ی سرمه‌ای، گوه‌ی
+قرمز، بیضی طلایی و نمونه‌کد \lr{C++} است. جلد
+عقب شامل دو بلوک ایستاتیک — «درباره این کتاب» و
+«درباره این نویسنده» — با فاصله‌ی دقیق
+\pnum{۰.۷} سانتی‌متر است.
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}[scale=0.6]
+  % Simplified front cover mockup
+  \fill[matinnavy] (0,0) rectangle (6,8);
+  \fill[matincrimson] (0,8) -- (3.5,8) -- (2,6.5) -- cycle;
+  \draw[white, opacity=0.5, line width=0.5pt] (0.2,0.2) rectangle (5.8,7.8);
+  \node[white, font=\bfseries] at (3,5) {\rl{عنوان کتاب}};
+  \node[white, font=\small] at (3,4.3) {\rl{زیرعنوان}};
+  \node[matingold, font=\bfseries] at (3,1) {MatinBook};
+\end{tikzpicture}
+\end{latin}
+\caption{نمای ساده‌شده‌ی جلد \lr{MatinBook}}
+\label{fig:cover-intro}
+\end{figure}
+
+\mnote{در \lr{tikzpicture}، حتی برای متن کوتاه فارسی هم باید از \lr{\textbackslash rl\{...\}} استفاده کنید.}
+
+شکل \cref{fig:cover-intro} نمای ساده‌شده‌ای از
+جلد را نشان می‌دهد. فصل \cref{chap:cover} به‌طور
+کامل به جلد می‌پردازد.
+
+\section{مقایسه با سایر ابزارها}
+\label{sec:introduction-comparison}
+
+چندین کلاس و بسته‌ی \lr{LaTeX} برای نوشتن
+کتاب‌های فارسی وجود دارد. در این بخش،
+\lr{MatinBook} را با مهم‌ترین آن‌ها مقایسه
+می‌کنیم.
+
+\subsection{مقایسه با کلاس \lr{book} استاندارد}
+\label{sec:introduction-vs-book}
+
+کلاس \lr{book} استاندارد \lr{LaTeX}، پایه‌ی
+\lr{MatinBook} است. ولی استفاده‌ی مستقیم از
+آن برای کتاب فارسی، چالش‌های زیادی دارد:
+
+\begin{itemize}
+    \item \textbf{حروف‌چینی راست‌به‌چپ:} کلاس
+    \lr{book} از RTL پشتیبانی نمی‌کند. باید
+    \lr{xepersian} را دستی اضافه کنید.
+
+    \item \textbf{فونت فارسی:} باید فونت فارسی
+    را دستی تنظیم کنید.
+
+    \item \textbf{محیط‌های علمی:} هیچ محیط علمی
+    رنگ‌آمیزی‌شده‌ای ندارد.
+
+    \item \textbf{کد و الگوریتم:} باید \lr{minted}
+    و \lr{algorithm} را دستی پیکربندی کنید.
+
+    \item \textbf{جلد:} هیچ طرح جلدی ندارد.
+\end{itemize}
+
+\lr{MatinBook} تمام این مشکلات را حل کرده است.
+
+\subsection{مقایسه با \lr{XePersian} خالص}
+\label{sec:introduction-vs-xepersian}
+
+\lr{XePersian} یک بسته‌ی عالی برای حروف‌چینی
+فارسی است، ولی یک بسته است، نه یک کلاس. اگر
+از \lr{XePersian} خالص استفاده کنید، باید
+همه‌ی موارد زیر را دستی پیکربندی کنید:
+
+\begin{itemize}
+    \item هندسه‌ی صفحه.
+    \item سرصفحه و پاصفحه.
+    \item محیط‌های علمی.
+    \item سبک عناوین.
+    \item کد و الگوریتم.
+    \item جلد.
+\end{itemize}
+
+\mnote{تفاوت اصلی این است: \lr{XePersian} یک «موتور» است، \lr{MatinBook} یک «کتاب کامل» است.}
+
+\lr{MatinBook} همه‌ی این‌ها را از پیش پیکربندی
+شده ارائه می‌دهد.
+
+\subsection{جدول مقایسه}
+\label{sec:introduction-comparison-table}
+
+جدول \cref{tab:comparison} مقایسه‌ی خلاصه‌ای
+بین \lr{MatinBook}، کلاس \lr{book} استاندارد،
+و \lr{XePersian} خالص را نشان می‌دهد.
+
+\begin{matintable}{مقایسه‌ی \lr{MatinBook} با سایر ابزارها}{tab:comparison}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {X[l] X[c] X[c] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+قابلیت & \lr{MatinBook} & \lr{book} & \lr{XePersian} \\
+حروف‌چینی RTL & \textcolor{matingreen}{بله} & \textcolor{matinred}{خیر} & \textcolor{matingreen}{بله} \\
+فونت فارسی & \textcolor{matingreen}{خودکار} & \textcolor{matinred}{خیر} & \textcolor{matinorange}{دستی} \\
+محیط‌های علمی & \textcolor{matingreen}{۱۰ نوع} & \textcolor{matinred}{خیر} & \textcolor{matinred}{خیر} \\
+کد و الگوریتم & \textcolor{matingreen}{کامل} & \textcolor{matinred}{خیر} & \textcolor{matinred}{خیر} \\
+نمودار & \textcolor{matingreen}{TikZ} & \textcolor{matinred}{خیر} & \textcolor{matinred}{خیر} \\
+جدول مدرن & \textcolor{matingreen}{tblr} & \textcolor{matinorange}{tabular} & \textcolor{matinorange}{tabular} \\
+نمایه‌ی فارسی & \textcolor{matingreen}{xindy} & \textcolor{matinred}{خیر} & \textcolor{matinorange}{دستی} \\
+جلد & \textcolor{matingreen}{تمام‌رنگی} & \textcolor{matinred}{خیر} & \textcolor{matinred}{خیر} \\
+ماژولار & \textcolor{matingreen}{۱۹ ماژول} & \textcolor{matinred}{خیر} & \textcolor{matinred}{خیر} \\
+\end{tblr}
+\end{matintable}
+
+\section{معماری \lr{MatinBook}}
+\label{sec:introduction-architecture}
+
+\lr{MatinBook} یک کلاس ماژولار است. یعنی به‌جای
+یک فایل بزرگ، از ۱۹ ماژول مستقل تشکیل شده است
+که هر یک مسئولیت مشخصی دارند. این معماری،
+نگهداری، توسعه و شخصی‌سازی کلاس را بسیار آسان‌تر
+می‌کند.
+
+\mnote{معماری ماژولار یعنی اگر فقط می‌خواهید یک ماژول را تغییر دهید، نیازی به دست زدن به بقیه‌ی کلاس ندارید.}
+
+\subsection{ماژول‌های اصلی}
+\label{sec:introduction-modules}
+
+ماژول‌های \lr{MatinBook} به سه دسته تقسیم می‌شوند:
+
+\textbf{۱. هسته (۲ ماژول):}
+\begin{itemize}
+    \item \file{mb-core.sty} — بارگذارنده‌ی
+    بسته‌های پایه.
+    \item \file{mb-utils.sty} — دستورات کمکی.
+\end{itemize}
+
+\textbf{۲. ماژول‌های کاربردی (۱۰ ماژول):}
+\begin{itemize}
+    \item \file{mb-math.sty} — ریاضیات.
+    \item \file{mb-boxes.sty} — استایل‌های
+    جعبه.
+    \item \file{mb-theorem.sty} — محیط‌های
+    قضیه.
+    \item \file{mb-code.sty} — کد.
+    \item \file{mb-layout.sty} — چیدمان.
+    \item \file{mb-headings.sty} — عناوین.
+    \item \file{mb-references.sty} — ارجاعات.
+    \item \file{mb-graphics.sty} — گرافیک.
+    \item \file{mb-index.sty} — نمایه.
+    \item \file{mb-table.sty} — جداول.
+\end{itemize}
+
+\textbf{۳. تم و لوکال (۵ ماژول):}
+\begin{itemize}
+    \item \file{mb-theme-colors.sty} — پالت
+    رنگی.
+    \item \file{mb-theme-cover.sty} — جلد.
+    \item \file{mb-theme-default.sty} —
+    بارگذارنده‌ی تم.
+    \item \file{fa-IR.sty} — لوکال فارسی.
+    \item \file{en-US.sty} — لوکال انگلیسی.
+\end{itemize}
+
+\subsection{ترتیب بارگذاری}
+\label{sec:introduction-loading-order}
+
+ماژول‌ها در سه فاز بارگذاری می‌شوند:
+
+\textbf{فاز ۱ (قبل از \lr{xepersian}):}
+هسته، تم، و ماژول‌های کاربردی.
+
+\textbf{فاز ۲:}
+\lr{xepersian} — باید آخرین بسته باشد.
+
+\textbf{فاز ۳ (بعد از \lr{xepersian}):}
+فونت‌ها، تایپوگرافی، و لوکال.
+
+\begin{remark}
+    تغییر این ترتیب، باعث خطاهای عجیب و غریب
+    می‌شود. اگر می‌خواهید ماژول جدیدی اضافه
+    کنید، حتماً آن را در فاز مناسب قرار دهید.
+    \label{rem:loading-order}
+\end{remark}
+
+معماری \lr{MatinBook} در \cref{chap:modules}
+به‌طور کامل بررسی می‌شود.
+
+\section{خطاهای رایج}
+\label{sec:introduction-mistakes}
+
+در این بخش، چند خطای رایج که کاربران جدید
+\lr{MatinBook} ممکن است مرتکب شوند را
+معرفی می‌کنیم:
+
+\subsection{استفاده از \lr{pdfLaTeX} به‌جای \lr{XeLaTeX}}
+\label{sec:introduction-mistake-engine}
+
+\lr{MatinBook} فقط با موتور \lr{XeLaTeX} کار
+می‌کند. اگر از \lr{pdfLaTeX} استفاده کنید،
+خطای زیر را دریافت می‌کنید:
+
+\begin{latin}
+\begin{minted}{text}
+! Package matinbook Error:
+  MatinBook requires XeLaTeX.
+\end{minted}
+\end{latin}
+
+\mnote{\lr{XeLaTeX} برای پشتیبانی از فونت‌های \lr{OpenType} و حروف‌چینی راست‌به‌چپ ضروری است.}
+
+\textbf{راه‌حل:} همیشه از \lr{XeLaTeX} استفاده
+کنید.
+
+\subsection{فراموش کردن \lr{-shell-escape}}
+\label{sec:introduction-mistake-shellescape}
+
+\lr{MatinBook} از \lr{minted} و \lr{xindy}
+استفاده می‌کند که نیاز به \lr{-shell-escape}
+دارند. اگر آن را فراموش کنید، خطاهای زیر
+را دریافت می‌کنید:
+
+\begin{itemize}
+    \item \lr{minted}: عدم توانایی در اجرای
+    \lr{Pygments}.
+    \item \lr{xindy}: عدم توانایی در ساخت نمایه.
+\end{itemize}
+
+\textbf{راه‌حل:} همیشه از
+\lr{xelatex -shell-escape} استفاده کنید.
+
+\subsection{فراموش کردن \lr{biber}}
+\label{sec:introduction-mistake-biber}
+
+اگر از \lr{biblatex} و \lr{biber} استفاده
+می‌کنید، باید \lr{biber} را دستی اجرا کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+xelatex -shell-escape main.tex
+biber main
+xelatex -shell-escape main.tex
+xelatex -shell-escape main.tex
+\end{minted}
+\end{latin}
+
+\mnote{این چهار مرحله را می‌توانید با \lr{latexmk} خودکار کنید: \lr{latexmk -xelatex -shell-escape main.tex}.}
+
+\textbf{راه‌حل:} این چرخه‌ی چهار مرحله‌ای را
+همیشه برای کتاب‌های حاوی منابع اجرا کنید.
+
+\subsection{وارد کردن متن فارسی در بلوک کد}
+\label{sec:introduction-mistake-persian-code}
+
+بلوک‌های \env{minted} از فونت لاتین استفاده
+می‌کنند، پس **نمی‌توانند متن فارسی را مستقیماً
+نمایش دهند**. اگر متن فارسی در بلوک کد بنویسید،
+نتیجه به‌صورت نامفهوم نمایش داده می‌شود.
+
+\textbf{راه‌حل:} بسته به زبان، از یکی از دو
+دستور زیر استفاده کنید:
+
+\begin{itemize}
+    \item \textbf{پایتون:} از \cmd{pcc} استفاده
+    کنید.
+    \item \textbf{سایر زبان‌ها:} از
+    \cmd{pc} داخل \lr{|...|} استفاده کنید.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{python}
+x = 5  |\pcc{مقدار متغیر}|
+y = 10  |\pcc{مقدار دیگر}|
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash pcc} توسط \lr{mb-code.sty} تعریف شده و علامت \lr{\#} را به‌طور خودکار اضافه می‌کند.}
+
+خطاهای رایج در \cref{app:troubleshooting}
+به‌طور کامل بررسی می‌شوند.
+
+\section{تمرین‌ها}
+\label{sec:introduction-exercises}
+
+\begin{exercise}
+    سه قابلیت \lr{MatinBook} که برای کار شما
+    مهم‌تر هستند را فهرست کنید و توضیح دهید
+    چرا.
+    \label{exc:introduction-features}
+\end{exercise}
+
+\begin{exercise}
+    \lr{MatinBook} را با یکی از ابزارهای
+    حروف‌چینی که قبلاً استفاده کرده‌اید
+    مقایسه کنید. سه مزیت و یک عیب
+    \lr{MatinBook} را بنویسید.
+    \label{exc:introduction-compare}
+\end{exercise}
+
+\begin{exercise}
+    در فصل‌های بعدی، چه موضوعاتی را می‌خواهید
+    اول یاد بگیرید؟ یک فهرست اولویت‌بندی‌شده
+    تهیه کنید.
+    \label{exc:introduction-priority}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:introduction-summary}
+
+در این فصل، با \lr{MatinBook} آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} یک کلاس \lr{LaTeX}
+    است که برای کتاب‌های فنی فارسی طراحی
+    شده است.
+
+    \item این کلاس از موتور \lr{XeLaTeX}
+    استفاده می‌کند و از حروف‌چینی راست‌به‌چپ
+    کامل پشتیبانی می‌کند.
+
+    \item قابلیت‌های کلیدی شامل محیط‌های علمی
+    رنگ‌آمیزی‌شده، ریاضیات، کد، نمودار، جدول،
+    جلد حرفه‌ای و نمایه‌ی فارسی است.
+
+    \item \lr{MatinBook} از ۱۹ ماژول مستقل
+    تشکیل شده که در سه فاز بارگذاری
+    می‌شوند.
+
+    \item خطاهای رایج شامل استفاده از
+    \lr{pdfLaTeX}، فراموش کردن
+    \lr{-shell-escape}، فراموش کردن
+    \lr{biber} و وارد کردن متن فارسی در
+    بلوک کد است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:installation})،
+به‌طور گام‌به‌گام یاد می‌گیرید که
+\lr{MatinBook} را نصب کنید و اولین کتاب
+خود را بسازید.

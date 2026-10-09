@@ -8,7 +8,7 @@
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesPackage{mb-code}[2026/10/08 v1.1 MatinBook Code System]
+\ProvidesPackage{mb-code}[2026/10/08 v1.2 MatinBook Code System]
 
 %========================================================================
 % MB-CODE — CODE LISTING CONFIGURATION (minted)
@@ -35,6 +35,27 @@
 % Persian code:
 %   Use \pc{متن فارسی} inside |...| to embed Persian text:
 %     |\pc{این یک توضیح است}|
+%
+%   For Persian comments in Python, use |\pcc{متن فارسی}|.
+%   The \pcc macro inserts the leading # and escapes it:
+%     |\pcc{این یک توضیح است}|
+%
+%   NOTE on the double \rl:
+%     The \pc macro wraps its argument in \rl twice
+%     (\rl{\persiancodingfont\rl{#1}}). A single \rl is not
+%     enough inside a minted block because minted wraps the
+%     escaped text in its own LTR group, which confuses bidi.
+%     The second \rl forces bidi to re-detect the RTL context
+%     of the Persian text. This is a known quirk of the
+%     xepersian + minted combination.
+%
+%   NOTE on Python comments:
+%     In some Pygments lexers (notably Python), the escape
+%     character | is not recognized when it appears
+%     immediately after a # comment character. That is why
+%     \pcc exists: it puts the # *inside* the escaped region
+%     so that Pygments does not see it as a comment start.
+%     The # is escaped as \#.
 %
 %========================================================================
 
@@ -70,9 +91,28 @@
 % loaded BEFORE xepersian in matinbook.cls, we use \AtBeginDocument
 % to defer the definition until xepersian is available.
 %
+% \pc{...}   — wraps Persian text with the Persian code font and
+%              a double \rl group. Use it inside |...| in a
+%              minted block.
+%
+% \pcc{...}  — expands to \pc{\#~...}. Use it inside |...| in a
+%              minted block for Python (and similar languages)
+%              where | after # is not recognized. The # is
+%              placed inside the escaped region and escaped
+%              as \#.
+%
+%              Usage in a Python code block:
+%
+%                x = 5  |\pcc{مقدار متغیر}|
+%
+%              which renders as:
+%
+%                x = 5  # مقدار متغیر
+%------------------------------------------------------------------------
 \AtBeginDocument{%
     \defpersianfont\persiancodingfont{DejaVu Sans Mono}[Script=Arabic,Scale=0.9]%
-    \newcommand{\pc}[1]{\rl{\persiancodingfont #1}}%
+    \newcommand{\pc}[1]{\rl{\persiancodingfont\rl{#1}}}%
+    \newcommand{\pcc}[1]{\pc{\#~#1}}%
 }
 
 
@@ -108,6 +148,6 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-code}{Code system loaded (minted v2, Persian support)}
+\PackageInfo{mb-code}{Code system loaded (minted v2, Persian support, \string\pc, \string\pcc)}
 
 \endinput
