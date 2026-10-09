@@ -45,8 +45,58 @@
 
 
 %------------------------------------------------------------------------
+% Persian Number Helper
+%------------------------------------------------------------------------
+% \pnum{number} typesets a number containing a decimal point, a
+% slash, or a thousands separator correctly in an RTL context.
+%
+% Background:
+%   There is a known bug in the interaction between bidi and fontspec
+%   (reported on the XeTeX mailing list, June 2016) where a period
+%   inside a number is moved to the wrong side in RTL text. For
+%   example, "1.2" renders as "2.1", and "3/14" renders as "14/3".
+%
+%   The bug affects only the period (and the slash, in some font
+%   configurations); plain integers such as "42" or "1404" render
+%   correctly because they contain no neutral-direction characters.
+%
+%   This macro wraps the number in \lr{} to force LTR direction for
+%   the number itself, which preserves the correct order of digits
+%   and the decimal separator, without affecting the surrounding
+%   Persian text.
+%
+% Usage:
+%   مقیاس \pnum{۱.۲} به این معناست...
+%   اعداد اعشاری: \pnum{۳/۱۴}، \pnum{۲/۷۱۸}، \pnum{۱/۶۱۸}
+%
+% Note:
+%   \lr is provided by xepersian (via bidi). Since mb-utils is loaded
+%   in Phase 1 of matinbook.cls, \lr is not yet defined at load time.
+%   We therefore defer the definition of \pnum to \AtBeginDocument,
+%   by which time xepersian has been loaded and \lr is available.
+%
+%   Alternatively, if \lr is not available for any reason, \pnum
+%   falls back to typesetting the number as-is, which is at least
+%   harmless (it will just render in the wrong order, but the
+%   document will still compile).
+%------------------------------------------------------------------------
+\AtBeginDocument{%
+    \ifcsname lr\endcsname
+        \newcommand{\pnum}[1]{\lr{#1}}%
+    \else
+        \PackageWarning{mb-utils}{%
+            \string\lr\space is not defined. \string\pnum\space will
+            fall back to plain output. Persian decimal numbers may
+            render in the wrong order.%
+        }%
+        \newcommand{\pnum}[1]{#1}%
+    \fi
+}
+
+
+%------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-utils}{MatinBook Utilities loaded}
+\PackageInfo{mb-utils}{MatinBook Utilities loaded (with \string\pnum)}
 
 \endinput
