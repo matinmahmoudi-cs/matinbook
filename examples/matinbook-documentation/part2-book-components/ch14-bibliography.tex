@@ -1,0 +1,414 @@
+%%
+%% part2-book-components/ch14-bibliography.tex
+%%
+%% Chapter 14: Bibliography — biblatex + biber, citations,
+%% and the bibliography display.
+%%
+
+\chapter{منابع و کتاب‌نامه}
+\label{chap:bibliography}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:bibliography-why}
+
+استناددهی یکی از ارکان اساسی نگارش علمی است.
+هر ادعای علمی باید به منبع معتبر ارجاع داده شود
+و خواننده باید بتواند به‌راحتی منابع را پیدا
+کند.
+
+\lr{MatinBook} از \lr{biblatex} با موتور
+\lr{biber} برای مدیریت منابع استفاده می‌کند.
+این ترکیب، استاندارد مدرن \lr{LaTeX} است و از
+تمام قابلیت‌های پیشرفته‌ی کتاب‌نامه پشتیبانی
+می‌کند.
+
+\mnote{موتور \lr{biber} جایگزین \lr{bibtex} قدیمی است و از \lr{Unicode} و فارسی پشتیبانی می‌کند.}
+
+\section{فایل \lr{.bib}}
+\label{sec:bibliography-bibfile}
+
+منابع در یک فایل جداگانه با پسوند \file{.bib}
+ذخیره می‌شوند. هر منبع، یک ورودی \lr{BibTeX}
+دارد:
+
+\begin{latin}
+\begin{minted}{bibtex}
+@book{knuth1984,
+    author    = {Donald E. Knuth},
+    title     = {The {\TeX}book},
+    year      = {1984},
+    publisher = {Addison-Wesley},
+    address   = {Reading, MA}
+}
+
+@article{einstein1905,
+    author  = {Albert Einstein},
+    title   = {On the Electrodynamics of Moving Bodies},
+    journal = {Annalen der Physik},
+    volume  = {17},
+    pages   = {891--921},
+    year    = {1905}
+}
+\end{minted}
+\end{latin}
+
+\mnote{کلید هر منبع (مثل \lr{knuth1984}) باید یکتا باشد. برای استناد، از همین کلید استفاده می‌کنید.}
+
+\section{بارگذاری فایل \lr{.bib}}
+\label{sec:bibliography-loading}
+
+برای بارگذاری فایل \lr{.bib}، از دستور
+\cmd{addbibresource} در پیش از
+\cmd{begin\{document\}} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+
+\addbibresource{references.bib}
+
+\begin{document}
+...
+\end{document}
+\end{minted}
+\end{latin}
+
+\mnote{فایل \lr{.bib} باید در همان پوشه‌ی \lr{main.tex} یا در مسیر مشخص‌شده باشد.}
+
+\section{استناد}
+\label{sec:bibliography-citation}
+
+\lr{biblatex} چهار دستور اصلی برای استناد ارائه
+می‌دهد:
+
+\begin{itemize}
+    \item \cmd{cite\{key\}}: استناد ساده.
+    \item \cmd{parencite\{key\}}: استناد پرانتزی.
+    \item \cmd{textcite\{key\}}: استناد متنی.
+    \item \cmd{autocite\{key\}}: استناد خودکار.
+\end{itemize}
+
+\subsection{استناد ساده}
+\label{sec:bibliography-cite}
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{کتاب}|\cite{knuth1984}|\pc{مرجع استاندارد}|\lr{\TeX}|\pc{است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: کتاب \cite{knuth1984} مرجع استاندارد
+\lr{\TeX} است.
+
+\mnote{دستور \lr{\textbackslash cite} شماره‌ی منبع را در براکت نمایش می‌دهد: \lr{[1]}.}
+
+\subsection{استناد پرانتزی}
+\label{sec:bibliography-parencite}
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این الگوریتم در}|\parencite{cormen2009}|\pc{معرفی شده است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: این الگوریتم در \parencite{cormen2009}
+معرفی شده است.
+
+\mnote{در سبک عددی، \lr{\textbackslash parencite} و \lr{\textbackslash cite} یکسان نمایش داده می‌شوند.}
+
+\subsection{استناد متنی}
+\label{sec:bibliography-textcite}
+
+\begin{latin}
+\begin{minted}{latex}
+\textcite{cormen2009}|\pc{این الگوریتم را معرفی کرد.}|%
+\end{minted}
+\end{latin}
+
+خروجی: \textcite{cormen2009} این الگوریتم را
+معرفی کرد.
+
+\mnote{دستور \lr{\textbackslash textcite} نام نویسنده را در متن و شماره‌ی منبع را در براکت نمایش می‌دهد.}
+
+\subsection{استناد به چند منبع}
+\label{sec:bibliography-multiple}
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{منابع}|\cite{knuth1984,lamport1994}|\pc{برای مطالعه توصیه می‌شوند.}|%
+\end{minted}
+\end{latin}
+
+خروجی: منابع \cite{knuth1984,lamport1994} برای
+مطالعه توصیه می‌شوند.
+
+\mnote{برای استناد به چند منبع، کلیدها را با کاما جدا کنید.}
+
+\section{نمایش کتاب‌نامه}
+\label{sec:bibliography-print}
+
+برای نمایش کتاب‌نامه، از دستور
+\cmd{printbibliography} در \lr{backmatter}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\backmatter
+\frontmattergeometry
+
+\printbibliography[title={|\pc{منابع و مراجع}|}]
+\end{minted}
+\end{latin}
+
+\mnote{کتاب‌نامه را \textbf{هرگز} داخل \lr{\textbackslash begin\{latin\}} قرار ندهید. \lr{xepersian} جهت متن را به‌درستی مدیریت می‌کند.}
+
+\subsection{عنوان فارسی}
+\label{sec:bibliography-persian-title}
+
+عنوان کتاب‌نامه را با آرگومان \lr{title} تعیین
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\printbibliography[title={|\pc{منابع و مراجع}|}]
+\end{minted}
+\end{latin}
+
+\mnote{عنوان پیش‌فرض کتاب‌نامه «منابع» است. با آرگومان \lr{title} می‌توانید آن را تغییر دهید.}
+
+\section{سبک کتاب‌نامه}
+\label{sec:bibliography-style}
+
+\lr{MatinBook} از سبک \textbf{عددی} (\lr{numeric})
+استفاده می‌کند. یعنی استنادها به‌صورت شماره
+نمایش داده می‌شوند: \lr{[1]}، \lr{[2]} و...
+
+\begin{latin}
+\begin{minted}{latex}
+\RequirePackage[
+    backend=biber,
+    style=numeric,
+    sorting=none
+]{biblatex}
+\end{minted}
+\end{latin}
+
+\mnote{ترتیب \lr{sorting=none} یعنی منابع به ترتیب استناد در کتاب‌نامه ظاهر می‌شوند، نه به ترتیب الفبایی.}
+
+\subsection{سبک‌های جایگزین}
+\label{sec:bibliography-alternative-styles}
+
+اگر سبک دیگری می‌خواهید، می‌توانید آن را در
+فایل \file{mb-core.sty} تغییر دهید:
+
+\begin{itemize}
+    \item \lr{style=numeric}: عددی (پیش‌فرض).
+    \item \lr{style=alphabetic}: الفبایی-عددی
+    (مثل \lr{[Knu84]}).
+    \item \lr{style=authoryear}: نویسنده-سال
+    (مثل \lr{(Knuth, 1984)}).
+\end{itemize}
+
+\mnote{برای کتاب‌های فنی، سبک عددی توصیه می‌شود چون فشرده‌تر است.}
+
+\section{انواع ورودی \lr{BibTeX}}
+\label{sec:bibliography-entry-types}
+
+جدول \cref{tab:bib-types} انواع اصلی ورودی
+\lr{BibTeX} را نشان می‌دهد.
+
+\begin{matintable}{انواع ورودی \lr{BibTeX}}{tab:bib-types}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & کاربرد \\
+\lr{@book} & کتاب \\
+\lr{@article} & مقاله‌ی ژورنالی \\
+\lr{@inproceedings} & مقاله‌ی کنفرانسی \\
+\lr{@online} & وب‌سایت \\
+\lr{@phdthesis} & پایان‌نامه‌ی دکتری \\
+\lr{@mastersthesis} & پایان‌نامه‌ی کارشناسی ارشد \\
+\lr{@techreport} & گزارش فنی \\
+\lr{@misc} & سایر \\
+\end{tblr}
+\end{matintable}
+
+\mnote{هر نوع ورودی، فیلدهای مخصوص خود را دارد. برای اطلاعات کامل، به مستندات \lr{biblatex} مراجعه کنید.}
+
+\section{منابع فارسی}
+\label{sec:bibliography-persian}
+
+\lr{biblatex} با \lr{biber} از منابع فارسی
+پشتیبانی می‌کند. برای یک منبع فارسی، از فیلد
+\lr{langid} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{bibtex}
+@book{persian-book,
+    author    = {|\pc{نام نویسنده}|},
+    title     = {|\pc{عنوان کتاب}|},
+    year      = {|\pnum{۱۴۰۴}|},
+    publisher = {|\pc{نام ناشر}|},
+    langid    = {persian}
+}
+\end{minted}
+\end{latin}
+
+\mnote{فیلد \lr{langid = \{persian\}} باعث می‌شود \lr{biblatex} جهت متن را راست‌به‌چپ کند.}
+
+\section{چرخه‌ی کامپایل}
+\label{sec:bibliography-compile}
+
+برای ساخت کتاب‌نامه، باید چرخه‌ی چهار مرحله‌ای
+را اجرا کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+# |\pc{مرحله‌ی اول: کامپایل اول}|%
+xelatex -shell-escape main.tex
+
+# |\pc{مرحله‌ی دوم: پردازش کتاب‌نامه}|%
+biber main
+
+# |\pc{مرحله‌ی سوم: کامپایل دوم}|%
+xelatex -shell-escape main.tex
+
+# |\pc{مرحله‌ی چهارم: کامپایل سوم}|%
+xelatex -shell-escape main.tex
+\end{minted}
+\end{latin}
+
+\mnote{اگر یکی از این مراحل را فراموش کنید، کتاب‌نامه خالی خواهد بود یا استنادها به‌صورت «؟؟» نمایش داده می‌شوند.}
+
+\section{استناد به منابع بدون استناد}
+\label{sec:bibliography-nocite}
+
+اگر می‌خواهید منبعی در کتاب‌نامه ظاهر شود
+بدون اینکه در متن به آن استناد کنید، از دستور
+\cmd{nocite} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\nocite{knuth1984}
+\nocite{*}
+\end{minted}
+\end{latin}
+
+\begin{itemize}
+    \item \cmd{nocite\{key\}}: یک منبع خاص.
+    \item \cmd{nocite\{*\}}: همه‌ی منابع فایل
+    \lr{.bib}.
+\end{itemize}
+
+\mnote{استفاده از \lr{\textbackslash nocite\{*\}} برای کتاب‌های مرجع مفید است، چون همه‌ی منابع را در کتاب‌نامه می‌آورد.}
+
+\section{خطاهای رایج}
+\label{sec:bibliography-mistakes}
+
+\subsection{فراموش کردن \cmd{addbibresource}}
+\label{sec:bibliography-mistake-addbibresource}
+
+\textbf{مشکل:} اگر \cmd{addbibresource} را فراموش
+کنید، کتاب‌نامه خالی خواهد بود.
+
+\textbf{راه‌حل:} همیشه \cmd{addbibresource} را
+در پیش از \cmd{begin\{document\}} قرار دهید.
+
+\subsection{فراموش کردن \lr{biber}}
+\label{sec:bibliography-mistake-biber}
+
+\textbf{مشکل:} اگر \lr{biber} را اجرا نکنید،
+استنادها به‌صورت «؟؟» نمایش داده می‌شوند.
+
+\textbf{راه‌حل:} چرخه‌ی کامل چهار مرحله‌ای را
+اجرا کنید.
+
+\subsection{قرار دادن کتاب‌نامه در \env{latin}}
+\label{sec:bibliography-mistake-latin}
+
+\textbf{مشکل:} اگر \cmd{printbibliography} را
+داخل \cmd{begin\{latin\}} قرار دهید، عنوان
+فارسی «منابع و مراجع» به‌هم می‌ریزد.
+
+\textbf{راه‌حل:} کتاب‌نامه را \textbf{هرگز} داخل
+\env{latin} قرار ندهید.
+
+\subsection{کلید تکراری}
+\label{sec:bibliography-mistake-duplicate}
+
+\textbf{مشکل:} اگر دو منبع کلید یکسان داشته
+باشند، \lr{biber} خطا می‌دهد.
+
+\textbf{راه‌حل:} کلیدهای یکتا برای هر منبع
+تعریف کنید.
+
+\section{تمرین‌ها}
+\label{sec:bibliography-exercises}
+
+\begin{exercise}
+    سه منبع (یک کتاب، یک مقاله، یک وب‌سایت)
+    در فایل \lr{.bib} تعریف کنید.
+    \label{exc:bibliography-bibfile}
+\end{exercise}
+
+\begin{exercise}
+    به هر سه منبع استناد کنید و کتاب‌نامه را
+    نمایش دهید.
+    \label{exc:bibliography-cite}
+\end{exercise}
+
+\begin{exercise}
+    یک منبع فارسی با فیلد \lr{langid} تعریف
+    کنید و به آن استناد دهید.
+    \label{exc:bibliography-persian}
+\end{exercise}
+
+\begin{exercise}
+    از \cmd{nocite\{*\}} استفاده کنید و همه‌ی
+    منابع را در کتاب‌نامه نمایش دهید.
+    \label{exc:bibliography-nocite}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:bibliography-summary}
+
+در این فصل، با منابع و کتاب‌نامه در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از \lr{biblatex} با
+    موتور \lr{biber} استفاده می‌کند.
+
+    \item منابع در فایل \lr{.bib} ذخیره می‌شوند.
+
+    \item فایل \lr{.bib} با \cmd{addbibresource}
+    بارگذاری می‌شود.
+
+    \item چهار دستور استناد: \cmd{cite}،
+    \cmd{parencite}، \cmd{textcite}، \cmd{autocite}.
+
+    \item کتاب‌نامه با \cmd{printbibliography}
+    نمایش داده می‌شود.
+
+    \item سبک پیش‌فرض، عددی (\lr{numeric}) است.
+
+    \item منابع فارسی با \lr{langid = \{persian\}}
+    تعریف می‌شوند.
+
+    \item چرخه‌ی کامپایل چهار مرحله‌ای: \lr{xelatex}
+    + \lr{biber} + \lr{xelatex} + \lr{xelatex}.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{addbibresource}، فراموش کردن \lr{biber}،
+    قرار دادن کتاب‌نامه در \env{latin}، و کلید
+    تکراری است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:index})، با نمایه در
+\lr{MatinBook} آشنا می‌شوید و یاد می‌گیرید
+که چگونه یک نمایه‌ی حرفه‌ای بسازید.
