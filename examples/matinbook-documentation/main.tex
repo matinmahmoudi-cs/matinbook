@@ -1,0 +1,263 @@
+%%
+%% main.tex — MatinBook Documentation
+%% 
+%% This is the main entry point for the MatinBook user guide.
+%% It assembles all chapters from the various parts into a
+%% single, coherent book.
+%%
+%% Compilation:
+%%   xelatex -shell-escape main.tex
+%%   biber main
+%%   xelatex -shell-escape main.tex
+%%   xelatex -shell-escape main.tex
+%%
+%% Or use latexmk:
+%%   latexmk -xelatex -shell-escape main.tex
+%%
+%% IMPORTANT:
+%%   - The cover requires at least 2 compilation passes.
+%%   - The bibliography requires biber.
+%%   - The index requires xindy (called automatically via
+%%     -shell-escape).
+%%
+
+\documentclass{matinbook}
+
+%========================================================================
+% BIBLIOGRAPHY
+%========================================================================
+\addbibresource{references.bib}
+
+%========================================================================
+% BOOK METADATA
+%========================================================================
+\title{راهنمای جامع MatinBook}
+\author{مatin محمودی}
+\date{مهر ۱۴۰۵}
+
+\booktitle{راهنمای جامع MatinBook}
+
+\renewcommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
+
+%========================================================================
+% CUSTOM MACROS FOR THIS DOCUMENTATION
+%========================================================================
+
+% Mark a command name: \cmd{\makecover}
+\newcommand{\cmd}[1]{\lr{\textbackslash #1}}
+
+% Mark an environment name: \env{theorem}
+\newcommand{\env}[1]{\lr{\texttt{#1}}}
+
+% Mark a package name: \pkg{minted}
+\newcommand{\pkg}[1]{\lr{\texttt{#1}}}
+
+% Mark a file name: \file{main.tex}
+\newcommand{\file}[1]{\lr{\texttt{#1}}}
+
+% Mark a menu path: \menu{File > Open}
+\newcommand{\menu}[1]{\lr{\texttt{#1}}}
+
+% Mark a key: \key{Ctrl+S}
+\newcommand{\key}[1]{\lr{\texttt{#1}}}
+
+% Mark an option: \opt{draft}
+\newcommand{\opt}[1]{\lr{\texttt{#1}}}
+
+% Version of MatinBook documented here.
+\newcommand{\mbversion}{1.2}
+
+%========================================================================
+% DOCUMENT
+%========================================================================
+\begin{document}
+
+%------------------------------------------------------------------------
+% FRONT COVER
+%------------------------------------------------------------------------
+\makecover
+    {راهنمای جامع MatinBook}
+    {از نصب تا انتشار کتاب حرفه‌ای فارسی}
+    {مatin محمودی}
+    {مهر ۱۴۰۵}
+
+%------------------------------------------------------------------------
+% FRONT MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\frontmatter
+\frontmattergeometry
+
+% Title page
+\maketitle
+
+% Colophon (copyright, ISBN, edition)
+\input{frontmatter/colophon}
+\clearpage
+
+% Dedication
+\input{frontmatter/dedication}
+\clearpage
+
+% Preface
+\input{frontmatter/preface}
+\clearpage
+
+% About this guide
+\input{frontmatter/about}
+\clearpage
+
+% Table of Contents
+\tableofcontents
+\clearpage
+
+% List of Figures
+\listoffigures
+\clearpage
+
+% List of Tables
+\listoftables
+\clearpage
+
+% List of Algorithms
+\listofalgorithms
+\clearpage
+
+%------------------------------------------------------------------------
+% MAIN MATTER (wide margin for notes)
+%------------------------------------------------------------------------
+\mainmatter
+\mainmattergeometry
+
+%========================================================================
+% PART 1 — GETTING STARTED
+%========================================================================
+\part{شروع به کار}
+\label{part:getting-started}
+
+\input{part1-getting-started/ch01-introduction}
+\input{part1-getting-started/ch02-installation}
+\input{part1-getting-started/ch03-first-book}
+\input{part1-getting-started/ch04-book-structure}
+
+%========================================================================
+% PART 2 — BOOK COMPONENTS
+%========================================================================
+\part{اجزای کتاب}
+\label{part:book-components}
+
+\input{part2-book-components/ch05-cover}
+\input{part2-book-components/ch06-chapters}
+\input{part2-book-components/ch07-text}
+\input{part2-book-components/ch08-environments}
+\input{part2-book-components/ch09-math}
+\input{part2-book-components/ch10-code}
+\input{part2-book-components/ch11-graphics}
+\input{part2-book-components/ch12-tables}
+\input{part2-book-components/ch13-margin-notes}
+\input{part2-book-components/ch14-bibliography}
+\input{part2-book-components/ch15-index}
+\input{part2-book-components/ch16-cross-refs}
+
+%========================================================================
+% PART 3 — CUSTOMIZATION
+%========================================================================
+\part{شخصی‌سازی}
+\label{part:customization}
+
+\input{part3-customization/ch17-options}
+\input{part3-customization/ch18-colors}
+\input{part3-customization/ch19-fonts}
+\input{part3-customization/ch20-layout}
+\input{part3-customization/ch21-themes}
+\input{part3-customization/ch22-localization}
+
+%========================================================================
+% PART 4 — ADVANCED
+%========================================================================
+\part{مباحث پیشرفته}
+\label{part:advanced}
+
+\input{part4-advanced/ch23-modules}
+\input{part4-advanced/ch24-custom-theme}
+\input{part4-advanced/ch25-custom-commands}
+\input{part4-advanced/ch26-large-projects}
+
+%========================================================================
+% PART 5 — EXAMPLES
+%========================================================================
+\part{مثال‌های کامل}
+\label{part:examples}
+
+\input{part5-examples/ch27-math-book}
+\input{part5-examples/ch28-programming-book}
+\input{part5-examples/ch29-physics-book}
+
+%========================================================================
+% PART 6 — REFERENCE
+%========================================================================
+\part{مرجع دستورات}
+\label{part:reference}
+
+\input{part6-reference/ch30-class-options}
+\input{part6-reference/ch31-environments}
+\input{part6-reference/ch32-commands}
+
+%========================================================================
+% APPENDICES
+%========================================================================
+\appendix
+
+\input{appendices/app-a-troubleshooting}
+\input{appendices/app-b-tools}
+\input{appendices/app-c-resources}
+\input{appendices/app-d-changelog}
+\input{appendices/app-e-license}
+
+%------------------------------------------------------------------------
+% BACK MATTER (symmetric margins)
+%------------------------------------------------------------------------
+\backmatter
+\frontmattergeometry
+
+% Bibliography
+\printbibliography[title={منابع و مراجع}]
+
+% Index
+\printindex
+
+%------------------------------------------------------------------------
+% BACK COVER
+%------------------------------------------------------------------------
+\authorbio{%
+    مatin محمودی، پژوهشگر و توسعه‌دهنده‌ی ابزارهای حروف‌چینی
+    فارسی است. او سال‌ها در زمینه‌ی نشر دیجیتال و طراحی
+    کلاس‌های \lr{LaTeX} برای زبان فارسی فعالیت کرده است.
+    \lr{MatinBook} حاصل تجربه‌ی او در این حوزه است.
+}
+
+\makebackcover{%
+    \textbf{راهنمای جامع MatinBook} مرجعی کامل برای
+    نوشتن کتاب‌های فنی و علمی فارسی با استفاده از کلاس
+    \lr{MatinBook} است.
+
+    \vspace{0.4cm}
+
+    \textbf{در این راهنما می‌آموزید:}
+    \begin{itemize}
+        \item نصب و راه‌اندازی MatinBook
+        \item ساختار یک کتاب حرفه‌ای
+        \item محیط‌های علمی، ریاضی و کد
+        \item نمودار، جدول و شکل
+        \item شخصی‌سازی رنگ، فونت و چیدمان
+        \item ایجاد تم سفارشی
+        \item انتشار کتاب نهایی
+    \end{itemize}
+
+    \vspace{0.4cm}
+
+    مناسب برای نویسندگان، محققان، دانشجویان و
+    مدرسانی که می‌خواهند کتاب‌های فنی فارسی
+    با کیفیت حرفه‌ای تولید کنند.
+}
+
+\end{document}
