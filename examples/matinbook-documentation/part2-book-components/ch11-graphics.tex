@@ -1,0 +1,605 @@
+%%
+%% part2-book-components/ch11-graphics.tex
+%%
+%% Chapter 11: Graphics and Diagrams — Function plots,
+%% statistical charts, flowcharts, trees, graphs, 3D
+%% surfaces, pie charts, and timelines.
+%%
+
+\chapter{نمودار و شکل}
+\label{chap:graphics}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:graphics-why}
+
+در کتاب‌های فنی و علمی، نمودارها و شکل‌ها نقش
+محوری در انتقال مفاهیم پیچیده دارند. یک نمودار
+حرفه‌ای می‌تواند جای چند صفحه متن را بگیرد و
+درک مطلب را چند برابر کند.
+
+\lr{MatinBook} از \lr{TikZ}، \lr{PGFPlots} و
+\lr{pgf-pie} برای ترسیم نمودارها و شکل‌های
+حرفه‌ای استفاده می‌کند. در این فصل، با انواع
+نمودارها و روش ساخت آن‌ها آشنا می‌شوید.
+
+\mnote{\lr{TikZ} یک زبان برنامه‌نویسی برای ترسیم شکل‌های برداری است. \lr{PGFPlots} نیز بر پایه‌ی \lr{TikZ} برای رسم نمودارهای داده‌ای ساخته شده است.}
+
+\section{ساختار پایه}
+\label{sec:graphics-basic}
+
+هر شکل در \lr{MatinBook} از یک ساختار پایه
+پیروی می‌کند:
+
+\begin{itemize}
+    \item محیط \env{figure} برای نگهداری شکل.
+    \item \cmd{centering} برای وسط‌چین کردن.
+    \item محیط \env{latin} برای حفظ جهت لاتین.
+    \item محیط \env{tikzpicture} یا
+    \env{axis} برای ترسیم.
+    \item \cmd{caption} برای کپشن فارسی.
+    \item \cmd{label} برای ارجاع.
+\end{itemize}
+
+\mnote{محیط \lr{tikzpicture} باید همیشه داخل \lr{\textbackslash begin\{latin\}} قرار گیرد تا جهت ترسیم درست حفظ شود.}
+
+\subsection{نمونه‌ی پایه}
+\label{sec:graphics-basic-example}
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}
+    \draw[matinblue, thick] (0,0) -- (3,2);
+    \draw[matinred, thick] (0,2) -- (3,0);
+\end{tikzpicture}
+\end{latin}
+\caption{|\pc{یک شکل ساده}|}
+\label{fig:simple}
+\end{figure}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{[h]} به \lr{LaTeX} می‌گوید که شکل را «همین‌جا» قرار دهد. اگر فضا کافی نباشد، به صفحه‌ی بعد می‌رود.}
+
+\section{نمودار توابع}
+\label{sec:graphics-functions}
+
+پرکاربردترین نوع نمودار در کتاب‌های فنی،
+نمودار توابع ریاضی است. \lr{MatinBook} از
+\lr{PGFPlots} برای این کار استفاده می‌کند.
+
+\subsection{نمودار تابع ساده}
+\label{sec:graphics-simple-function}
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=\textwidth, height=6cm,
+    xlabel={$x$},
+    ylabel={$f(x)$},
+    grid=major,
+    domain=-3:3,
+    samples=100
+  ]
+    \addplot[matinblue, thick] {x^2};
+    \addlegendentry{$x^2$}
+  \end{axis}
+\end{tikzpicture}
+\end{latin}
+\caption{|\pc{نمودار تابع}|\lr{$f(x) = x^{2}$}}
+\label{fig:parabola}
+\end{figure}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.8\textwidth, height=5cm,
+    xlabel={$x$},
+    ylabel={$f(x)$},
+    grid=major,
+    domain=-3:3,
+    samples=100
+  ]
+    \addplot[matinblue, thick] {x^2};
+    \addlegendentry{$x^2$}
+  \end{axis}
+\end{tikzpicture}
+\end{latin}
+\caption{نمودار تابع \lr{$f(x) = x^{2}$}}
+\label{fig:parabola-ch11}
+\end{figure}
+
+\mnote{مقدار \lr{width=\textbackslash textwidth} باعث می‌شود نمودار دقیقاً به عرض متن چسبیده و از صفحه سرریز نکند.}
+
+\subsection{نمودار چند تابع}
+\label{sec:graphics-multiple-functions}
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{axis}[
+    width=\textwidth, height=6cm,
+    xlabel={$x$},
+    ylabel={$f(x)$},
+    grid=major,
+    legend pos=north west,
+    domain=-2:2,
+    samples=100
+]
+    \addplot[matinblue, thick] {x^2};
+    \addlegendentry{$x^2$}
+
+    \addplot[matinred, thick] {x^3};
+    \addlegendentry{$x^3$}
+
+    \addplot[matinorange, thick] {exp(x)};
+    \addlegendentry{$e^x$}
+\end{axis}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.8\textwidth, height=5cm,
+    xlabel={$x$},
+    ylabel={$f(x)$},
+    grid=major,
+    legend pos=north west,
+    domain=-2:2,
+    samples=100
+  ]
+    \addplot[matinblue, thick] {x^2};
+    \addlegendentry{$x^2$}
+    \addplot[matinred, thick] {x^3};
+    \addlegendentry{$x^3$}
+    \addplot[matinorange, thick] {exp(x)};
+    \addlegendentry{$e^x$}
+  \end{axis}
+\end{tikzpicture}
+\end{latin}
+\caption{مقایسه‌ی سه تابع}
+\label{fig:three-functions}
+\end{figure}
+
+\mnote{پالت رنگ \lr{matinbook} به‌طور خودکار برای نمودارهای چندسری اعمال می‌شود. می‌توانید رنگ‌ها را دستی هم مشخص کنید.}
+
+\section{نمودارهای آماری}
+\label{sec:graphics-statistical}
+
+\subsection{نمودار میله‌ای}
+\label{sec:graphics-bar}
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{axis}[
+    width=\textwidth, height=6cm,
+    ybar,
+    symbolic x coords={A, B, C, D, E},
+    xtick=data,
+    ylabel={|\pc{مقدار}|},
+    bar width=15pt,
+    nodes near coords
+]
+    \addplot[fill=matinblue!70] coordinates {
+        (A, 25) (B, 40) (C, 30) (D, 50) (E, 35)
+    };
+\end{axis}
+\end{minted}
+\end{latin}
+
+\mnote{در \lr{PGFPlots}، برچسب‌های محور باید لاتین باشند. برای معادل فارسی، از کپشن یا متن استفاده کنید.}
+
+\subsection{نمودار خطی}
+\label{sec:graphics-line}
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{axis}[
+    width=\textwidth, height=6cm,
+    xlabel={$n$},
+    ylabel={Operations},
+    grid=major,
+    legend pos=north west,
+    domain=0:50,
+    samples=100
+]
+    \addplot[matinred, thick] {x^2};
+    \addlegendentry{$O(n^2)$}
+
+    \addplot[matinblue, thick] {x*ln(x)};
+    \addlegendentry{$O(n \log n)$}
+
+    \addplot[matingreen, thick] {x};
+    \addlegendentry{$O(n)$}
+\end{axis}
+\end{minted}
+\end{latin}
+
+\subsection{نمودار پراکندگی}
+\label{sec:graphics-scatter}
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{axis}[
+    width=\textwidth, height=6cm,
+    xlabel={X},
+    ylabel={Y},
+    grid=major
+]
+    \addplot[only marks, mark=*, color=matinblue] coordinates {
+        (1, 45) (2, 52) (3, 58) (4, 65) (5, 70)
+    };
+\end{axis}
+\end{minted}
+\end{latin}
+
+\mnote{برای نمودار پراکندگی، از \lr{only marks} استفاده کنید تا نقاط به هم متصل نشوند.}
+
+\section{فلوچارت‌ها}
+\label{sec:graphics-flowcharts}
+
+فلوچارت‌ها برای نمایش فرآیندها و الگوریتم‌ها
+استفاده می‌شوند. \lr{MatinBook} چند استایل
+آماده برای فلوچارت ارائه می‌دهد:
+
+\begin{itemize}
+    \item \lr{block}: مستطیل با گوشه‌های گرد.
+    \item \lr{decision}: لوزی برای تصمیم.
+    \item \lr{arrow}: فلش ضخیم.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tikzpicture}[node distance=2cm]
+    \node[block] (start) {Start};
+    \node[decision, below of=start] (check) {$x > 0$?};
+    \node[block, below of=check] (positive) {Positive};
+    \node[block, right of=check, node distance=3cm] (negative) {Negative};
+
+    \draw[arrow] (start) -- (check);
+    \draw[arrow] (check) -- node[left] {Yes} (positive);
+    \draw[arrow] (check) -- node[above] {No} (negative);
+\end{tikzpicture}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}[node distance=1.5cm, scale=0.9, transform shape]
+    \node[block] (start) {Start};
+    \node[decision, below of=start] (check) {$x > 0$?};
+    \node[block, below of=check] (positive) {Positive};
+    \node[block, right of=check, node distance=3cm] (negative) {Negative};
+
+    \draw[arrow] (start) -- (check);
+    \draw[arrow] (check) -- node[left] {Yes} (positive);
+    \draw[arrow] (check) -- node[above] {No} (negative);
+\end{tikzpicture}
+\end{latin}
+\caption{فلوچارت یک الگوریتم ساده}
+\label{fig:flowchart-ch11}
+\end{figure}
+
+\mnote{در فلوچارت‌ها، متن داخل گره‌ها باید لاتین باشد. برای متن فارسی، از \lr{\textbackslash rl\{...\}} استفاده کنید.}
+
+\section{درخت‌ها}
+\label{sec:graphics-trees}
+
+درخت‌ها برای نمایش ساختارهای سلسله‌مراتبی
+استفاده می‌شوند. \lr{MatinBook} یک استایل
+\lr{treenode} برای گره‌های درخت ارائه می‌دهد:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tikzpicture}[
+    level distance=1.5cm,
+    level 1/.style={sibling distance=3cm},
+    level 2/.style={sibling distance=1.5cm}
+]
+    \node[treenode] {8}
+        child {node[treenode] {3}
+            child {node[treenode] {1}}
+            child {node[treenode] {6}}
+        }
+        child {node[treenode] {10}
+            child {node[treenode] {9}}
+            child {node[treenode] {14}}
+        };
+\end{tikzpicture}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}[
+    level distance=1.5cm,
+    scale=0.9,
+    transform shape,
+    level 1/.style={sibling distance=3cm},
+    level 2/.style={sibling distance=1.5cm}
+]
+    \node[treenode] {8}
+        child {node[treenode] {3}
+            child {node[treenode] {1}}
+            child {node[treenode] {6}}
+        }
+        child {node[treenode] {10}
+            child {node[treenode] {9}}
+            child {node[treenode] {14}}
+        };
+\end{tikzpicture}
+\end{latin}
+\caption{درخت جستجوی دودویی}
+\label{fig:bst-ch11}
+\end{figure}
+
+\section{گراف‌ها}
+\label{sec:graphics-graphs}
+
+گراف‌ها برای نمایش روابط بین موجودیت‌ها استفاده
+می‌شوند. \lr{MatinBook} یک استایل \lr{vertex}
+برای رأس‌های گراف ارائه می‌دهد:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tikzpicture}[
+    vertex/.style={circle, draw=matindarkblue,
+                   fill=matinlightblue!30, minimum size=1cm}
+]
+    \node[vertex] (A) at (0,0) {A};
+    \node[vertex] (B) at (3,0) {B};
+    \node[vertex] (C) at (1.5,-2) {C};
+
+    \draw[thick] (A) -- (B);
+    \draw[thick] (B) -- (C);
+    \draw[thick] (A) -- (C);
+\end{tikzpicture}
+\end{minted}
+\end{latin}
+
+\mnote{برای گراف‌های پیچیده، از کتابخانه‌ی \lr{graphs} در \lr{TikZ} استفاده کنید که امکان تعریف خودکار گراف‌ها را فراهم می‌کند.}
+
+\section{نمودار سه‌بعدی}
+\label{sec:graphics-3d}
+
+\lr{PGFPlots} از نمودارهای سه‌بعدی نیز پشتیبانی
+می‌کند. برای این کار، باید کتابخانه‌ی
+\lr{colormaps} را فعال کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\usepgfplotslibrary{colormaps}
+
+\begin{axis}[
+    width=\textwidth, height=8cm,
+    view={45}{35},
+    xlabel={$x$}, ylabel={$y$}, zlabel={$f$}
+]
+    \addplot3[
+        surf, domain=-5:5, domain y=-5:5,
+        samples=40, samples y=40,
+        colormap/viridis
+    ] {sin(deg(sqrt(x^2+y^2)))};
+\end{axis}
+\end{minted}
+\end{latin}
+
+\mnote{نمودارهای سه‌بعدی ممکن است در بعضی از نسخه‌های \lr{PGFPlots} کند باشند. صبور باشید.}
+
+\section{نمودار دایره‌ای}
+\label{sec:graphics-pie}
+
+\lr{MatinBook} از \lr{pgf-pie} برای نمودار
+دایره‌ای پشتیبانی می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tikzpicture}
+    \pie[
+        radius=3,
+        text=legend,
+        color={matinblue, matingreen, matinorange, matinred}
+    ]{
+        35/Python,
+        25/JavaScript,
+        20/Java,
+        12/C++,
+        8/Other
+    }
+\end{tikzpicture}
+\end{minted}
+\end{latin}
+
+\mnote{در نمودار دایره‌ای، برچسب‌ها باید لاتین باشند. برای متن فارسی، از کپشن استفاده کنید.}
+
+\section{خط زمانی}
+\label{sec:graphics-timeline}
+
+خط زمانی برای نمایش رویدادها در طول زمان
+استفاده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tikzpicture}[xscale=0.7]
+    \draw[thick,->] (0,0) -- (14,0);
+
+    \foreach \x/\year in {0/1990, 3.5/2000, 7/2010, 10.5/2020, 14/2025} {
+        \draw[thick] (\x,-0.2) -- (\x,0.2);
+        \node[below] at (\x,-0.3) {\small\year};
+    }
+
+    \node[event, above] at (0,1.2) {Python\\Created};
+    \node[event, above] at (7,1.2) {Rust\\First Stable};
+\end{tikzpicture}
+\end{minted}
+\end{latin}
+
+\section{فاصله‌گذاری و اندازه}
+\label{sec:graphics-sizing}
+
+یکی از مشکلات رایج در نمودارها، سرریز به
+حاشیه است. برای جلوگیری از این مشکل:
+
+\begin{itemize}
+    \item از \lr{width=\textbackslash textwidth} برای
+    \env{axis} استفاده کنید.
+    \item از \lr{scale=0.9, transform shape}
+    برای \env{tikzpicture} استفاده کنید.
+    \item عرض ثابت (مثل \lr{width=14cm}) را
+    حذف کنید.
+\end{itemize}
+
+\mnote{عرض \lr{\textbackslash textwidth} در متن اصلی حدود \lr{۱۰.۳} سانتی‌متر است. اگر عرض نمودار بیشتر باشد، سرریز می‌کند.}
+
+\section{ارجاع به شکل}
+\label{sec:graphics-references}
+
+برای ارجاع به شکل، از \cmd{cref} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{نمودار}|\cref{fig:parabola}|\pc{تابع درجه دو را نشان می‌دهد.}|%
+\end{minted}
+\end{latin}
+
+خروجی: نمودار \cref{fig:parabola-ch11} تابع
+درجه دو را نشان می‌دهد.
+
+\mnote{نام‌گذاری برچسب شکل‌ها با پیشوند \lr{fig:} انجام می‌شود: \lr{fig:parabola}.}
+
+\section{متن فارسی در \lr{tikzpicture}}
+\label{sec:graphics-persian}
+
+برای متن فارسی داخل \env{tikzpicture}، باید از
+\cmd{rl} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tikzpicture}
+    \node[block] (start) {|\rl{شروع}|};
+    \node[block, below of=start] (end) {|\rl{پایان}|};
+    \draw[arrow] (start) -- (end);
+\end{tikzpicture}
+\end{minted}
+\end{latin}
+
+\mnote{فراموش کردن \lr{\textbackslash rl} باعث می‌شود متن فارسی به‌صورت چپ‌چین و نامفهوم نمایش داده شود.}
+
+\section{خطاهای رایج}
+\label{sec:graphics-mistakes}
+
+\subsection{فراموش کردن \env{latin}}
+\label{sec:graphics-mistake-latin}
+
+اگر \env{tikzpicture} را داخل \env{latin} قرار
+ندهید، ممکن است جهت ترسیم به‌هم بریزد و
+شکل در جای اشتباه ظاهر شود.
+
+\textbf{راه‌حل:} همیشه \env{tikzpicture} را داخل
+\env{latin} قرار دهید.
+
+\subsection{سرریز نمودار به حاشیه}
+\label{sec:graphics-mistake-overflow}
+
+اگر عرض نمودار بیشتر از \cmd{textwidth} باشد،
+به حاشیه سرریز می‌کند.
+
+\textbf{راه‌حل:} از \lr{width=\textbackslash textwidth}
+استفاده کنید، یا مقیاس را کاهش دهید.
+
+\subsection{فراموش کردن \cmd{rl} در \lr{tikzpicture}}
+\label{sec:graphics-mistake-rl}
+
+اگر متن فارسی را داخل \env{tikzpicture} بدون
+\cmd{rl} بنویسید، به‌صورت چپ‌چین و نامفهوم
+نمایش داده می‌شود.
+
+\textbf{راه‌حل:} متن فارسی را در \lr{\textbackslash rl\{...\}}
+قرار دهید.
+
+\section{تمرین‌ها}
+\label{sec:graphics-exercises}
+
+\begin{exercise}
+    یک نمودار تابع ساده بسازید که عرض آن
+    دقیقاً به عرض متن چسبیده باشد.
+    \label{exc:graphics-simple}
+\end{exercise}
+
+\begin{exercise}
+    یک فلوچارت با سه گره بسازید و متن‌های
+    فارسی آن را با \cmd{rl} پیچیده کنید.
+    \label{exc:graphics-flowchart}
+\end{exercise}
+
+\begin{exercise}
+    یک درخت دودویی با سه سطح بسازید.
+    \label{exc:graphics-tree}
+\end{exercise}
+
+\begin{exercise}
+    یک نمودار دایره‌ای با چهار بخش بسازید.
+    \label{exc:graphics-pie}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:graphics-summary}
+
+در این فصل، با نمودار و شکل در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از \lr{TikZ}، \lr{PGFPlots}
+    و \lr{pgf-pie} برای ترسیم استفاده می‌کند.
+
+    \item نمودار توابع با \env{axis} و
+    \cmd{addplot} ساخته می‌شوند.
+
+    \item نمودارهای آماری شامل میله‌ای، خطی و
+    پراکندگی هستند.
+
+    \item فلوچارت‌ها با استایل‌های \lr{block}،
+    \lr{decision} و \lr{arrow} ساخته می‌شوند.
+
+    \item درخت‌ها با استایل \lr{treenode} ساخته
+    می‌شوند.
+
+    \item گراف‌ها با استایل \lr{vertex} ساخته
+    می‌شوند.
+
+    \item \env{tikzpicture} باید همیشه داخل
+    \env{latin} قرار گیرد.
+
+    \item متن فارسی داخل \env{tikzpicture} باید
+    با \cmd{rl} پیچیده شود.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \env{latin}، سرریز نمودار، و فراموش کردن
+    \cmd{rl} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:tables})، با جدول
+در \lr{MatinBook} آشنا می‌شوید و یاد می‌گیرید
+که چگونه جدول‌های حرفه‌ای بسازید.
