@@ -1,0 +1,466 @@
+%%
+%% part2-book-components/ch12-tables.tex
+%%
+%% Chapter 12: Tables — Modern tables with tabularray,
+%% the matintable wrapper, and RTL-aware column types.
+%%
+
+\chapter{جدول}
+\label{chap:tables}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:tables-why}
+
+جدول‌ها یکی از ابزارهای مهم در کتاب‌های فنی و
+علمی هستند. از مقایسه‌ی الگوریتم‌ها تا نمایش
+داده‌های تجربی، جدول‌ها به خواننده کمک می‌کنند
+تا اطلاعات را سریع‌تر درک کند.
+
+\lr{MatinBook} از بسته‌ی \lr{tabularray} برای
+جدول‌ها استفاده می‌کند. این بسته، برخلاف
+\lr{tabularx}، با \lr{xepersian} کاملاً سازگار
+است و از حروف‌چینی راست‌به‌چپ پشتیبانی می‌کند.
+
+\mnote{بسته‌ی \lr{tabularx} با \lr{xepersian} ناسازگار است و خطای \lr{Illegal pream-token} می‌دهد. هرگز از آن استفاده نکنید.}
+
+\section{محیط \lr{matintable}}
+\label{sec:tables-matintable}
+
+ساده‌ترین راه برای ساخت جدول در \lr{MatinBook}،
+استفاده از محیط \env{matintable} است. این
+محیط، بخش‌های تکراری جدول را خودکار می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{matintable}{|\pc{عنوان جدول}|}{tab:my-table}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+|\pc{نوع}| & |\pc{فونت}| & |\pc{وضعیت}| & |\pc{توضیحات}| \\
+|\pc{فارسی}| & \lr{XB Niloofar} & |\pc{فعال}| & |\pc{خوانایی بالا}| \\
+|\pc{لاتین}| & \lr{Times New Roman} & |\pc{فعال}| & |\pc{استاندارد آکادمیک}| \\
+\end{tblr}
+\end{matintable}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{matintable}{نمونه‌ی جدول با \lr{matintable}}{tab:sample}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & فونت & وضعیت & توضیحات \\
+فارسی & \lr{XB Niloofar} & فعال & خوانایی بالا \\
+لاتین & \lr{Times New Roman} & فعال & استاندارد آکادمیک \\
+\end{tblr}
+\end{matintable}
+
+\mnote{دستور \lr{\textbackslash matintable} سه بخش تکراری را خودکار می‌کند: وسط‌چین کردن، کپشن، و برچسب.}
+
+\section{ساختار \lr{tblr}}
+\label{sec:tables-tblr}
+
+محیط \env{tblr} داخل \env{matintable} قرار
+می‌گیرد و تنظیمات جدول را تعیین می‌کند:
+
+\begin{itemize}
+    \item \lr{width = \textbackslash textwidth}:
+    عرض کل جدول.
+    \item \lr{colspec = \{...\}}: نوع ستون‌ها.
+    \item \lr{hlines, vlines}: خطوط افقی و
+    عمودی.
+    \item \lr{colsep = 8pt}: فاصله‌ی داخلی
+    ستون‌ها.
+    \item \lr{rowsep = 4pt}: فاصله‌ی داخلی
+    ردیف‌ها.
+    \item \lr{row\{1\} = \{font=\textbackslash bfseries\}}:
+    ردیف اول پررنگ.
+\end{itemize}
+
+\mnote{تنظیمات \lr{tblr} با کاما از هم جدا می‌شوند. ترتیب آن‌ها مهم نیست.}
+
+\section{انواع ستون}
+\label{sec:tables-columns}
+
+\lr{MatinBook} از سه نوع ستون پشتیبانی می‌کند:
+
+\begin{itemize}
+    \item \lr{l}: ستون چپ‌چین (برای متن
+    لاتین).
+    \item \lr{c}: ستون وسط‌چین (برای اعداد
+    یا نمادها).
+    \item \lr{X[c]}: ستون خودکار با تراز
+    وسط (برای متن فارسی).
+\end{itemize}
+
+\subsection{ستون \lr{X} در \lr{tabularray}}
+\label{sec:tables-x-column}
+
+ستون \lr{X} یک ستون \textbf{خودکار} است که
+عرض آن به‌طور خودکار محاسبه می‌شود. می‌توانید
+تراز آن را با \lr{[c]}، \lr{[l]} یا \lr{[r]}
+تعیین کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+colspec = {l l X[c] X[c]}
+\end{minted}
+\end{latin}
+
+\mnote{ستون \lr{X} فقط در \lr{tabularray} وجود دارد و در \lr{tabular} معمولی کار نمی‌کند.}
+
+\subsection{ستون‌های \lr{p} (برای جدول‌های قدیمی)}
+\label{sec:tables-p-columns}
+
+\lr{MatinBook} سه نوع ستون \lr{p} هم ارائه می‌دهد
+که برای \env{tabular} معمولی کار می‌کنند:
+
+\begin{itemize}
+    \item \lr{L\{width\}}: ستون چپ‌چین.
+    \item \lr{R\{width\}}: ستون راست‌چین.
+    \item \lr{C\{width\}}: ستون وسط‌چین.
+\end{itemize}
+
+\mnote{این ستون‌ها فقط برای سازگاری با کدهای قدیمی نگه داشته شده‌اند. برای جدول‌های جدید، از \lr{tblr} و ستون \lr{X} استفاده کنید.}
+
+\section{عرض جدول}
+\label{sec:tables-width}
+
+برای اینکه جدول دقیقاً به عرض متن بچسبد، از
+\lr{width = \textbackslash textwidth} استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l l X[c] X[c]},
+    ...
+}
+\end{minted}
+\end{latin}
+
+\mnote{اگر از \lr{width} استفاده نکنید، عرض جدول به‌طور خودکار محاسبه می‌شود و ممکن است بیشتر از عرض متن شود.}
+
+\subsection{جدول‌های باریک}
+\label{sec:tables-narrow}
+
+برای جدول‌های باریک (مثلاً ۲ ستون)، می‌توانید
+از عرض کمتر استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tblr}{
+    width = 0.5\textwidth,
+    colspec = {c c},
+    ...
+}
+\end{minted}
+\end{latin}
+
+\section{خطوط جدول}
+\label{sec:tables-rules}
+
+\lr{tabularray} از سه نوع خط پشتیبانی می‌کند:
+
+\begin{itemize}
+    \item \lr{hlines}: خطوط افقی بین همه‌ی
+    ردیف‌ها.
+    \item \lr{vlines}: خطوط عمودی بین همه‌ی
+    ستون‌ها.
+    \item \lr{hlines, vlines}: هر دو.
+\end{itemize}
+
+\subsection{خطوط انتخابی}
+\label{sec:tables-selective-rules}
+
+می‌توانید خطوط را برای ردیف یا ستون خاصی تعیین
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tblr}{
+    hline{1,Z} = {1pt},       % |\pc{خط ضخیم در بالا و پایین}|%
+    hline{2} = {0.5pt},        % |\pc{خط نازک بعد از ردیف اول}|%
+    ...
+}
+\end{minted}
+\end{latin}
+
+\mnote{\lr{Z} به معنای «آخرین ردیف» است. \lr{1,Z} یعنی ردیف اول و آخر.}
+
+\section{رنگ در جدول}
+\label{sec:tables-color}
+
+\lr{tabularray} از رنگ‌آمیزی سلول‌ها پشتیبانی
+می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tblr}{
+    row{1} = {bg=matinblue!20},    % |\pc{پس‌زمینه‌ی ردیف اول}|%
+    cell{2}{3} = {bg=matingreen!20}, % |\pc{سلول خاص}|%
+    ...
+}
+\end{minted}
+\end{latin}
+
+\mnote{برای رنگ‌آمیزی، از پالت \lr{MatinBook} استفاده کنید: \lr{matinblue}، \lr{matingreen}، \lr{matinorange} و...}
+
+\subsection{مثال کامل با رنگ}
+\label{sec:tables-color-example}
+
+\begin{matintable}{مقایسه‌ی الگوریتم‌ها با رنگ}{tab:colored}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries, bg=matinblue!20},
+}
+الگوریتم & پیچیدگی & کاربرد \\
+مرتب‌سازی سریع & \lr{$O(n \log n)$} & \textcolor{matingreen}{سریع} \\
+مرتب‌سازی ادغامی & \lr{$O(n \log n)$} & \textcolor{matingreen}{پایدار} \\
+مرتب‌سازی حبابی & \lr{$O(n^2)$} & \textcolor{matinred}{کند} \\
+\end{tblr}
+\end{matintable}
+
+\section{ادغام سلول‌ها}
+\label{sec:tables-merge}
+
+\lr{tabularray} از ادغام سلول‌ها پشتیبانی می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tblr}{
+    cell{1}{1} = {r=2}{c},   % |\pc{ادغام دو ردیف}|%
+    cell{1}{2} = {c=2}{c},   % |\pc{ادغام دو ستون}|%
+}
+\end{minted}
+\end{latin}
+
+\mnote{در \lr{tabularray}، ادغام سلول‌ها با \lr{r} (ردیف) و \lr{c} (ستون) انجام می‌شود.}
+
+\section{جدول‌های چندصفحه‌ای}
+\label{sec:tables-multipage}
+
+برای جدول‌های طولانی که بیش از یک صفحه هستند،
+از \lr{longtblr} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{longtblr}{
+    width = \textwidth,
+    colspec = {l l X[c]},
+    hlines, vlines,
+    rowhead = 1,
+}
+|\pc{نوع}| & |\pc{مقدار}| & |\pc{توضیحات}| \\
+...
+\end{longtblr}
+\end{minted}
+\end{latin}
+
+\mnote{گزینه‌ی \lr{rowhead = 1} باعث می‌شود ردیف اول (سرصفحه) در هر صفحه‌ی جدید تکرار شود.}
+
+\section{جدول‌های فارسی و لاتین}
+\label{sec:tables-persian-latin}
+
+در جدول‌های \lr{MatinBook}، می‌توانید فارسی و
+لاتین را با هم ترکیب کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{matintable}{|\pc{ترکیب فارسی و لاتین}|}{tab:mixed}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+|\pc{مفهوم}| & |\pc{معادل لاتین}| \\
+|\pc{الگوریتم}| & \lr{Algorithm} \\
+|\pc{برنامه‌نویسی}| & \lr{Programming} \\
+\end{tblr}
+\end{matintable}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{matintable}{ترکیب فارسی و لاتین}{tab:mixed}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+مفهوم & معادل لاتین \\
+الگوریتم & \lr{Algorithm} \\
+برنامه‌نویسی & \lr{Programming} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{در جدول‌ها، متن لاتین باید داخل \lr{\textbackslash lr\{...\}} قرار گیرد. متن فارسی نیازی به \lr{\textbackslash lr} ندارد.}
+
+\section{جدول در حالت تمام‌عرض}
+\label{sec:tables-fullwidth}
+
+اگر جدول شما پهن است و به فضای بیشتری نیاز
+دارد، می‌توانید از عرض کامل متن استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {X[l] X[c] X[c] X[c] X[c]},
+    ...
+}
+\end{minted}
+\end{latin}
+
+\mnote{عرض \lr{\textbackslash textwidth} در متن اصلی حدود \lr{۱۰.۳} سانتی‌متر است. در پیش‌متن و پس‌متن، این عرض بیشتر است.}
+
+\section{ارجاع به جدول}
+\label{sec:tables-references}
+
+برای ارجاع به جدول، از \cmd{cref} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{جدول}|\cref{tab:sample}|\pc{نمونه‌ای از جدول‌های}|\lr{MatinBook}|\pc{است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: جدول \cref{tab:sample} نمونه‌ای از جدول‌های
+\lr{MatinBook} است.
+
+\mnote{نام‌گذاری برچسب جدول‌ها با پیشوند \lr{tab:} انجام می‌شود: \lr{tab:sample}.}
+
+\section{خطاهای رایج}
+\label{sec:tables-mistakes}
+
+\subsection{استفاده از \lr{tabularx}}
+\label{sec:tables-mistake-tabularx}
+
+\lr{tabularx} با \lr{xepersian} ناسازگار است و
+خطای زیر را می‌دهد:
+
+\begin{latin}
+\begin{minted}{text}
+Package array: Illegal pream-token
+  (\TX@col@width): `c' used.
+\end{minted}
+\end{latin}
+
+\textbf{راه‌حل:} به‌جای \lr{tabularx} از
+\lr{tabularray} استفاده کنید.
+
+\subsection{عرض ثابت در ستون}
+\label{sec:tables-mistake-fixed-width}
+
+اگر از عرض ثابت (مثل \lr{C\{3cm\}}) استفاده
+کنید، ممکن است جدول سرریز کند.
+
+\textbf{راه‌حل:} از ستون \lr{X[c]} استفاده کنید
+که عرض آن خودکار است.
+
+\subsection{فراموش کردن \cmd{lr} در سلول‌های لاتین}
+\label{sec:tables-mistake-lr}
+
+اگر متن لاتین در سلول جدول را بدون \cmd{lr}
+بنویسید، به‌صورت نامفهوم نمایش داده می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+|\pc{الگوریتم}| & Algorithm \\
+
+% |\pc{درست}|:
+|\pc{الگوریتم}| & \lr{Algorithm} \\
+\end{minted}
+\end{latin}
+
+\section{تمرین‌ها}
+\label{sec:tables-exercises}
+
+\begin{exercise}
+    یک جدول دو ستونی بسازید که عرض آن دقیقاً
+    به عرض متن بچسبد.
+    \label{exc:tables-basic}
+\end{exercise}
+
+\begin{exercise}
+    یک جدول با چهار ستون بسازید که دو ستون
+    آن لاتین و دو ستون فارسی باشد.
+    \label{exc:tables-mixed}
+\end{exercise}
+
+\begin{exercise}
+    یک جدول با رنگ‌آمیزی ردیف اول و یک سلول
+    خاص بسازید.
+    \label{exc:tables-color}
+\end{exercise}
+
+\begin{exercise}
+    یک جدول طولانی بسازید که به دو صفحه
+    تقسیم شود و از \lr{longtblr} استفاده کنید.
+    \label{exc:tables-long}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:tables-summary}
+
+در این فصل، با جدول در \lr{MatinBook} آشنا
+شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از \lr{tabularray}
+    استفاده می‌کند که با \lr{xepersian} سازگار
+    است.
+
+    \item محیط \env{matintable} بخش‌های تکراری
+    جدول را خودکار می‌کند.
+
+    \item محیط \env{tblr} تنظیمات جدول را تعیین
+    می‌کند: عرض، ستون‌ها، خطوط، فاصله‌ها.
+
+    \item سه نوع ستون: \lr{l}، \lr{c}، \lr{X[c]}.
+
+    \item برای عرض دقیق، از
+    \lr{width = \textbackslash textwidth} استفاده
+    کنید.
+
+    \item خطوط جدول با \lr{hlines} و \lr{vlines}
+    تعیین می‌شوند.
+
+    \item رنگ‌آمیزی با \lr{bg=...} انجام می‌شود.
+
+    \item جدول‌های طولانی با \lr{longtblr} ساخته
+    می‌شوند.
+
+    \item خطاهای رایج شامل استفاده از
+    \lr{tabularx}، عرض ثابت، و فراموش کردن
+    \cmd{lr} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:margin-notes})، با
+یادداشت حاشیه‌ای در \lr{MatinBook} آشنا
+می‌شوید و یاد می‌گیرید که چگونه از فضای
+حاشیه‌ی پهن استفاده کنید.
