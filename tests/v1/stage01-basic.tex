@@ -13,6 +13,7 @@
 %     8. Cross-referencing (cleveref with Persian names)
 %     9. Margin notes (RTL)
 %    10. Full document structure (cover → back cover)
+%    11. Back cover API (\authorbio + \makebackcover)
 %
 % Compilation:
 %   xelatex -shell-escape stage01-basic.tex
@@ -100,10 +101,10 @@
 \lr{\matinbookversion} است. هدف آن، اعتبارسنجی سیستم‌های بنیادین کلاس
 پیش از آزمودن ماژول‌های تخصصی است.
 
-در این آزمون، ده زیرسیستم کلیدی بررسی می‌شوند: بارگذاری کلاس و فراداده،
+در این آزمون، یازده زیرسیستم کلیدی بررسی می‌شوند: بارگذاری کلاس و فراداده،
 تفکیک هندسه‌ی پیش‌متن و متن اصلی، سیستم رنگ \lr{CMYK}، سیستم فونت،
 عملگرهای ریاضی، خانواده‌های جعبه، تایپوگرافی، ارجاع هوشمند، یادداشت‌های
-حاشیه‌ای و ساختار کامل سند از جلد تا پشت‌جلد.
+حاشیه‌ای، ساختار کامل سند از جلد تا پشت‌جلد، و \lr{API} جدید پشت جلد.
 
 هر بخش با مثال‌های عملی و ارجاعات متقابل همراه است تا خواننده بتواند
 درستی رفتار هر زیرسیستم را در بافت واقعی یک کتاب ارزیابی کند.
@@ -666,7 +667,56 @@ Mathematical symbols in text: \(\alpha, \beta, \gamma, \delta, \epsilon\)
 سیستم ارجاع هوشمند \lr{MatinBook} به‌درستی کار می‌کند.
 
 %========================================================================
-% CHAPTER 7 — SUMMARY
+% CHAPTER 7 — BACK COVER API
+%========================================================================
+\chapter{پشت جلد}
+\label{chap:backcover}
+
+\section{ساختار جدید پشت جلد}
+\label{sec:backcover-structure}
+
+در نسخه‌ی \lr{\matinbookversion}، پشت جلد بازطراحی شده است.
+المان‌های ریاضیاتی تزئینی که در نسخه‌های پیشین وجود داشتند،
+حذف شده‌اند و جای آن‌ها را دو فضای ایستاتیک گرفته است:
+
+\begin{enumerate}
+    \item \textbf{درباره این کتاب} — بلوک اصلی و بزرگ‌تر.
+    \item \textbf{درباره این نویسنده} — بلوک ثانویه و کوچک‌تر.
+\end{enumerate}
+
+فاصله‌ی میان دو بلوک، ۰.۷ سانتی‌متر است. هر دو بلوک درون
+یک \lr{minipage} با ارتفاع ثابت قرار می‌گیرند تا متن طولانی
+باعث سرریز به صفحه‌ی دوم نشود.
+
+\section{API جدید: \texttt{\textbackslash authorbio}}
+\label{sec:backcover-authorbio}
+
+دستور جدید \lr{\textbackslash authorbio\{...\}} برای تعریف
+متن مربوط به نویسنده اضافه شده است. این دستور باید
+\textbf{قبل} از \lr{\textbackslash makebackcover} فراخوانی شود:
+
+\begin{latin}
+\begin{verbatim}
+\authorbio{متن درباره نویسنده}
+
+\makebackcover{متن درباره کتاب}
+\end{verbatim}
+\end{latin}
+
+اگر \lr{\textbackslash authorbio} فراخوانی نشود، بلوک
+«درباره این نویسنده» به‌کلی حذف می‌شود و فقط بلوک
+«درباره این کتاب» نمایش داده می‌شود.
+
+\section{سازگاری با نسخه‌های پیشین}
+\label{sec:backcover-compat}
+
+\lr{API} قبلی \lr{\textbackslash makebackcover\{...\}} که
+فقط یک آرگومان می‌گرفت، همچنان معتبر است. کتاب‌هایی که
+از \lr{\textbackslash authorbio} استفاده نمی‌کنند، بدون
+هیچ تغییری کامپایل می‌شوند.
+
+%========================================================================
+% CHAPTER 8 — SUMMARY
 %========================================================================
 \chapter{خلاصه‌ی نتایج}
 \label{chap:summary}
@@ -690,6 +740,7 @@ Mathematical symbols in text: \(\alpha, \beta, \gamma, \delta, \epsilon\)
     \item \textcolor{matingreen}{\textbf{تایپوگرافی:}} \lr{microtype} فعال
     \item \textcolor{matingreen}{\textbf{ارجاع هوشمند:}} \lr{cleveref} فارسی
     \item \textcolor{matingreen}{\textbf{یادداشت حاشیه:}} \lr{\textbackslash mnote}
+    \item \textcolor{matingreen}{\textbf{پشت جلد:}} دو بلوک ایستاتیک + \lr{\textbackslash authorbio}
 \end{itemize}
 
 \section{نتیجه‌گیری}
@@ -716,6 +767,16 @@ Mathematical symbols in text: \(\alpha, \beta, \gamma, \delta, \epsilon\)
 %------------------------------------------------------------------------
 % BACK COVER
 %------------------------------------------------------------------------
+% Author bio (new in v1.1) — demonstrates the second block on the
+% back cover. Must be called BEFORE \makebackcover.
+%------------------------------------------------------------------------
+\authorbio{%
+    تیم توسعه‌ی \lr{MatinBook}، گروهی از پژوهشگران و برنامه‌نویسان
+    فارسی‌زبان است که با هدف ارائه‌ی یک راه‌حل حرفه‌ای برای
+    حروف‌چینی کتاب‌های فنی فارسی فعالیت می‌کند. این پروژه حاصل
+    سال‌ها تجربه در حوزه‌ی نشر دیجیتال و برنامه‌نویسی است.
+}
+
 \makebackcover{%
     این سند، نخستین آزمون از مجموعه‌ی آزمون‌های یکپارچگی
     \lr{MatinBook} نسخه‌ی \lr{\matinbookversion} است.
@@ -730,6 +791,7 @@ Mathematical symbols in text: \(\alpha, \beta, \gamma, \delta, \epsilon\)
         \item خانواده‌های جعبه
         \item تایپوگرافی و یادداشت حاشیه
         \item ارجاع هوشمند
+        \item \lr{API} جدید پشت جلد
     \end{itemize}
 }
 

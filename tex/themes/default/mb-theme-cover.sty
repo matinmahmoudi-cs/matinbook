@@ -15,12 +15,63 @@
 \RequirePackage{amsmath}
 \usetikzlibrary{calc,positioning,arrows.meta}
 
-% Coordinated palette; respect colors supplied by the host project.
+%========================================================================
+% MB-THEME-COVER — FRONT AND BACK COVER
+%========================================================================
+%
+% Front cover:
+%   Full-bleed navy background, crimson wedge, gold orbit, damped
+%   oscillation and logarithmic growth curves, a semi-transparent
+%   IDE-style C++ code specimen, compact equations, and direction
+%   arrows. The design is unchanged from v1.1.
+%
+% Back cover (redesigned):
+%   Static two-block layout:
+%     - Ivory background (coverpaper).
+%     - A single thin crimson rule at the top (visual anchor).
+%     - Two static blocks separated by exactly 0.7cm:
+%         1. "درباره این کتاب" — larger, primary block.
+%         2. "درباره این نویسنده" — smaller, secondary block.
+%     - A footer with MatinBook, the repository URL, and the
+%       source link.
+%     - All content is placed inside a fixed-height minipage
+%       (\dimexpr\paperheight-8.9cm\relax), so no amount of text
+%       can overflow onto a second page.
+%
+% RTL note (important):
+%   A `minipage` does NOT inherit the surrounding RTL direction.
+%   Without an explicit RTL group, the content of the back cover
+%   renders left-to-right, which is wrong for Persian.
+%
+%   To fix this, the back cover body is wrapped in a `\beginR ...
+%   \endR` group (from xepersian/bidi). This forces the minipage
+%   contents to be laid out right-to-left.
+%
+%   Additionally, we use `\raggedright` instead of `\raggedleft`.
+%   In an RTL context, `\raggedright` means "flush to the right
+%   edge of the line", which is the desired alignment for Persian.
+%
+% Author bio API:
+%   \authorbio{متن درباره نویسنده}
+%     Optional. If set, the "About the Author" block is rendered.
+%     If not set, the block is omitted and only the "About This
+%     Book" block is shown.
+%
+%   This preserves backward compatibility with the previous
+%   \makebackcover{blurb} API.
+%
+%========================================================================
+
+
+%------------------------------------------------------------------------
+% Coordinated palette
+%------------------------------------------------------------------------
 \providecolor{matincrimson}{RGB}{166,25,46}
 \providecolor{matinnavy}{RGB}{30,42,58}
 \providecolor{matingold}{RGB}{201,162,39}
 \providecolor{matinivory}{RGB}{242,238,227}
 \providecolor{matinmediumgray}{RGB}{145,151,157}
+
 \colorlet{coverprimary}{matinnavy}
 \colorlet{coveraccent}{matincrimson}
 \colorlet{covergray}{matinmediumgray}
@@ -32,13 +83,27 @@
 \colorlet{coverlight}{matinlightgray}
 \colorlet{coverdark}{matindarkgray}
 
-% Public metadata hooks; projects may define these before loading this package.
+
+%------------------------------------------------------------------------
+% Public metadata hooks
+%------------------------------------------------------------------------
 \providecommand{\repository}{github.com/matinmahmoudi-cs/matinbook}
 \providecommand{\coverabout}{درباره این کتاب}
+\providecommand{\coverauthorbio}{درباره این نویسنده}
 \providecommand{\coversource}{دریافت نسخهٔ دیجیتال}
 \providecommand{\isbn}{978-600-000000-0-0}
 
-% Full-bleed navy front, crimson wedge, preserved grid/orbit, and subtle math art.
+
+%========================================================================
+% AUTHOR BIO HOOK
+%========================================================================
+\newcommand{\matin@authorbio}{}
+\newcommand{\authorbio}[1]{\gdef\matin@authorbio{#1}}
+
+
+%========================================================================
+% FRONT COVER
+%========================================================================
 \newcommand{\mb@frontart}{%
   \begin{tikzpicture}[remember picture,overlay]
     \fill[coverprimary] (current page.north west) rectangle (current page.south east);
@@ -49,7 +114,6 @@
     \draw[white,opacity=.78,line width=.55pt]
       ([xshift=.58cm,yshift=-.58cm]current page.north west) rectangle
       ([xshift=-.58cm,yshift=.58cm]current page.south east);
-    % Low-contrast coordinate grid.
     \foreach \x in {1,...,20}{%
       \draw[white,opacity=.045,line width=.25pt]
         ([xshift=\x cm]current page.north west) --
@@ -58,12 +122,10 @@
       \draw[white,opacity=.045,line width=.25pt]
         ([yshift=-\y cm]current page.north west) --
         ([yshift=-\y cm]current page.north east);}
-    % Preserved large gold ellipse/orbit.
     \begin{scope}[shift={([xshift=-5.5cm,yshift=-11.5cm]current page.north east)},rotate=-18]
       \draw[covergold,opacity=.34,line width=.9pt]
         (0,0) ellipse [x radius=4.25cm,y radius=2.25cm];
     \end{scope}
-    % Damped oscillation and logarithmic growth; faintly layered over the grid.
     \begin{scope}[shift={([xshift=11.2cm,yshift=-12.2cm]current page.north west)}]
       \draw[covergold,opacity=.78,line width=1.05pt,smooth,domain=0:6,samples=100,variable=\x]
         plot (\x,{1.25+0.78*exp(-0.3*\x)*sin(deg(2*\x))});
@@ -74,7 +136,6 @@
       \draw[coveraccent,opacity=.8,line width=.7pt,-{Stealth[length=1.8mm]}]
         (2.65,.47) -- (3.2,.27);
     \end{scope}
-    % Semi-transparent IDE-style C++ specimen.
     \node[anchor=north west,draw=covergold,draw opacity=.48,fill=white,fill opacity=.075,
       rounded corners=2pt,line width=.65pt,inner sep=7pt,text=white!88,
       text opacity=.92,align=left,font=\ttfamily\scriptsize]
@@ -87,7 +148,6 @@
         \texttt{    auto [u, v] = y;}\\[-1pt]
         \texttt{    return f(u, v);}}\\[-1pt]
         \texttt{  \};}};
-    % Compact equations in fine gold typography.
     \node[anchor=north west,text=white!84,align=left,font=\small]
       at ([xshift=1.35cm,yshift=-19.1cm]current page.north west)
       {$\displaystyle e^{i\pi}+1=0\qquad
@@ -97,7 +157,6 @@
       {$\displaystyle \frac{d}{dt}\frac{\partial L}{\partial\dot q}
         -\frac{\partial L}{\partial q}=0\qquad
         y_{n+1}=y_n+h\sum_i b_i k_i$};
-    % Direction arrows and target nodes echo the reference artwork.
     \draw[coveraccent,line width=.8pt,-{Stealth[length=2mm]}]
       ([xshift=-1.35cm,yshift=-7.1cm]current page.north east) --
       ([xshift=-4.0cm,yshift=-7.1cm]current page.north east);
@@ -113,7 +172,6 @@
   \end{tikzpicture}%
 }
 
-% Front cover API: #1 title, #2 subtitle, #3 author, #4 date or edition.
 \newcommand{\makecover}[4]{%
   \begin{titlepage}\thispagestyle{empty}
     \mb@frontart
@@ -143,167 +201,72 @@
   \end{titlepage}%
 }
 
-% Ivory reverse: structured mathematical elements with zero overlap on text/blurb.
+
+%========================================================================
+% BACK COVER — STATIC, TWO-BLOCK LAYOUT (RTL)
+%========================================================================
+% Ivory background + thin crimson rule at the top. No decorative
+% mathematical elements. Two static blocks separated by 0.7cm.
+% All content lives inside a fixed-height minipage to prevent
+% overflow onto a second page.
+%
+% The whole body is wrapped in \beginR...\endR so that the minipage
+% contents are laid out right-to-left, as required for Persian.
+%------------------------------------------------------------------------
 \newcommand{\mb@backart}{%
   \begin{tikzpicture}[remember picture,overlay]
     \fill[coverpaper] (current page.north west) rectangle (current page.south east);
-    
-    % Top margin line
     \draw[coveraccent,line width=.85pt]
       ([xshift=.65cm,yshift=-.62cm]current page.north west) --
       ([xshift=-.65cm,yshift=-.62cm]current page.north east);
-
-    % ============================================================
-    % Top decorative zone: strictly kept above y = -6.4cm (clear of 7.0cm)
-    % ============================================================
-    \begin{scope}[shift={(current page.north west)}]
-
-      %========= ROW 1 (y ≈ -1.0 to -2.0): Wave dynamics =========
-      \draw[coveraccent, opacity=.45, line width=0.9pt, smooth, samples=100]
-        plot[domain=0.8:10.5, variable=\x]
-        (\x, {-1.4 + 0.38*sin(deg(1.6*\x))});
-      \draw[coveraccent, opacity=.25, line width=0.6pt, smooth, samples=100]
-        plot[domain=0.8:10.5, variable=\x]
-        (\x, {-1.4 + 0.38*sin(deg(1.6*\x) + 45)});
-      \draw[coveraccent, opacity=.15, line width=0.4pt, smooth, samples=100]
-        plot[domain=0.8:10.5, variable=\x]
-        (\x, {-1.4 + 0.38*sin(deg(1.6*\x) + 90)});
-
-      % Small coordinate mini-plot placed neatly at the top-right
-      \begin{scope}[shift={(11.2, -2.1)}, xscale=0.48, yscale=0.5]
-        \fill[white,opacity=.45] (0,0) rectangle (14.0,2.6);
-        \foreach \x in {0,2,...,14}{\draw[covergray,opacity=.2,line width=.25pt] (\x,0) -- (\x,2.6);}
-        \foreach \y in {0,0.8,1.6,2.4}{\draw[covergray,opacity=.2,line width=.25pt] (0,\y) -- (14.0,\y);}
-        \draw[coverprimary,opacity=.7,line width=.5pt,-{Stealth[length=1.4mm]}] (0.2,.3) -- (13.8,.3);
-        \draw[coverprimary,opacity=.7,line width=.5pt,-{Stealth[length=1.4mm]}] (.3,.1) -- (.3,2.4);
-        \draw[coveraccent,line width=.9pt,smooth,domain=.3:13.5,samples=80,variable=\x]
-          plot (\x,{1.3 + 0.7*sin(40*\x)*exp(-.05*\x)});
-        \node[anchor=south west,text=coverprimary,font=\tiny\bfseries]
-          at (0.4, 2.65) {$x(t), y(t)$};
-      \end{scope}
-
-      %========= ROW 2 (y ≈ -2.8 to -3.2): Discrete Math & Analysis =========
-      \node[text=covergold, font=\small, anchor=west]
-        at (0.8, -2.9) {$\displaystyle \int_a^b f(x)\,dx$};
-      \node[text=covergold, font=\small, anchor=west]
-        at (4.2, -2.9) {$\displaystyle \sum_{n=1}^{\infty} a_n$};
-      \node[text=covergold, font=\small, anchor=west]
-        at (7.6, -2.9) {$\displaystyle \frac{\partial f}{\partial x}$};
-      \node[text=covergold, font=\small, anchor=west]
-        at (11.0, -2.9) {$\displaystyle \nabla \cdot \vec{F}$};
-      \node[text=covergold, font=\small, anchor=west]
-        at (14.4, -2.9) {$\displaystyle \det(A - \lambda I) = 0$};
-
-      %========= ROW 3 (y ≈ -4.1 to -5.8): Deep Learning / Graph / Code =========
-
-      %--- Neural network representation (x = 0.8 to 2.8) ---
-      \begin{scope}[shift={(0.8, -5.2)}]
-        \foreach \x in {0, 0.9, 1.8} {
-          \foreach \y in {0, 0.45, 0.9} {
-            \fill[coverprimary] (\x, \y) circle (1.2pt);
-          }
-        }
-        \foreach \x in {0, 0.9} {
-          \foreach \y in {0, 0.45, 0.9} {
-            \foreach \yy in {0, 0.45, 0.9} {
-              \draw[coverprimary, opacity=.22, line width=0.25pt]
-                (\x, \y) -- (\x+0.9, \yy);
-            }
-          }
-        }
-      \end{scope}
-      \node[text=coverprimary, font=\tiny\ttfamily, anchor=west]
-        at (0.8, -5.7) {neural net};
-
-      %--- Graph structure (x = 4.2 to 7.0) ---
-      \begin{scope}[shift={(4.2, -5.0)}]
-        \draw[coveraccent, opacity=.7, line width=0.6pt]
-          (0,0) -- (0.5,0.3) -- (1.0,-0.1) -- (1.5,0.4) -- (2.0,0) -- (2.5,0.3);
-        \foreach \x/\y in {0/0, 0.5/0.3, 1.0/-0.1, 1.5/0.4, 2.0/0, 2.5/0.3} {
-          \fill[coveraccent] (\x, \y) circle (1.1pt);
-        }
-      \end{scope}
-      \node[text=coverprimary, font=\tiny\ttfamily, anchor=west]
-        at (4.2, -5.7) {graph model};
-
-      %--- Core identities (x = 8.2 to 11.5) ---
-      \node[text=covergold, opacity=.9, font=\footnotesize, anchor=west]
-        at (8.2, -4.5) {$e^{i\pi} + 1 = 0$};
-      \node[text=covergold, opacity=.9, font=\footnotesize, anchor=west]
-        at (8.2, -5.2) {$y' = f(x, y)$};
-
-      %--- Source constructs (x = 12.8 to 15.5) ---
-      \node[text=coveraccent, opacity=.8, font=\ttfamily\footnotesize, anchor=west]
-        at (12.8, -4.5) {<template>};
-      \node[text=coveraccent, opacity=.8, font=\ttfamily\footnotesize, anchor=west]
-        at (12.8, -5.2) {auto lambda};
-
-      % Ambient subtle glyphs in background
-      \node[text=coveraccent, opacity=.1, font=\LARGE, anchor=west]
-        at (16.2, -4.6) {$\sum$};
-      \node[text=coverprimary, opacity=.08, font=\LARGE, anchor=west]
-        at (16.2, -5.6) {$\int$};
-
-    \end{scope}
-
-    % ============================================================
-    % Compact Concept DAG (Left gutter layout: x = 0.8 to 2.6cm, y = -8.5 to -15.5cm)
-    % Keeps full clearance for Persian blurb on the right!
-    % ============================================================
-    \begin{scope}[shift={([xshift=0.9cm,yshift=-8.8cm]current page.north west)},
-      every node/.style={draw=coveraccent!90, fill=coverpaper, line width=.55pt,
-        rounded corners=2pt, minimum width=9mm, minimum height=4.5mm,
-        inner sep=1pt, text=coverprimary, font=\tiny\bfseries, align=center}]
-      
-      % Directed DAG hierarchy
-      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.6, 0.0) -- (0.2, -0.9);
-      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.6, 0.0) -- (1.1, -0.9);
-      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.2, -1.3) -- (0.2, -2.1);
-      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (1.1, -1.3) -- (1.1, -2.1);
-      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.2, -2.5) -- (0.6, -3.3);
-      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (1.1, -2.5) -- (0.6, -3.3);
-      \draw[covergold, line width=.6pt, -{Stealth[length=1.3mm]}] (0.6, -3.7) -- (0.6, -4.5);
-
-      \node at (0.6,  0.0) {A};
-      \node at (0.2, -1.1) {B};
-      \node at (1.1, -1.1) {C};
-      \node at (0.2, -2.3) {D};
-      \node at (1.1, -2.3) {E};
-      \node at (0.6, -3.5) {F};
-      \node at (0.6, -4.7) {G};
-    \end{scope}
-
-    % ============================================================
-    % Cleanly anchored barcode strip and ISBN (Bottom Right)
-    % ============================================================
-    \begin{scope}[shift={([xshift=-7.2cm,yshift=-25.0cm]current page.north east)}]
-      \draw[coverprimary,line width=.55pt] (0,0) rectangle (5.85,1.52);
-      \foreach \x/\w in {0.22/.04,0.38/.08,0.62/.035,0.78/.06,1.02/.04,1.25/.09,1.48/.035,1.67/.06,1.92/.04,2.16/.08,2.41/.035,2.58/.06,2.82/.04,3.06/.09,3.31/.035,3.48/.06,3.73/.04,3.98/.08,4.22/.035,4.4/.06,4.65/.04,4.9/.09,5.16/.035,5.34/.06}{%
-        \fill[coverprimary] (\x,.23) rectangle ({\x+\w},1.12);}
-      \node[anchor=north east,text=coverprimary,font=\small\ttfamily]
-        at (5.82,-.08) {ISBN: \isbn};
-    \end{scope}
   \end{tikzpicture}%
 }
 
-% Back cover API: #1 is the description blurb.
 \newcommand{\makebackcover}[1]{%
   \clearpage
-  \begin{titlepage}\thispagestyle{empty}
-    \mb@backart
-    \vspace*{7.0cm} % Clear zone: art sits entirely above this line
+  \thispagestyle{empty}%
+  \mb@backart
+  \vspace*{6.5cm}%
+  \noindent
+  \beginR
+  \begin{minipage}[t][\dimexpr\paperheight-8.9cm\relax][s]{\textwidth}
+    %--------------------------------------------------------------
+    % Block 1 — About this book (primary, larger)
+    %--------------------------------------------------------------
     \begin{flushright}
-      {\color{coverprimary}\fontsize{22}{29}\selectfont\bfseries\coverabout\par}
-      \vspace{.32cm}
+      {\color{coverprimary}\fontsize{20}{26}\selectfont\bfseries\coverabout\par}
+      \vspace{.28cm}
       \noindent{\color{coveraccent}\rule{\linewidth}{.8pt}}\par
     \end{flushright}
-    \vspace{.48cm}
+    \vspace{.42cm}
     \begin{flushright}
-      % Left margin reserved for the concept tree DAG (0.78 width prevents overlapping with gutter)
-      \begin{minipage}{.78\textwidth}
-        \raggedleft\color{coverprimary}\fontsize{12}{20}\selectfont #1\par
+      \begin{minipage}{.92\textwidth}
+        \raggedright\color{coverprimary}\fontsize{12}{20}\selectfont #1\par
       \end{minipage}
     \end{flushright}
+    %--------------------------------------------------------------
+    % Gap between the two blocks — 0.7cm
+    %--------------------------------------------------------------
+    \vspace{0.7cm plus 0.2cm minus 0.2cm}
+    %--------------------------------------------------------------
+    % Block 2 — About the author (secondary, smaller)
+    %--------------------------------------------------------------
+    \ifx\matin@authorbio\empty\else
+      \begin{flushright}
+        {\color{coverprimary}\fontsize{15}{20}\selectfont\bfseries\coverauthorbio\par}
+        \vspace{.22cm}
+        \noindent{\color{coveraccent}\rule{\linewidth}{.6pt}}\par
+      \end{flushright}
+      \vspace{.35cm}
+      \begin{flushright}
+        \begin{minipage}{.92\textwidth}
+          \raggedright\color{coverprimary}\fontsize{10}{16}\selectfont\matin@authorbio\par
+        \end{minipage}
+      \end{flushright}
+    \fi
+    %--------------------------------------------------------------
+    % Footer — pushed to the bottom of the fixed-height minipage
+    %--------------------------------------------------------------
     \vfill
     \begin{flushright}
       {\color{coverprimary}\fontsize{11}{15}\selectfont\bfseries MatinBook\par}
@@ -312,9 +275,14 @@
       \vspace{.1cm}
       {\color{covergold}\fontsize{10}{14}\selectfont\bfseries\coversource\par}
     \end{flushright}
-    \vspace*{2.2cm}
-  \end{titlepage}%
+  \end{minipage}%
+  \endR
+  \clearpage
 }
 
-\PackageInfo{mb-theme-cover}{Persian-first MatinBook v3.1 cover system loaded; compile with XeLaTeX and XePersian}
+
+%------------------------------------------------------------------------
+% Log
+%------------------------------------------------------------------------
+\PackageInfo{mb-theme-cover}{MatinBook v1.1 cover system loaded (front: full-color; back: static two-block RTL layout)}
 \endinput

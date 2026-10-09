@@ -21,6 +21,12 @@
 %%     no wide margin. Activated by \frontmattergeometry.
 %%   - Mainmatter (chapters): wide outer margin for margin notes.
 %%     Activated by \mainmattergeometry.
+%%   - Backmatter (bibliography, index): symmetric margins again.
+%%
+%% Back cover:
+%%   - \authorbio{...}    (optional) → second block "About the Author"
+%%   - \makebackcover{...}            → first block "About This Book"
+%%   If \authorbio is omitted, only the book blurb is rendered.
 %%
 
 \documentclass{matinbook}
@@ -35,6 +41,7 @@
 %========================================================================
 % These are used by \maketitle. \makecover uses its own arguments.
 % Keep them in sync to avoid inconsistencies.
+%------------------------------------------------------------------------
 \title{عنوان کتاب}
 \author{نام نویسنده}
 \date{مهر ۱۴۰۵}
@@ -189,8 +196,20 @@
 %------------------------------------------------------------------------
 % BACK COVER (must be at the very end)
 %------------------------------------------------------------------------
+% \authorbio{...} is optional. If provided, it is rendered as a
+% second block on the back cover, below the book blurb.
+% If omitted, only the book blurb is shown.
+%------------------------------------------------------------------------
+\authorbio{%
+    نام نویسنده، پژوهشگر حوزه‌ی الگوریتم و ریاضیات کاربردی است.
+    او سال‌ها در زمینه‌ی آموزش برنامه‌نویسی و ساختار داده
+    فعالیت کرده و مؤلف چند کتاب و مقاله در این حوزه است.
+}
+
 \makebackcover{%
-    توضیحات پشت جلد کتاب را اینجا بنویسید...
+    توضیحات پشت جلد کتاب را اینجا بنویسید. این متن می‌تواند
+    شامل معرفی کتاب، مخاطبان هدف، موضوعات پوشش داده شده و
+    ویژگی‌های برجسته‌ی اثر باشد.
 }
 
 \end{document}
