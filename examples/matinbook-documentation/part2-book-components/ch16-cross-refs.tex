@@ -1,0 +1,375 @@
+%%
+%% part2-book-components/ch16-cross-refs.tex
+%%
+%% Chapter 16: Cross-References — cleveref, hyperref,
+%% label conventions, and all reference commands.
+%%
+
+\chapter{ارجاع هوشمند}
+\label{chap:cross-refs}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:cross-refs-why}
+
+در کتاب‌های فنی و علمی، ارجاع دقیق به عناصر
+مختلف (معادله، قضیه، شکل، جدول، بخش) اهمیت
+ویژه‌ای دارد. خواننده باید بتواند به‌سرعت به
+مرجع مورد نظر برسد و از پیوستگی مطالب مطمئن
+شود.
+
+\lr{MatinBook} از \lr{cleveref} برای ارجاع
+هوشمند استفاده می‌کند. این بسته، نوع مرجع را
+به‌طور خودکار تشخیص می‌دهد و پیشوند مناسب
+(قضیه، شکل، جدول) را اضافه می‌کند.
+
+\mnote{پیش از \lr{cleveref}، برای هر نوع مرجع باید دستور جداگانه‌ای می‌نوشتیم: \lr{\textbackslash ref}، \lr{\textbackslash figref}، \lr{\textbackslash tabref} و... حالا فقط \lr{\textbackslash cref} کافی است.}
+
+\section{دستور \cmd{cref}}
+\label{sec:cross-refs-cref}
+
+دستور \cmd{cref} پرکاربردترین دستور ارجاع در
+\lr{MatinBook} است. این دستور، نوع مرجع را
+خودکار تشخیص می‌دهد:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{طبق}|\cref{thm:pythagoras-ch8}|\pc{، در هر مثلث قائم‌الزاویه...}|%
+\end{minted}
+\end{latin}
+
+خروجی: طبق \cref{thm:pythagoras-ch8}، در هر
+مثلث قائم‌الزاویه...
+
+\mnote{دستور \lr{\textbackslash cref} پیشوند مناسب را از فایل \lr{fa-IR.sty} می‌گیرد. مثلاً برای قضیه، «قضیه»؛ برای شکل، «شکل».}
+
+\subsection{مراجع مختلف}
+\label{sec:cross-refs-types}
+
+جدول \cref{tab:cref-types} پیشوندهای
+\cmd{cref} برای انواع مختلف مرجع را نشان
+می‌دهد.
+
+\begin{matintable}{پیشوندهای \lr{cref} برای انواع مرجع}{tab:cref-types}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & برچسب & خروجی \\
+معادله & \lr{eq:label} & معادله ۱.۱ \\
+قضیه & \lr{thm:label} & قضیه ۱.۱ \\
+لم & \lr{lem:label} & لم ۱.۱ \\
+نتیجه & \lr{cor:label} & نتیجه ۱.۱ \\
+گزاره & \lr{prop:label} & گزاره ۱.۱ \\
+تعریف & \lr{def:label} & تعریف ۱.۱ \\
+مثال & \lr{ex:label} & مثال ۱.۱ \\
+نکته & \lr{rem:label} & نکته ۱.۱ \\
+تمرین & \lr{exc:label} & تمرین ۱.۱ \\
+شکل & \lr{fig:label} & شکل ۱.۱ \\
+جدول & \lr{tab:label} & جدول ۱.۱ \\
+کد & \lr{code:label} & کد ۱.۱ \\
+الگوریتم & \lr{alg:label} & الگوریتم ۱.۱ \\
+فصل & \lr{chap:label} & فصل ۱ \\
+بخش & \lr{sec:label} & بخش ۱.۱ \\
+\end{tblr}
+\end{matintable}
+
+\section{دستورات کمکی}
+\label{sec:cross-refs-helpers}
+
+\lr{MatinBook} چند دستور کمکی برای ارجاع ارائه
+می‌دهد که همه به \cmd{cref} واگذار می‌شوند:
+
+\begin{itemize}
+    \item \cmd{thmref\{label\}}: معادل
+    \cmd{cref\{label\}} برای قضیه.
+    \item \cmd{lemref\{label\}}: برای لم.
+    \item \cmd{corref\{label\}}: برای نتیجه.
+    \item \cmd{propref\{label\}}: برای گزاره.
+    \item \cmd{defref\{label\}}: برای تعریف.
+    \item \cmd{exref\{label\}}: برای مثال.
+    \item \cmd{remref\{label\}}: برای نکته.
+    \item \cmd{excref\{label\}}: برای تمرین.
+\end{itemize}
+
+\mnote{این دستورات از نظر عملکردی معادل \lr{\textbackslash cref} هستند و فقط برای خوانایی بیشتر سورس کد نگه داشته شده‌اند.}
+
+\section{ارجاع به چند مرجع}
+\label{sec:cross-refs-multiple}
+
+\subsection{ارجاع گروهی}
+\label{sec:cross-refs-group}
+
+برای ارجاع به چند مرجع به‌طور هم‌زمان، کلیدها
+را با کاما جدا کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{طبق}|\cref{thm:pythagoras-ch8,def:graph-ch8}|\pc{، ...}|%
+\end{minted}
+\end{latin}
+
+خروجی: طبق \cref{thm:pythagoras-ch8,def:graph-ch8}، ...
+
+\mnote{در فارسی، \lr{\textbackslash cref\{a,b\}} به‌صورت «قضیه ۱.۱ و تعریف ۱.۲» نمایش داده می‌شود.}
+
+\subsection{ارجاع بازه‌ای}
+\label{sec:cross-refs-range}
+
+برای ارجاع به یک بازه‌ی پیوسته، از
+\cmd{crefrange} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{معادلات}|\crefrange{eq:abs}{eq:inner}|\pc{...}|%
+\end{minted}
+\end{latin}
+
+خروجی: معادلات \crefrange{eq:abs}{eq:inner}...
+
+\mnote{دستور \lr{\textbackslash crefrange} فقط برای مراجعی کار می‌کند که در یک دسته هستند (مثلاً سه معادله‌ی پیوسته).}
+
+\subsection{ارجاع با \cmd{Cref}}
+\label{sec:cross-refs-Cref}
+
+دستور \cmd{Cref} نسخه‌ی «حرف اول بزرگ» است.
+در فارسی تفاوتی با \cmd{cref} ندارد، چون
+فارسی حالت بزرگ و کوچک ندارد.
+
+\begin{latin}
+\begin{minted}{latex}
+\Cref{thm:pythagoras-ch8}
+\end{minted}
+\end{latin}
+
+\mnote{در انگلیسی، \lr{\textbackslash cref} می‌شود «theorem» و \lr{\textbackslash Cref} می‌شود «Theorem». در فارسی هر دو یکسان هستند.}
+
+\section{نام‌گذاری برچسب‌ها}
+\label{sec:cross-refs-labels}
+
+برای اینکه برچسب‌ها معنادار و یکتا باشند،
+از پیشوندهای استاندارد استفاده کنید:
+
+\begin{matintable}{پیشوندهای استاندارد برچسب}{tab:label-prefixes}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & پیشوند & مثال \\
+معادله & \lr{eq:} & \lr{eq:einstein} \\
+قضیه & \lr{thm:} & \lr{thm:pythagoras} \\
+لم & \lr{lem:} & \lr{lem:euclid} \\
+نتیجه & \lr{cor:} & \lr{cor:monotone} \\
+گزاره & \lr{prop:} & \lr{prop:q-dense} \\
+تعریف & \lr{def:} & \lr{def:graph} \\
+مثال & \lr{ex:} & \lr{ex:integral} \\
+نکته & \lr{rem:} & \lr{rem:division-zero} \\
+تمرین & \lr{exc:} & \lr{exc:sum-even} \\
+شکل & \lr{fig:} & \lr{fig:parabola} \\
+جدول & \lr{tab:} & \lr{tab:comparison} \\
+کد & \lr{code:} & \lr{code:factorial} \\
+الگوریتم & \lr{alg:} & \lr{alg:binary} \\
+فصل & \lr{chap:} & \lr{chap:introduction} \\
+بخش & \lr{sec:} & \lr{sec:motivation} \\
+زیربخش & \lr{subsec:} & \lr{subsec:history} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{برچسب‌های معنادار، خواندن فایل‌های \lr{tex} را آسان‌تر می‌کنند و از خطاهای ارجاع جلوگیری می‌کنند.}
+
+\section{لینک‌های \lr{hyperref}}
+\label{sec:cross-refs-hyperref}
+
+تمام ارجاعات در \lr{MatinBook} به‌صورت
+\textbf{لینک فعال} هستند. یعنی خواننده
+می‌تواند روی شماره‌ی مرجع کلیک کند و به آن
+برود.
+
+\begin{latin}
+\begin{minted}{latex}
+\RequirePackage[bookmarks]{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    citecolor=blue,
+    urlcolor=blue
+}
+\end{minted}
+\end{latin}
+
+\mnote{رنگ لینک‌ها در \lr{MatinBook} آبی است. برای تغییر، فایل \lr{mb-references.sty} را ویرایش کنید.}
+
+\subsection{بوکمارک‌های PDF}
+\label{sec:cross-refs-bookmarks}
+
+\lr{hyperref} به‌طور خودکار بوکمارک‌های
+\lr{PDF} را از فصل‌ها و بخش‌ها می‌سازد. این
+بوکمارک‌ها در پنل کنار \lr{PDF} نمایش داده
+می‌شوند.
+
+\mnote{گزینه‌ی \lr{bookmarksnumbered=true} در \lr{mb-references.sty} باعث می‌شود شماره‌ها در بوکمارک‌ها هم نمایش داده شوند.}
+
+\section{مثال‌های کاربردی}
+\label{sec:cross-refs-examples}
+
+\subsection{ارجاع در متن علمی}
+\label{sec:cross-refs-example-scientific}
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{طبق}|\cref{thm:fundamental}|\pc{، هر عدد طبیعی بزرگ‌تر از ۱ به عوامل اول تجزیه می‌شود.}|%
+|\pc{این قضیه در}|\cref{chap:numbertheory}|\pc{به‌طور کامل بررسی شده است.}|%
+|\pc{برای مثال،}|\cref{ex:primes-under-50}|\pc{اعداد اول کوچک‌تر از ۵۰ را نشان می‌دهد.}|%
+\end{minted}
+\end{latin}
+
+\subsection{ارجاع در متن فنی}
+\label{sec:cross-refs-example-technical}
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{الگوریتم}|\cref{alg:binary}|\pc{روش جستجوی دودویی را نشان می‌دهد.}|%
+|\pc{پیچیدگی این الگوریتم}|\lr{$O(\log n)$}|\pc{است، همان‌طور که در}|\cref{tab:complexity}|\pc{نشان داده شده.}|%
+|\pc{پیاده‌سازی آن در}|\cref{code:binary-search}|\pc{آمده است.}|%
+\end{minted}
+\end{latin}
+
+\mnote{استفاده از \lr{\textbackslash cref} در متن‌های علمی و فنی، خوانایی و دقت ارجاعات را افزایش می‌دهد.}
+
+\section{خطاهای رایج}
+\label{sec:cross-refs-mistakes}
+
+\subsection{استفاده از \cmd{ref} به‌جای \cmd{cref}}
+\label{sec:cross-refs-mistake-ref}
+
+\textbf{مشکل:} \cmd{ref} فقط شماره‌ی مرجع را
+نمایش می‌دهد، بدون پیشوند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{اشتباه}|:
+|\pc{طبق معادله}|\ref{eq:einstein}|\pc{...}|%
+
+% |\pc{درست}|:
+|\pc{طبق}|\cref{eq:einstein}|\pc{...}|%
+\end{minted}
+\end{latin}
+
+\textbf{راه‌حل:} همیشه از \cmd{cref} استفاده
+کنید.
+
+\subsection{قرار دادن \cmd{label} بیرون از محیط}
+\label{sec:cross-refs-mistake-label}
+
+\textbf{مشکل:} اگر \cmd{label} را بیرون از
+محیط (مثل \env{theorem}) قرار دهید، ارجاع
+کار نمی‌کند.
+
+\textbf{راه‌حل:} \cmd{label} را همیشه داخل محیط
+قرار دهید.
+
+\subsection{برچسب تکراری}
+\label{sec:cross-refs-mistake-duplicate}
+
+\textbf{مشکل:} اگر دو عنصر برچسب یکسان داشته
+باشند، \lr{LaTeX} خطا می‌دهد و ارجاع به یکی
+از آن‌ها ممکن است اشتباه باشد.
+
+\textbf{راه‌حل:} از برچسب‌های یکتا استفاده
+کنید.
+
+\subsection{ارجاع به عنصر قبل از تعریف}
+\label{sec:cross-refs-mistake-forward}
+
+\textbf{مشکل:} اگر به عنصری ارجاع دهید که
+هنوز تعریف نشده، خروجی «؟؟» نمایش داده
+می‌شود.
+
+\textbf{راه‌حل:} حداقل دو بار کامپایل کنید.
+اگر پس از دو بار همچنان «؟؟» بود، برچسب
+را بررسی کنید.
+
+\mnote{اگر خروجی «؟؟» دیدید، اول مطمئن شوید برچسب وجود دارد، سپس دوباره کامپایل کنید.}
+
+\section{تمرین‌ها}
+\label{sec:cross-refs-exercises}
+
+\begin{exercise}
+    به یک معادله، یک قضیه و یک شکل ارجاع
+    دهید و پیشوندهای خروجی را بررسی کنید.
+    \label{exc:cross-refs-basic}
+\end{exercise}
+
+\begin{exercise}
+    به سه معادله به‌طور هم‌زمان ارجاع دهید
+    و سپس به یک بازه‌ی پیوسته ارجاع دهید.
+    \label{exc:cross-refs-multiple}
+\end{exercise}
+
+\begin{exercise}
+    از دستورات کمکی (\cmd{thmref}،
+    \cmd{defref} و...) استفاده کنید و خروجی
+    را با \cmd{cref} مقایسه کنید.
+    \label{exc:cross-refs-helpers}
+\end{exercise}
+
+\begin{exercise}
+    یک برچسب تکراری بسازید و خطای آن را
+    ببینید. سپس آن را اصلاح کنید.
+    \label{exc:cross-refs-duplicate}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:cross-refs-summary}
+
+در این فصل، با ارجاع هوشمند در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از \lr{cleveref} برای
+    ارجاع هوشمند استفاده می‌کند.
+
+    \item دستور اصلی، \cmd{cref} است که نوع
+    مرجع را خودکار تشخیص می‌دهد.
+
+    \item پیشوندها از فایل \lr{fa-IR.sty}
+    می‌آیند (قضیه، شکل، جدول، ...).
+
+    \item \cmd{Cref} نسخه‌ی «حرف اول بزرگ» است
+    ولی در فارسی تفاوتی با \cmd{cref} ندارد.
+
+    \item \cmd{crefrange} برای ارجاع بازه‌ای
+    و \cmd{cref\{a,b\}} برای ارجاع گروهی.
+
+    \item دستورات کمکی: \cmd{thmref}،
+    \cmd{lemref}، \cmd{corref}، \cmd{propref}،
+    \cmd{defref}، \cmd{exref}، \cmd{remref}،
+    \cmd{excref}.
+
+    \item برچسب‌ها با پیشوندهای استاندارد:
+    \lr{eq:}، \lr{thm:}، \lr{fig:}، \lr{tab:}،
+    ...
+
+    \item لینک‌های \lr{hyperref} آبی هستند
+    و بوکمارک‌های \lr{PDF} خودکار ساخته
+    می‌شوند.
+
+    \item خطاهای رایج شامل استفاده از
+    \cmd{ref} به‌جای \cmd{cref}، قرار دادن
+    \cmd{label} بیرون از محیط، برچسب
+    تکراری، و ارجاع به عنصر قبل از تعریف
+    است.
+\end{itemize}
+
+این فصل، آخرین فصل از بخش دوم (اجزای کتاب)
+بود. در بخش سوم (شخصی‌سازی)، یاد می‌گیرید
+که چگونه \lr{MatinBook} را برای نیازهای
+خود تنظیم کنید.
