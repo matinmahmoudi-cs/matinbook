@@ -1,0 +1,531 @@
+%%
+%% part4-advanced/ch26-large-projects.tex
+%%
+%% Chapter 26: Large Projects — How to organize books with
+%% multiple files, parts, and contributors.
+%%
+
+\chapter{پروژه‌های بزرگ}
+\label{chap:large-projects}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:large-projects-why}
+
+وقتی کتاب شما به بیش از ۱۰۰ صفحه می‌رسد،
+نوشتن همه‌ی محتوا در یک فایل \file{.tex}
+غیرعملی می‌شود. کامپایل کند می‌شود، پیدا
+کردن خطاها سخت می‌شود، و همکاری با دیگران
+دشوار می‌شود.
+
+\lr{MatinBook} به‌طور خاص برای پروژه‌های بزرگ
+طراحی شده است. در این فصل، یاد می‌گیرید که
+چگونه یک کتاب چندفایلی را سازمان‌دهی کنید.
+
+\mnote{کتاب‌های حرفه‌ای معمولاً بیش از ۲۰۰ صفحه هستند و به‌طور طبیعی به چندین فایل تقسیم می‌شوند.}
+
+\section{ساختار پیشنهادی}
+\label{sec:large-projects-structure}
+
+\subsection{ساختار ساده}
+\label{sec:large-projects-simple}
+
+برای کتاب‌های کوچک تا متوسط (کمتر از ۱۰
+فصل):
+
+\begin{latin}
+\begin{minted}{text}
+my-book/
+├── main.tex
+├── references.bib
+├── chapters/
+│   ├── chapter-01.tex
+│   ├── chapter-02.tex
+│   ├── chapter-03.tex
+│   └── ...
+├── figures/
+│   ├── figure-01.pdf
+│   └── ...
+└── code/
+    ├── example-01.py
+    └── ...
+\end{minted}
+\end{latin}
+
+\mnote{هر فصل در یک فایل جداگانه قرار می‌گیرد. این کار، کامپایل را سریع‌تر و مدیریت را آسان‌تر می‌کند.}
+
+\subsection{ساختار پیشرفته}
+\label{sec:large-projects-advanced}
+
+برای کتاب‌های بزرگ (بیش از ۱۰ فصل یا
+چند بخش):
+
+\begin{latin}
+\begin{minted}{text}
+my-book/
+├── main.tex
+├── references.bib
+├── frontmatter/
+│   ├── cover.tex
+│   ├── colophon.tex
+│   ├── preface.tex
+│   └── ...
+├── part1-basics/
+│   ├── chapter-01.tex
+│   ├── chapter-02.tex
+│   └── ...
+├── part2-advanced/
+│   ├── chapter-05.tex
+│   ├── chapter-06.tex
+│   └── ...
+├── appendices/
+│   ├── app-a.tex
+│   └── ...
+├── backmatter/
+│   ├── bibliography.tex
+│   └── index.tex
+├── figures/
+│   ├── chapter-01/
+│   ├── chapter-02/
+│   └── ...
+└── code/
+    ├── chapter-01/
+    └── ...
+\end{minted}
+\end{latin}
+
+\mnote{در ساختار پیشرفته، هر بخش از کتاب یک پوشه‌ی جداگانه دارد. این کار، مدیریت پروژه‌های بزرگ را آسان‌تر می‌کند.}
+
+\section{فایل اصلی}
+\label{sec:large-projects-main}
+
+فایل \file{main.tex}، نقطه‌ی ورود پروژه
+است. این فایل شامل:
+
+\begin{itemize}
+    \item \cmd{documentclass}.
+    \item فراداده (\cmd{title}، \cmd{author}،
+    \cmd{date}).
+    \item \cmd{addbibresource}.
+    \item \cmd{begin\{document\}}.
+    \item جلد، پیش‌متن، متن اصلی، پس‌متن.
+    \item \cmd{input} برای هر فصل.
+    \item \cmd{end\{document\}}.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+
+\addbibresource{references.bib}
+
+\title{|\pc{عنوان کتاب}|}
+\author{|\pc{نام نویسنده}|}
+\date{|\pc{مهر ۱۴۰۵}|}
+
+\booktitle{|\pc{عنوان کتاب}|}
+
+\begin{document}
+
+% |\pc{جلد جلو}|%
+\makecover{...}{...}{...}{...}
+
+% |\pc{پیش‌متن}|%
+\frontmatter
+\frontmattergeometry
+
+\input{frontmatter/cover}
+\input{frontmatter/preface}
+
+% |\pc{متن اصلی}|%
+\mainmatter
+\mainmattergeometry
+
+\part{|\pc{مبانی}|}
+\input{part1-basics/chapter-01}
+\input{part1-basics/chapter-02}
+
+\part{|\pc{مباحث پیشرفته}|}
+\input{part2-advanced/chapter-05}
+\input{part2-advanced/chapter-06}
+
+% |\pc{پس‌متن}|%
+\backmatter
+\frontmattergeometry
+
+\printbibliography[title={|\pc{منابع و مراجع}|}]
+\printindex
+
+% |\pc{جلد عقب}|%
+\makebackcover{...}
+
+\end{document}
+\end{minted}
+\end{latin}
+
+\mnote{فایل \lr{main.tex} باید کوتاه بماند. اگر بیش از ۱۰۰ خط شد، احتمالاً باید بخشی از محتوا را به فایل‌های جداگانه منتقل کنید.}
+
+\section{فایل‌های فصل}
+\label{sec:large-projects-chapters}
+
+هر فایل فصل، فقط شامل محتوای همان فصل
+است. \textbf{بدون} \cmd{documentclass} و
+\textbf{بدون} \cmd{begin\{document\}}:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{chapters/chapter-01.tex}:
+
+\chapter{|\pc{مقدمه}|}
+\label{chap:introduction}
+
+\section{|\pc{انگیزه}|}
+\label{sec:motivation}
+
+|\pc{متن فصل...}|%
+
+\begin{theorem}[|\pc{قضیه‌ی نمونه}|]
+    |\pc{متن قضیه...}|%
+    \label{thm:sample}
+\end{theorem}
+
+\begin{proof}
+    |\pc{اثبات...}|%
+\end{proof}
+\end{minted}
+\end{latin}
+
+\mnote{فایل‌های فصل نباید \lr{\textbackslash documentclass} داشته باشند. آن‌ها فقط محتوا هستند و با \lr{\textbackslash input} وارد می‌شوند.}
+
+\section{\cmd{input} در برابر \cmd{include}}
+\label{sec:large-projects-input-include}
+
+\lr{LaTeX} دو دستور برای وارد کردن فایل
+ارائه می‌دهد:
+
+\begin{itemize}
+    \item \cmd{input\{file\}}: فایل را در
+    همان‌جا وارد می‌کند.
+    \item \cmd{include\{file\}}: فایل را
+    در یک صفحه‌ی جدید وارد می‌کند.
+\end{itemize}
+
+\subsection{تفاوت‌ها}
+\label{sec:large-projects-differences}
+
+جدول \cref{tab:input-vs-include} تفاوت‌های
+\cmd{input} و \cmd{include} را نشان می‌دهد.
+
+\begin{matintable}{تفاوت \lr{input} و \lr{include}}{tab:input-vs-include}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+ویژگی & \lr{\textbackslash input} & \lr{\textbackslash include} \\
+صفحه‌ی جدید & خیر & بله \\
+فایل \lr{.aux} جدا & خیر & بله \\
+سرعت & سریع & کندتر \\
+مناسب برای & فصل‌های کوتاه & فصل‌های بلند \\
+\end{tblr}
+\end{matintable}
+
+\mnote{برای کتاب‌ها، معمولاً از \lr{\textbackslash input} استفاده می‌شود. \lr{\textbackslash include} فقط برای پروژه‌های بسیار بزرگ مفید است.}
+
+\subsection{مثال}
+\label{sec:large-projects-example}
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{با}|\lr{\textbackslash input}|%
+\input{chapters/chapter-01}
+\input{chapters/chapter-02}
+
+% |\pc{با}|\lr{\textbackslash include}|%
+\include{chapters/chapter-01}
+\include{chapters/chapter-02}
+\end{minted}
+\end{latin}
+
+\section{مدیریت شکل‌ها}
+\label{sec:large-projects-figures}
+
+برای پروژه‌های بزرگ، بهتر است شکل‌ها را در
+پوشه‌های جداگانه سازمان‌دهی کنید:
+
+\begin{latin}
+\begin{minted}{text}
+figures/
+├── chapter-01/
+│   ├── figure-01.pdf
+│   ├── figure-02.pdf
+│   └── ...
+├── chapter-02/
+│   └── ...
+└── cover/
+    └── cover-image.pdf
+\end{minted}
+\end{latin}
+
+سپس در سند:
+
+\begin{latin}
+\begin{minted}{latex}
+\includegraphics{figures/chapter-01/figure-01.pdf}
+\end{minted}
+\end{latin}
+
+\mnote{برای کوتاه‌تر کردن مسیرها، می‌توانید از \lr{\textbackslash graphicspath} استفاده کنید که در \lr{MatinBook} از پیش تنظیم شده است.}
+
+\section{مدیریت کد}
+\label{sec:large-projects-code}
+
+برای کدهای طولانی، بهتر است آن‌ها را در
+فایل‌های جداگانه ذخیره کنید و با
+\cmd{inputminted} وارد کنید:
+
+\begin{latin}
+\begin{minted}{text}
+code/
+├── chapter-01/
+│   ├── example-01.py
+│   └── example-02.py
+└── chapter-02/
+    └── ...
+\end{minted}
+\end{latin}
+
+سپس در سند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{latin}
+\inputminted{python}{code/chapter-01/example-01.py}
+\end{latin}
+\codecaption{|\pc{مثال اول}|}
+\label{code:example-01}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash inputminted} کد را از یک فایل خارجی وارد می‌کند. این کار، سورس کتاب را کوتاه‌تر می‌کند.}
+
+\section{مدیریت کتاب‌نامه}
+\label{sec:large-projects-bibliography}
+
+برای کتاب‌های بزرگ، بهتر است کتاب‌نامه را
+در چند فایل تقسیم کنید:
+
+\begin{latin}
+\begin{minted}{text}
+bibliography/
+├── books.bib
+├── articles.bib
+├── online.bib
+└── persian.bib
+\end{minted}
+\end{latin}
+
+سپس در \file{main.tex}:
+
+\begin{latin}
+\begin{minted}{latex}
+\addbibresource{bibliography/books.bib}
+\addbibresource{bibliography/articles.bib}
+\addbibresource{bibliography/online.bib}
+\addbibresource{bibliography/persian.bib}
+\end{minted}
+\end{latin}
+
+\mnote{می‌توانید چند فایل \lr{.bib} را با \lr{\textbackslash addbibresource} بارگذاری کنید. \lr{biber} همه را با هم پردازش می‌کند.}
+
+\section{همکاری با دیگران}
+\label{sec:large-projects-collaboration}
+
+اگر با دیگران روی یک کتاب کار می‌کنید،
+این نکات را رعایت کنید:
+
+\begin{enumerate}
+    \item \textbf{استفاده از \lr{Git}:} نسخه‌بندی
+    و همکاری.
+    \item \textbf{تقسیم فایل‌ها:} هر نفر یک
+    فصل.
+    \item \textbf{قواعد نگارشی:} یکدست‌سازی
+    سبک نوشتار.
+    \item \textbf{برچسب‌های یکتا:} جلوگیری از
+    تداخل برچسب‌ها.
+    \item \textbf{کامپایل مکرر:} بررسی
+    خطاها پس از هر تغییر.
+\end{enumerate}
+
+\mnote{در همکاری گروهی، \lr{Git} ابزار ضروری است. هر نفر روی برنچ خود کار می‌کند و سپس تغییرات را ادغام می‌کند.}
+
+\section{کامپایل پروژه‌های بزرگ}
+\label{sec:large-projects-compile}
+
+\subsection{کامپایل کامل}
+\label{sec:large-projects-compile-full}
+
+\begin{latin}
+\begin{minted}{bash}
+# |\pc{مرحله‌ی اول: کامپایل اول}|%
+xelatex -shell-escape main.tex
+
+# |\pc{مرحله‌ی دوم: کتاب‌نامه}|%
+biber main
+
+# |\pc{مرحله‌ی سوم: کامپایل دوم}|%
+xelatex -shell-escape main.tex
+
+# |\pc{مرحله‌ی چهارم: کامپایل سوم}|%
+xelatex -shell-escape main.tex
+\end{minted}
+\end{latin}
+
+\mnote{برای پروژه‌های بزرگ، کامپایل کامل ممکن است چند دقیقه طول بکشد. از \lr{latexmk} برای خودکارسازی استفاده کنید.}
+
+\subsection{استفاده از \lr{latexmk}}
+\label{sec:large-projects-compile-latexmk}
+
+\begin{latin}
+\begin{minted}{bash}
+latexmk -xelatex -shell-escape main.tex
+\end{minted}
+\end{latin}
+
+\mnote{\lr{latexmk} به‌طور خودکار تعداد کامپایل‌های لازم را تشخیص می‌دهد و کل چرخه را اجرا می‌کند.}
+
+\subsection{کامپایل فصل به فصل}
+\label{sec:large-projects-compile-chapter}
+
+برای صرفه‌جویی در زمان، می‌توانید فقط
+یک فصل را کامپایل کنید:
+
+\begin{latin}
+\begin{minted}{bash}
+# |\pc{در}|\lr{main.tex}|%
+% |\pc{فقط فصل اول را کامپایل کن}|%
+\includeonly{chapters/chapter-01}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash includeonly} فقط با \lr{\textbackslash include} کار می‌کند، نه \lr{\textbackslash input}.}
+
+\section{خطاهای رایج}
+\label{sec:large-projects-mistakes}
+
+\subsection{فراموش کردن \cmd{input}}
+\label{sec:large-projects-mistake-input}
+
+\textbf{مشکل:} اگر \cmd{input} را برای یک
+فصل فراموش کنید، آن فصل در کتاب ظاهر
+نمی‌شود.
+
+\textbf{راه‌حل:} فهرست \cmd{input}ها را
+با فهرست فصل‌ها مقایسه کنید.
+
+\subsection{برچسب تکراری}
+\label{sec:large-projects-mistake-duplicate}
+
+\textbf{مشکل:} اگر در دو فصل برچسب یکسان
+استفاده کنید، خطای \lr{Multiply defined labels}
+می‌دهید.
+
+\textbf{راه‌حل:} از پیشوندهای یکتا برای
+هر فصل استفاده کنید (مثلاً \lr{ch01:}،
+\lr{ch02:}).
+
+\subsection{مسیر اشتباه}
+\label{sec:large-projects-mistake-path}
+
+\textbf{مشکل:} اگر مسیر فایل‌ها اشتباه
+باشد، خطای \lr{File not found} می‌دهید.
+
+\textbf{راه‌حل:} مسیرها را نسبت به
+\file{main.tex} بررسی کنید.
+
+\subsection{کامپایل ناقص}
+\label{sec:large-projects-mistake-incomplete}
+
+\textbf{مشکل:} اگر فقط یک بار کامپایل
+کنید، ارجاعات و کتاب‌نامه کامل نمی‌شوند.
+
+\textbf{راه‌حل:} چرخه‌ی کامل کامپایل را
+اجرا کنید (حداقل ۲ بار \lr{xelatex} +
+\lr{biber}).
+
+\section{تمرین‌ها}
+\label{sec:large-projects-exercises}
+
+\begin{exercise}
+    یک کتاب با ساختار پیشرفته (پوشه‌بندی
+    شده) بسازید و آن را کامپایل کنید.
+    \label{exc:large-projects-structure}
+\end{exercise}
+
+\begin{exercise}
+    یک کتاب با دو بخش و پنج فصل بسازید.
+    از \cmd{input} برای وارد کردن فصل‌ها
+    استفاده کنید.
+    \label{exc:large-projects-parts}
+\end{exercise}
+
+\begin{exercise}
+    شکل‌ها را در پوشه‌های جداگانه سازمان‌دهی
+    کنید و از \cmd{includegraphics} با
+    مسیر کامل استفاده کنید.
+    \label{exc:large-projects-figures}
+\end{exercise}
+
+\begin{exercise}
+    یک کتاب با \cmd{includeonly} کامپایل
+    کنید تا فقط یک فصل را ببینید.
+    \label{exc:large-projects-includeonly}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:large-projects-summary}
+
+در این فصل، با مدیریت پروژه‌های بزرگ در
+\lr{MatinBook} آشنا شدیم:
+
+\begin{itemize}
+    \item برای کتاب‌های بزرگ، محتوا را به
+    فایل‌های جداگانه تقسیم کنید.
+
+    \item ساختار ساده: \file{main.tex} +
+    \file{chapters/} + \file{figures/} +
+    \file{code/}.
+
+    \item ساختار پیشرفته: تقسیم به بخش‌ها
+    (\file{part1-*}، \file{part2-*} و...).
+
+    \item \file{main.tex} باید کوتاه باشد
+    (کمتر از ۱۰۰ خط).
+
+    \item فایل‌های فصل نباید
+    \cmd{documentclass} داشته باشند.
+
+    \item \cmd{input} فایل را در همان‌جا
+    وارد می‌کند؛ \cmd{include} صفحه‌ی
+    جدید ایجاد می‌کند.
+
+    \item برای کدهای طولانی، از
+    \cmd{inputminted} استفاده کنید.
+
+    \item کتاب‌نامه را می‌توان در چند فایل
+    \lr{.bib} تقسیم کرد.
+
+    \item در همکاری گروهی، از \lr{Git}
+    و قواعد یکدست استفاده کنید.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{input}، برچسب تکراری، مسیر
+    اشتباه، و کامپایل ناقص است.
+\end{itemize}
+
+این فصل، آخرین فصل از بخش چهارم (مباحث
+پیشرفته) بود. در بخش پنجم (مثال‌های کامل)،
+سه فصل کامل از کتاب‌های ریاضی، برنامه‌نویسی
+و فیزیک ارائه می‌شود.
