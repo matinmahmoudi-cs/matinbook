@@ -1,0 +1,403 @@
+%%
+%% part3-customization/ch20-layout.tex
+%%
+%% Chapter 20: Page Layout — Geometry, margins, line
+%% spacing, headers, footers, and paragraph settings.
+%%
+
+\chapter{صفحه‌آرایی}
+\label{chap:layout}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:layout-why}
+
+صفحه‌آرایی، پایه‌ی کیفیت بصری یک کتاب است.
+حاشیه‌های درست، فاصله‌ی خطوط مناسب، سرصفحه‌ی
+خوانا و پاصفحه‌ی تمیز، همگی به خوانایی و
+زیبایی کتاب کمک می‌کنند.
+
+\lr{MatinBook} یک چیدمان حرفه‌ای بر اساس
+استاندارد \lr{Boyer/Stewart} ارائه می‌دهد.
+در این فصل، با اجزای این چیدمان آشنا
+می‌شوید و یاد می‌گیرید که چگونه آن را
+شخصی‌سازی کنید.
+
+\mnote{چیدمان \lr{MatinBook} از کتاب‌های درسی دانشگاهی مانند \lr{Boyer} و \lr{Stewart} الهام گرفته شده است.}
+
+\section{هندسه‌ی صفحه}
+\label{sec:layout-geometry}
+
+\subsection{ابعاد کاغذ}
+\label{sec:layout-paper}
+
+\lr{MatinBook} از ابعاد \pnum{۱۷.۸} ×
+\pnum{۲۵.۴} سانتی‌متر (نزدیک به \lr{7 × 10}
+اینچ) استفاده می‌کند. این ابعاد، استاندارد
+نشر آکادمیک بین‌المللی است.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{mb-layout.sty}:
+\geometry{
+    paperwidth=17.8cm,
+    paperheight=25.4cm,
+    ...
+}
+\end{minted}
+\end{latin}
+
+\mnote{این ابعاد، نزدیک به نسبت طلایی است و برای کتاب‌های فنی، خوانایی بالایی دارد.}
+
+\subsection{حاشیه‌ها در \lr{mainmatter}}
+\label{sec:layout-margins-main}
+
+در متن اصلی، \lr{MatinBook} از حاشیه‌ی
+بیرونی پهن (\pnum{۵.۹} سانتی‌متر) استفاده
+می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\geometry{
+    paperwidth=17.8cm,
+    paperheight=25.4cm,
+    top=1.7cm,
+    bottom=1.7cm,
+    inner=1.5cm,
+    outer=5.9cm,              % |\pc{حاشیه‌ی پهن}|%
+    marginparwidth=3.5cm,     % |\pc{عرض یادداشت}|%
+    marginparsep=0.6cm,       % |\pc{فاصله از متن}|%
+    headheight=15pt,
+    headsep=5pt,
+    footskip=18pt,
+    bindingoffset=0.4cm
+}
+\end{minted}
+\end{latin}
+
+جدول \cref{tab:layout-margins} این مقادیر
+را خلاصه می‌کند.
+
+\begin{matintable}{حاشیه‌های متن اصلی}{tab:layout-margins}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+حاشیه & مقدار & کاربرد \\
+بالا & \pnum{۱.۷} سانتی‌متر & فاصله از لبه‌ی بالا \\
+پایین & \pnum{۱.۷} سانتی‌متر & فاصله از لبه‌ی پایین \\
+داخلی & \pnum{۱.۵} سانتی‌متر & نزدیک عطف \\
+بیرونی & \pnum{۵.۹} سانتی‌متر & برای یادداشت حاشیه \\
+عرض یادداشت & \pnum{۳.۵} سانتی‌متر & ناحیه‌ی یادداشت \\
+فاصله از متن & \pnum{۰.۶} سانتی‌متر & بین متن و یادداشت \\
+فضای صحافی & \pnum{۰.۴} سانتی‌متر & برای صحافی \\
+\end{tblr}
+\end{matintable}
+
+\mnote{عرض متن در این حالت، حدود \pnum{۱۰.۳} سانتی‌متر است که برای متن فارسی با فونت \lr{XB Niloofar} بهینه است.}
+
+\subsection{حاشیه‌ها در \lr{frontmatter} و \lr{backmatter}}
+\label{sec:layout-margins-front}
+
+در پیش‌متن و پس‌متن، هندسه‌ی صفحه متقارن
+می‌شود (بدون حاشیه‌ی پهن):
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{mb-layout.sty}:
+\newcommand{\frontmattergeometry}{%
+    \newgeometry{
+        paperwidth=17.8cm,
+        paperheight=25.4cm,
+        top=1.7cm,
+        bottom=1.7cm,
+        inner=1.5cm,
+        outer=1.5cm,          % |\pc{حاشیه‌ی متقارن}|%
+        marginparwidth=0pt,
+        ...
+    }%
+}
+\end{minted}
+\end{latin}
+
+\mnote{دلیل حذف حاشیه‌ی پهن در پیش‌متن و پس‌متن این است که این بخش‌ها به یادداشت حاشیه‌ای نیاز ندارند.}
+
+\section{فاصله‌ی خطوط}
+\label{sec:layout-spacing}
+
+\lr{MatinBook} از فاصله‌ی خطوط \pnum{۱.۱۵}
+استفاده می‌کند که مطابق سبک کتاب‌های درسی
+\lr{Boyer/Stewart} است:
+
+\begin{latin}
+\begin{minted}{latex}
+\setstretch{1.15}
+\end{minted}
+\end{latin}
+
+\mnote{فاصله‌ی \pnum{۱.۱۵} برای متن فارسی با فونت \lr{XB Niloofar} بهینه است و خوانایی را افزایش می‌دهد.}
+
+\subsection{تنظیمات پاراگراف}
+\label{sec:layout-paragraph}
+
+\begin{latin}
+\begin{minted}{latex}
+\setlength{\parindent}{1em}
+\setlength{\parskip}{0pt}
+\end{minted}
+\end{latin}
+
+\begin{itemize}
+    \item \cmd{parindent}: تورفتگی پاراگراف.
+    \item \cmd{parskip}: فاصله‌ی بین پاراگراف‌ها.
+\end{itemize}
+
+\mnote{در فارسی، تورفتگی \lr{۱em} استاندارد است. پاراگراف اول هر بخش، تورفتگی ندارد.}
+
+\section{سرصفحه و پاصفحه}
+\label{sec:layout-headers}
+
+\lr{MatinBook} از \lr{fancyhdr} برای مدیریت
+سرصفحه و پاصفحه استفاده می‌کند.
+
+\subsection{صفحات فرد و زوج}
+\label{sec:layout-headers-oddeven}
+
+\begin{itemize}
+    \item \textbf{صفحات فرد:} نام فصل در بالا
+    راست، شماره صفحه در پایین راست.
+    \item \textbf{صفحات زوج:} نام فصل در بالا
+    چپ، شماره صفحه در پایین چپ.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+\pagestyle{fancy}
+\fancyhf{}
+
+\fancyhead[LE]{%
+    \ifnum\c@chapter>0
+        \footnotesize\textbf{\leftmark}%
+    \fi
+}
+
+\fancyhead[RO]{%
+    \ifnum\c@chapter>0
+        \footnotesize\textbf{\leftmark}%
+    \fi
+}
+
+\fancyfoot[LE,RO]{\footnotesize\textbf{\thepage}}
+\end{minted}
+\end{latin}
+
+\mnote{در \lr{MatinBook}، از \lr{\textbackslash leftmark} برای هر دو سرصفحه استفاده می‌شود. یعنی نام فصل در هر دو صفحه نمایش داده می‌شود.}
+
+\subsection{صفحات شروع فصل}
+\label{sec:layout-headers-plain}
+
+صفحات شروع فصل، از استایل \lr{plain} استفاده
+می‌کنند و فقط شماره صفحه را در پاصفحه
+نمایش می‌دهند:
+
+\begin{latin}
+\begin{minted}{latex}
+\fancypagestyle{plain}{%
+    \fancyhf{}
+    \fancyfoot[LE,RO]{\footnotesize\textbf{\thepage}}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}
+\end{minted}
+\end{latin}
+
+\mnote{این طراحی تمیز، توجه خواننده را به ابتدای فصل جلب می‌کند و فضای بیشتری برای عنوان فصل فراهم می‌آورد.}
+
+\subsection{خط جداکننده‌ی سرصفحه}
+\label{sec:layout-headers-rule}
+
+\begin{latin}
+\begin{minted}{latex}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0pt}
+\end{minted}
+\end{latin}
+
+\mnote{خط جداکننده‌ی سرصفحه با ضخامت \pnum{۰.۴pt} طراحی شده است. پاصفحه خط ندارد.}
+
+\section{تنظیمات کپشن}
+\label{sec:layout-captions}
+
+\begin{latin}
+\begin{minted}{latex}
+\captionsetup{
+    font=footnotesize,
+    labelfont=bf,
+    skip=8pt,
+    justification=centering
+}
+\end{minted}
+\end{latin}
+
+\mnote{کپشن‌ها با فونت \lr{footnotesize} و برچسب پررنگ نمایش داده می‌شوند.}
+
+\section{تنظیمات پانویس}
+\label{sec:layout-footnotes}
+
+\begin{latin}
+\begin{minted}{latex}
+\setlength{\footnotesep}{8pt}
+\renewcommand{\footnoterule}{%
+    \kern-3pt
+    \hrule width 0.3\textwidth height 0.4pt
+    \kern2.6pt
+}
+\end{minted}
+\end{latin}
+
+\mnote{خط جداکننده‌ی پانویس، ۳۰٪ عرض متن است. این طراحی، استاندارد کتاب‌های آکادمیک است.}
+
+\section{حالت \lr{draft}}
+\label{sec:layout-draft}
+
+در حالت \lr{draft}، \lr{MatinBook} واترمارک
+\lr{DRAFT} را فعال می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\if@matin@draft
+    \AtBeginDocument{%
+        \RequirePackage{draftwatermark}%
+        \SetWatermarkText{\lr{DRAFT}}%
+        \SetWatermarkScale{1.5}%
+        \SetWatermarkColor[gray]{0.9}%
+    }
+\fi
+\end{minted}
+\end{latin}
+
+\mnote{واترمارک در حالت \lr{draft} به‌عنوان یادآوری برای بازگشت به حالت \lr{final} عمل می‌کند.}
+
+\section{شخصی‌سازی چیدمان}
+\label{sec:layout-customization}
+
+برای شخصی‌سازی چیدمان، فایل
+\file{mb-layout.sty} را ویرایش کنید. سه
+راه اصلی وجود دارد:
+
+\begin{enumerate}
+    \item \textbf{تغییر هندسه:} مقادیر
+    \cmd{geometry} را تغییر دهید.
+    \item \textbf{تغییر سرصفحه:} تنظیمات
+    \cmd{fancyhdr} را تغییر دهید.
+    \item \textbf{تغییر فاصله‌ها:} مقادیر
+    \cmd{setstretch} و \cmd{parindent} را
+    تغییر دهید.
+\end{enumerate}
+
+\mnote{تغییر هندسه‌ی صفحه، بر کل کتاب تأثیر می‌گذارد. قبل از تغییر، از کتاب پشتیبان بگیرید.}
+
+\section{خطاهای رایج}
+\label{sec:layout-mistakes}
+
+\subsection{فراموش کردن \cmd{frontmattergeometry}}
+\label{sec:layout-mistake-frontgeo}
+
+\textbf{مشکل:} اگر \cmd{frontmattergeometry}
+را فراخوانی نکنید، پیش‌متن با حاشیه‌ی پهن
+نمایش داده می‌شود.
+
+\textbf{راه‌حل:} همیشه پس از \cmd{frontmatter}،
+دستور \cmd{frontmattergeometry} را فراخوانی
+کنید.
+
+\subsection{فراموش کردن \cmd{mainmattergeometry}}
+\label{sec:layout-mistake-maingeo}
+
+\textbf{مشکل:} اگر \cmd{mainmattergeometry}
+را فراخوانی نکنید، متن اصلی با حاشیه‌ی
+متقارن نمایش داده می‌شود.
+
+\textbf{راه‌حل:} همیشه پس از \cmd{mainmatter}،
+دستور \cmd{mainmattergeometry} را فراخوانی
+کنید.
+
+\subsection{سرریز متن به حاشیه}
+\label{sec:layout-mistake-overflow}
+
+\textbf{مشکل:} اگر متن یا شکل از حاشیه سرریز
+کند، خطای \lr{Overfull hbox} می‌دهد.
+
+\textbf{راه‌حل:} از \cmd{emergencystretch} و
+\cmd{tolerance} استفاده کنید (که در
+\lr{MatinBook} از پیش تنظیم شده است).
+
+\section{تمرین‌ها}
+\label{sec:layout-exercises}
+
+\begin{exercise}
+    حاشیه‌ی بیرونی را از \pnum{۵.۹} به
+    \pnum{۶.۵} سانتی‌متر تغییر دهید و کتاب
+    را دوباره کامپایل کنید.
+    \label{exc:layout-margins}
+\end{exercise}
+
+\begin{exercise}
+    فاصله‌ی خطوط را از \pnum{۱.۱۵} به
+    \pnum{۱.۳} تغییر دهید و نتیجه را ببینید.
+    \label{exc:layout-spacing}
+\end{exercise}
+
+\begin{exercise}
+    رنگ سرصفحه را تغییر دهید.
+    \label{exc:layout-headers}
+\end{exercise}
+
+\begin{exercise}
+    کتاب را در حالت \lr{draft} کامپایل کنید
+    و واترمارک را ببینید.
+    \label{exc:layout-draft}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:layout-summary}
+
+در این فصل، با صفحه‌آرایی \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item ابعاد کاغذ \pnum{۱۷.۸} ×
+    \pnum{۲۵.۴} سانتی‌متر.
+
+    \item حاشیه‌ی بیرونی پهن \pnum{۵.۹}
+    سانتی‌متر در متن اصلی.
+
+    \item حاشیه‌ی متقارن \pnum{۱.۵} سانتی‌متر
+    در پیش‌متن و پس‌متن.
+
+    \item فاصله‌ی خطوط \pnum{۱.۱۵}.
+
+    \item تورفتگی پاراگراف \pnum{۱em}.
+
+    \item سرصفحه با نام فصل، پاصفحه با شماره
+    صفحه.
+
+    \item خط جداکننده‌ی سرصفحه با ضخامت
+    \pnum{۰.۴pt}.
+
+    \item تنظیمات کپشن و پانویس.
+
+    \item حالت \lr{draft} با واترمارک.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{frontmattergeometry}، فراموش کردن
+    \cmd{mainmattergeometry}، و سرریز متن
+    است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:themes})، با تم‌ها
+در \lr{MatinBook} آشنا می‌شوید و یاد
+می‌گیرید که چگونه تم سفارشی بسازید.
