@@ -1,0 +1,296 @@
+%%
+%% part5-examples/ch27-math-book.tex
+%%
+%% Chapter 27: A Math Book — A complete sample chapter from
+%% a mathematics textbook, demonstrating all MatinBook
+%% features in a real-world context.
+%%
+
+\chapter{کتاب ریاضی}
+\label{chap:math-book}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:math-book-why}
+
+در فصل‌های قبل، با تمام قابلیت‌های \lr{MatinBook}
+آشنا شدید. ولی دانستن هر قابلیت به‌تنهایی کافی
+نیست؛ مهم این است که بتوانید همه‌ی آن‌ها را
+در یک کتاب واقعی ترکیب کنید.
+
+در این فصل، یک فصل کامل از یک کتاب ریاضی
+خیالی را ارائه می‌دهیم که همه‌ی اجزای
+\lr{MatinBook} را در بافت واقعی نشان می‌دهد.
+هدف، الگوبرداری برای نوشتن کتاب ریاضی خودتان
+است.
+
+\mnote{این فصل، یک «مطالعه‌ی موردی» است. به‌جای توضیح قابلیت‌ها، آن‌ها را در عمل می‌بینید.}
+
+\section{ساختار فصل نمونه}
+\label{sec:math-book-structure}
+
+فصل نمونه، از یک کتاب ریاضی خیالی با عنوان
+«مقدمه‌ای بر آنالیز حقیقی» است. این فصل
+شامل بخش‌های زیر است:
+
+\begin{itemize}
+    \item مقدمه.
+    \item تعاریف.
+    \item قضایا و اثبات‌ها.
+    \item مثال‌ها.
+    \item تمرین‌ها.
+    \item راه‌حل‌ها.
+    \item نمودارها.
+\end{itemize}
+
+\mnote{این فصل را می‌توانید به‌عنوان الگو برای نوشتن فصل‌های کتاب ریاضی خودتان استفاده کنید.}
+
+\section{مقدمه}
+\label{sec:math-book-intro}
+
+آنالیز حقیقی\index{آنالیز حقیقی}، شاخه‌ای از
+ریاضیات است که به مطالعه‌ی اعداد حقیقی،
+دنباله‌ها، سری‌ها، حد، پیوستگی و مشتق
+می‌پردازد. این شاخه، پایه‌ی بسیاری از
+شاخه‌های دیگر ریاضیات است.
+
+در این فصل، با مفاهیم اساسی آنالیز حقیقی
+آشنا می‌شویم و قضایای مهم آن را بررسی
+می‌کنیم.
+
+\mnote{آنالیز حقیقی، پیش‌نیاز آنالیز مختلط، آنالیز تابعی و نظریه‌ی اندازه است.}
+
+\section{دنباله‌ها و همگرایی}
+\label{sec:math-book-sequences}
+
+\subsection{تعریف دنباله}
+\label{sec:math-book-sequence-def}
+
+\begin{definition}[دنباله]
+    یک \textbf{دنباله}\index{دنباله} در
+    مجموعه‌ی \lr{$\R$}، تابعی است از
+    \lr{$\N$} به \lr{$\R$}:
+    \[
+        a: \N \to \R, \quad n \mapsto a_n
+    \]
+    که در آن \lr{$a_n$} را جمله‌ی \lr{$n$}-ام
+    دنباله می‌نامیم.
+    \label{def:sequence}
+\end{definition}
+
+طبق \cref{def:sequence}، یک دنباله را
+می‌توان به‌صورت \lr{$(a_n)_{n=1}^{\infty}$}
+نمایش داد.
+
+\begin{example}
+    دنباله‌ی \lr{$a_n = \frac{1}{n}$}:
+    \[
+        1, \frac{1}{2}, \frac{1}{3}, \frac{1}{4}, \ldots
+    \]
+    این دنباله به صفر نزدیک می‌شود، ولی
+    هرگز به آن نمی‌رسد.
+    \label{ex:harmonic}
+\end{example}
+
+\subsection{همگرایی}
+\label{sec:math-book-convergence}
+
+\begin{definition}[همگرایی دنباله]
+    دنباله‌ی \lr{$(a_n)$} به عدد \lr{$L$}
+    \textbf{همگرا}\index{همگرایی} است اگر:
+    \[
+        \forall \varepsilon > 0, \;
+        \exists N \in \N, \;
+        \forall n \geq N: \abs{a_n - L} < \varepsilon
+    \]
+    در این صورت می‌نویسیم
+    \lr{$\lim_{n \to \infty} a_n = L$}.
+    \label{def:convergence}
+\end{definition}
+
+\mnote{تعریف همگرایی، یکی از مهم‌ترین تعاریف در آنالیز حقیقی است. این تعریف، مفهوم «نزدیک شدن» را دقیق می‌کند.}
+
+\section{قضایای مهم}
+\label{sec:math-book-theorems}
+
+\subsection{یکتایی حد}
+\label{sec:math-book-unique-limit}
+
+\begin{theorem}[یکتایی حد]
+    اگر دنباله‌ای همگرا باشد، حد آن یکتاست.
+    \label{thm:unique-limit}
+\end{theorem}
+
+\begin{proof}
+    فرض کنید \lr{$\lim a_n = L_1$} و
+    \lr{$\lim a_n = L_2$} با
+    \lr{$L_1 \neq L_2$}. قرار دهید
+    \lr{$\varepsilon = \frac{\abs{L_1 - L_2}}{2} > 0$}.
+
+    طبق \cref{def:convergence}، عدد \lr{$N_1$}
+    وجود دارد که برای \lr{$n \geq N_1$}،
+    \lr{$\abs{a_n - L_1} < \varepsilon$}.
+    همچنین عدد \lr{$N_2$} وجود دارد که برای
+    \lr{$n \geq N_2$}،
+    \lr{$\abs{a_n - L_2} < \varepsilon$}.
+
+    برای \lr{$n \geq \max(N_1, N_2)$}:
+    \begin{align*}
+        \abs{L_1 - L_2}
+        &= \abs{(L_1 - a_n) + (a_n - L_2)} \\
+        &\leq \abs{L_1 - a_n} + \abs{a_n - L_2} \\
+        &< \varepsilon + \varepsilon = \abs{L_1 - L_2}
+    \end{align*}
+    که تناقض است. بنابراین \lr{$L_1 = L_2$}.
+\end{proof}
+
+\subsection{قضیه‌ی فشردگی}
+\label{sec:math-book-squeeze}
+
+\begin{theorem}[قضیه‌ی فشردگی]
+    اگر \lr{$a_n \leq b_n \leq c_n$} برای
+    همه‌ی \lr{$n \geq N_0$} و
+    \lr{$\lim a_n = \lim c_n = L$}، آنگاه
+    \lr{$\lim b_n = L$}.
+    \label{thm:squeeze}
+\end{theorem}
+
+\begin{proof}
+    طبق \cref{def:convergence}، برای هر
+    \lr{$\varepsilon > 0$}، اعداد \lr{$N_1$}
+    و \lr{$N_2$} وجود دارند که:
+    \begin{align*}
+        n \geq N_1 &\implies \abs{a_n - L} < \varepsilon \\
+        n \geq N_2 &\implies \abs{c_n - L} < \varepsilon
+    \end{align*}
+
+    برای \lr{$n \geq \max(N_0, N_1, N_2)$}:
+    \[
+        L - \varepsilon < a_n \leq b_n \leq c_n < L + \varepsilon
+    \]
+    بنابراین \lr{$\abs{b_n - L} < \varepsilon$}،
+    که نتیجه می‌دهد \lr{$\lim b_n = L$}.
+\end{proof}
+
+\begin{remark}
+    قضیه‌ی فشردگی (\cref{thm:squeeze}) یکی از
+    ابزارهای قدرتمند برای محاسبه‌ی حد
+    دنباله‌های پیچیده است. برای مثال، برای
+    محاسبه‌ی \lr{$\lim \frac{\sin n}{n}$}،
+    از نامساوی \lr{$-\frac{1}{n} \leq \frac{\sin n}{n} \leq \frac{1}{n}$}
+    استفاده می‌کنیم.
+    \label{rem:squeeze-application}
+\end{remark}
+
+\subsection{قضیه‌ی بولتزانو-وایرشتراس}
+\label{sec:math-book-bolzano}
+
+\begin{theorem}[بولتزانو-وایرشتراس]
+    هر دنباله‌ی کراندار در \lr{$\R$} دارای
+    زیردنباله‌ی همگراست.
+    \label{thm:bolzano-weierstrass}
+\end{theorem}
+
+\mnote{قضیه‌ی بولتزانو-وایرشتراس، یکی از نتایج بنیادین در آنالیز حقیقی است. اثبات آن از اصل کامل بودن \lr{$\R$} استفاده می‌کند.}
+
+\section{نمودارها}
+\label{sec:math-book-figures}
+
+نمودار \cref{fig:convergence-plot} همگرایی
+دنباله‌ی \lr{$a_n = \frac{1}{n}$} را نشان
+می‌دهد.
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.8\textwidth, height=6cm,
+    xlabel={$n$},
+    ylabel={$a_n$},
+    grid=major,
+    domain=1:20,
+    samples=20,
+    ymin=0, ymax=1.1
+  ]
+    \addplot[only marks, mark=*, color=matinblue, mark size=2pt]
+        {1/x};
+    \addlegendentry{$a_n = 1/n$}
+
+    \addplot[matinred, thick, dashed, domain=1:20]
+        {0};
+    \addlegendentry{$\lim a_n = 0$}
+  \end{axis}
+\end{tikzpicture}
+\end{latin}
+\caption{همگرایی دنباله‌ی \lr{$a_n = \frac{1}{n}$} به صفر}
+\label{fig:convergence-plot}
+\end{figure}
+
+\mnote{نمودار \lr{\cref{fig:convergence-plot}} به‌وضوح نشان می‌دهد که دنباله به صفر نزدیک می‌شود ولی هرگز به آن نمی‌رسد.}
+
+\section{تمرین‌ها}
+\label{sec:math-book-exercises}
+
+\begin{exercise}
+    ثابت کنید دنباله‌ی \lr{$a_n = \frac{n}{n+1}$}
+    به \lr{$1$} همگراست.
+    \label{exc:convergence-n-over-n1}
+\end{exercise}
+
+\begin{solution}
+    باید نشان دهیم که برای هر
+    \lr{$\varepsilon > 0$}، عدد \lr{$N$}
+    وجود دارد که برای \lr{$n \geq N$}:
+    \[
+        \abs{\frac{n}{n+1} - 1} = \frac{1}{n+1} < \varepsilon
+    \]
+    با انتخاب \lr{$N > \frac{1}{\varepsilon} - 1$}،
+    این نامساوی برقرار است.
+\end{solution}
+
+\begin{exercise}
+    با استفاده از \cref{thm:squeeze}، حد
+    دنباله‌ی \lr{$a_n = \frac{\cos n}{n}$} را
+    محاسبه کنید.
+    \label{exc:squeeze-cos}
+\end{exercise}
+
+\begin{solution}
+    از نامساوی
+    \lr{$-\frac{1}{n} \leq \frac{\cos n}{n} \leq \frac{1}{n}$}
+    و \cref{thm:squeeze} استفاده می‌کنیم.
+    چون \lr{$\lim \frac{1}{n} = \lim \left(-\frac{1}{n}\right) = 0$}،
+    داریم \lr{$\lim \frac{\cos n}{n} = 0$}.
+\end{solution}
+
+\begin{exercise}
+    آیا دنباله‌ی \lr{$a_n = (-1)^n$} همگراست؟
+    چرا؟
+    \label{exc:alternating}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:math-book-summary}
+
+در این فصل، یک فصل کامل از یک کتاب ریاضی
+را دیدیم که شامل:
+
+\begin{itemize}
+    \item \textbf{تعاریف}: دنباله، همگرایی.
+    \item \textbf{قضایا}: یکتایی حد، فشردگی،
+    بولتزانو-وایرشتراس.
+    \item \textbf{اثبات‌ها}: با استدلال ریاضی.
+    \item \textbf{مثال‌ها}: دنباله‌ی هارمونیک.
+    \item \textbf{نکته‌ها}: کاربرد قضیه‌ی
+    فشردگی.
+    \item \textbf{نمودارها}: همگرایی دنباله.
+    \item \textbf{تمرین‌ها}: با راه‌حل.
+    \item \textbf{نمایه}: با \cmd{index}.
+    \item \textbf{ارجاعات}: با \cmd{cref}.
+\end{itemize}
+
+\mnote{این فصل، الگویی برای نوشتن فصل‌های کتاب ریاضی شماست. می‌توانید ساختار آن را برای موضوعات دیگر تطبیق دهید.}
+
+در فصل بعدی (\cref{chap:programming-book})،
+یک فصل نمونه از یک کتاب برنامه‌نویسی را
+می‌بینیم که بر کد و الگوریتم تمرکز دارد.
