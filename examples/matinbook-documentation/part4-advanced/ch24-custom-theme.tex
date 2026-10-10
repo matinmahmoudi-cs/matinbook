@@ -1,0 +1,398 @@
+%%
+%% part4-advanced/ch24-custom-theme.tex
+%%
+%% Chapter 24: Custom Theme — Design a complete theme from
+%% scratch: colors, cover, and loader.
+%%
+
+\chapter{تم سفارشی}
+\label{chap:custom-theme}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:custom-theme-why}
+
+تم پیش‌فرض \lr{MatinBook} برای بیشتر کتاب‌ها
+مناسب است، ولی گاهی نیاز دارید که تم را
+کاملاً تغییر دهید. مثلاً:
+
+\begin{itemize}
+    \item کتاب شما باید هویت بصری ناشر را
+    داشته باشد.
+    \item می‌خواهید از رنگ‌های سازمانی خود
+    استفاده کنید.
+    \item نیاز به طراحی جلد کاملاً جدید دارید.
+    \item می‌خواهید ظاهر کتاب با کتاب‌های دیگر
+    مجموعه هماهنگ باشد.
+\end{itemize}
+
+در این فصل، یاد می‌گیرید که چگونه یک تم
+سفارشی از صفر بسازید.
+
+\mnote{برای شروع، از تم \lr{default} کپی بگیرید و آن را تغییر دهید. این ساده‌تر از نوشتن تم از صفر است.}
+
+\section{مراحل ساخت تم}
+\label{sec:custom-theme-steps}
+
+ساخت یک تم سفارشی در پنج مرحله انجام
+می‌شود:
+
+\begin{enumerate}
+    \item \textbf{ایجاد پوشه:} یک پوشه‌ی
+    جدید در \file{tex/themes/}.
+    \item \textbf{کپی فایل‌ها:} سه فایل تم
+    پیش‌فرض را کپی کنید.
+    \item \textbf{ویرایش رنگ‌ها:} پالت رنگی
+    را تغییر دهید.
+    \item \textbf{ویرایش جلد:} جلد را طراحی
+    کنید.
+    \item \textbf{بارگذاری:} تم جدید را در
+    \file{matinbook.cls} بارگذاری کنید.
+\end{enumerate}
+
+\subsection{مرحله ۱ — ایجاد پوشه}
+\label{sec:custom-theme-step1}
+
+\begin{latin}
+\begin{minted}{bash}
+cd ~/Desktop/matinbook/tex/themes
+mkdir mytheme
+\end{minted}
+\end{latin}
+
+\mnote{نام پوشه را با حروف کوچک و بدون فاصله بنویسید. مثلاً \lr{mytheme}، \lr{corporate}، \lr{university}.}
+
+\subsection{مرحله ۲ — کپی فایل‌ها}
+\label{sec:custom-theme-step2}
+
+\begin{latin}
+\begin{minted}{bash}
+cp default/mb-theme-colors.sty mytheme/
+cp default/mb-theme-cover.sty mytheme/
+cp default/mb-theme-default.sty mytheme/
+\end{minted}
+\end{latin}
+
+\mnote{سه فایل تم پیش‌فرض را کپی می‌کنیم تا ساختار درست را داشته باشیم.}
+
+\subsection{مرحله ۳ — ویرایش رنگ‌ها}
+\label{sec:custom-theme-step3}
+
+فایل \file{mb-theme-colors.sty} را باز کنید
+و رنگ‌ها را تغییر دهید. مهم‌ترین نکته:
+\textbf{نام رنگ‌ها را تغییر ندهید}، فقط
+مقادیر \lr{CMYK} را عوض کنید.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{قبل: تم پیش‌فرض}|%
+\providecolor{matinblue}{cmyk}{0.80, 0.30, 0.00, 0.30}
+
+% |\pc{بعد: تم سفارشی}|%
+\providecolor{matinblue}{cmyk}{0.70, 0.20, 0.00, 0.20}
+\end{minted}
+\end{latin}
+
+\mnote{چرا نام‌ها را تغییر ندهیم؟ چون ماژول‌های دیگر (مثل \lr{mb-boxes} و \lr{mb-code}) به این نام‌ها وابسته‌اند.}
+
+\subsection{مرحله ۴ — ویرایش جلد}
+\label{sec:custom-theme-step4}
+
+فایل \file{mb-theme-cover.sty} را باز کنید
+و جلد را طراحی کنید. سه سطح تغییر وجود
+دارد:
+
+\begin{enumerate}
+    \item \textbf{تغییر رنگ‌ها:} ساده‌ترین
+    سطح.
+    \item \textbf{تغییر متن:} تغییر عنوان‌ها
+    و اطلاعات.
+    \item \textbf{تغییر عناصر:} حذف یا
+    افزودن عناصر \lr{TikZ}.
+\end{enumerate}
+
+\subsection{مرحله ۵ — بارگذاری}
+\label{sec:custom-theme-step5}
+
+در \file{matinbook.cls}، خط بارگذاری تم را
+تغییر دهید:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{قبل}|%
+\RequirePackage{mb-theme-colors}
+...
+\RequirePackage{mb-theme-cover}
+
+% |\pc{بعد}|%
+\RequirePackage{tex/themes/mytheme/mb-theme-colors}
+...
+\RequirePackage{tex/themes/mytheme/mb-theme-cover}
+\end{minted}
+\end{latin}
+
+\mnote{مسیر تم سفارشی نسبت به پوشه‌ی پروژه است.}
+
+\section{طراحی پالت رنگی}
+\label{sec:custom-theme-palette}
+
+\subsection{انتخاب رنگ اصلی}
+\label{sec:custom-theme-primary}
+
+رنگ اصلی تم، هویت بصری کتاب را تعیین
+می‌کند. پیشنهاد می‌شود رنگ اصلی را از
+رنگ‌های زیر انتخاب کنید:
+
+\begin{matintable}{پیشنهاد رنگ اصلی برای تم سفارشی}{tab:theme-primary}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+رنگ & \lr{CMYK} & حس بصری \\
+سرمه‌ای & \lr{(100, 80, 30, 30)} & رسمی، آکادمیک \\
+سبز تیره & \lr{(90, 30, 80, 40)} & آرام، طبیعی \\
+بنفش & \lr{(60, 80, 0, 20)} & خلاق، نوآور \\
+قرمز تیره & \lr{(20, 100, 80, 20)} & قدرتمند، توجه‌برانگیز \\
+نارنجی & \lr{(0, 60, 100, 0)} & گرم، دوستانه \\
+\end{tblr}
+\end{matintable}
+
+\mnote{برای کتاب‌های دانشگاهی، رنگ‌های سرد (سرمه‌ای، سبز تیره) مناسب‌ترند. برای کتاب‌های آموزشی، رنگ‌های گرم (نارنجی، قرمز) مناسب‌ترند.}
+
+\subsection{ساخت سایه‌ها}
+\label{sec:custom-theme-shades}
+
+برای هر رنگ اصلی، سه سایه بسازید:
+
+\begin{itemize}
+    \item \textbf{رنگ اصلی:} برای عنوان.
+    \item \textbf{رنگ تیره:} برای متن روی
+    پس‌زمینه‌ی روشن.
+    \item \textbf{رنگ روشن:} برای پس‌زمینه.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{رنگ اصلی}|%
+\providecolor{matinblue}{cmyk}{0.80, 0.30, 0.00, 0.30}
+
+% |\pc{رنگ تیره: افزایش}|\lr{K}|%
+\providecolor{matindarkblue}{cmyk}{0.80, 0.30, 0.00, 0.60}
+
+% |\pc{رنگ روشن: کاهش همه}|%
+\providecolor{matinlightblue}{cmyk}{0.15, 0.05, 0.00, 0.05}
+\end{minted}
+\end{latin}
+
+\mnote{برای ساخت سایه‌ی روشن، مقادیر \lr{CMYK} را به حدود \lr{۱۰-۲۰٪} کاهش دهید. برای سایه‌ی تیره، مقدار \lr{K} را افزایش دهید.}
+
+\section{طراحی جلد}
+\label{sec:custom-theme-cover}
+
+\subsection{جلد جلو}
+\label{sec:custom-theme-front}
+
+جلد جلو در \file{mb-theme-cover.sty} با
+\cmd{mb@frontart} تعریف شده است. برای
+طراحی جدید:
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\mb@frontart}{%
+    \begin{tikzpicture}[remember picture,overlay]
+        % |\pc{پس‌زمینه}|%
+        \fill[coverprimary]
+            (current page.north west) rectangle
+            (current page.south east);
+
+        % |\pc{عناصر تزئینی...}|%
+
+        % |\pc{متن}|%
+        \node[white, font=\fontsize{34}{43}\selectfont\bfseries]
+            at (current page.center) {|\rl{عنوان کتاب}|};
+    \end{tikzpicture}%
+}
+\end{minted}
+\end{latin}
+
+\mnote{در \lr{tikzpicture}، متن فارسی باید داخل \lr{\textbackslash rl\{...\}} باشد.}
+
+\subsection{جلد عقب}
+\label{sec:custom-theme-back}
+
+جلد عقب در \file{mb-theme-cover.sty} با
+\cmd{mb@backart} و \cmd{makebackcover} تعریف
+شده است. این جلد از دو بلوک ایستاتیک تشکیل
+شده:
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\makebackcover}[1]{%
+    \clearpage
+    \thispagestyle{empty}%
+    \mb@backart
+    \vspace*{6.5cm}%
+    \noindent
+    \begin{minipage}[t][\dimexpr\paperheight-8.9cm\relax][s]{\textwidth}
+        % |\pc{بلوک اول: درباره این کتاب}|%
+        ...
+
+        % |\pc{فاصله‌ی ۰.۷ سانتی‌متر}|%
+        \vspace{0.7cm}
+
+        % |\pc{بلوک دوم: درباره این نویسنده}|%
+        ...
+    \end{minipage}%
+    \clearpage
+}
+\end{minted}
+\end{latin}
+
+\mnote{ارتفاع \lr{minipage} به‌صورت \lr{\textbackslash dimexpr\textbackslash paperheight-8.9cm\textbackslash relax} تعیین شده تا از سرریز به صفحه‌ی دوم جلوگیری شود.}
+
+\section{مثال کامل: تم \lr{university}}
+\label{sec:custom-theme-example}
+
+در ادامه، یک تم کامل با رنگ سرمه‌ای و
+جلد ساده ارائه می‌شود.
+
+\subsection{فایل \file{mb-theme-colors.sty}}
+\label{sec:custom-theme-example-colors}
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{خانواده‌ی سرمه‌ای}|%
+\providecolor{matinblue}{cmyk}{1.00, 0.80, 0.30, 0.30}
+\providecolor{matindarkblue}{cmyk}{1.00, 0.80, 0.30, 0.60}
+\providecolor{matinlightblue}{cmyk}{0.15, 0.10, 0.00, 0.05}
+
+% |\pc{خانواده‌ی طلایی}|%
+\providecolor{matingreen}{cmyk}{0.00, 0.20, 0.60, 0.10}
+\providecolor{matindarkgreen}{cmyk}{0.00, 0.20, 0.60, 0.50}
+\providecolor{matinlightgreen}{cmyk}{0.00, 0.05, 0.15, 0.00}
+\end{minted}
+\end{latin}
+
+\subsection{فایل \file{mb-theme-default.sty}}
+\label{sec:custom-theme-example-loader}
+
+\begin{latin}
+\begin{minted}{latex}
+\ProvidesPackage{mb-theme-default}[2026/10/08 v1.2 University Theme]
+\RequirePackage{mb-theme-cover}
+\PackageInfo{mb-theme-default}{University theme loaded}
+\endinput
+\end{minted}
+\end{latin}
+
+\mnote{فایل \lr{mb-theme-colors} اینجا بارگذاری نمی‌شود، چون در \lr{matinbook.cls} بارگذاری می‌شود.}
+
+\section{خطاهای رایج}
+\label{sec:custom-theme-mistakes}
+
+\subsection{تغییر نام رنگ‌ها}
+\label{sec:custom-theme-mistake-rename}
+
+\textbf{مشکل:} اگر نام رنگ‌ها را تغییر
+دهید (مثلاً \lr{matinblue} را به
+\lr{mycolor} تغییر دهید)، ماژول‌های
+مصرف‌کننده خطا می‌دهند.
+
+\textbf{راه‌حل:} فقط مقادیر \lr{CMYK} را
+تغییر دهید، نام‌ها را نگه دارید.
+
+\subsection{فراموش کردن بارگذاری تم}
+\label{sec:custom-theme-mistake-loading}
+
+\textbf{مشکل:} اگر تم جدید را در
+\file{matinbook.cls} بارگذاری نکنید، تم
+پیش‌فرض استفاده می‌شود.
+
+\textbf{راه‌حل:} مسیر تم جدید را در
+\file{matinbook.cls} بنویسید.
+
+\subsection{فراموش کردن \file{mb-theme-colors}}
+\label{sec:custom-theme-mistake-colors}
+
+\textbf{مشکل:} اگر \file{mb-theme-colors}
+را در فاز ۱ بارگذاری نکنید، رنگ‌ها
+تعریف نمی‌شوند.
+
+\textbf{راه‌حل:} \file{mb-theme-colors}
+باید در فاز ۱ \lr{matinbook.cls} باشد.
+
+\subsection{استفاده‌ی مستقیم از رنگ‌های سفارشی}
+\label{sec:custom-theme-mistake-direct}
+
+\textbf{مشکل:} اگر در سند خود مستقیماً از
+رنگ‌های \lr{RGB} استفاده کنید، با پالت
+\lr{CMYK} تم هماهنگ نمی‌شود.
+
+\textbf{راه‌حل:} از نام‌های استاندارد
+\lr{matin*} استفاده کنید.
+
+\section{تمرین‌ها}
+\label{sec:custom-theme-exercises}
+
+\begin{exercise}
+    یک تم سفارشی با رنگ اصلی بنفش بسازید.
+    \label{exc:custom-theme-purple}
+\end{exercise}
+
+\begin{exercise}
+    جلد جلو را با یک عنصر جدید (مثلاً یک
+    دایره‌ی طلایی) طراحی کنید.
+    \label{exc:custom-theme-cover}
+\end{exercise}
+
+\begin{exercise}
+    تم سفارشی خود را در \file{matinbook.cls}
+    بارگذاری کنید و کتاب را کامپایل کنید.
+    \label{exc:custom-theme-load}
+\end{exercise}
+
+\begin{exercise}
+    یک تم مینیمال با سه رنگ خاکستری طراحی
+    کنید.
+    \label{exc:custom-theme-minimal}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:custom-theme-summary}
+
+در این فصل، با ساخت تم سفارشی در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item ساخت تم سفارشی در پنج مرحله:
+    ایجاد پوشه، کپی فایل‌ها، ویرایش رنگ‌ها،
+    ویرایش جلد، بارگذاری.
+
+    \item نام رنگ‌ها را تغییر ندهید؛ فقط
+    مقادیر \lr{CMYK} را تغییر دهید.
+
+    \item برای هر رنگ، سه سایه بسازید: اصلی،
+    تیره، روشن.
+
+    \item جلد جلو در \cmd{mb@frontart} و جلد
+    عقب در \cmd{mb@backart} تعریف شده‌اند.
+
+    \item در \lr{tikzpicture}، متن فارسی باید
+    داخل \cmd{rl} باشد.
+
+    \item جلد عقب از دو بلوک ایستاتیک با
+    فاصله‌ی \pnum{۰.۷} سانتی‌متر تشکیل شده.
+
+    \item خطاهای رایج شامل تغییر نام رنگ‌ها،
+    فراموش کردن بارگذاری تم، فراموش کردن
+    \file{mb-theme-colors}، و استفاده‌ی
+    مستقیم از رنگ‌های سفارشی است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:custom-commands})،
+با دستورات سفارشی آشنا می‌شوید و یاد
+می‌گیرید که چگونه دستورات و محیط‌های جدید
+تعریف کنید.
