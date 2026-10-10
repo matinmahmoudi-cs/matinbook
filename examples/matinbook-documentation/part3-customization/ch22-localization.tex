@@ -1,0 +1,395 @@
+%%
+%% part3-customization/ch22-localization.tex
+%%
+%% Chapter 22: Localization — Persian (fa-IR) and English
+%% (en-US) locales, language switching, and number/date
+%% formatting.
+%%
+
+\chapter{لوکال و زبان}
+\label{chap:localization}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:localization-why}
+
+\lr{MatinBook} برای کتاب‌های فنی فارسی طراحی
+شده است، ولی از کتاب‌های انگلیسی نیز پشتیبانی
+می‌کند. لوکال‌ها (فایل‌های ترجمه) نام عناصر
+مختلف کتاب را به زبان مورد نظر ترجمه می‌کنند.
+
+در این فصل، با دو لوکال \lr{fa-IR} و
+\lr{en-US} آشنا می‌شوید و یاد می‌گیرید که
+چگونه بین آن‌ها سوئیچ کنید.
+
+\mnote{لوکال \lr{fa-IR} به‌طور پیش‌فرض در \lr{MatinBook} بارگذاری می‌شود. لوکال \lr{en-US} برای کتاب‌های انگلیسی است.}
+
+\section{لوکال فارسی (\lr{fa-IR})}
+\label{sec:localization-fa}
+
+لوکال \lr{fa-IR} نام عناصر \lr{LaTeX} را
+به فارسی ترجمه می‌کند. جدول
+\cref{tab:fa-names} این ترجمه‌ها را نشان
+می‌دهد.
+
+\begin{matintable}{نام‌های فارسی عناصر \lr{LaTeX}}{tab:fa-names}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[l]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام \lr{LaTeX} & ترجمه‌ی فارسی & کاربرد \\
+\lr{contentsname} & فهرست مطالب & فهرست \\
+\lr{listfigurename} & فهرست تصاویر & فهرست شکل‌ها \\
+\lr{listtablename} & فهرست جداول & فهرست جدول‌ها \\
+\lr{bibname} & منابع و مراجع & کتاب‌نامه \\
+\lr{indexname} & نمایه & نمایه \\
+\lr{chaptername} & فصل & سرصفحه \\
+\lr{appendixname} & پیوست & پیوست‌ها \\
+\lr{proofname} & اثبات & محیط اثبات \\
+\lr{figurename} & شکل & کپشن شکل \\
+\lr{tablename} & جدول & کپشن جدول \\
+\end{tblr}
+\end{matintable}
+
+\mnote{این نام‌ها در فایل \lr{fa-IR.sty} تعریف شده‌اند و با \lr{\textbackslash renewcommand} بازنویسی می‌شوند.}
+
+\subsection{نام‌های \lr{cleveref}}
+\label{sec:localization-fa-cref}
+
+لوکال فارسی، نام‌های \lr{cleveref} را نیز
+ترجمه می‌کند. جدول \cref{tab:fa-cref-names}
+این ترجمه‌ها را نشان می‌دهد.
+
+\begin{matintable}{نام‌های فارسی \lr{cleveref}}{tab:fa-cref-names}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[l]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & مفرد & جمع \\
+معادله & معادله & معادلات \\
+فصل & فصل & فصول \\
+بخش & بخش & بخش‌ها \\
+شکل & شکل & اشکال \\
+جدول & جدول & جداول \\
+الگوریتم & الگوریتم & الگوریتم‌ها \\
+قضیه & قضیه & قضایا \\
+لم & لم & لم‌ها \\
+نتیجه & نتیجه & نتایج \\
+تعریف & تعریف & تعاریف \\
+مثال & مثال & مثال‌ها \\
+نکته & نکته & نکات \\
+تمرین & تمرین & تمرین‌ها \\
+گزاره & گزاره & گزاره‌ها \\
+\end{tblr}
+\end{matintable}
+
+\mnote{این نام‌ها با \lr{\textbackslash crefname} تعریف می‌شوند و در \lr{mb-theorem.sty} و \lr{fa-IR.sty} تنظیم شده‌اند.}
+
+\subsection{نام‌های محیط‌های علمی}
+\label{sec:localization-fa-theorems}
+
+نام‌های محیط‌های علمی نیز در لوکال فارسی
+تعریف شده‌اند:
+
+\begin{itemize}
+    \item \cmd{theoremname}: قضیه.
+    \item \cmd{lemmaname}: لم.
+    \item \cmd{corollaryname}: نتیجه.
+    \item \cmd{propositionname}: گزاره.
+    \item \cmd{definitionname}: تعریف.
+    \item \cmd{examplename}: مثال.
+    \item \cmd{remarkname}: نکته.
+    \item \cmd{exercisename}: تمرین.
+    \item \cmd{solutionname}: راه‌حل.
+\end{itemize}
+
+\mnote{این نام‌ها در عنوان جعبه‌های علمی استفاده می‌شوند و در فایل \lr{fa-IR.sty} تعریف شده‌اند.}
+
+\section{لوکال انگلیسی (\lr{en-US})}
+\label{sec:localization-en}
+
+لوکال \lr{en-US} نسخه‌ی انگلیسی
+\lr{fa-IR} است و برای کتاب‌های انگلیسی
+استفاده می‌شود.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+% |\pc{به‌جای}|%
+\RequirePackage{fa-IR}
+
+% |\pc{بنویسید}|%
+\RequirePackage{en-US}
+\end{minted}
+\end{latin}
+
+\mnote{لوکال \lr{en-US} از ساختار مشابه \lr{fa-IR} پیروی می‌کند ولی ترجمه‌ها انگلیسی هستند.}
+
+\section{سوئیچ بین زبان‌ها}
+\label{sec:localization-switching}
+
+\lr{MatinBook} در حال حاضر از سوئیچ زبان
+در زمان اجرا پشتیبانی نمی‌کند. یعنی
+نمی‌توانید در وسط سند، زبان را از فارسی به
+انگلیسی تغییر دهید.
+
+برای سوئیچ، باید کلاس را با لوکال انگلیسی
+کامپایل کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+\RequirePackage{en-US}
+\end{minted}
+\end{latin}
+
+\mnote{پشتیبانی از سوئیچ زبان در زمان اجرا، یکی از برنامه‌های آینده‌ی \lr{MatinBook} است.}
+
+\section{متن دوزبانه}
+\label{sec:localization-bilingual}
+
+در کتاب‌های دوزبانه، می‌توانید متن فارسی و
+انگلیسی را با هم ترکیب کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این کتاب درباره}|\lr{machine learning}|\pc{و}|\lr{deep learning}|\pc{است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: این کتاب درباره \lr{machine learning}
+و \lr{deep learning} است.
+
+\mnote{برای متن لاتین در متن فارسی، از \lr{\textbackslash lr} استفاده کنید. برای پاراگراف کامل لاتین، از محیط \lr{latin}.}
+
+\section{قالب اعداد}
+\label{sec:localization-numbers}
+
+\subsection{اعداد در متن فارسی}
+\label{sec:localization-numbers-fa}
+
+در متن فارسی، اعداد به‌طور خودکار به ارقام
+فارسی (۰-۹) تبدیل می‌شوند:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{این کتاب شامل ۱۲ فصل است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: این کتاب شامل ۱۲ فصل است.
+
+\subsection{اعداد در متن لاتین}
+\label{sec:localization-numbers-latin}
+
+در متن لاتین، اعداد به‌صورت لاتین (0-9)
+نمایش داده می‌شوند:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{latin}
+The book has 12 chapters.
+\end{latin}
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{latin}
+The book has 12 chapters.
+\end{latin}
+
+\subsection{اعداد اعشاری فارسی}
+\label{sec:localization-numbers-decimal}
+
+برای اعداد اعشاری فارسی، از دستور \cmd{pnum}
+استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{مقیاس}|\pnum{۱.۲}|\pc{به این معناست...}|%
+\end{minted}
+\end{latin}
+
+خروجی: مقیاس \pnum{۱.۲} به این معناست...
+
+\mnote{دستور \lr{\textbackslash pnum} از باگ معکوس‌شدن اعداد اعشاری در \lr{bidi} جلوگیری می‌کند.}
+
+\subsection{اعداد در ریاضیات}
+\label{sec:localization-numbers-math}
+
+در ریاضیات، اعداد از بافت پیروی می‌کنند:
+
+\begin{itemize}
+    \item در متن فارسی: اعداد ریاضی به‌صورت
+    فارسی نمایش داده می‌شوند.
+    \item در \cmd{lr}: اعداد ریاضی به‌صورت
+    لاتین نمایش داده می‌شوند.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+|\pc{معادله}|\lr{$E = mc^{2}$}|\pc{...}|%
+\end{minted}
+\end{latin}
+
+\mnote{برای نمایش اعداد لاتین در ریاضیات، از \lr{\textbackslash lr\{...\}} استفاده کنید.}
+
+\section{قالب تاریخ}
+\label{sec:localization-dates}
+
+\subsection{تاریخ فارسی}
+\label{sec:localization-dates-fa}
+
+برای تاریخ فارسی، از تاریخ تقویم هجری
+شمسی استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\date{|\pc{مهر ۱۴۰۵}|}
+\end{minted}
+\end{latin}
+
+خروجی: مهر ۱۴۰۵.
+
+\mnote{دستور \lr{\textbackslash today} در حالت فارسی، تاریخ هجری شمسی را نمایش می‌دهد.}
+
+\subsection{تاریخ انگلیسی}
+\label{sec:localization-dates-en}
+
+در حالت انگلیسی، از تاریخ میلادی استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\date{October 2026}
+\end{minted}
+\end{latin}
+
+\section{شخصی‌سازی لوکال}
+\label{sec:localization-custom}
+
+برای شخصی‌سازی نام‌ها، فایل \file{fa-IR.sty}
+یا \file{en-US.sty} را ویرایش کنید. مثلاً
+برای تغییر «فهرست مطالب» به «محتویات»:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{fa-IR.sty}:
+\renewcommand{\contentsname}{|\pc{محتویات}|}
+\end{minted}
+\end{latin}
+
+\mnote{برای تغییرات موقت، می‌توانید در سند خود نیز این دستورات را بازنویسی کنید.}
+
+\section{خطاهای رایج}
+\label{sec:localization-mistakes}
+
+\subsection{فراموش کردن \cmd{lr}}
+\label{sec:localization-mistake-lr}
+
+\textbf{مشکل:} اگر متن لاتین را در متن فارسی
+بدون \cmd{lr} بنویسید، جهت متن به‌هم
+می‌ریزد.
+
+\textbf{راه‌حل:} همیشه از \cmd{lr} برای متن
+لاتین در متن فارسی استفاده کنید.
+
+\subsection{فراموش کردن \cmd{pnum}}
+\label{sec:localization-mistake-pnum}
+
+\textbf{مشکل:} اگر اعداد اعشاری فارسی را
+بدون \cmd{pnum} بنویسید، به‌صورت معکوس
+نمایش داده می‌شوند (مثلاً \lr{۱.۲} می‌شود
+\lr{۲.۱}).
+
+\textbf{راه‌حل:} از \cmd{pnum} برای همه‌ی
+اعداد اعشاری فارسی استفاده کنید.
+
+\subsection{ترکیب لوکال‌ها}
+\label{sec:localization-mistake-mixed}
+
+\textbf{مشکل:} اگر هر دو لوکال \lr{fa-IR} و
+\lr{en-US} را بارگذاری کنید، لوکال دوم
+اولی را بازنویسی می‌کند.
+
+\textbf{راه‌حل:} فقط یکی از لوکال‌ها را
+بارگذاری کنید.
+
+\section{تمرین‌ها}
+\label{sec:localization-exercises}
+
+\begin{exercise}
+    یک کتاب با لوکال \lr{en-US} بسازید و
+    ببینید که نام‌ها به انگلیسی نمایش
+    داده می‌شوند.
+    \label{exc:localization-en}
+\end{exercise}
+
+\begin{exercise}
+    نام «فهرست مطالب» را به «محتویات» تغییر
+    دهید.
+    \label{exc:localization-custom}
+\end{exercise}
+
+\begin{exercise}
+    یک پاراگراف فارسی با سه واژه‌ی لاتین
+    بنویسید و از \cmd{lr} استفاده کنید.
+    \label{exc:localization-lr}
+\end{exercise}
+
+\begin{exercise}
+    یک عدد اعشاری فارسی را با و بدون
+    \cmd{pnum} بنویسید و تفاوت را ببینید.
+    \label{exc:localization-pnum}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:localization-summary}
+
+در این فصل، با لوکال و زبان در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از دو لوکال پشتیبانی
+    می‌کند: \lr{fa-IR} (فارسی) و \lr{en-US}
+    (انگلیسی).
+
+    \item لوکال فارسی، نام‌های \lr{LaTeX} و
+    \lr{cleveref} را به فارسی ترجمه می‌کند.
+
+    \item لوکال انگلیسی، نسخه‌ی انگلیسی
+    \lr{fa-IR} است.
+
+    \item سوئیچ بین زبان‌ها با تغییر
+    \cmd{RequirePackage\{fa-IR\}} به
+    \cmd{RequirePackage\{en-US\}} در
+    \file{matinbook.cls} انجام می‌شود.
+
+    \item در متن دوزبانه، از \cmd{lr} برای
+    متن لاتین در متن فارسی استفاده کنید.
+
+    \item اعداد در متن فارسی به‌طور خودکار
+    فارسی می‌شوند.
+
+    \item برای اعداد اعشاری فارسی، از
+    \cmd{pnum} استفاده کنید.
+
+    \item تاریخ فارسی با تقویم هجری شمسی.
+
+    \item خطاهای رایج شامل فراموش کردن
+    \cmd{lr}، فراموش کردن \cmd{pnum}، و
+    ترکیب لوکال‌ها است.
+\end{itemize}
+
+این فصل، آخرین فصل از بخش سوم (شخصی‌سازی)
+بود. در بخش چهارم (مباحث پیشرفته)، با
+ساختار ماژولار، تم سفارشی، دستورات سفارشی
+و پروژه‌های بزرگ آشنا می‌شوید.
