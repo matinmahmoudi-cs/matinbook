@@ -1,0 +1,346 @@
+%%
+%% part5-examples/ch28-programming-book.tex
+%%
+%% Chapter 28: A Programming Book — A complete sample
+%% chapter from a programming textbook, focusing on code,
+%% algorithms, and data structures.
+%%
+
+\chapter{کتاب برنامه‌نویسی}
+\label{chap:programming-book}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:programming-book-why}
+
+در فصل قبل، یک فصل نمونه از کتاب ریاضی
+دیدیم که بر قضیه، اثبات و معادلات تمرکز
+داشت. در این فصل، یک فصل نمونه از کتاب
+برنامه‌نویسی را می‌بینیم که بر کد، الگوریتم
+و ساختار داده تمرکز دارد.
+
+هدف این فصل، نشان دادن این است که چگونه
+می‌توان از قابلیت‌های \lr{MatinBook} برای
+نوشتن کتاب‌های برنامه‌نویسی استفاده کرد.
+
+\mnote{کتاب‌های برنامه‌نویسی چالش‌های خاص خود را دارند: کد، الگوریتم، و توضیحات فارسی باید در کنار هم هماهنگ باشند.}
+
+\section{ساختار فصل نمونه}
+\label{sec:programming-book-structure}
+
+فصل نمونه، از یک کتاب برنامه‌نویسی خیالی
+با عنوان «مقدمه‌ای بر ساختمان داده‌ها»
+است. این فصل شامل بخش‌های زیر است:
+
+\begin{itemize}
+    \item مقدمه.
+    \item کد نمونه (پایتون و \lr{C++}).
+    \item الگوریتم‌ها.
+    \item جدول مقایسه.
+    \item تمرین‌ها.
+    \item راه‌حل‌ها.
+\end{itemize}
+
+\section{مقدمه}
+\label{sec:programming-book-intro}
+
+ساختمان داده\index{ساختمان داده}، روشی برای
+سازمان‌دهی و ذخیره‌سازی داده‌ها در حافظه‌ی
+کامپیوتر است. انتخاب ساختمان داده‌ی مناسب،
+تأثیر مستقیمی بر کارایی الگوریتم‌ها دارد.
+
+در این فصل، با ساختمان داده‌ی \textbf{پشته}
+و کاربردهای آن آشنا می‌شویم.
+
+\mnote{پشته یکی از ساده‌ترین و در عین حال پرکاربردترین ساختمان داده‌هاست.}
+
+\section{پشته}
+\label{sec:programming-book-stack}
+
+\subsection{تعریف پشته}
+\label{sec:programming-book-stack-def}
+
+\begin{definition}[پشته]
+    \textbf{پشته}\index{پشته} یک ساختمان
+    داده‌ی خطی است که در آن درج و حذف
+    عناصر از یک سر انجام می‌شود. این
+    سر را \textbf{بالای پشته} می‌نامیم.
+    \label{def:stack}
+\end{definition}
+
+طبق \cref{def:stack}، پشته از اصل
+\textbf{\lr{LIFO}}\index{LIFO} (آخرین
+ورودی، اولین خروجی) پیروی می‌کند.
+
+\begin{example}
+    عملیات اصلی پشته:
+    \begin{itemize}
+        \item \lr{push(x)}: درج \lr{x} در
+        بالای پشته.
+        \item \lr{pop()}: حذف و بازگشت عنصر
+        بالای پشته.
+        \item \lr{top()}: بازگشت عنصر بالای
+        پشته بدون حذف آن.
+        \item \lr{empty()}: بررسی خالی بودن
+        پشته.
+    \end{itemize}
+    \label{ex:stack-operations}
+\end{example}
+
+\subsection{پیاده‌سازی در پایتون}
+\label{sec:programming-book-python}
+
+پیاده‌سازی پشته در پایتون با لیست:
+
+\begin{latin}
+\begin{minted}{python}
+class Stack:
+    """A simple stack implementation using a Python list."""
+
+    def __init__(self) -> None:
+        self._data: list = []
+
+    def push(self, item) -> None:
+        """Add an item to the top of the stack."""
+        self._data.append(item)
+
+    def pop(self):
+        """Remove and return the top item."""
+        if self.is_empty():
+            raise IndexError("pop from empty stack")
+        return self._data.pop()
+
+    def peek(self):
+        """Return the top item without removing it."""
+        if self.is_empty():
+            raise IndexError("peek from empty stack")
+        return self._data[-1]
+
+    def is_empty(self) -> bool:
+        """Return True if the stack is empty."""
+        return len(self._data) == 0
+
+    def size(self) -> int:
+        """Return the number of items in the stack."""
+        return len(self._data)
+
+
+# |\pc{استفاده از پشته}|
+stack = Stack()
+stack.push(10)
+stack.push(20)
+stack.push(30)
+print(stack.pop())   # 30
+print(stack.peek())  # 20
+\end{minted}
+\end{latin}
+\codecaption{پیاده‌سازی پشته در پایتون}
+\label{code:stack-python}
+
+\mnote{در پایتون، لیست به‌عنوان ساختار پایه برای پشته استفاده می‌شود. عملیات \lr{append} و \lr{pop} هر دو \lr{$O(1)$} هستند.}
+
+\subsection{پیاده‌سازی در \lr{C++}}
+\label{sec:programming-book-cpp}
+
+پیاده‌سازی پشته در \lr{C++} با قالب:
+
+\begin{latin}
+\begin{minted}{cpp}
+#include <vector>
+#include <stdexcept>
+
+template <typename T>
+class Stack {
+private:
+    std::vector<T> data;
+
+public:
+    void push(const T& item) {
+        data.push_back(item);
+    }
+
+    T pop() {
+        if (data.empty()) {
+            throw std::runtime_error("pop from empty stack");
+        }
+        T item = data.back();
+        data.pop_back();
+        return item;
+    }
+
+    const T& peek() const {
+        if (data.empty()) {
+            throw std::runtime_error("peek from empty stack");
+        }
+        return data.back();
+    }
+
+    bool empty() const {
+        return data.empty();
+    }
+
+    size_t size() const {
+        return data.size();
+    }
+};
+\end{minted}
+\end{latin}
+\codecaption{پیاده‌سازی پشته در \lr{C++}}
+\label{code:stack-cpp}
+
+\mnote{در \lr{C++}، از قالب (\lr{template}) استفاده می‌کنیم تا پشته با هر نوع داده‌ای کار کند.}
+
+\section{الگوریتم‌ها}
+\label{sec:programming-book-algorithms}
+
+\subsection{بررسی توازن پرانتزها}
+\label{sec:programming-book-parentheses}
+
+یکی از کاربردهای کلاسیک پشته، بررسی
+توازن پرانتزها در یک عبارت است.
+
+\begin{latin}
+\begin{algorithm}
+\caption{بررسی توازن پرانتزها}
+\label{alg:balanced-parentheses}
+\begin{algorithmic}[1]
+    \Require A string $s$ containing parentheses
+    \Ensure \textbf{true} if the parentheses are balanced,
+            \textbf{false} otherwise
+    \State Create an empty stack $S$
+    \For{each character $c$ in $s$}
+        \If{$c$ is an opening bracket}
+            \State $S.\text{push}(c)$
+        \ElsIf{$c$ is a closing bracket}
+            \If{$S$ is empty}
+                \State \Return \textbf{false}
+            \EndIf
+            \State $top \gets S.\text{pop}()$
+            \If{$top$ does not match $c$}
+                \State \Return \textbf{false}
+            \EndIf
+        \EndIf
+    \EndFor
+    \State \Return $S$ is empty
+\end{algorithmic}
+\end{algorithm}
+\end{latin}
+
+\mnote{این الگوریتم در کامپایلرها، ویرایشگرهای متن و تحلیل‌گرهای نحوی کاربرد دارد.}
+
+\subsection{پیچیدگی}
+\label{sec:programming-book-complexity}
+
+\begin{theorem}[پیچیدگی بررسی توازن]
+    الگوریتم \cref{alg:balanced-parentheses}
+    دارای پیچیدگی زمانی \lr{$O(n)$} و
+    پیچیدگی فضایی \lr{$O(n)$} است، که
+    \lr{$n$} طول رشته‌ی ورودی است.
+    \label{thm:balanced-complexity}
+\end{theorem}
+
+\begin{proof}
+    هر کاراکتر رشته دقیقاً یک بار پردازش
+    می‌شود (حلقه‌ی \lr{for} در خط ۲). عملیات
+    \lr{push} و \lr{pop} هر دو \lr{$O(1)$}
+    هستند. بنابراین پیچیدگی زمانی
+    \lr{$O(n)$} است.
+
+    در بدترین حالت (رشته‌ای با \lr{$n$}
+    پرانتز باز)، پشته دارای \lr{$n$} عنصر
+    خواهد بود. بنابراین پیچیدگی فضایی
+    \lr{$O(n)$} است.
+\end{proof}
+
+\section{جدول مقایسه}
+\label{sec:programming-book-comparison}
+
+جدول \cref{tab:stack-comparison} پیاده‌سازی
+پشته در دو زبان را مقایسه می‌کند.
+
+\begin{matintable}{مقایسه‌ی پیاده‌سازی پشته در پایتون و \lr{C++}}{tab:stack-comparison}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[c] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+ویژگی & پایتون & \lr{C++} \\
+نوع‌دهی & پویا & ایستا \\
+ساختار پایه & \lr{list} & \lr{vector} \\
+قالب & ندارد & دارد \\
+مدیریت خطا & \lr{IndexError} & \lr{std::runtime\_error} \\
+کارایی & متوسط & بالا \\
+\end{tblr}
+\end{matintable}
+
+\mnote{در پایتون، نوع‌دهی پویا و در \lr{C++}، نوع‌دهی ایستا است. هر دو رویکرد مزایا و معایب خود را دارند.}
+
+\section{تمرین‌ها}
+\label{sec:programming-book-exercises}
+
+\begin{exercise}
+    یک تابع بنویسید که با استفاده از پشته،
+    یک رشته را معکوس کند.
+    \label{exc:reverse-string}
+\end{exercise}
+
+\begin{solution}
+    \begin{latin}
+\begin{minted}{python}
+def reverse_string(s: str) -> str:
+    """Reverse a string using a stack."""
+    stack = Stack()
+    for char in s:
+        stack.push(char)
+
+    result = []
+    while not stack.is_empty():
+        result.append(stack.pop())
+
+    return "".join(result)
+
+
+# |\pc{تست}|
+print(reverse_string("hello"))  # "olleh"
+\end{minted}
+    \end{latin}
+\end{solution}
+
+\begin{exercise}
+    با استفاده از پشته، یک ماشین حساب ساده
+    برای عبارات پسوندی (\lr{postfix}) بنویسید.
+    \label{exc:postfix-calculator}
+\end{exercise}
+
+\begin{exercise}
+    تفاوت پشته و صف را توضیح دهید و یک
+    کاربرد واقعی برای هر یک بنویسید.
+    \label{exc:stack-vs-queue}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:programming-book-summary}
+
+در این فصل، یک فصل کامل از یک کتاب
+برنامه‌نویسی را دیدیم که شامل:
+
+\begin{itemize}
+    \item \textbf{تعاریف}: پشته، \lr{LIFO}.
+    \item \textbf{کد}: پیاده‌سازی در پایتون
+    و \lr{C++}.
+    \item \textbf{الگوریتم}: بررسی توازن
+    پرانتزها.
+    \item \textbf{قضیه}: پیچیدگی الگوریتم.
+    \item \textbf{اثبات}: تحلیل پیچیدگی.
+    \item \textbf{جدول}: مقایسه‌ی دو زبان.
+    \item \textbf{تمرین‌ها}: با راه‌حل.
+\end{itemize}
+
+\mnote{این فصل، الگویی برای نوشتن فصل‌های کتاب برنامه‌نویسی شماست. می‌توانید ساختار آن را برای موضوعات دیگر (مثل درخت، گراف، مرتب‌سازی) تطبیق دهید.}
+
+در فصل بعدی (\cref{chap:physics-book})،
+یک فصل نمونه از یک کتاب فیزیک را می‌بینیم
+که بر معادلات و نمودارهای فیزیکی تمرکز
+دارد.
