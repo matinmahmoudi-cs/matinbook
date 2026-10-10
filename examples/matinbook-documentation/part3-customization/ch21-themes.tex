@@ -1,0 +1,354 @@
+%%
+%% part3-customization/ch21-themes.tex
+%%
+%% Chapter 21: Themes — The default theme, its components,
+%% and how to switch themes.
+%%
+
+\chapter{تم‌ها}
+\label{chap:themes}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:themes-why}
+
+یک تم، مجموعه‌ای از تصمیمات طراحی است که
+هویت بصری کتاب را تعیین می‌کند: رنگ‌ها،
+فونت‌ها، جلد، و چیدمان. با تغییر تم،
+می‌توانید کتاب خود را کاملاً متفاوت جلوه
+دهید.
+
+\lr{MatinBook} یک سیستم تم ماژولار ارائه
+می‌دهد که به شما امکان می‌دهد تم پیش‌فرض را
+استفاده کنید یا تم سفارشی بسازید. در این
+فصل، با این سیستم آشنا می‌شوید.
+
+\mnote{تم پیش‌فرض \lr{MatinBook}، \lr{default} نام دارد و تمام قابلیت‌های کلاس را فعال می‌کند.}
+
+\section{تم پیش‌فرض}
+\label{sec:themes-default}
+
+تم پیش‌فرض \lr{MatinBook}، \lr{default} است.
+این تم از سه فایل تشکیل شده است:
+
+\begin{itemize}
+    \item \file{mb-theme-colors.sty}: پالت
+    رنگی \lr{CMYK}.
+    \item \file{mb-theme-cover.sty}: طراحی
+    جلد.
+    \item \file{mb-theme-default.sty}:
+    بارگذارنده‌ی تم.
+\end{itemize}
+
+\mnote{تم \lr{default} از ۲۰ رنگ \lr{CMYK} در ۵ خانواده استفاده می‌کند که مطابق استاندارد نشر آموزشی ایران است.}
+
+\subsection{ساختار فایل‌های تم}
+\label{sec:themes-structure}
+
+تم‌ها در پوشه‌ی \file{tex/themes/} قرار
+دارند:
+
+\begin{latin}
+\begin{minted}{text}
+tex/themes/
+└── default/
+    ├── mb-theme-colors.sty
+    ├── mb-theme-cover.sty
+    └── mb-theme-default.sty
+\end{minted}
+\end{latin}
+
+\mnote{هر تم، یک پوشه‌ی جداگانه با سه فایل \lr{.sty} دارد.}
+
+\section{بارگذاری تم}
+\label{sec:themes-loading}
+
+\subsection{تم پیش‌فرض}
+\label{sec:themes-loading-default}
+
+تم پیش‌فرض به‌طور خودکار در \file{matinbook.cls}
+بارگذاری می‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+\RequirePackage{mb-theme-colors}
+...
+\RequirePackage{mb-theme-cover}
+\end{minted}
+\end{latin}
+
+\mnote{ترتیب بارگذاری مهم است: \lr{mb-theme-colors} باید \lr{قبل از} مصرف‌کنندگان (مثل \lr{mb-boxes}) بارگذاری شود.}
+
+\subsection{تم سفارشی}
+\label{sec:themes-loading-custom}
+
+برای بارگذاری یک تم سفارشی، فایل
+\file{matinbook.cls} را ویرایش کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{به‌جای}|%
+\RequirePackage{mb-theme-colors}
+\RequirePackage{mb-theme-cover}
+
+% |\pc{بنویسید}|%
+\RequirePackage{tex/themes/mytheme/mb-theme-default}
+\end{minted}
+\end{latin}
+
+\mnote{مسیر تم سفارشی باید نسبت به پوشه‌ی پروژه باشد.}
+
+\section{ساختار یک تم}
+\label{sec:themes-components}
+
+هر تم از سه جزء تشکیل شده است:
+
+\subsection{پالت رنگ}
+\label{sec:themes-colors}
+
+فایل \file{mb-theme-colors.sty} رنگ‌های تم
+را تعریف می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\providecolor{matinblue}{cmyk}{0.80, 0.30, 0.00, 0.30}
+\providecolor{matingreen}{cmyk}{0.80, 0.00, 0.45, 0.30}
+\providecolor{matinorange}{cmyk}{0.00, 0.45, 0.85, 0.10}
+\providecolor{matinred}{cmyk}{0.00, 0.65, 0.75, 0.10}
+\providecolor{matinpurple}{cmyk}{0.20, 0.60, 0.00, 0.30}
+\end{minted}
+\end{latin}
+
+\mnote{استفاده از \lr{\textbackslash providecolor} به‌جای \lr{\textbackslash definecolor} امکان بازنویسی رنگ‌ها را در سند فراهم می‌کند.}
+
+\subsection{جلد}
+\label{sec:themes-cover}
+
+فایل \file{mb-theme-cover.sty} جلد جلو و
+عقب را طراحی می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\makecover}[4]{%
+    \begin{titlepage}\thispagestyle{empty}
+        \mb@frontart
+        ...
+    \end{titlepage}%
+}
+
+\newcommand{\makebackcover}[1]{%
+    \clearpage
+    \thispagestyle{empty}%
+    \mb@backart
+    ...
+}
+\end{minted}
+\end{latin}
+
+\mnote{جلد با \lr{TikZ} ساخته می‌شود و به حداقل دو بار کامپایل نیاز دارد.}
+
+\subsection{بارگذارنده‌ی تم}
+\label{sec:themes-loader}
+
+فایل \file{mb-theme-default.sty} اجزای تم
+را بارگذاری می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\RequirePackage{mb-theme-cover}
+\end{minted}
+\end{latin}
+
+\mnote{فایل \lr{mb-theme-colors} اینجا بارگذاری نمی‌شود، چون در \lr{matinbook.cls} بارگذاری می‌شود.}
+
+\section{ایجاد تم سفارشی}
+\label{sec:themes-creating}
+
+برای ایجاد یک تم سفارشی، این مراحل را
+دنبال کنید:
+
+\begin{enumerate}
+    \item یک پوشه‌ی جدید در
+    \file{tex/themes/} بسازید (مثلاً
+    \file{mytheme/}).
+
+    \item سه فایل تم را کپی کنید:
+
+    \begin{latin}
+\begin{minted}{bash}
+cp tex/themes/default/*.sty tex/themes/mytheme/
+\end{minted}
+    \end{latin}
+
+    \item فایل‌های تم را ویرایش کنید.
+
+    \item در \file{matinbook.cls}، تم جدید را
+    بارگذاری کنید.
+\end{enumerate}
+
+\mnote{برای شروع، از تم \lr{default} کپی بگیرید و آن را تغییر دهید. این ساده‌تر از نوشتن تم از صفر است.}
+
+\subsection{تغییر رنگ‌ها}
+\label{sec:themes-custom-colors}
+
+ساده‌ترین راه برای تغییر تم، تغییر رنگ‌ها
+است. مثلاً برای یک تم با رنگ اصلی سبز:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{mb-theme-colors.sty}:
+\providecolor{matinblue}{cmyk}{0.80, 0.00, 0.45, 0.30}  % |\pc{سبز}|%
+\providecolor{matindarkblue}{cmyk}{0.80, 0.00, 0.45, 0.60}
+\providecolor{matinlightblue}{cmyk}{0.10, 0.00, 0.05, 0.05}
+\end{minted}
+\end{latin}
+
+\mnote{به‌جای تغییر نام رنگ‌ها، فقط مقادیر \lr{CMYK} آن‌ها را تغییر دهید. این کار، سازگاری با کلاس را حفظ می‌کند.}
+
+\subsection{تغییر جلد}
+\label{sec:themes-custom-cover}
+
+برای تغییر جلد، فایل \file{mb-theme-cover.sty}
+را ویرایش کنید. مثلاً برای تغییر رنگ
+پس‌زمینه‌ی جلد:
+
+\begin{latin}
+\begin{minted}{latex}
+\providecolor{matinnavy}{RGB}{30, 42, 58}
+% |\pc{تغییر به قرمز تیره}|%
+\providecolor{matinnavy}{RGB}{120, 30, 30}
+\end{minted}
+\end{latin}
+
+\mnote{برای تغییرات ساده، فقط رنگ‌ها را تغییر دهید. برای طراحی کاملاً جدید، عناصر \lr{TikZ} را جابه‌جا یا حذف کنید.}
+
+\section{چند تم نمونه}
+\label{sec:themes-examples}
+
+\subsection{تم \lr{minimal}}
+\label{sec:themes-minimal}
+
+یک تم مینیمال که فقط از دو رنگ استفاده
+می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\providecolor{matinblue}{cmyk}{0.00, 0.00, 0.00, 0.80}
+\providecolor{matingreen}{cmyk}{0.00, 0.00, 0.00, 0.60}
+\providecolor{matinorange}{cmyk}{0.00, 0.00, 0.00, 0.50}
+\end{minted}
+\end{latin}
+
+\mnote{تم‌های مینیمال برای کتاب‌های آکادمیک و رسمی مناسب‌ترند.}
+
+\subsection{تم \lr{vibrant}}
+\label{sec:themes-vibrant}
+
+یک تم پرانرژی با رنگ‌های زنده:
+
+\begin{latin}
+\begin{minted}{latex}
+\providecolor{matinblue}{cmyk}{1.00, 0.00, 0.00, 0.00}
+\providecolor{matingreen}{cmyk}{1.00, 0.00, 1.00, 0.00}
+\providecolor{matinorange}{cmyk}{0.00, 0.50, 1.00, 0.00}
+\end{minted}
+\end{latin}
+
+\mnote{تم‌های پرانرژی برای کتاب‌های آموزشی و مخاطبان جوان مناسب‌ترند.}
+
+\section{خطاهای رایج}
+\label{sec:themes-mistakes}
+
+\subsection{عدم بارگذاری \file{mb-theme-colors}}
+\label{sec:themes-mistake-colors}
+
+\textbf{مشکل:} اگر \file{mb-theme-colors} را
+بارگذاری نکنید، رنگ‌ها تعریف نمی‌شوند و
+خطای \lr{Undefined color} می‌دهید.
+
+\textbf{راه‌حل:} مطمئن شوید که
+\file{mb-theme-colors} در فاز ۱ \lr{matinbook.cls}
+بارگذاری می‌شود.
+
+\subsection{ترتیب اشتباه بارگذاری}
+\label{sec:themes-mistake-order}
+
+\textbf{مشکل:} اگر \file{mb-theme-cover} را
+قبل از \file{mb-theme-colors} بارگذاری کنید،
+خطا می‌دهید.
+
+\textbf{راه‌حل:} ترتیب صحیح:
+\file{mb-theme-colors} → \file{mb-theme-cover}.
+
+\subsection{تغییر نام رنگ‌ها}
+\label{sec:themes-mistake-rename}
+
+\textbf{مشکل:} اگر نام رنگ‌ها را تغییر دهید،
+ماژول‌های مصرف‌کننده (مثل \file{mb-boxes})
+خطا می‌دهند.
+
+\textbf{راه‌حل:} نام‌ها را تغییر ندهید؛ فقط
+مقادیر \lr{CMYK} را تغییر دهید.
+
+\section{تمرین‌ها}
+\label{sec:themes-exercises}
+
+\begin{exercise}
+    یک تم سفارشی بسازید که از رنگ‌های
+    متفاوتی استفاده کند.
+    \label{exc:themes-custom}
+\end{exercise}
+
+\begin{exercise}
+    رنگ اصلی تم را از آبی به سبز تغییر
+    دهید.
+    \label{exc:themes-green}
+\end{exercise}
+
+\begin{exercise}
+    یک تم مینیمال بسازید که فقط از سه
+    رنگ خاکستری استفاده کند.
+    \label{exc:themes-minimal}
+\end{exercise}
+
+\begin{exercise}
+    تم خود را در \file{matinbook.cls} بارگذاری
+    کنید و کتاب را کامپایل کنید.
+    \label{exc:themes-load}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:themes-summary}
+
+در این فصل، با تم‌ها در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item تم پیش‌فرض \lr{default} است و از
+    سه فایل تشکیل شده.
+
+    \item هر تم در پوشه‌ی
+    \file{tex/themes/} قرار دارد.
+
+    \item اجزای تم: \file{mb-theme-colors}،
+    \file{mb-theme-cover}،
+    \file{mb-theme-default}.
+
+    \item برای ایجاد تم سفارشی، پوشه‌ی جدید
+    بسازید و سه فایل را کپی کنید.
+
+    \item ساده‌ترین راه تغییر تم، تغییر
+    رنگ‌ها است.
+
+    \item نام رنگ‌ها را تغییر ندهید؛ فقط
+    مقادیر \lr{CMYK} را تغییر دهید.
+
+    \item خطاهای رایج شامل عدم بارگذاری
+    \file{mb-theme-colors}، ترتیب اشتباه
+    بارگذاری، و تغییر نام رنگ‌ها است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:localization})،
+با لوکال و زبان در \lr{MatinBook} آشنا
+می‌شوید و یاد می‌گیرید که چگونه بین فارسی
+و انگلیسی سوئیچ کنید.
