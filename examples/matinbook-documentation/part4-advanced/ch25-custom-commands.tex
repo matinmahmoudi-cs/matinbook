@@ -1,0 +1,438 @@
+%%
+%% part4-advanced/ch25-custom-commands.tex
+%%
+%% Chapter 25: Custom Commands — How to define new commands
+%% and environments with \newcommand, \NewDocumentCommand,
+%% and \NewDocumentEnvironment.
+%%
+
+\chapter{دستورات سفارشی}
+\label{chap:custom-commands}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:custom-commands-why}
+
+در نوشتن کتاب‌های فنی، بارها پیش می‌آید که
+یک دستور یا محیط را چندین بار تکرار می‌کنید.
+تعریف دستورات سفارشی، این تکرار را حذف
+می‌کند و خوانایی سورس را افزایش می‌دهد.
+
+\lr{MatinBook} خودش از دستورات سفارشی زیادی
+استفاده می‌کند (مثل \cmd{cref}، \cmd{pnum}،
+\cmd{mnote}). در این فصل، یاد می‌گیرید که
+چگونه دستورات و محیط‌های سفارشی خود را
+تعریف کنید.
+
+\mnote{تعریف دستور سفارشی، یکی از مهارت‌های کلیدی در \lr{LaTeX} است که به شما امکان می‌دهد سورس کتاب را کوتاه‌تر و خواناتر کنید.}
+
+\section{روش‌های تعریف دستور}
+\label{sec:custom-commands-methods}
+
+\lr{LaTeX} سه روش اصلی برای تعریف دستور
+ارائه می‌دهد:
+
+\begin{enumerate}
+    \item \cmd{newcommand}: روش سنتی.
+    \item \cmd{renewcommand}: بازنویسی دستور
+    موجود.
+    \item \cmd{NewDocumentCommand}: روش مدرن
+    \lr{LaTeX3}.
+\end{enumerate}
+
+\mnote{\lr{LaTeX3} روش‌های مدرن‌تری برای تعریف دستور ارائه می‌دهد که از تعداد متغیر آرگومان‌ها و آرگومان‌های اختیاری پشتیبانی می‌کنند.}
+
+\section{دستور ساده}
+\label{sec:custom-commands-simple}
+
+\subsection{با \cmd{newcommand}}
+\label{sec:custom-commands-newcommand}
+
+ساده‌ترین روش تعریف دستور، \cmd{newcommand}
+است:
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\mycommand}{|\pc{متن ثابت}|}
+\end{minted}
+\end{latin}
+
+این دستور، یک دستور بدون آرگومان تعریف
+می‌کند. برای استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\mycommand
+\end{minted}
+\end{latin}
+
+\mnote{اگر دستور از قبل تعریف شده باشد، \lr{\textbackslash newcommand} خطا می‌دهد. برای اجتناب، از \lr{\textbackslash providecommand} استفاده کنید.}
+
+\subsection{با آرگومان}
+\label{sec:custom-commands-args}
+
+برای تعریف دستور با آرگومان:
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\myemph}[1]{\textbf{#1}}
+\end{minted}
+\end{latin}
+
+استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\myemph{|\pc{متن پررنگ}|}
+\end{minted}
+\end{latin}
+
+خروجی: \textbf{متن پررنگ}.
+
+\mnote{تعداد آرگومان‌ها با عدد داخل \lr{[]} تعیین می‌شود. حداکثر ۹ آرگومان امکان‌پذیر است.}
+
+\subsection{با آرگومان اختیاری}
+\label{sec:custom-commands-optional}
+
+برای تعریف دستور با آرگومان اختیاری:
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\mybox}[2][matinblue]{%
+    \colorbox{#1}{#2}%
+}
+\end{minted}
+\end{latin}
+
+استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\mybox{|\pc{متن پیش‌فرض}|}%
+\mybox[matinred]{|\pc{متن قرمز}|}%
+\end{minted}
+\end{latin}
+
+\mnote{آرگومان اختیاری با \lr{[...]} و مقدار پیش‌فرض داخل \lr{[]} تعریف می‌شود.}
+
+\section{دستور مدرن (\lr{LaTeX3})}
+\label{sec:custom-commands-latex3}
+
+روش مدرن \lr{LaTeX3} از \cmd{NewDocumentCommand}
+استفاده می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\NewDocumentCommand{\myemph}{m}{%
+    \textbf{#1}%
+}
+\end{minted}
+\end{latin}
+
+\mnote{روش \lr{LaTeX3} ایمن‌تر است و از انواع آرگومان (اجباری، اختیاری، ستاره‌دار) پشتیبانی می‌کند.}
+
+\subsection{انواع آرگومان}
+\label{sec:custom-commands-argtypes}
+
+جدول \cref{tab:arg-types} انواع آرگومان در
+\cmd{NewDocumentCommand} را نشان می‌دهد.
+
+\begin{matintable}{انواع آرگومان در \lr{NewDocumentCommand}}{tab:arg-types}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {c X[l] X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نوع & توضیح & مثال \\
+\lr{m} & آرگومان اجباری & \lr{\{متن\}} \\
+\lr{o} & آرگومان اختیاری & \lr{[متن]} \\
+\lr{O\{default\}} & اختیاری با پیش‌فرض & \lr{[متن]} \\
+\lr{s} & ستاره‌ی اختیاری & \lr{*} \\
+\lr{v} & آرگومان verbatim & \lr{|متن|} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{برای دستورات ساده، \lr{\textbackslash newcommand} کافی است. برای دستورات پیچیده، از \lr{\textbackslash NewDocumentCommand} استفاده کنید.}
+
+\subsection{مثال: دستور با ستاره}
+\label{sec:custom-commands-star}
+
+\begin{latin}
+\begin{minted}{latex}
+\NewDocumentCommand{\myemph}{s m}{%
+    \IfBooleanTF{#1}%
+        {\textbf{#2}}%
+        {\textit{#2}}%
+}
+\end{minted}
+\end{latin}
+
+استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\myemph{|\pc{متن مورب}|}%
+\myemph*{|\pc{متن پررنگ}|}%
+\end{minted}
+\end{latin}
+
+\mnote{این دستور با \lr{\textbackslash myemph} متن را مورب و با \lr{\textbackslash myemph*} متن را پررنگ می‌کند.}
+
+\section{تعریف محیط سفارشی}
+\label{sec:custom-commands-env}
+
+\subsection{با \cmd{newenvironment}}
+\label{sec:custom-commands-newenv}
+
+برای تعریف محیط سفارشی:
+
+\begin{latin}
+\begin{minted}{latex}
+\newenvironment{myenv}{%
+    \begin{quote}\itshape
+}{%
+    \end{quote}
+}
+\end{minted}
+\end{latin}
+
+استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{myenv}
+|\pc{متن داخل محیط}|%
+\end{myenv}
+\end{minted}
+\end{latin}
+
+\mnote{محیط سفارشی با \lr{\textbackslash newenvironment} تعریف می‌شود و دو بخش دارد: کد شروع و کد پایان.}
+
+\subsection{با \cmd{NewDocumentEnvironment}}
+\label{sec:custom-commands-newdocenv}
+
+روش مدرن:
+
+\begin{latin}
+\begin{minted}{latex}
+\NewDocumentEnvironment{myenv}{m}{%
+    \begin{quote}\itshape
+    \textbf{#1}\par
+}{%
+    \end{quote}
+}
+\end{minted}
+\end{latin}
+
+استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\begin{myenv}{|\pc{عنوان}|}
+|\pc{متن داخل محیط}|%
+\end{myenv}
+\end{minted}
+\end{latin}
+
+\mnote{روش \lr{LaTeX3} از آرگومان‌های محیط پشتیبانی می‌کند.}
+
+\section{دستورات مفید \lr{MatinBook}}
+\label{sec:custom-commands-matinbook}
+
+\lr{MatinBook} چند دستور کمکی برای ساده‌سازی
+نوشتن متن ارائه می‌دهد:
+
+\begin{matintable}{دستورات کمکی \lr{MatinBook}}{tab:helper-commands}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[l]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+دستور & کاربرد & معادل \\
+\lr{\textbackslash cmd\{...\}} & نام دستور & \lr{\textbackslash texttt\{\textbackslash ...\}} \\
+\lr{\textbackslash env\{...\}} & نام محیط & \lr{\textbackslash texttt\{...\}} \\
+\lr{\textbackslash pkg\{...\}} & نام بسته & \lr{\textbackslash texttt\{...\}} \\
+\lr{\textbackslash file\{...\}} & نام فایل & \lr{\textbackslash texttt\{...\}} \\
+\lr{\textbackslash opt\{...\}} & آپشن & \lr{\textbackslash texttt\{...\}} \\
+\lr{\textbackslash pnum\{...\}} & عدد فارسی & \lr{\textbackslash lr\{...\}} \\
+\lr{\textbackslash pc\{...\}} & فارسی در کد & \lr{\textbackslash rl\{...\}} \\
+\lr{\textbackslash pcc\{...\}} & کامنت فارسی & — \\
+\end{tblr}
+\end{matintable}
+
+\mnote{دستورات \lr{\textbackslash cmd}، \lr{\textbackslash env}، \lr{\textbackslash pkg}، \lr{\textbackslash file} و \lr{\textbackslash opt} در \lr{main.tex} مستندات تعریف شده‌اند (نه در کلاس).}
+
+\section{مثال‌های کاربردی}
+\label{sec:custom-commands-examples}
+
+\subsection{دستور برای نمایش واژه‌های کلیدی}
+\label{sec:custom-commands-keyword}
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\keyword}[1]{\textbf{\textcolor{matinblue}{#1}}}
+\end{minted}
+\end{latin}
+
+استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\keyword{|\pc{الگوریتم}|}|\pc{یک مفهوم اساسی است.}|%
+\end{minted}
+\end{latin}
+
+خروجی: \textbf{\textcolor{matinblue}{الگوریتم}}
+یک مفهوم اساسی است.
+
+\subsection{دستور برای نمایش معادل لاتین}
+\label{sec:custom-commands-latin-equiv}
+
+\begin{latin}
+\begin{minted}{latex}
+\newcommand{\latinterm}[2]{#1\lr{(#2)}}
+\end{minted}
+\end{latin}
+
+استفاده:
+
+\begin{latin}
+\begin{minted}{latex}
+\latinterm{|\pc{الگوریتم}|}{algorithm}
+\end{minted}
+\end{latin}
+
+خروجی: الگوریتم\lr{(algorithm)}.
+
+\mnote{این دستور برای نمایش واژه‌ی فارسی به‌همراه معادل لاتین آن در پرانتز مفید است.}
+
+\subsection{محیط برای نکات مهم}
+\label{sec:custom-commands-important}
+
+\begin{latin}
+\begin{minted}{latex}
+\NewDocumentEnvironment{important}{m}{%
+    \begin{tcolorbox}[
+        colback=matinred!10,
+        colframe=matinred,
+        title=|\rl{#1}|%
+    ]
+}{%
+    \end{tcolorbox}
+}
+\end{minted}
+\end{latin}
+
+\mnote{برای محیط‌های سفارشی پیچیده، از \lr{tcolorbox} استفاده کنید که امکانات بیشتری دارد.}
+
+\section{خطاهای رایج}
+\label{sec:custom-commands-mistakes}
+
+\subsection{تعریف دستور موجود}
+\label{sec:custom-commands-mistake-exists}
+
+\textbf{مشکل:} اگر دستوری را که از قبل
+وجود دارد با \cmd{newcommand} تعریف کنید،
+خطا می‌دهد.
+
+\textbf{راه‌حل:} از \cmd{renewcommand} برای
+بازنویسی یا \cmd{providecommand} برای
+تعریف امن استفاده کنید.
+
+\subsection{تعداد اشتباه آرگومان‌ها}
+\label{sec:custom-commands-mistake-args}
+
+\textbf{مشکل:} اگر تعداد آرگومان‌های تعریف‌شده
+با تعداد آرگومان‌های استفاده‌شده یکسان
+نباشد، خطا می‌دهد.
+
+\textbf{راه‌حل:} تعداد آرگومان‌ها را در
+تعریف و استفاده بررسی کنید.
+
+\subsection{فراموش کردن \cmd{makeatletter}}
+\label{sec:custom-commands-mistake-makeatletter}
+
+\textbf{مشکل:} اگر دستوری با \lr{@} در نام
+تعریف کنید (مثل \cmd{my@command})،
+\lr{LaTeX} خطا می‌دهد.
+
+\textbf{راه‌حل:} از \cmd{makeatletter} و
+\cmd{makeatother} استفاده کنید، یا از
+\lr{@} در نام دستور اجتناب کنید.
+
+\mnote{در فایل‌های \lr{.sty}، استفاده از \lr{@} در نام دستورات داخلی مرسوم است، ولی در سند اصلی باید از \lr{\textbackslash makeatletter} استفاده کنید.}
+
+\section{تمرین‌ها}
+\label{sec:custom-commands-exercises}
+
+\begin{exercise}
+    یک دستور ساده تعریف کنید که متن را
+    پررنگ کند.
+    \label{exc:custom-commands-bold}
+\end{exercise}
+
+\begin{exercise}
+    یک دستور با دو آرگومان تعریف کنید
+    که یک واژه و معادل لاتین آن را نمایش
+    دهد.
+    \label{exc:custom-commands-two-args}
+\end{exercise}
+
+\begin{exercise}
+    یک دستور با آرگومان اختیاری تعریف کنید
+    که رنگ متن را تغییر دهد.
+    \label{exc:custom-commands-optional}
+\end{exercise}
+
+\begin{exercise}
+    یک محیط سفارشی تعریف کنید که متن را
+    در یک جعبه‌ی رنگی قرار دهد.
+    \label{exc:custom-commands-env}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:custom-commands-summary}
+
+در این فصل، با دستورات سفارشی در \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item سه روش تعریف دستور:
+    \cmd{newcommand}، \cmd{renewcommand}،
+    \cmd{NewDocumentCommand}.
+
+    \item دستور ساده بدون آرگومان:
+    \cmd{newcommand\{\textbackslash mycmd\}\{...\}}.
+
+    \item دستور با آرگومان:
+    \cmd{newcommand\{\textbackslash mycmd\}[1]\{...\}}.
+
+    \item دستور با آرگومان اختیاری:
+    \cmd{newcommand\{\textbackslash mycmd\}[2][default]\{...\}}.
+
+    \item روش مدرن \lr{LaTeX3} از انواع آرگومان
+    (اجباری، اختیاری، ستاره‌دار) پشتیبانی
+    می‌کند.
+
+    \item محیط سفارشی با \cmd{newenvironment}
+    یا \cmd{NewDocumentEnvironment}.
+
+    \item دستورات کمکی \lr{MatinBook}:
+    \cmd{cmd}، \cmd{env}، \cmd{pkg}،
+    \cmd{file}، \cmd{opt}، \cmd{pnum}،
+    \cmd{pc}، \cmd{pcc}.
+
+    \item خطاهای رایج شامل تعریف دستور موجود،
+    تعداد اشتباه آرگومان‌ها، و فراموش کردن
+    \cmd{makeatletter} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:large-projects})،
+با مدیریت پروژه‌های بزرگ آشنا می‌شوید و
+یاد می‌گیرید که چگونه کتاب‌های چندفایلی
+را سازمان‌دهی کنید.
