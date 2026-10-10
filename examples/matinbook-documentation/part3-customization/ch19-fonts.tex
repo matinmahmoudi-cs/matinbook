@@ -1,0 +1,397 @@
+%%
+%% part3-customization/ch19-fonts.tex
+%%
+%% Chapter 19: Fonts — The five Persian fonts, the Latin
+%% font, the math font, and the monospace font.
+%%
+
+\chapter{فونت‌ها}
+\label{chap:fonts}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:fonts-why}
+
+فونت، یکی از مهم‌ترین عوامل در خوانایی و
+زیبایی کتاب است. یک فونت خوب، چشم خواننده را
+خسته نمی‌کند و درک مطلب را آسان‌تر می‌سازد.
+
+\lr{MatinBook} از پنج فونت فارسی پشتیبانی
+می‌کند و همچنین فونت‌های لاتین، ریاضی و
+مونواسپیس را به‌طور دقیق تنظیم می‌کند. در
+این فصل، با این فونت‌ها آشنا می‌شوید و
+یاد می‌گیرید که چگونه آن‌ها را شخصی‌سازی
+کنید.
+
+\mnote{\lr{MatinBook} از \lr{fontspec} و \lr{unicode-math} برای مدیریت فونت‌ها استفاده می‌کند که از فونت‌های \lr{OpenType} پشتیبانی می‌کنند.}
+
+\section{فونت‌های فارسی}
+\label{sec:fonts-persian}
+
+\lr{MatinBook} پنج فونت فارسی را پشتیبانی
+می‌کند که با آپشن کلاس قابل انتخاب هستند.
+جدول \cref{tab:persian-fonts} این فونت‌ها
+را خلاصه می‌کند.
+
+\begin{matintable}{فونت‌های فارسی \lr{MatinBook}}{tab:persian-fonts}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c] X[c]},
+    hlines, vlines,
+    colsep = 6pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+آپشن & فونت & مقیاس & پیش‌فرض \\
+\lr{niloofar} & \lr{XB Niloofar} & \pnum{۱.۲} & بله \\
+\lr{vazirmatn} & \lr{Vazirmatn} & \pnum{۱.۲} & خیر \\
+\lr{sahel} & \lr{Sahel} & \pnum{۱.۲} & خیر \\
+\lr{irlotus} & \lr{IR Lotus} & \pnum{۱.۲} & خیر \\
+\lr{bnazanin} & \lr{B Nazanin} & \pnum{۱.۰} & خیر \\
+\end{tblr}
+\end{matintable}
+
+\subsection{فونت \lr{XB Niloofar}}
+\label{sec:fonts-niloofar}
+
+\lr{XB Niloofar} فونت پیش‌فرض \lr{MatinBook}
+است. این فونت به‌دلیل خوانایی بالا در متن‌های
+فنی و پوشش کامل حروف فارسی انتخاب شده است.
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[niloofar]{matinbook}
+\end{minted}
+\end{latin}
+
+مقیاس این فونت \pnum{۱.۲} است، یعنی ۲۰٪
+بزرگ‌تر از فونت پایه‌ی سند (\pnum{۱۰pt}).
+
+\mnote{مقیاس \pnum{۱.۲} برای فونت فارسی، استاندارد نشر فنی ایران است. این تنظیم باعث می‌شود فونت فارسی با فونت لاتین تعادل بصری داشته باشد.}
+
+\subsection{فونت \lr{Vazirmatn}}
+\label{sec:fonts-vazirmatn}
+
+\lr{Vazirmatn} یک فونت فارسی مدرن با طراحی
+هندسی است که خوانایی بالایی در نمایش دیجیتال
+دارد:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[vazirmatn]{matinbook}
+\end{minted}
+\end{latin}
+
+\mnote{فونت \lr{Vazirmatn} برای کتاب‌های دیجیتال و وب مناسب‌تر است، ولی در چاپ هم کیفیت خوبی دارد.}
+
+\subsection{فونت \lr{Sahel}}
+\label{sec:fonts-sahel}
+
+\lr{Sahel} یک فونت فارسی ساده و خوانا است
+که برای متن‌های طولانی مناسب است:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[sahel]{matinbook}
+\end{minted}
+\end{latin}
+
+\subsection{فونت \lr{IR Lotus}}
+\label{sec:fonts-irlotus}
+
+\lr{IR Lotus} یک فونت فارسی سنتی است که
+حس کلاسیک به کتاب می‌دهد:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[irlotus]{matinbook}
+\end{minted}
+\end{latin}
+
+\subsection{فونت \lr{B Nazanin}}
+\label{sec:fonts-bnazanin}
+
+\lr{B Nazanin} یک فونت تجاری است که پوشش
+حروف آن کامل نیست و برای کتاب‌های فنی
+توصیه نمی‌شود:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[bnazanin]{matinbook}
+\end{minted}
+\end{latin}
+
+\mnote{فونت \lr{B Nazanin} تجاری است و ممکن است روی همه‌ی سیستم‌ها نصب نباشد. برای کتاب‌های فنی، \lr{XB Niloofar} یا \lr{Vazirmatn} توصیه می‌شود.}
+
+\section{فونت لاتین}
+\label{sec:fonts-latin}
+
+فونت لاتین پیش‌فرض \lr{MatinBook}، \lr{Times
+New Roman} است. اگر این فونت روی سیستم
+نصب نباشد، \lr{TeX Gyre Termes} به‌عنوان
+جایگزین استفاده می‌شود.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+\IfFontExistsTF{Times New Roman}{
+    \setlatintextfont{Times New Roman}
+}{
+    \setlatintextfont{TeX Gyre Termes}
+    \PackageWarning{matinbook}{Times New Roman not found}
+}
+\end{minted}
+\end{latin}
+
+\mnote{فونت \lr{TeX Gyre Termes} یک فونت رایگان و متن‌باز است که ظاهری مشابه \lr{Times New Roman} دارد.}
+
+\section{فونت ریاضی}
+\label{sec:fonts-math}
+
+فونت ریاضی پیش‌فرض \lr{MatinBook}، \lr{XITS
+Math} است. این فونت، پوشش گسترده‌ای از
+نمادهای ریاضی دارد و با \lr{unicode-math}
+سازگار است.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+\IfFontExistsTF{XITS Math}{
+    \setmathfont{XITS Math}
+}{
+    \IfFontExistsTF{XITSMath-Regular.otf}{
+        \setmathfont{XITSMath-Regular.otf}
+    }{
+        \IfFontExistsTF{Latin Modern Math}{
+            \setmathfont{Latin Modern Math}
+        }{
+            \PackageWarning{matinbook}{No math font found}
+        }
+    }
+}
+\end{minted}
+\end{latin}
+
+\mnote{فونت \lr{XITS Math} از \lr{OpenType} پشتیبانی می‌کند و نمادهای ریاضی را با کیفیت بالا نمایش می‌دهد.}
+
+\section{فونت مونواسپیس}
+\label{sec:fonts-monospace}
+
+فونت مونواسپیس پیش‌فرض \lr{MatinBook}،
+\lr{DejaVu Sans Mono} است. این فونت برای
+نمایش کد، اعداد و متن‌های فنی مناسب است.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+\IfFontExistsTF{DejaVu Sans Mono}{
+    \setmonofont{DejaVu Sans Mono}[Scale=0.9]
+}{
+    \IfFontExistsTF{Courier New}{
+        \setmonofont{Courier New}[Scale=0.9]
+    }{
+        \PackageWarning{matinbook}{No monospace font found}
+    }
+}
+\end{minted}
+\end{latin}
+
+\mnote{فونت \lr{DejaVu Sans Mono} روی اکثر توزیع‌های \lr{Linux} به‌طور پیش‌فرض نصب است.}
+
+\section{فونت کد}
+\label{sec:fonts-code}
+
+فونت کد پیش‌فرض \lr{MatinBook}، \lr{JetBrains
+Mono} است. این فونت، لیگچرهای مخصوص
+برنامه‌نویسی دارد که خوانایی کد را افزایش
+می‌دهند.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+\IfFontExistsTF{JetBrains Mono}{
+    \newfontfamily\codefont{JetBrains Mono}[Scale=0.9,Ligatures=TeX]
+}{
+    \IfFontExistsTF{DejaVu Sans Mono}{
+        \newfontfamily\codefont{DejaVu Sans Mono}[Scale=0.9,Ligatures=TeX]
+    }{
+        \newfontfamily\codefont{Courier New}[Scale=0.9]
+    }
+}
+\end{minted}
+\end{latin}
+
+\mnote{اگر \lr{JetBrains Mono} نصب نباشد، \lr{DejaVu Sans Mono} به‌عنوان جایگزین استفاده می‌شود.}
+
+\section{فونت فارسی در کد}
+\label{sec:fonts-persian-code}
+
+برای نمایش متن فارسی داخل کد، \lr{MatinBook}
+از فونت \lr{DejaVu Sans Mono} استفاده می‌کند
+که از حروف فارسی پشتیبانی می‌کند.
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{mb-code.sty}:
+\defpersianfont\persiancodingfont{DejaVu Sans Mono}[Script=Arabic,Scale=0.9]
+\newcommand{\pc}[1]{\rl{\persiancodingfont\rl{#1}}}
+\end{minted}
+\end{latin}
+
+\mnote{دستور \lr{\textbackslash pc} برای متن فارسی غیرکامنت و \lr{\textbackslash pcc} برای کامنت فارسی در پایتون استفاده می‌شود.}
+
+\section{نصب فونت‌ها}
+\label{sec:fonts-installation}
+
+\subsection{نصب \lr{XB Niloofar}}
+\label{sec:fonts-install-niloofar}
+
+\begin{latin}
+\begin{minted}{bash}
+mkdir -p ~/.local/share/fonts
+cp fonts/niloofar/*.ttf ~/.local/share/fonts/
+fc-cache -fv
+\end{minted}
+\end{latin}
+
+\subsection{نصب \lr{XITS Math}}
+\label{sec:fonts-install-xits}
+
+\begin{latin}
+\begin{minted}{bash}
+# Debian/Ubuntu
+sudo apt install fonts-xits
+
+# macOS
+brew install --cask font-xits
+\end{minted}
+\end{latin}
+
+\subsection{نصب \lr{DejaVu Sans Mono}}
+\label{sec:fonts-install-dejavu}
+
+\begin{latin}
+\begin{minted}{bash}
+# Debian/Ubuntu
+sudo apt install fonts-dejavu
+\end{minted}
+\end{latin}
+
+\mnote{برای نصب فونت‌ها روی ویندوز، روی فایل \lr{.ttf} راست‌کلیک کرده و \lr{Install} بزنید.}
+
+\section{تغییر فونت پیش‌فرض}
+\label{sec:fonts-change-default}
+
+اگر می‌خواهید فونت پیش‌فرض را برای همیشه
+تغییر دهید، فایل \file{matinbook.cls} را
+ویرایش کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{مقدار پیش‌فرض}|\lr{XBNiloofar}|%
+\def\matin@fontname{XBNiloofar}
+
+% |\pc{تغییر به}|\lr{Vazirmatn}|%
+\def\matin@fontname{Vazirmatn}
+\end{minted}
+\end{latin}
+
+\mnote{با این تغییر، فونت پیش‌فرض کلاس \lr{Vazirmatn} می‌شود و نیازی به آپشن در هر سند نیست.}
+
+\section{خطاهای رایج}
+\label{sec:fonts-mistakes}
+
+\subsection{فونت پیدا نشد}
+\label{sec:fonts-mistake-notfound}
+
+\textbf{مشکل:} اگر فونت روی سیستم نصب نباشد،
+خطای \lr{Font X not found} می‌دهد.
+
+\textbf{راه‌حل:} فونت را نصب کنید و
+\lr{fc-cache -fv} را اجرا کنید.
+
+\subsection{فونت تجاری}
+\label{sec:fonts-mistake-commercial}
+
+\textbf{مشکل:} فونت \lr{B Nazanin} تجاری
+است و ممکن است روی همه‌ی سیستم‌ها نصب
+نباشد.
+
+\textbf{راه‌حل:} از فونت‌های رایگان مانند
+\lr{XB Niloofar} یا \lr{Vazirmatn}
+استفاده کنید.
+
+\subsection{فونت فارسی در کد}
+\label{sec:fonts-mistake-persian-code}
+
+\textbf{مشکل:} اگر برای متن فارسی در کد از
+فونت لاتین استفاده کنید، نتیجه مربع‌های
+خالی می‌شود.
+
+\textbf{راه‌حل:} از دستورات \cmd{pc} و
+\cmd{pcc} استفاده کنید که فونت فارسی
+مناسب را فعال می‌کنند.
+
+\section{تمرین‌ها}
+\label{sec:fonts-exercises}
+
+\begin{exercise}
+    یک کتاب با فونت \lr{Vazirmatn} بسازید و
+    آن را با \lr{XB Niloofar} مقایسه کنید.
+    \label{exc:fonts-vazirmatn}
+\end{exercise}
+
+\begin{exercise}
+    فونت پیش‌فرض کلاس را به \lr{Sahel}
+    تغییر دهید.
+    \label{exc:fonts-default}
+\end{exercise}
+
+\begin{exercise}
+    یک نمونه کد با کامنت فارسی بنویسید و
+    فونت \lr{DejaVu Sans Mono} را ببینید.
+    \label{exc:fonts-code}
+\end{exercise}
+
+\begin{exercise}
+    نصب بودن فونت‌های اصلی را با \lr{fc-list}
+    بررسی کنید.
+    \label{exc:fonts-check}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:fonts-summary}
+
+در این فصل، با فونت‌های \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} پنج فونت فارسی
+    را پشتیبانی می‌کند: \lr{niloofar}،
+    \lr{vazirmatn}، \lr{sahel}، \lr{irlotus}،
+    \lr{bnazanin}.
+
+    \item فونت پیش‌فرض، \lr{XB Niloofar} با
+    مقیاس \pnum{۱.۲} است.
+
+    \item فونت لاتین، \lr{Times New Roman}
+    (با جایگزین \lr{TeX Gyre Termes}).
+
+    \item فونت ریاضی، \lr{XITS Math}.
+
+    \item فونت مونواسپیس، \lr{DejaVu Sans Mono}.
+
+    \item فونت کد، \lr{JetBrains Mono} با
+    لیگچرهای برنامه‌نویسی.
+
+    \item متن فارسی در کد با \lr{DejaVu Sans Mono}
+    و دستورات \cmd{pc} و \cmd{pcc} نمایش داده
+    می‌شود.
+
+    \item خطاهای رایج شامل فونت پیدا نشد،
+    فونت تجاری، و فونت فارسی در کد است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:layout})، با
+صفحه‌آرایی در \lr{MatinBook} آشنا می‌شوید
+و یاد می‌گیرید که چگونه چیدمان کتاب را
+شخصی‌سازی کنید.
