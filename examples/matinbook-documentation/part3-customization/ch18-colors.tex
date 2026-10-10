@@ -1,0 +1,421 @@
+%%
+%% part3-customization/ch18-colors.tex
+%%
+%% Chapter 18: Color System — CMYK palette, five color
+%% families, and customization.
+%%
+
+\chapter{سیستم رنگ}
+\label{chap:colors}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:colors-why}
+
+رنگ‌ها در \lr{MatinBook} فقط برای زیبایی نیستند؛
+آن‌ها نقش معنایی دارند. هر رنگ، نوع خاصی از
+محتوا را نشان می‌دهد و به خواننده کمک می‌کند
+که سریع‌تر نوع مطلب را تشخیص دهد.
+
+\lr{MatinBook} از پالت \textbf{CMYK} استفاده
+می‌کند که برای چاپ حرفه‌ای طراحی شده است. در
+این فصل، با این پالت آشنا می‌شوید و یاد
+می‌گیرید که چگونه آن را شخصی‌سازی کنید.
+
+\mnote{مدل \lr{CMYK} برای چاپ، و مدل \lr{RGB} برای نمایش دیجیتال مناسب است. \lr{MatinBook} از \lr{CMYK} استفاده می‌کند چون کتاب‌ها معمولاً چاپ می‌شوند.}
+
+\section{پالت رنگی \lr{MatinBook}}
+\label{sec:colors-palette}
+
+\lr{MatinBook} ۲۰ رنگ را در ۵ خانواده سازمان‌دهی
+می‌کند. هر خانواده، نقش معنایی مشخصی دارد:
+
+\begin{itemize}
+    \item \textbf{آبی:} قضیه، لم، نتیجه، گزاره.
+    \item \textbf{سبز:} تعریف، راه‌حل.
+    \item \textbf{نارنجی:} مثال، نکته.
+    \item \textbf{قرمز:} هشدار، نکته.
+    \item \textbf{بنفش:} تمرین.
+\end{itemize}
+
+\mnote{رنگ \lr{matinblue} رنگ غالب سیستم است. سایر رنگ‌ها یا سایه‌های آبی هستند یا رنگ‌های عملکردی.}
+
+\section{خانواده‌ی آبی}
+\label{sec:colors-blue}
+
+خانواده‌ی آبی، رنگ غالب سیستم است و برای
+محیط‌های نظری استفاده می‌شود. جدول
+\cref{tab:colors-blue} این خانواده را نشان
+می‌دهد.
+
+\begin{matintable}{خانواده‌ی آبی}{tab:colors-blue}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام & کاربرد & \lr{CMYK} \\
+\lr{matinblue} & قضیه & \lr{(80, 30, 0, 30)} \\
+\lr{matindarkblue} & آبی تیره & \lr{(80, 30, 0, 60)} \\
+\lr{matinlightblue} & آبی روشن & \lr{(15, 5, 0, 5)} \\
+\end{tblr}
+\end{matintable}
+
+\begin{quote}
+    \textcolor{matinblue}{\textbf{متن آبی}} —
+    \textcolor{matindarkblue}{\textbf{متن آبی تیره}} —
+    \colorbox{matinlightblue}{\textbf{پس‌زمینه‌ی آبی روشن}}
+\end{quote}
+
+\section{خانواده‌ی سبز}
+\label{sec:colors-green}
+
+خانواده‌ی سبز به تعاریف و راه‌حل‌ها اختصاص
+دارد. جدول \cref{tab:colors-green} این
+خانواده را نشان می‌دهد.
+
+\begin{matintable}{خانواده‌ی سبز}{tab:colors-green}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام & کاربرد & \lr{CMYK} \\
+\lr{matingreen} & تعریف & \lr{(80, 0, 45, 30)} \\
+\lr{matindarkgreen} & سبز تیره & \lr{(80, 0, 45, 65)} \\
+\lr{matinlightgreen} & سبز روشن & \lr{(10, 0, 5, 5)} \\
+\end{tblr}
+\end{matintable}
+
+\begin{quote}
+    \textcolor{matingreen}{\textbf{متن سبز}} —
+    \textcolor{matindarkgreen}{\textbf{متن سبز تیره}} —
+    \colorbox{matinlightgreen}{\textbf{پس‌زمینه‌ی سبز روشن}}
+\end{quote}
+
+\section{خانواده‌ی نارنجی}
+\label{sec:colors-orange}
+
+خانواده‌ی نارنجی برای مثال‌ها استفاده می‌شود.
+جدول \cref{tab:colors-orange} این خانواده
+را نشان می‌دهد.
+
+\begin{matintable}{خانواده‌ی نارنجی}{tab:colors-orange}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام & کاربرد & \lr{CMYK} \\
+\lr{matinorange} & مثال & \lr{(0, 45, 85, 10)} \\
+\lr{matindarkorange} & نارنجی تیره & \lr{(0, 45, 85, 55)} \\
+\lr{matinlightorange} & نارنجی روشن & \lr{(0, 5, 15, 0)} \\
+\end{tblr}
+\end{matintable}
+
+\begin{quote}
+    \textcolor{matinorange}{\textbf{متن نارنجی}} —
+    \textcolor{matindarkorange}{\textbf{متن نارنجی تیره}} —
+    \colorbox{matinlightorange}{\textbf{پس‌زمینه‌ی نارنجی روشن}}
+\end{quote}
+
+\section{خانواده‌ی قرمز}
+\label{sec:colors-red}
+
+خانواده‌ی قرمز به نکته‌ها و هشدارها اختصاص
+دارد. جدول \cref{tab:colors-red} این
+خانواده را نشان می‌دهد.
+
+\begin{matintable}{خانواده‌ی قرمز}{tab:colors-red}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام & کاربرد & \lr{CMYK} \\
+\lr{matinred} & هشدار & \lr{(0, 65, 75, 10)} \\
+\lr{matindarkred} & قرمز تیره & \lr{(0, 65, 75, 55)} \\
+\lr{matinlightred} & قرمز روشن & \lr{(0, 15, 15, 0)} \\
+\end{tblr}
+\end{matintable}
+
+\begin{quote}
+    \textcolor{matinred}{\textbf{متن قرمز}} —
+    \textcolor{matindarkred}{\textbf{متن قرمز تیره}} —
+    \colorbox{matinlightred}{\textbf{پس‌زمینه‌ی قرمز روشن}}
+\end{quote}
+
+\section{خانواده‌ی بنفش}
+\label{sec:colors-purple}
+
+خانواده‌ی بنفش برای تمرین‌ها استفاده می‌شود.
+جدول \cref{tab:colors-purple} این خانواده
+را نشان می‌دهد.
+
+\begin{matintable}{خانواده‌ی بنفش}{tab:colors-purple}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام & کاربرد & \lr{CMYK} \\
+\lr{matinpurple} & تمرین & \lr{(20, 60, 0, 30)} \\
+\lr{matindarkpurple} & بنفش تیره & \lr{(20, 60, 0, 65)} \\
+\lr{matinlightpurple} & بنفش روشن & \lr{(5, 10, 0, 5)} \\
+\end{tblr}
+\end{matintable}
+
+\begin{quote}
+    \textcolor{matinpurple}{\textbf{متن بنفش}} —
+    \textcolor{matindarkpurple}{\textbf{متن بنفش تیره}} —
+    \colorbox{matinlightpurple}{\textbf{پس‌زمینه‌ی بنفش روشن}}
+\end{quote}
+
+\section{رنگ‌های خنثی}
+\label{sec:colors-neutral}
+
+رنگ‌های خنثی برای متن، حاشیه و پس‌زمینه
+استفاده می‌شوند. جدول \cref{tab:colors-neutral}
+این رنگ‌ها را نشان می‌دهد.
+
+\begin{matintable}{رنگ‌های خنثی}{tab:colors-neutral}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+نام & کاربرد & \lr{CMYK} \\
+\lr{matindarkgray} & متن اصلی & \lr{(45, 25, 0, 70)} \\
+\lr{matinmediumgray} & متن فرعی & \lr{(10, 0, 0, 35)} \\
+\lr{matinlightgray} & پس‌زمینه & \lr{(0, 0, 0, 5)} \\
+\lr{matinbordergray} & حاشیه & \lr{(5, 0, 0, 20)} \\
+\lr{matincream} & پس‌زمینه‌ی گرم & \lr{(0, 0, 0, 0)} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{متن اصلی نه با سیاه مطلق، بلکه با خاکستری تیره‌ی نزدیک به سیاه حروف‌چینی می‌شود تا کنتراست چشم‌نوازتری ایجاد شود.}
+
+\section{استفاده از رنگ‌ها}
+\label{sec:colors-usage}
+
+\lr{MatinBook} سه دستور اصلی برای استفاده
+از رنگ‌ها ارائه می‌دهد:
+
+\begin{itemize}
+    \item \cmd{textcolor\{رنگ\}\{متن\}}:
+    متن رنگی.
+    \item \cmd{colorbox\{رنگ\}\{متن\}}:
+    پس‌زمینه‌ی رنگی.
+    \item \cmd{color\{رنگ\}}: تغییر رنگ جاری.
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+\textcolor{matinblue}{|\pc{متن آبی}|}%
+\colorbox{matinlightblue}{|\pc{پس‌زمینه‌ی آبی}|}%
+{\color{matinred}|\pc{متن قرمز}|}%
+\end{minted}
+\end{latin}
+
+\mnote{برای رنگ‌آمیزی متن، از \lr{\textbackslash textcolor} استفاده کنید. برای پس‌زمینه، از \lr{\textbackslash colorbox}.}
+
+\subsection{ترکیب رنگ‌ها}
+\label{sec:colors-mixing}
+
+می‌توانید سایه‌های مختلفی از هر رنگ بسازید:
+
+\begin{latin}
+\begin{minted}{latex}
+\textcolor{matinblue!20}{|\pc{آبی خیلی روشن}|}%
+\textcolor{matinblue!50}{|\pc{آبی متوسط}|}%
+\textcolor{matinblue!80}{|\pc{آبی تیره}|}%
+\end{minted}
+\end{latin}
+
+خروجی:
+
+\begin{quote}
+    \textcolor{matinblue!20}{آبی خیلی روشن} —
+    \textcolor{matinblue!50}{آبی متوسط} —
+    \textcolor{matinblue!80}{آبی تیره}
+\end{quote}
+
+\mnote{عدد بعد از \lr{!} درصد ترکیب با رنگ پایه را نشان می‌دهد. \lr{matinblue!20} یعنی ۲۰٪ آبی و ۸۰٪ رنگ پایه.}
+
+\section{قواعد استفاده از رنگ}
+\label{sec:colors-rules}
+
+\lr{MatinBook} چند قاعده برای استفاده‌ی
+حرفه‌ای از رنگ‌ها توصیه می‌کند:
+
+\begin{enumerate}
+    \item \textbf{حداکثر ۳ رنگ در هر صفحه}
+    (بدون احتساب رنگ جعبه‌ها).
+    \item \textbf{استفاده‌ی معنایی، نه تزئینی.}
+    آبی برای قضیه، سبز برای تعریف، نارنجی
+    برای مثال.
+    \item \textbf{کنتراست ۴.۵:۱} برای
+    دسترس‌پذیری.
+    \item \textbf{پرهیز از سیاه مطلق روی
+    سفید مطلق.}
+    \item \textbf{رنگ غالب، آبی است.} سایر
+    رنگ‌ها عملکردی هستند.
+\end{enumerate}
+
+\mnote{استفاده‌ی بیش از حد از رنگ، کتاب را پرزرق‌وبرق می‌کند و تمرکز خواننده را از محتوا می‌گیرد.}
+
+\section{شخصی‌سازی پالت}
+\label{sec:colors-customization}
+
+برای شخصی‌سازی پالت رنگ، فایل
+\file{mb-theme-colors.sty} را ویرایش کنید.
+این فایل، همه‌ی رنگ‌ها را با
+\cmd{providecolor} تعریف می‌کند:
+
+\begin{latin}
+\begin{minted}{latex}
+\providecolor{matinblue}{cmyk}{0.80, 0.30, 0.00, 0.30}
+\providecolor{matingreen}{cmyk}{0.80, 0.00, 0.45, 0.30}
+\providecolor{matinorange}{cmyk}{0.00, 0.45, 0.85, 0.10}
+\end{minted}
+\end{latin}
+
+\mnote{چون از \lr{\textbackslash providecolor} استفاده شده، می‌توانید رنگ‌ها را با \lr{\textbackslash definecolor} قبل از بارگذاری کلاس بازنویسی کنید.}
+
+\subsection{بازنویسی رنگ در سند}
+\label{sec:colors-override}
+
+برای بازنویسی یک رنگ خاص در سند خود، آن
+را قبل از \cmd{documentclass} تعریف کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass{matinbook}
+
+\usepackage{xcolor}
+\definecolor{matinblue}{cmyk}{0.70, 0.20, 0.00, 0.20}
+
+\begin{document}
+...
+\end{document}
+\end{minted}
+\end{latin}
+
+\mnote{چون \lr{MatinBook} از \lr{\textbackslash providecolor} استفاده می‌کند، تعریف شما اولویت دارد.}
+
+\section{خطاهای رایج}
+\label{sec:colors-mistakes}
+
+\subsection{استفاده از رنگ تعریف‌نشده}
+\label{sec:colors-mistake-undefined}
+
+\textbf{مشکل:} اگر رنگی تعریف نشده باشد،
+خطای \lr{Undefined color} می‌دهد.
+
+\textbf{راه‌حل:} از پالت \lr{MatinBook} استفاده
+کنید یا رنگ جدید را با \cmd{definecolor}
+تعریف کنید.
+
+\subsection{استفاده‌ی بیش از حد از رنگ}
+\label{sec:colors-mistake-toomuch}
+
+\textbf{مشکل:} اگر در هر صفحه بیش از ۳ رنگ
+استفاده کنید، صفحه شلوغ به نظر می‌رسد.
+
+\textbf{راه‌حل:} از رنگ‌ها به‌صورت معنایی
+استفاده کنید، نه تزئینی.
+
+\subsection{کنتراست پایین}
+\label{sec:colors-mistake-contrast}
+
+\textbf{مشکل:} اگر متن رنگی روی پس‌زمینه‌ی
+روشن نوشته شود، خواندنش سخت می‌شود.
+
+\textbf{راه‌حل:} از کنتراست ۴.۵:۱ استفاده
+کنید. پالت \lr{MatinBook} این کنتراست را
+تضمین می‌کند.
+
+\section{تمرین‌ها}
+\label{sec:colors-exercises}
+
+\begin{exercise}
+    یک متن ساده با هر پنج خانواده‌ی رنگی
+    بنویسید.
+    \label{exc:colors-basic}
+\end{exercise}
+
+\begin{exercise}
+    از ترکیب \lr{matinblue!40} استفاده کنید
+    و با \lr{matinlightblue} مقایسه کنید.
+    \label{exc:colors-mixing}
+\end{exercise}
+
+\begin{exercise}
+    رنگ \lr{matinblue} را در سند خود بازنویسی
+    کنید و کتاب را کامپایل کنید.
+    \label{exc:colors-override}
+\end{exercise}
+
+\begin{exercise}
+    یک صفحه بسازید که حداکثر ۳ رنگ داشته
+    باشد. سپس رنگی اضافه کنید و تفاوت را
+    ببینید.
+    \label{exc:colors-limit}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:colors-summary}
+
+در این فصل، با سیستم رنگ \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از پالت \lr{CMYK}
+    استفاده می‌کند که برای چاپ مناسب است.
+
+    \item ۲۰ رنگ در ۵ خانواده سازمان‌دهی
+    شده‌اند: آبی، سبز، نارنجی، قرمز، بنفش.
+
+    \item رنگ \lr{matinblue} رنگ غالب
+    سیستم است.
+
+    \item رنگ‌های خنثی شامل خاکستری تیره،
+    متوسط، روشن، مرزی و کِرِم هستند.
+
+    \item سه دستور اصلی: \cmd{textcolor}،
+    \cmd{colorbox}، \cmd{color}.
+
+    \item ترکیب رنگ‌ها با \lr{!} امکان‌پذیر
+    است: \lr{matinblue!40}.
+
+    \item قواعد استفاده: حداکثر ۳ رنگ در
+    صفحه، استفاده‌ی معنایی، کنتراست ۴.۵:۱.
+
+    \item شخصی‌سازی با ویرایش
+    \file{mb-theme-colors.sty}.
+
+    \item خطاهای رایج شامل رنگ تعریف‌نشده،
+    استفاده‌ی بیش از حد، و کنتراست پایین
+    است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:fonts})، با فونت‌ها
+در \lr{MatinBook} آشنا می‌شوید و یاد می‌گیرید
+که چگونه فونت‌ها را شخصی‌سازی کنید.
