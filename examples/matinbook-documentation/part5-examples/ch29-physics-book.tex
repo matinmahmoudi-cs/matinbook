@@ -1,0 +1,316 @@
+%%
+%% part5-examples/ch29-physics-book.tex
+%%
+%% Chapter 29: A Physics Book — A complete sample chapter
+%% from a physics textbook, focusing on equations, units,
+%% and experimental data.
+%%
+
+\chapter{کتاب فیزیک}
+\label{chap:physics-book}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:physics-book-why}
+
+در دو فصل قبل، نمونه‌هایی از کتاب ریاضی
+(با تمرکز بر قضیه و اثبات) و کتاب
+برنامه‌نویسی (با تمرکز بر کد و الگوریتم)
+دیدیم. در این فصل، نمونه‌ای از کتاب
+فیزیک را می‌بینیم که چالش‌های خاص خود
+را دارد: معادلات، یکاها، داده‌های تجربی
+و نمودارها.
+
+هدف این فصل، نشان دادن این است که چگونه
+می‌توان از \lr{MatinBook} برای نوشتن
+کتاب‌های فیزیک استفاده کرد.
+
+\mnote{کتاب‌های فیزیک معمولاً ترکیبی از معادلات پیچیده، جداول داده‌های تجربی و نمودارهای دقیق هستند.}
+
+\section{ساختار فصل نمونه}
+\label{sec:physics-book-structure}
+
+فصل نمونه، از یک کتاب فیزیک خیالی با
+عنوان «مبانی مکانیک کلاسیک» است. این
+فصل شامل بخش‌های زیر است:
+
+\begin{itemize}
+    \item مقدمه.
+    \item معادلات حرکت.
+    \item یکاها و ابعاد.
+    \item داده‌های تجربی.
+    \item نمودارها.
+    \item تمرین‌ها.
+\end{itemize}
+
+\section{مقدمه}
+\label{sec:physics-book-intro}
+
+مکانیک کلاسیک\index{مکانیک کلاسیک}،
+شاخه‌ای از فیزیک است که به مطالعه‌ی حرکت
+اجسام می‌پردازد. این شاخه، پایه‌ی بسیاری
+از شاخه‌های دیگر فیزیک است.
+
+در این فصل، با قوانین نیوتن و معادلات
+حرکت آشنا می‌شویم.
+
+\mnote{مکانیک کلاسیک توسط \lr{Isaac Newton} در قرن هفدهم پایه‌گذاری شد.}
+
+\section{قوانین نیوتن}
+\label{sec:physics-book-newton}
+
+\subsection{قانون اول}
+\label{sec:physics-book-newton-first}
+
+\begin{theorem}[قانون اول نیوتن]
+    هر جسم در حال سکون یا حرکت یکنواخت
+    در خط راست، به همان حالت باقی می‌ماند
+    مگر اینکه نیروی خارجی به آن وارد شود.
+    \label{thm:newton-first}
+\end{theorem}
+
+\mnote{قانون اول نیوتن را «قانون اینرسی» یا «قانون لختی» نیز می‌نامند.}
+
+\subsection{قانون دوم}
+\label{sec:physics-book-newton-second}
+
+\begin{theorem}[قانون دوم نیوتن]
+    شتاب جسم با نیروی خالص وارد بر آن
+    متناسب و با جرم آن نسبت عکس دارد:
+    \[
+        \vec{F}_{\text{net}} = m \vec{a}
+    \]
+    \label{thm:newton-second}
+\end{theorem}
+
+طبق \cref{thm:newton-second}، اگر نیروی
+خالص وارد بر جسمی صفر باشد، شتاب آن نیز
+صفر است.
+
+\begin{example}
+    جسمی به جرم \lr{$2\,\text{kg}$} تحت
+    نیروی \lr{$10\,\text{N}$} قرار دارد.
+    شتاب آن برابر است با:
+    \[
+        a = \frac{F}{m} = \frac{10}{2} = 5\,\text{m/s}^2
+    \]
+    \label{ex:newton-second}
+\end{example}
+
+\subsection{قانون سوم}
+\label{sec:physics-book-newton-third}
+
+\begin{theorem}[قانون سوم نیوتن]
+    برای هر کنش، واکنشی مساوی و در جهت
+    مخالف وجود دارد:
+    \[
+        \vec{F}_{12} = -\vec{F}_{21}
+    \]
+    \label{thm:newton-third}
+\end{theorem}
+
+\mnote{قوانین نیوتن \cref{thm:newton-first,thm:newton-second,thm:newton-third} پایه‌ی مکانیک کلاسیک هستند.}
+
+\section{معادلات حرکت}
+\label{sec:physics-book-equations}
+
+\subsection{حرکت با شتاب ثابت}
+\label{sec:physics-book-constant-accel}
+
+برای حرکت با شتاب ثابت \lr{$a$}، معادلات
+حرکت به‌صورت زیر هستند:
+
+\begin{align}
+    v &= v_0 + at \label{eq:velocity} \\
+    x &= x_0 + v_0 t + \frac{1}{2} a t^2 \label{eq:position} \\
+    v^2 &= v_0^2 + 2a(x - x_0) \label{eq:velocity-position}
+\end{align}
+
+معادلات \cref{eq:velocity,eq:position,eq:velocity-position}
+به‌عنوان معادلات سینماتیک شناخته می‌شوند.
+
+\mnote{این معادلات فقط برای شتاب ثابت معتبرند. برای شتاب متغیر، باید از حساب دیفرانسیل استفاده کرد.}
+
+\begin{example}
+    خودرویی با سرعت اولیه‌ی
+    \lr{$20\,\text{m/s}$} با شتاب
+    \lr{$-5\,\text{m/s}^2$} ترمز می‌کند.
+    مدت زمان تا توقف:
+    \[
+        t = \frac{v - v_0}{a} = \frac{0 - 20}{-5} = 4\,\text{s}
+    \]
+    \label{ex:braking}
+\end{example}
+
+\subsection{حرکت پرتابی}
+\label{sec:physics-book-projectile}
+
+برای حرکت پرتابی در دو بُعد، معادلات
+به‌صورت زیر هستند:
+
+\begin{align}
+    x(t) &= v_0 \cos\theta \cdot t \\
+    y(t) &= v_0 \sin\theta \cdot t - \frac{1}{2} g t^2
+\end{align}
+
+\mnote{در حرکت پرتابی، مؤلفه‌ی افقی سرعت ثابت است ولی مؤلفه‌ی عمودی تحت تأثیر گرانش تغییر می‌کند.}
+
+\section{یکاها و ابعاد}
+\label{sec:physics-book-units}
+
+در فیزیک، استفاده‌ی درست از یکاها
+ضروری است. جدول \cref{tab:si-units}
+یکاهای اصلی \lr{SI} را نشان می‌دهد.
+
+\begin{matintable}{یکاهای اصلی \lr{SI}}{tab:si-units}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+کمیت & نام یکا & نماد & بُعد \\
+طول & متر & \lr{m} & \lr{L} \\
+جرم & کیلوگرم & \lr{kg} & \lr{M} \\
+زمان & ثانیه & \lr{s} & \lr{T} \\
+جریان & آمپر & \lr{A} & \lr{I} \\
+دما & کلوین & \lr{K} & \lr{Θ} \\
+مقدار ماده & مول & \lr{mol} & \lr{N} \\
+شدت روشنایی & کندلا & \lr{cd} & \lr{J} \\
+\end{tblr}
+\end{matintable}
+
+\mnote{کمیت‌های فرعی (مثل نیرو، انرژی، توان) از ترکیب یکاهای اصلی ساخته می‌شوند.}
+
+\subsection{تحلیل ابعادی}
+\label{sec:physics-book-dimensional}
+
+\begin{example}
+    بررسی ابعادی معادله‌ی \lr{$v = v_0 + at$}:
+    \begin{itemize}
+        \item \lr{$v$} و \lr{$v_0$}: \lr{$LT^{-1}$}.
+        \item \lr{$at$}: \lr{$LT^{-2} \cdot T = LT^{-1}$}.
+    \end{itemize}
+    بنابراین دو طرف معادله، ابعاد یکسان
+    دارند.
+    \label{ex:dimensional-analysis}
+\end{example}
+
+\mnote{تحلیل ابعادی، ابزاری قدرتمند برای بررسی درستی معادلات فیزیکی است.}
+
+\section{داده‌های تجربی}
+\label{sec:physics-book-data}
+
+جدول \cref{tab:free-fall-data} داده‌های
+تجربی مربوط به سقوط آزاد را نشان می‌دهد.
+
+\begin{matintable}{داده‌های تجربی سقوط آزاد}{tab:free-fall-data}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {c c c},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+زمان \lr{(s)} & سرعت \lr{(m/s)} & ارتفاع \lr{(m)} \\
+۰ & ۰٫۰ & ۰٫۰ \\
+۰٫۵ & ۴٫۹ & ۱٫۲ \\
+۱٫۰ & ۹٫۸ & ۴٫۹ \\
+۱٫۵ & ۱۴٫۷ & ۱۱٫۰ \\
+۲٫۰ & ۱۹٫۶ & ۱۹٫۶ \\
+\end{tblr}
+\end{matintable}
+
+\mnote{داده‌های تجربی معمولاً با عدم قطعیت همراه هستند. در این جدول، مقادیر با یک رقم اعشار گزارش شده‌اند.}
+
+\section{نمودارها}
+\label{sec:physics-book-graphs}
+
+نمودار \cref{fig:free-fall} داده‌های
+سقوط آزاد را نمایش می‌دهد.
+
+\begin{figure}[h]
+\centering
+\begin{latin}
+\begin{tikzpicture}
+  \begin{axis}[
+    width=0.8\textwidth, height=6cm,
+    xlabel={$t$ (s)},
+    ylabel={$v$ (m/s)},
+    grid=major,
+    legend pos=north west
+  ]
+    \addplot[only marks, mark=*, color=matinblue, mark size=2.5pt]
+        coordinates {(0,0) (0.5,4.9) (1,9.8) (1.5,14.7) (2,19.6)};
+    \addlegendentry{|\pc{داده‌های تجربی}|}
+
+    \addplot[matinred, thick, domain=0:2] {9.8*x};
+    \addlegendentry{$v = gt$}
+  \end{axis}
+\end{tikzpicture}
+\end{latin}
+\caption{نمودار سرعت-زمان در سقوط آزاد}
+\label{fig:free-fall}
+\end{figure}
+
+\mnote{نمودار \lr{\cref{fig:free-fall}} نشان می‌دهد که سرعت با زمان خطی افزایش می‌یابد و شیب خط، شتاب گرانش \lr{$g$} است.}
+
+\section{تمرین‌ها}
+\label{sec:physics-book-exercises}
+
+\begin{exercise}
+    جسمی از ارتفاع \lr{$45\,\text{m}$}
+    رها می‌شود. با فرض \lr{$g = 10\,\text{m/s}^2$}،
+    سرعت آن هنگام برخورد با زمین چقدر
+    است؟
+    \label{exc:free-fall}
+\end{exercise}
+
+\begin{solution}
+    از معادله‌ی \cref{eq:velocity-position}:
+    \[
+        v^2 = v_0^2 + 2g h = 0 + 2 \cdot 10 \cdot 45 = 900
+    \]
+    بنابراین \lr{$v = 30\,\text{m/s}$}.
+\end{solution}
+
+\begin{exercise}
+    خودرویی با سرعت \lr{$72\,\text{km/h}$}
+    در حال حرکت است. راننده ترمز می‌کند و
+    خودرو پس از \lr{$40\,\text{m}$} متوقف
+    می‌شود. شتاب ترمز چقدر است؟
+    \label{exc:braking-distance}
+\end{exercise}
+
+\begin{exercise}
+    ابعاد کمیت \lr{$F = ma$} را با استفاده
+    از یکاهای اصلی \lr{SI} بیان کنید.
+    \label{exc:force-dimension}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:physics-book-summary}
+
+در این فصل، یک فصل کامل از یک کتاب
+فیزیک را دیدیم که شامل:
+
+\begin{itemize}
+    \item \textbf{قضایا}: سه قانون نیوتن.
+    \item \textbf{معادلات}: سینماتیک،
+    حرکت پرتابی.
+    \item \textbf{اثبات‌ها}: برای قضایا.
+    \item \textbf{مثال‌ها}: با محاسبات عددی.
+    \item \textbf{جداول}: یکاهای \lr{SI}،
+    داده‌های تجربی.
+    \item \textbf{نمودارها}: سرعت-زمان.
+    \item \textbf{تمرین‌ها}: با راه‌حل.
+\end{itemize}
+
+\mnote{این فصل، الگویی برای نوشتن فصل‌های کتاب فیزیک شماست. می‌توانید ساختار آن را برای موضوعات دیگر (مثل الکترومغناطیس، ترمودینامیک) تطبیق دهید.}
+
+این فصل، آخرین فصل از بخش پنجم (مثال‌های
+کامل) بود. در بخش ششم (مرجع دستورات)،
+مرجع کامل کلاس، محیط‌ها و دستورات ارائه
+می‌شود.
