@@ -1,0 +1,430 @@
+%%
+%% part4-advanced/ch23-modules.tex
+%%
+%% Chapter 23: Modular Structure — The 19 modules of
+%% MatinBook, their roles, and the loading order.
+%%
+
+\chapter{ساختار ماژولار}
+\label{chap:modules}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:modules-why}
+
+\lr{MatinBook} یک کلاس ماژولار است. یعنی
+به‌جای یک فایل بزرگ، از ۱۹ ماژول مستقل
+تشکیل شده که هر یک مسئولیت مشخصی دارند.
+این معماری، نگهداری، توسعه و شخصی‌سازی
+کلاس را بسیار آسان‌تر می‌کند.
+
+درک ساختار ماژولار، برای شخصی‌سازی پیشرفته
+و افزودن قابلیت‌های جدید ضروری است. در این
+فصل، با این ساختار آشنا می‌شوید.
+
+\mnote{معماری ماژولار یعنی اگر فقط می‌خواهید یک ماژول را تغییر دهید، نیازی به دست زدن به بقیه‌ی کلاس ندارید.}
+
+\section{فهرست ماژول‌ها}
+\label{sec:modules-list}
+
+\lr{MatinBook} ۱۹ ماژول دارد که در سه دسته
+تقسیم می‌شوند:
+
+\subsection{هسته (۲ ماژول)}
+\label{sec:modules-core}
+
+\begin{itemize}
+    \item \file{mb-core.sty}: بارگذارنده‌ی
+    بسته‌های پایه.
+    \item \file{mb-utils.sty}: دستورات کمکی.
+\end{itemize}
+
+\subsection{ماژول‌های کاربردی (۱۰ ماژول)}
+\label{sec:modules-feature}
+
+\begin{itemize}
+    \item \file{mb-math.sty}: ریاضیات.
+    \item \file{mb-boxes.sty}: استایل‌های
+    جعبه.
+    \item \file{mb-theorem.sty}: محیط‌های
+    قضیه.
+    \item \file{mb-code.sty}: کد.
+    \item \file{mb-layout.sty}: چیدمان.
+    \item \file{mb-headings.sty}: عناوین.
+    \item \file{mb-references.sty}: ارجاعات.
+    \item \file{mb-graphics.sty}: گرافیک.
+    \item \file{mb-index.sty}: نمایه.
+    \item \file{mb-table.sty}: جداول.
+\end{itemize}
+
+\subsection{تم و لوکال (۷ ماژول)}
+\label{sec:modules-theme}
+
+\begin{itemize}
+    \item \file{mb-theme-colors.sty}: پالت
+    رنگی.
+    \item \file{mb-theme-cover.sty}: جلد.
+    \item \file{mb-theme-default.sty}:
+    بارگذارنده‌ی تم.
+    \item \file{mb-typography.sty}:
+    تایپوگرافی.
+    \item \file{fa-IR.sty}: لوکال فارسی.
+    \item \file{en-US.sty}: لوکال انگلیسی.
+\end{itemize}
+
+\mnote{جمع این ماژول‌ها ۱۹ عدد است: ۲ هسته + ۱۰ کاربردی + ۳ تم + ۲ لوکال + ۱ تایپوگرافی + ۱ کلاس اصلی.}
+
+\section{نقش هر ماژول}
+\label{sec:modules-roles}
+
+جدول \cref{tab:module-roles} نقش هر ماژول
+را خلاصه می‌کند.
+
+\begin{matintable}{نقش ماژول‌های \lr{MatinBook}}{tab:module-roles}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+ماژول & نقش \\
+\lr{mb-core} & بارگذاری بسته‌های پایه \\
+\lr{mb-utils} & دستورات کمکی \\
+\lr{mb-math} & عملگرها و جداکننده‌های ریاضی \\
+\lr{mb-boxes} & استایل‌های \lr{tcolorbox} \\
+\lr{mb-theorem} & محیط‌های قضیه \\
+\lr{mb-code} & \lr{minted} و پشتیبانی فارسی \\
+\lr{mb-layout} & هندسه، سرصفحه، پاصفحه \\
+\lr{mb-headings} & سبک عناوین \\
+\lr{mb-references} & \lr{hyperref} و \lr{cleveref} \\
+\lr{mb-graphics} & \lr{TikZ} و \lr{PGFPlots} \\
+\lr{mb-index} & \lr{xindy} \\
+\lr{mb-table} & \lr{tabularray} \\
+\lr{mb-theme-colors} & پالت رنگی \lr{CMYK} \\
+\lr{mb-theme-cover} & جلد جلو و عقب \\
+\lr{mb-theme-default} & بارگذارنده‌ی تم \\
+\lr{mb-typography} & \lr{microtype} و کشیده \\
+\lr{fa-IR} & لوکال فارسی \\
+\lr{en-US} & لوکال انگلیسی \\
+\lr{matinbook.cls} & کلاس اصلی \\
+\end{tblr}
+\end{matintable}
+
+\section{ترتیب بارگذاری}
+\label{sec:modules-order}
+
+ترتیب بارگذاری ماژول‌ها \textbf{حیاتی}
+است. \lr{MatinBook} از سه فاز استفاده می‌کند:
+
+\subsection{فاز ۱ — قبل از \lr{xepersian}}
+\label{sec:modules-phase1}
+
+\begin{latin}
+\begin{minted}{text}
+1.  mb-core
+2.  mb-theme-colors
+3.  mb-table
+4.  mb-math
+5.  mb-boxes
+6.  mb-theorem
+7.  mb-code
+8.  mb-layout
+9.  mb-headings
+10. mb-references
+11. mb-graphics
+12. mb-index
+13. mb-utils
+14. mb-theme-cover
+\end{minted}
+\end{latin}
+
+\mnote{در فاز ۱، ترتیب دقیق مهم است: \lr{mb-theme-colors} باید قبل از مصرف‌کنندگان (مثل \lr{mb-boxes}) بارگذاری شود.}
+
+\subsection{فاز ۲ — \lr{xepersian}}
+\label{sec:modules-phase2}
+
+\begin{latin}
+\begin{minted}{text}
+15. xepersian
+\end{minted}
+\end{latin}
+
+\mnote{\lr{xepersian} باید \textbf{آخرین} بسته‌ی فاز ۲ باشد. اگر بسته‌ای بعد از آن بارگذاری شود، تعاریف \lr{bidi} را بازنویسی می‌کند.}
+
+\subsection{فاز ۳ — بعد از \lr{xepersian}}
+\label{sec:modules-phase3}
+
+\begin{latin}
+\begin{minted}{text}
+16. mb-typography
+17. fa-IR
+18. mb-theme-default
+\end{minted}
+\end{latin}
+
+\mnote{در فاز ۳، فونت‌ها، تایپوگرافی و لوکال بارگذاری می‌شوند. این‌ها نیاز به \lr{xepersian} دارند.}
+
+\section{چرا این ترتیب مهم است؟}
+\label{sec:modules-why-order}
+
+\begin{enumerate}
+    \item \textbf{\lr{xepersian} آخرین بسته}:
+    چون \lr{bidi} و سایر بسته‌ها را بازنویسی
+    می‌کند. اگر بسته‌ای بعد از آن بارگذاری
+    شود، تعاریف آن از بین می‌رود.
+
+    \item \textbf{رنگ‌ها قبل از مصرف‌کنندگان}:
+    \file{mb-theme-colors} قبل از
+    \file{mb-boxes}، \file{mb-code}،
+    \file{mb-layout}، \file{mb-headings} و
+    \file{mb-graphics} بارگذاری می‌شود.
+
+    \item \textbf{فونت‌ها بعد از \lr{xepersian}}:
+    \cmd{settextfont} توسط \lr{xepersian}
+    تعریف می‌شود، پس فونت‌ها باید در فاز ۳
+    تنظیم شوند.
+\end{enumerate}
+
+\mnote{تغییر این ترتیب، باعث خطاهای عجیب و غریب می‌شود. اگر ماژول جدیدی اضافه می‌کنید، حتماً آن را در فاز مناسب قرار دهید.}
+
+\section{ساختار پوشه‌ها}
+\label{sec:modules-structure}
+
+ماژول‌ها در پوشه‌ی \file{tex/} قرار دارند:
+
+\begin{latin}
+\begin{minted}{text}
+tex/
+├── core/
+│   ├── mb-core.sty
+│   └── mb-utils.sty
+├── locales/
+│   ├── fa-IR.sty
+│   └── en-US.sty
+├── modules/
+│   ├── boxes/mb-boxes.sty
+│   ├── code/mb-code.sty
+│   ├── graphics/mb-graphics.sty
+│   ├── index/mb-index.sty
+│   ├── layout/
+│   │   ├── mb-layout.sty
+│   │   └── mb-headings.sty
+│   ├── math/mb-math.sty
+│   ├── references/mb-references.sty
+│   ├── table/mb-table.sty
+│   ├── theorem/mb-theorem.sty
+│   └── typography/mb-typography.sty
+└── themes/
+    └── default/
+        ├── mb-theme-colors.sty
+        ├── mb-theme-cover.sty
+        └── mb-theme-default.sty
+\end{minted}
+\end{latin}
+
+\mnote{هر ماژول در پوشه‌ی مخصوص خود قرار دارد. این ساختار، پیدا کردن ماژول‌ها را آسان می‌کند.}
+
+\section{افزودن ماژول جدید}
+\label{sec:modules-adding}
+
+برای افزودن یک ماژول جدید، این مراحل را
+دنبال کنید:
+
+\begin{enumerate}
+    \item یک پوشه‌ی جدید در
+    \file{tex/modules/} بسازید (مثلاً
+    \file{mymodule/}).
+
+    \item یک فایل \file{.sty} در آن بسازید
+    (مثلاً \file{mb-mymodule.sty}).
+
+    \item فایل را با ساختار استاندارد
+    بنویسید.
+
+    \item در \file{matinbook.cls}، ماژول را
+    در فاز مناسب بارگذاری کنید.
+\end{enumerate}
+
+\subsection{ساختار یک ماژول}
+\label{sec:modules-template}
+
+\begin{latin}
+\begin{minted}{latex}
+\NeedsTeXFormat{LaTeX2e}[2023/06/01]
+\ProvidesPackage{mb-mymodule}[2026/10/08 v1.2 MatinBook My Module]
+
+%========================================================================
+% MB-MYMODULE — DESCRIPTION
+%========================================================================
+
+% |\pc{کد ماژول...}|%
+
+\PackageInfo{mb-mymodule}{My module loaded}
+
+\endinput
+\end{minted}
+\end{latin}
+
+\mnote{هر ماژول باید \lr{\textbackslash NeedsTeXFormat}، \lr{\textbackslash ProvidesPackage}، \lr{\textbackslash PackageInfo} و \lr{\textbackslash endinput} داشته باشد.}
+
+\section{ساختار کلاس اصلی}
+\label{sec:modules-cls}
+
+فایل \file{matinbook.cls} سه فاز دارد:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{فاز ۱: بسته‌های پایه}|%
+\RequirePackage{mb-core}
+\RequirePackage{mb-theme-colors}
+\RequirePackage{mb-table}
+\RequirePackage{mb-math}
+\RequirePackage{mb-boxes}
+\RequirePackage{mb-theorem}
+\RequirePackage{mb-code}
+\RequirePackage{mb-layout}
+\RequirePackage{mb-headings}
+\RequirePackage{mb-references}
+\RequirePackage{mb-graphics}
+\RequirePackage{mb-index}
+\RequirePackage{mb-utils}
+\RequirePackage{mb-theme-cover}
+
+% |\pc{فاز ۲:}|\lr{xepersian}|%
+\RequirePackage{xepersian}
+
+% |\pc{فاز ۳: تنظیمات فارسی}|%
+% |\pc{فونت‌ها...}|%
+\RequirePackage{mb-typography}
+\RequirePackage{fa-IR}
+\end{minted}
+\end{latin}
+
+\mnote{در \lr{matinbook.cls}، هیچ ماژولی نباید خارج از این سه فاز بارگذاری شود.}
+
+\section{اشکال‌زدایی}
+\label{sec:modules-debugging}
+
+اگر خطایی رخ داد، این مراحل را انجام
+دهید:
+
+\begin{enumerate}
+    \item \textbf{بررسی فاز:} آیا ماژول در
+    فاز درست بارگذاری شده؟
+
+    \item \textbf{بررسی ترتیب:} آیا ترتیب
+    ماژول‌ها درست است؟
+
+    \item \textbf{بررسی وابستگی:} آیا ماژول
+    به بسته‌ای نیاز دارد که بارگذاری
+    نشده؟
+
+    \item \textbf{بررسی نسخه:} آیا نسخه‌ی
+    \lr{LaTeX} و بسته‌ها سازگار هستند؟
+\end{enumerate}
+
+\mnote{برای اشکال‌زدایی، می‌توانید از \lr{\textbackslash listfiles} در ابتدای سند استفاده کنید تا فهرست همه‌ی فایل‌های بارگذاری‌شده را ببینید.}
+
+\section{خطاهای رایج}
+\label{sec:modules-mistakes}
+
+\subsection{بارگذاری ماژول در فاز اشتباه}
+\label{sec:modules-mistake-phase}
+
+\textbf{مشکل:} اگر ماژولی که به
+\lr{xepersian} نیاز دارد را در فاز ۱
+بارگذاری کنید، خطا می‌دهد.
+
+\textbf{راه‌حل:} ماژول‌های وابسته به
+\lr{xepersian} را در فاز ۳ بارگذاری کنید.
+
+\subsection{بارگذاری بسته بعد از \lr{xepersian}}
+\label{sec:modules-mistake-after}
+
+\textbf{مشکل:} اگر بسته‌ای را بعد از
+\lr{xepersian} بارگذاری کنید، تعاریف
+\lr{bidi} بازنویسی می‌شوند و خطا می‌دهید.
+
+\textbf{راه‌حل:} \lr{xepersian} را آخرین
+بسته‌ی فاز ۲ نگه دارید.
+
+\subsection{فراموش کردن \cmd{RequirePackage}}
+\label{sec:modules-mistake-require}
+
+\textbf{مشکل:} اگر ماژول را در
+\file{matinbook.cls} بارگذاری نکنید،
+استفاده نمی‌شود.
+
+\textbf{راه‌حل:} همیشه ماژول‌های جدید را
+در \file{matinbook.cls} اضافه کنید.
+
+\section{تمرین‌ها}
+\label{sec:modules-exercises}
+
+\begin{exercise}
+    فهرست ۱۹ ماژول \lr{MatinBook} را بنویسید
+    و نقش هر یک را توضیح دهید.
+    \label{exc:modules-list}
+\end{exercise}
+
+\begin{exercise}
+    یک ماژول ساده بسازید که یک دستور جدید
+    تعریف کند و آن را در فاز ۱ بارگذاری
+    کنید.
+    \label{exc:modules-add}
+\end{exercise}
+
+\begin{exercise}
+    یک ماژول بسازید که به \lr{xepersian}
+    نیاز دارد و آن را در فاز ۳ بارگذاری
+    کنید.
+    \label{exc:modules-phase3}
+\end{exercise}
+
+\begin{exercise}
+    ترتیب بارگذاری ماژول‌ها را عوض کنید و
+    خطای آن را ببینید. سپس آن را اصلاح
+    کنید.
+    \label{exc:modules-order}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:modules-summary}
+
+در این فصل، با ساختار ماژولار \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از ۱۹ ماژول مستقل
+    تشکیل شده که در سه دسته تقسیم می‌شوند:
+    هسته، کاربردی، تم و لوکال.
+
+    \item ماژول‌ها در سه فاز بارگذاری
+    می‌شوند: قبل از \lr{xepersian}،
+    \lr{xepersian}، بعد از \lr{xepersian}.
+
+    \item \lr{xepersian} باید آخرین بسته‌ی
+    فاز ۲ باشد.
+
+    \item رنگ‌ها باید قبل از مصرف‌کنندگان
+    بارگذاری شوند.
+
+    \item فونت‌ها باید بعد از \lr{xepersian}
+    تنظیم شوند.
+
+    \item ماژول جدید با ساختار استاندارد
+    (\cmd{NeedsTeXFormat}،
+    \cmd{ProvidesPackage}، \cmd{PackageInfo}،
+    \cmd{endinput}) ساخته می‌شود.
+
+    \item خطاهای رایج شامل بارگذاری ماژول
+    در فاز اشتباه، بارگذاری بسته بعد از
+    \lr{xepersian}، و فراموش کردن
+    \cmd{RequirePackage} است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:custom-theme})،
+با ساخت تم سفارشی آشنا می‌شوید و یاد
+می‌گیرید که چگونه یک تم کاملاً جدید طراحی
+کنید.
