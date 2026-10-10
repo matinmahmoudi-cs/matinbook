@@ -1,0 +1,363 @@
+%%
+%% part3-customization/ch17-options.tex
+%%
+%% Chapter 17: Class Options — draft/final modes, font
+%% selection, and one/two-sided layout.
+%%
+
+\chapter{آپشن‌های کلاس}
+\label{chap:options}
+
+\section{چرا این موضوع مهم است؟}
+\label{sec:options-why}
+
+آپشن‌های کلاس، به شما امکان می‌دهند که
+\lr{MatinBook} را برای نیازهای خاص خود تنظیم
+کنید. از انتخاب فونت تا حالت پیش‌نویس، همه
+با یک خط \cmd{documentclass} قابل کنترل
+هستند.
+
+\lr{MatinBook} از سیستم \textbf{کلید-مقدار}
+\lr{LaTeX 2023} استفاده می‌کند که بسیار
+مدرن‌تر و پایدارتر از روش‌های قدیمی است.
+در این فصل، با تمام آپشن‌های کلاس آشنا
+می‌شوید.
+
+\mnote{سیستم \lr{\textbackslash DeclareKeys} در \lr{LaTeX 2023} جایگزین \lr{\textbackslash DeclareOption} قدیمی شده و از سینتکس \lr{key=value} پشتیبانی می‌کند.}
+
+\section{آپشن‌های حالت}
+\label{sec:options-mode}
+
+\subsection{حالت \lr{final}}
+\label{sec:options-final}
+
+حالت پیش‌فرض \lr{MatinBook}، \textbf{حالت
+نهایی} است. در این حالت، کتاب به‌صورت
+حرفه‌ای و بدون هیچ نشانه‌ی اضافی چاپ
+می‌شود.
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[final]{matinbook}
+\end{minted}
+\end{latin}
+
+\mnote{حالت \lr{final} نیازی به ذکر ندارد، چون پیش‌فرض است. یعنی \lr{\textbackslash documentclass\{matinbook\}} معادل \lr{\textbackslash documentclass[final]\{matinbook\}} است.}
+
+\subsection{حالت \lr{draft}}
+\label{sec:options-draft}
+
+در حالت \textbf{پیش‌نویس}، \lr{MatinBook}
+رفتارهای زیر را تغییر می‌دهد:
+
+\begin{itemize}
+    \item \textbf{واترمارک:} عبارت \lr{DRAFT}
+    با شفافیت \pnum{۹۰٪} در پس‌زمینه‌ی هر
+    صفحه نمایش داده می‌شود.
+    \item \textbf{جعبه‌های سرریز:} خطوطی که از
+    حاشیه خارج می‌شوند، با خط مشکی \pnum{۵pt}
+    مشخص می‌شوند.
+    \item \textbf{تصاویر:} به‌جای نمایش تصاویر،
+    فقط کادر آن‌ها رسم می‌شود (سرعت کامپایل
+    بالاتر).
+\end{itemize}
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[draft]{matinbook}
+\end{minted}
+\end{latin}
+
+\mnote{حالت \lr{draft} برای مراحل اولیه‌ی نوشتن بسیار مفید است، ولی قبل از چاپ نهایی حتماً به \lr{final} برگردید.}
+
+\section{آپشن‌های فونت}
+\label{sec:options-fonts}
+
+\lr{MatinBook} از پنج فونت فارسی پشتیبانی
+می‌کند. برای انتخاب فونت، نام آن را به‌عنوان
+آپشن به کلاس بدهید:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{فونت پیش‌فرض}|%
+\documentclass[niloofar]{matinbook}
+
+% |\pc{فونت وزیرمتن}|%
+\documentclass[vazirmatn]{matinbook}
+
+% |\pc{فونت ساحل}|%
+\documentclass[sahel]{matinbook}
+
+% |\pc{فونت ایران‌لاتوس}|%
+\documentclass[irlotus]{matinbook}
+
+% |\pc{فونت بی‌نازنین}|%
+\documentclass[bnazanin]{matinbook}
+\end{minted}
+\end{latin}
+
+جدول \cref{tab:font-options} این پنج فونت
+را مقایسه می‌کند.
+
+\begin{matintable}{فونت‌های پشتیبانی‌شده‌ی \lr{MatinBook}}{tab:font-options}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+آپشن & فونت & پیشنهاد \\
+\lr{niloofar} & \lr{XB Niloofar} & پیش‌فرض \\
+\lr{vazirmatn} & \lr{Vazirmatn} & مدرن \\
+\lr{sahel} & \lr{Sahel} & ساده \\
+\lr{irlotus} & \lr{IR Lotus} & سنتی \\
+\lr{bnazanin} & \lr{B Nazanin} & تجاری \\
+\end{tblr}
+\end{matintable}
+
+\mnote{فونت \lr{B Nazanin} تجاری است و ممکن است روی همه‌ی سیستم‌ها نصب نباشد. برای کتاب‌های فنی، \lr{XB Niloofar} یا \lr{Vazirmatn} توصیه می‌شود.}
+
+\subsection{ترکیب چند آپشن}
+\label{sec:options-combine}
+
+می‌توانید چند آپشن را با کاما از هم جدا کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\documentclass[draft, vazirmatn]{matinbook}
+\end{minted}
+\end{latin}
+
+\mnote{ترتیب آپشن‌ها مهم نیست. \lr{[draft, vazirmatn]} معادل \lr{[vazirmatn, draft]} است.}
+
+\section{آپشن‌های چیدمان}
+\label{sec:options-layout}
+
+\subsection{حالت دوطرفه و یک‌طرفه}
+\label{sec:options-twoside}
+
+\lr{MatinBook} به‌طور پیش‌فرض از حالت
+\textbf{دوطرفه} (\lr{twoside}) استفاده
+می‌کند. یعنی صفحات فرد و زوج، چیدمان
+آینه‌ای دارند (حاشیه‌ی پهن در بیرون).
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{حالت دوطرفه (پیش‌فرض)}|%
+\documentclass[twoside]{matinbook}
+
+% |\pc{حالت یک‌طرفه}|%
+\documentclass[oneside]{matinbook}
+\end{minted}
+\end{latin}
+
+\mnote{حالت \lr{twoside} برای کتاب‌های چاپی مناسب است. حالت \lr{oneside} برای اسناد دیجیتال یا فایل‌های خواندنی روی صفحه‌نمایش.}
+
+\subsection{آپشن‌های \lr{geometry}}
+\label{sec:options-geometry}
+
+برای تغییر هندسه‌ی صفحه، می‌توانید از
+دستور \cmd{geometry} در پیش از
+\cmd{begin\{document\}} استفاده کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\usepackage{geometry}
+\geometry{
+    paperwidth=17.8cm,
+    paperheight=25.4cm,
+    outer=5.9cm,
+    inner=1.5cm
+}
+\end{minted}
+\end{latin}
+
+\mnote{برای جزئیات بیشتر درباره‌ی چیدمان، به \cref{chap:layout} مراجعه کنید.}
+
+\section{آپشن‌های سفارشی}
+\label{sec:options-custom}
+
+\lr{MatinBook} از آپشن‌های سفارشی نیز پشتیبانی
+می‌کند. برای افزودن آپشن جدید، به فایل
+\file{matinbook.cls} بروید و از
+\cmd{DeclareKeys} استفاده کنید.
+
+\subsection{مثال: افزودن آپشن \lr{print}}
+\label{sec:options-custom-example}
+
+فرض کنید می‌خواهید یک آپشن \lr{print} اضافه
+کنید که رنگ‌ها را برای چاپ سیاه‌وسفید تنظیم
+کند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{matinbook.cls}:
+\newif\if@matin@print
+\@matin@printfalse
+
+\DeclareKeys{
+    print .code = \@matin@printtrue,
+}
+
+\ProcessKeyOptions
+\end{minted}
+\end{latin}
+
+سپس در ماژول‌های دیگر، از این فلگ استفاده
+کنید:
+
+\begin{latin}
+\begin{minted}{latex}
+\if@matin@print
+    % |\pc{تنظیمات چاپ سیاه‌وسفید}|%
+\fi
+\end{minted}
+\end{latin}
+
+\mnote{این یک مثال پیشرفته است. برای کارهای معمول، نیازی به افزودن آپشن جدید نیست.}
+
+\section{آپشن‌ها در فایل‌های مختلف}
+\label{sec:options-files}
+
+اگر پروژه‌ی شما چند فایل دارد، آپشن‌ها
+فقط در \file{main.tex} تعریف می‌شوند:
+
+\begin{latin}
+\begin{minted}{latex}
+% |\pc{در فایل}|\lr{main.tex}:
+\documentclass[draft, vazirmatn]{matinbook}
+
+\begin{document}
+\input{chapters/chapter-01}
+\end{document}
+\end{minted}
+\end{latin}
+
+\mnote{فایل‌های فصل (\lr{chapter-01.tex} و...) نباید \lr{\textbackslash documentclass} داشته باشند. آن‌ها فقط محتوا هستند.}
+
+\section{جدول خلاصه‌ی آپشن‌ها}
+\label{sec:options-summary-table}
+
+جدول \cref{tab:all-options} تمام آپشن‌های
+\lr{MatinBook} را خلاصه می‌کند.
+
+\begin{matintable}{خلاصه‌ی آپشن‌های \lr{MatinBook}}{tab:all-options}
+\begin{tblr}{
+    width = \textwidth,
+    colspec = {l X[l] X[c]},
+    hlines, vlines,
+    colsep = 8pt,
+    rowsep = 4pt,
+    row{1} = {font=\bfseries},
+}
+آپشن & توضیح & پیش‌فرض \\
+\lr{draft} & حالت پیش‌نویس & خیر \\
+\lr{final} & حالت نهایی & بله \\
+\lr{niloofar} & فونت \lr{XB Niloofar} & بله \\
+\lr{vazirmatn} & فونت \lr{Vazirmatn} & خیر \\
+\lr{sahel} & فونت \lr{Sahel} & خیر \\
+\lr{irlotus} & فونت \lr{IR Lotus} & خیر \\
+\lr{bnazanin} & فونت \lr{B Nazanin} & خیر \\
+\lr{twoside} & چیدمان دوطرفه & بله \\
+\lr{oneside} & چیدمان یک‌طرفه & خیر \\
+\end{tblr}
+\end{matintable}
+
+\section{خطاهای رایج}
+\label{sec:options-mistakes}
+
+\subsection{آپشن ناشناخته}
+\label{sec:options-mistake-unknown}
+
+\textbf{مشکل:} اگر آپشن ناشناخته‌ای بدهید،
+\lr{LaTeX} آن را به کلاس \lr{book} می‌فرستد
+و ممکن است خطا بدهد.
+
+\textbf{راه‌حل:} فقط از آپشن‌های مستند استفاده
+کنید.
+
+\subsection{ترکیب آپشن‌های متناقض}
+\label{sec:options-mistake-conflict}
+
+\textbf{مشکل:} اگر \lr{draft} و \lr{final} را
+با هم بدهید، آخرین آپشن اعمال می‌شود.
+
+\textbf{راه‌حل:} فقط یکی از آپشن‌های متناقض
+را بدهید.
+
+\subsection{تعریف آپشن در فایل فصل}
+\label{sec:options-mistake-chapter}
+
+\textbf{مشکل:} اگر \cmd{documentclass} را در
+فایل فصل بنویسید، خطا می‌دهد.
+
+\textbf{راه‌حل:} \cmd{documentclass} فقط در
+\file{main.tex}.
+
+\section{تمرین‌ها}
+\label{sec:options-exercises}
+
+\begin{exercise}
+    کتاب خود را در حالت \lr{draft} کامپایل
+    کنید و واترمارک را ببینید.
+    \label{exc:options-draft}
+\end{exercise}
+
+\begin{exercise}
+    فونت را به \lr{vazirmatn} تغییر دهید و
+    نتیجه را مقایسه کنید.
+    \label{exc:options-font}
+\end{exercise}
+
+\begin{exercise}
+    یک کتاب با حالت \lr{oneside} بسازید و
+    تفاوت آن را با \lr{twoside} ببینید.
+    \label{exc:options-side}
+\end{exercise}
+
+\begin{exercise}
+    یک آپشن سفارشی (مثلاً \lr{print}) به
+    \file{matinbook.cls} اضافه کنید.
+    \label{exc:options-custom}
+\end{exercise}
+
+\section{خلاصه}
+\label{sec:options-summary}
+
+در این فصل، با آپشن‌های کلاس \lr{MatinBook}
+آشنا شدیم:
+
+\begin{itemize}
+    \item \lr{MatinBook} از سیستم کلید-مقدار
+    \lr{LaTeX 2023} استفاده می‌کند.
+
+    \item حالت \lr{final} پیش‌فرض است و
+    کتاب را بدون نشانه‌ی اضافی چاپ می‌کند.
+
+    \item حالت \lr{draft} واترمارک، جعبه‌های
+    سرریز و تصاویر ساده‌شده را فعال می‌کند.
+
+    \item پنج فونت فارسی پشتیبانی می‌شود:
+    \lr{niloofar}، \lr{vazirmatn}، \lr{sahel}،
+    \lr{irlotus}، \lr{bnazanin}.
+
+    \item حالت \lr{twoside} پیش‌فرض است و
+    برای کتاب‌های چاپی مناسب است.
+
+    \item آپشن‌های سفارشی با
+    \cmd{DeclareKeys} قابل افزودن هستند.
+
+    \item آپشن‌ها فقط در \file{main.tex}
+    تعریف می‌شوند.
+
+    \item خطاهای رایج شامل آپشن ناشناخته،
+    ترکیب آپشن‌های متناقض، و تعریف آپشن در
+    فایل فصل است.
+\end{itemize}
+
+در فصل بعدی (\cref{chap:colors})، با سیستم
+رنگ \lr{MatinBook} آشنا می‌شوید و یاد
+می‌گیرید که چگونه رنگ‌ها را شخصی‌سازی
+کنید.
