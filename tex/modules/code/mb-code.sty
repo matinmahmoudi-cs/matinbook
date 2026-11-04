@@ -141,8 +141,10 @@
 %------------------------------------------------------------------------
 % Cleveref
 %------------------------------------------------------------------------
-\crefname{listingcounter}{\codename}{\codename}
-\Crefname{listingcounter}{\codename}{\codename}
+\AtBeginDocument{%
+    \crefname{listingcounter}{\codename}{\codename}%
+    \Crefname{listingcounter}{\codename}{\codename}%
+}
 
 
 %------------------------------------------------------------------------

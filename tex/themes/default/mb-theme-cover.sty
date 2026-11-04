@@ -8,7 +8,7 @@
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesPackage{mb-theme-cover}[2026/10/08 v1.1 MatinBook Covers]
+\ProvidesPackage{mb-theme-cover}[2026/10/08 v1.2 MatinBook Covers]
 
 \RequirePackage{xcolor}
 \RequirePackage{tikz}
@@ -23,7 +23,7 @@
 %   Full-bleed navy background, crimson wedge, gold orbit, damped
 %   oscillation and logarithmic growth curves, a semi-transparent
 %   IDE-style C++ code specimen, compact equations, and direction
-%   arrows. The design is unchanged from v1.1.
+%   arrows. The design is unchanged from v1.2.
 %
 % Back cover (redesigned):
 %   Static two-block layout:
@@ -178,7 +178,7 @@
     \vspace*{1.75cm}
     \begin{flushright}
       {\color{covergold}\fontsize{10}{14}\selectfont\bfseries
-        MATHEMATICS / COMPUTER SCIENCE\par}
+        \covertag\par}
       \vspace{1.25cm}
       {\color{white}\fontsize{34}{43}\selectfont\bfseries #1\par}
       \vspace{.42cm}
@@ -192,7 +192,7 @@
     \begin{flushright}
       {\color{white}\fontsize{16}{21}\selectfont\bfseries #3\par}
       \vspace{.22cm}
-      {\color{covergold}\fontsize{11}{15}\selectfont\bfseries ویرایش\enspace #4\par}
+      {\color{covergold}\fontsize{11}{15}\selectfont\bfseries \coveredition\enspace #4\par}
     \end{flushright}
     \vspace{1.0cm}
     \noindent{\color{white}\fontsize{9}{12}\selectfont\bfseries MatinBook}%
@@ -284,5 +284,5 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-theme-cover}{MatinBook v1.1 cover system loaded (front: full-color; back: static two-block RTL layout)}
+\PackageInfo{mb-theme-cover}{MatinBook v1.2 cover system loaded (front: full-color; back: static two-block RTL layout)}
 \endinput

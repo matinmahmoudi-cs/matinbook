@@ -8,16 +8,16 @@
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesPackage{mb-references}[2026/10/08 v1.1 MatinBook References System]
+\ProvidesPackage{mb-references}[2026/10/08 v1.2 MatinBook References System]
 
 %----------------------------------------
 % Hyperref Setup
 %----------------------------------------
 \hypersetup{
     colorlinks=true,
-    linkcolor=blue,
-    citecolor=blue,
-    urlcolor=blue,
+    linkcolor=matinblue,
+    citecolor=matinblue,
+    urlcolor=matinblue,
     bookmarksopen=true,
     bookmarksnumbered=true,
     pdfcreator={MatinBook LaTeX Class},
@@ -29,19 +29,19 @@
 %----------------------------------------
 
 % Quick reference to equation
-\newcommand{\meqref}[1]{معادله~\ref{#1}}
+\newcommand{\meqref}[1]{\cref{#1}}
 
 % Quick reference to figure
-\newcommand{\figref}[1]{\figurename~\ref{#1}}
+\newcommand{\figref}[1]{\cref{#1}}
 
 % Quick reference to table
-\newcommand{\tabref}[1]{\tablename~\ref{#1}}
+\newcommand{\tabref}[1]{\cref{#1}}
 
 % Quick reference to chapter
-\newcommand{\chref}[1]{\chaptername~\ref{#1}}
+\newcommand{\chref}[1]{\cref{#1}}
 
 % Quick reference to section
-\newcommand{\secref}[1]{\sectionname~\ref{#1}}
+\newcommand{\secref}[1]{\cref{#1}}
 
 %----------------------------------------
 % URL and Hyperlink Helpers
@@ -56,6 +56,6 @@
 %----------------------------------------
 % Log
 %----------------------------------------
-\typeout{MatinBook: References system loaded}
+\PackageInfo{mb-references}{References system loaded}
 
 \endinput

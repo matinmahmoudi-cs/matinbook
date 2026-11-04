@@ -494,6 +494,13 @@ The title of each box is built by `\matin@thmtitle`:
 \begin{theorem}[قضیه اصلی]   → "قضیه ۱.۱: قضیه اصلی"
 ```
 
+> **Note:** Theorem titles are hardcoded in Persian in
+> `mb-theorem.sty` (e.g. قضیه, لم, نتیجه). They are **not**
+> localized via `fa-IR` / `en-US`. Only `solution` and `proof`
+> read their titles from the locale (`\solutionname`,
+> `\proofname`). If you load `en-US`, theorem titles will still
+> be in Persian.
+
 ---
 
 ## 5. Custom Commands Reference
@@ -712,6 +719,7 @@ Use the standard `algorithm` + `algorithmic` environments:
 | `\idxsub{main}{sub}` | Quick sub-entry |
 | `\idxsubsub{main}{sub}{subsub}` | Quick sub-sub-entry |
 | `\printindex` | Print index (in back matter) |
+| `\printallindexes` | Alias for `\printindex` (all indexes) |
 
 > **CRITICAL:** MatinBook v1.1 uses **`xindy`** (not `makeindex`) because `makeindex` cannot sort Persian correctly (it fails on پ، چ، ژ، گ، ک).
 
@@ -720,6 +728,7 @@ Use the standard `algorithm` + `algorithmic` environments:
 | Command | Usage | Description |
 |---------|-------|-------------|
 | `matintable` | Environment | Captioned, labelled, centered table wrapper |
+| — | — | The `matintable` wrapper uses `[htbp]` placement and `\small` font |
 | `\matintablespacing` | no-op | Retained for backward compatibility (no effect with `tabularray`) |
 
 **Example:**
@@ -746,6 +755,8 @@ Use the standard `algorithm` + `algorithmic` environments:
 | `\latinauthor{text}` | `\latinauthor{Author}` | Latin author |
 | `\pnum{number}` | `\pnum{۱.۲}` | Persian number with decimal point or slash (RTL-safe) |
 | `\matin@ifcmd{cmd}{true}{false}` | Conditional | Check if command exists |
+| `\urlcode{url}` | `\urlcode{https://...}` | Monospace URL |
+| `\email{addr}` | `\email{a@b.c}` | Mailto link in monospace |
 
 > **Note:** `\pnum` wraps its argument in `\lr{}` to avoid the
 > bidi/fontspec reversal bug. Use it for any Persian number
@@ -821,6 +832,13 @@ matinlightgray   cmyk(0.00, 0.00, 0.00, 0.05)   % Background
 matinbordergray  cmyk(0.05, 0.00, 0.00, 0.20)   % Borders
 matincream       cmyk(0.00, 0.00, 0.00, 0.00)   % Off-white background
 ```
+
+> **Note:** `mb-theme-cover.sty` contains a duplicate
+> `\providecolor{matinmediumgray}{RGB}{145,151,157}` line.
+> Because `\providecolor` does not override an existing
+> definition, this line has **no effect** — the CMYK definition
+> from `mb-theme-colors.sty` wins. The effective color is
+> `cmyk(0.10, 0.00, 0.00, 0.35)`.
 
 ### Color Aliases (Cover, v1.1)
 
@@ -1034,6 +1052,9 @@ Used in:
 - **Odd pages (right side):** Chapter name (`\leftmark`)
 - **Page number:** In footer, no rule
 - **Chapter start pages:** Plain style (page number only in footer)
+- **Frontmatter:** The page number is hidden in `fancy` style
+  (because `\c@chapter = 0`) but shown in `plain` style. The two
+  styles are currently inconsistent.
 
 ### How to Set the Book Title
 
@@ -1041,7 +1062,9 @@ Used in:
 \booktitle{عنوان کتاب من}
 ```
 
-This appears in the header of even pages.
+This is stored for use by `\maketitle` and the Latin title page.
+It is **not** currently shown in the running header: the header
+shows `\leftmark` (the chapter name) on both even and odd pages.
 
 ### Draft Watermark
 
@@ -2496,6 +2519,8 @@ All document element names are translated to Persian:
 | `\alsoname` | همچنین نگاه کنید به |
 | `\partname` | بخش |
 | `\refname` | منابع |
+| `\sectionname` | بخش |
+| `\pagename` | صفحه |
 
 ### Cleveref Names (Persian)
 

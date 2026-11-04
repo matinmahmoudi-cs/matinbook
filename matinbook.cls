@@ -14,10 +14,10 @@
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesClass{matinbook}[2026/10/08 v1.1 MatinBook - Professional Persian Technical Book Class]
+\ProvidesClass{matinbook}[2026/10/08 v1.2 MatinBook - Professional Persian Technical Book Class]
 
 % Version Information
-\def\matinbookversion{1.1}
+\def\matinbookversion{1.2}
 \def\matinbookdate{2026/10/08}
 
 %========================================================================
@@ -224,6 +224,16 @@
 % Locale (after xepersian)
 %------------------------------------------------------------------------
 \RequirePackage{fa-IR}
+
+%------------------------------------------------------------------------
+% Theme loader (after xepersian)
+%------------------------------------------------------------------------
+% mb-theme-colors is loaded in Phase 1 (before consumers).
+% mb-theme-cover is loaded in Phase 1 (for the cover art).
+% mb-theme-default is loaded here as a theme manifest, so that
+% future themes can be swapped by editing a single file.
+%------------------------------------------------------------------------
+\RequirePackage{mb-theme-default}
 
 
 %========================================================================

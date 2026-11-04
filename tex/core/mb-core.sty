@@ -8,7 +8,7 @@
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesPackage{mb-core}[2026/10/08 v1.1 MatinBook Core Packages]
+\ProvidesPackage{mb-core}[2026/10/08 v1.2 MatinBook Core Packages]
 
 %========================================================================
 % MB-CORE — CORE PACKAGE LOADER
@@ -88,20 +88,12 @@
 \RequirePackage{multirow}
 
 %------------------------------------------------------------------------
-% 12. Draft Watermark (conditional)
-%------------------------------------------------------------------------
-% TODO: move to mb-layout
-\if@matin@draft
-\RequirePackage{draftwatermark}
-\fi
-
-%------------------------------------------------------------------------
-% 13. Hyperref (before xepersian)
+% 12. Hyperref (before xepersian)
 %------------------------------------------------------------------------
 \RequirePackage[bookmarks]{hyperref}
 
 %------------------------------------------------------------------------
-% 14. Cleveref (must be after hyperref, needed by mb-theorem)
+% 13. Cleveref (must be after hyperref, needed by mb-theorem)
 %------------------------------------------------------------------------
 \RequirePackage{cleveref}
 

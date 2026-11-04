@@ -556,7 +556,6 @@ Each test validates a specific module or feature:
 | `stage05-math` | Math | Equations, matrices, operators, delimiters |
 | `stage06-theorems` | Theorems | All theorem environments and both box families |
 | `stage07-boxes` | Boxes | Two box families, all 10 colored box types |
-| `stage06-theorems` | Theorems | All theorem environments and both box families |
 | `stage08-code` | Code | Syntax highlighting (minted), inline code |
 | `stage09-algorithms` | Algorithms | Pseudocode with Persian captions |
 | `stage10-tikz` | Graphics | TikZ, PGFPlots, flowcharts, trees, 3D, pie charts |

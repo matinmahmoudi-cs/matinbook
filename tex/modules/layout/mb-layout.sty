@@ -8,7 +8,7 @@
 %% 
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesPackage{mb-layout}[2026/10/08 v1.1 MatinBook Layout System]
+\ProvidesPackage{mb-layout}[2026/10/08 v1.2 MatinBook Layout System]
 
 %========================================================================
 % MB-LAYOUT — PAGE LAYOUT CONFIGURATION
@@ -175,8 +175,8 @@
 % Draft Watermark
 %------------------------------------------------------------------------
 \if@matin@draft
+    \RequirePackage{draftwatermark}
     \AtBeginDocument{%
-        \RequirePackage{draftwatermark}%
         \SetWatermarkText{\lr{DRAFT}}%
         \SetWatermarkScale{1.5}%
         \SetWatermarkColor[gray]{0.9}%
