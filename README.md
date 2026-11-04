@@ -426,8 +426,13 @@ x = 5  |\pcc{مقدار متغیر}|
 \cref{thm:label}      % Theorem reference
 \cref{fig:label}      % Figure reference
 \cref{tab:label}      % Table reference
-\cref{lst:label}      % Code reference
+\cref{code:label}     % Code reference
 ```
+
+> **Note:** The label type for code listings is `listingcounter`.
+> Use `\cref{code:factorial}` to get "کد ۱.۱" in Persian or
+> "Code 1.1" in English. The `\coderef{...}` command is a legacy
+> helper that uses `\ref`; prefer `\cref{...}`.
 
 #### Margin Notes
 

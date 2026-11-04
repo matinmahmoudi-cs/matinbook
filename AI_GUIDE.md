@@ -648,6 +648,7 @@ These helpers are provided by `mb-theorem.sty` and delegate to `\cref`:
 | `\pcc{text}` | `\pcc{متن فارسی}` | Persian comment (with `#`) inside a minted block |
 | `\codecaption{title}` | `\codecaption{عنوان کد}` | Code caption with numbering |
 | `\coderef{label}` | `\coderef{code:hello}` | Reference to code listing |
+| `\cref{label}` | `\cref{code:hello}` | Smart reference (recommended) |
 
 > **Note on `\pc` and `\pcc`:**
 >
@@ -1491,6 +1492,12 @@ def factorial(n: int) -> int:
 \codecaption{محاسبه فاکتوریل}
 \label{code:factorial}
 ```
+
+> **Note:** `\cref{code:factorial}` produces "کد ۱.۱" in Persian and
+> "Code 1.1" in English. The label type is `listingcounter`, which
+> is mapped to `\codename` in `fa-IR.sty` / `en-US.sty`. Do not
+> redefine `\crefname{listingcounter}` in your document; do it in
+> a locale file if needed.
 
 ### Code with Persian Comments (using `\pc` or `\pcc`)
 

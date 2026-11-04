@@ -141,10 +141,12 @@
 %------------------------------------------------------------------------
 % Cleveref
 %------------------------------------------------------------------------
-\AtBeginDocument{%
-    \crefname{listingcounter}{\codename}{\codename}%
-    \Crefname{listingcounter}{\codename}{\codename}%
-}
+% NOTE: \crefname{listingcounter} is defined in fa-IR.sty and
+% en-US.sty, because mb-code is loaded in Phase 1 (before xepersian
+% and before the locale files). Defining it here would fail because
+% \codename is not yet defined, and deferring to \AtBeginDocument
+% would be too late for cleveref (which processes \cref at the
+% point of use in the body).
 
 
 %------------------------------------------------------------------------
