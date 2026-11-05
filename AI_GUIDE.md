@@ -2,10 +2,10 @@
 
 ## Complete Reference for AI-Assisted Academic Book Writing
 
-**Version:** 1.2
+**Version:** 1.3
 **Target:** Persian technical books in programming, mathematics, and computer science
 **Engine:** XeLaTeX (mandatory)
-**Last Updated:** Mehr 1405 / October 2026
+**Last Updated:** Mehr 1405 / October 2026 (v1.3)
 
 ---
 
@@ -319,40 +319,40 @@ MatinBook v1.1 provides **two box families**:
 > The `matin-outline` family keeps its vertical line on the **correct side**
 > of each broken piece (odd/even page) via `underlay first/middle/last`.
 
-### Theorem Family (Blue Theme — shared counter)
+### Theorem Family (Blue Theme — independent counters)
 
-All theorem-family environments **share a single counter** (per Persian LaTeX community consensus, to help readers locate theorems faster).
+Each numbered environment has its **own independent counter**, reset at every chapter. This is the standard behavior in most textbooks: a theorem, a lemma, and a definition in the same chapter all start at 1.1, 1.2, ...
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `theorem` | matin@thmcounter (shared) | matin-theorem (blue) | قضیه |
-| `lemma` | matin@thmcounter (shared) | matin-lemma (blue) | لم |
-| `corollary` | matin@thmcounter (shared) | matin-corollary (blue) | نتیجه |
-| `proposition` | matin@thmcounter (shared) | matin-proposition (blue) | گزاره |
+| `theorem` | `matin@theorem` (independent) | matin-theorem (blue) | قضیه |
+| `lemma` | `matin@lemma` (independent) | matin-lemma (blue) | لم |
+| `corollary` | `matin@corollary` (independent) | matin-corollary (blue) | نتیجه |
+| `proposition` | `matin@proposition` (independent) | matin-proposition (blue) | گزاره |
 
 ### Definition Family (Green)
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `definition` | matin@thmcounter (shared) | matin-definition | تعریف |
+| `definition` | `matin@definition` (independent) | matin-definition | تعریف |
 
 ### Example Family (Orange — outline style)
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `example` | matin@thmcounter (shared) | matin-example-outline | مثال |
+| `example` | `matin@example` (independent) | matin-example-outline | مثال |
 
 ### Remark Family (Red)
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `remark` | matin@thmcounter (shared) | matin-remark | نکته |
+| `remark` | `matin@remark` (independent) | matin-remark | نکته |
 
 ### Exercise Family (Purple)
 
 | Environment | Counter | Color | Persian Title |
 |-------------|---------|-------|---------------|
-| `exercise` | matin@thmcounter (shared) | matin-exercise | تمرین |
+| `exercise` | `matin@exercise` (independent) | matin-exercise | تمرین |
 
 ### Solution / Proof (Green / Gray — outline style)
 
@@ -461,29 +461,34 @@ Labels MUST be placed INSIDE the environment, AFTER any optional title argument:
 \label{thm:fundamental}
 ```
 
-### IMPORTANT: Shared Counter Behavior
+### Independent Counters
 
-Because all theorem-family environments share the `matin@thmcounter`, the numbering is **continuous**:
+Each numbered environment has its **own independent counter**,
+reset at every chapter. This means a theorem, a lemma, and a
+definition in the same chapter all start at 1.1, 1.2, ...
 
 ```latex
 \begin{definition}[Graph]  % Number 1.1
     ...
 \end{definition}
 
-\begin{theorem}[Euler]     % Number 1.2
+\begin{theorem}[Euler]     % Number 1.1
     ...
 \end{theorem}
 
-\begin{lemma}[Handshake]   % Number 1.3
+\begin{lemma}[Handshake]   % Number 1.1
     ...
 \end{lemma}
 
-\begin{example}            % Number 1.4
+\begin{example}            % Number 1.1
     ...
 \end{example}
 ```
 
-> 💡 **Tip:** This is **intentional** — Persian LaTeX community prefers shared numbering so readers don't have to search through multiple sequences.
+> 💡 **Tip:** Each environment type starts from 1 in every chapter.
+> This is the standard behavior in most textbooks. If you need
+> a shared counter for a specific book, you can override the
+> counter with `\newcounter` in your preamble.
 
 ### Title Format
 
@@ -2058,6 +2063,18 @@ Persian names are defined via `\crefname`:
 \crefname{remark}{نکته}{نکات}
 \crefname{exercise}{تمرین}{تمرین‌ها}
 \crefname{proposition}{گزاره}{گزاره‌ها}
+
+% Since Persian has no case distinction, we also define \Crefname
+% (used by \Cref) with the same singular/plural forms. This ensures
+% that both \cref and \Cref produce correct Persian text.
+\Crefname{theorem}{قضیه}{قضایا}
+\Crefname{lemma}{لم}{لم‌ها}
+\Crefname{corollary}{نتیجه}{نتایج}
+\Crefname{proposition}{گزاره}{گزاره‌ها}
+\Crefname{definition}{تعریف}{تعاریف}
+\Crefname{example}{مثال}{مثال‌ها}
+\Crefname{remark}{نکته}{نکات}
+\Crefname{exercise}{تمرین}{تمرین‌ها}
 ```
 
 ### IMPORTANT: Load Order
@@ -4894,7 +4911,7 @@ Before submitting AI-generated content, verify:
 
 This guide is the definitive reference for generating content with MatinBook v1.2. It is maintained alongside the class itself and updated with each major release.
 
-**Version:** 1.2
+**Version:** 1.3
 **Last Updated:** Mehr 1405 / October 2026
 **Maintained by:** Matin Mahmoudi
 **License:** MIT (same as MatinBook)

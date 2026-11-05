@@ -38,6 +38,7 @@
 - **Two box families:**
   - **`matinbox`** (Boyer-style): solid colored title bar, white body, sharp corners — used by `theorem`, `lemma`, `corollary`, `proposition`, `definition`, `remark`, `exercise`.
   - **`matin-outline`** (RTL outline): right vertical line + horizontal rules, white body, black bold title — used by `example`, `proof`, `solution`.
+- **Independent counters:** Each environment type (theorem, lemma, definition, ...) has its own counter, reset at every chapter. A theorem and a lemma in the same chapter both start at 1.1.
 - **Breakable boxes:** Long boxes span multiple pages; the outline family keeps its vertical line on the correct side of each broken piece.
 - **Mathematics:** Custom operators, smart delimiters, matrix commands, number sets (ℕ, ℤ, ℚ, ℝ, ℂ)
 - **Algorithms:** Pseudocode with Persian captions via `xepersian` (standard `algorithm` package)
@@ -338,6 +339,11 @@ This documentation covers:
 #### Scientific Environments
 
 ```latex
+% Each environment has its own independent counter.
+% In a chapter, this produces:
+%   تعریف ۱.۱
+%   قضیه ۱.۱
+%   لم ۱.۱
 \begin{theorem}[Title] ... \end{theorem}
 \begin{lemma}[Title] ... \end{lemma}
 \begin{corollary}[Title] ... \end{corollary}
@@ -805,7 +811,13 @@ See [CHANGELOG.md](CHANGELOG.md) for version history.
 - **Fixed cover design** (2-pass compilation, CMYK colors, LTR math symbols)
 - **Fixed main.tex structure** per Iranian publishing standards
 - **Added 24 integration tests** (was 22)
-### v1.2 (Mehr 1405 / مهر ۱۴۰۵) — Current
+### v1.3 (Mehr 1405 / مهر ۱۴۰۵) — Current
+
+**Changed:**
+- **`mb-theorem`:** Each environment now has its own independent counter (`matin@theorem`, `matin@lemma`, ...) reset per chapter, instead of sharing a single `matin@thmcounter`. This produces the standard textbook numbering, e.g. `تعریف ۱.۱`, `قضیه ۱.۱`, `لم ۱.۱`.
+- **`mb-theorem`:** Added `\Crefname` for all environments, so `\Cref` produces correct Persian text.
+
+### v1.2 (Mehr 1405 / مهر ۱۴۰۵)
 
 **Added:**
 - **`mb-table`** — New module for table configuration using `tabularray`
