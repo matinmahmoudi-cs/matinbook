@@ -1,21 +1,22 @@
 %%
 %% This is file `mb-theorem.sty',
 %% part of the MatinBook project.
-%% 
+%%
 %% Copyright (C) 2025-2026 Matin Mahmoudi
-%% 
+%%
 %% Repository: https://github.com/matinmahmoudi-cs/matinbook
-%% 
+%%
 
 \NeedsTeXFormat{LaTeX2e}[2023/06/01]
-\ProvidesPackage{mb-theorem}[2026/10/08 v1.2 MatinBook Theorem System]
+\ProvidesPackage{mb-theorem}[2026/10/08 v1.3 MatinBook Theorem System (Independent Counters)]
 
 %========================================================================
-% MB-THEOREM — THEOREM ENVIRONMENTS
+% MB-THEOREM — THEOREM ENVIRONMENTS (Independent Counters)
 %========================================================================
 %
 % Purpose:
-%   Define theorem-like environments with two visual styles.
+%   Define theorem-like environments with two visual styles, each
+%   with its own independent counter that resets at every chapter.
 %
 % Design families (from mb-boxes):
 %   1. matinbox      — Boyer-style (solid title bar, white body)
@@ -25,31 +26,70 @@
 %   Family 1 (matinbox):
 %     theorem, lemma, corollary, proposition,
 %     definition, remark, exercise
-%
 %   Family 2 (matin-outline):
 %     example, proof, solution
 %
-% Architecture:
-%   - All numbered environments share counter: matin@thmcounter
-%   - Counter resets per chapter
-%   - Optional title: \begin{theorem}[نام] → "قضیه ۱.۱: نام"
+% Counter architecture:
+%   Each numbered environment has its OWN counter (matin@<name>),
+%   reset per chapter. This means a theorem, a lemma, and a
+%   definition in the same chapter all start at 1.1, 1.2, ...
+%   independently. This is the standard behavior in most textbooks.
 %
-% Reference helpers:
-%   \thmref, \lemref, \corref, \propref, \defref,
-%   \exref, \remref, \excref
+% Why independent counters?
+%   In v1.2, all numbered environments shared a single counter
+%   (matin@thmcounter), so "قضیه ۱.۱", "لم ۱.۲", "تعریف ۱.۳" were
+%   produced. This was confusing for readers, who expect each
+%   environment type to start from 1. This version fixes that.
+%
+% Usage:
+%   \begin{theorem}[optional title] ... \end{theorem}
+%   \begin{lemma}[optional title] ... \end{lemma}
+%   ...
+%   The \label must be placed inside the environment, after the
+%   optional title.
 %
 %========================================================================
 
 
 %------------------------------------------------------------------------
-% Shared Counter
+% Independent Counters per Environment (Reset per chapter)
 %------------------------------------------------------------------------
-\newcounter{matin@thmcounter}[chapter]
-\renewcommand{\thematin@thmcounter}{\thechapter.\arabic{matin@thmcounter}}
+% Each environment gets its own counter, e.g. matin@theorem. The
+% [chapter] argument makes LaTeX reset the counter at every
+% \chapter command, so numbering restarts at 1 in each chapter.
+%
+% The \the<counter> macro is redefined to produce the Iranian
+% standard "chapter.number" format, e.g. "1.1", "1.2", etc.
+%------------------------------------------------------------------------
+\newcounter{matin@theorem}[chapter]
+\newcounter{matin@lemma}[chapter]
+\newcounter{matin@corollary}[chapter]
+\newcounter{matin@proposition}[chapter]
+\newcounter{matin@definition}[chapter]
+\newcounter{matin@remark}[chapter]
+\newcounter{matin@exercise}[chapter]
+\newcounter{matin@example}[chapter]
+
+\renewcommand{\thematin@theorem}{\thechapter.\arabic{matin@theorem}}
+\renewcommand{\thematin@lemma}{\thechapter.\arabic{matin@lemma}}
+\renewcommand{\thematin@corollary}{\thechapter.\arabic{matin@corollary}}
+\renewcommand{\thematin@proposition}{\thechapter.\arabic{matin@proposition}}
+\renewcommand{\thematin@definition}{\thechapter.\arabic{matin@definition}}
+\renewcommand{\thematin@remark}{\thechapter.\arabic{matin@remark}}
+\renewcommand{\thematin@exercise}{\thechapter.\arabic{matin@exercise}}
+\renewcommand{\thematin@example}{\thechapter.\arabic{matin@example}}
 
 
 %------------------------------------------------------------------------
 % Title Builder
+%------------------------------------------------------------------------
+% Builds the title of a theorem-like box, e.g.:
+%   \matin@thmtitle{قضیه}{}          → "قضیه ۱.۱"
+%   \matin@thmtitle{قضیه}{نام قضیه}  → "قضیه ۱.۱: نام قضیه"
+%
+% The number comes from \thetcbcounter, which tcolorbox sets to
+% the value of the counter passed via `use counter=...` in
+% \matin@newthm below.
 %------------------------------------------------------------------------
 \newcommand{\matin@thmtitle}[2]{%
     #1~\thetcbcounter
@@ -58,15 +98,22 @@
 
 
 %------------------------------------------------------------------------
-% Helper: Create Themed Environment
+% Helper: Create Themed Environment with Specific Counter
 %------------------------------------------------------------------------
 % #1 = environment name (e.g., theorem)
 % #2 = display name     (e.g., قضیه)
 % #3 = tcolorbox style  (e.g., matin-theorem)
-% #4 = body font style  (itshape, normalfont, \bfseries\color{black}, ...)
+% #4 = body font style  (itshape, normalfont, \bfseries\color{black})
+% #5 = counter name     (e.g., matin@theorem)
+%
+% The `use counter=#5` option tells tcolorbox to use the given
+% counter for numbering. tcolorbox increments the counter, sets
+% \thetcbcounter to its \the<counter> value, and calls the title
+% builder. This gives each environment its own independent
+% counter while keeping the same visual style.
 %------------------------------------------------------------------------
-\newcommand{\matin@newthm}[4]{%
-    \newtcolorbox[use counter=matin@thmcounter]{#1}[1][]{%
+\newcommand{\matin@newthm}[5]{%
+    \newtcolorbox[use counter=#5]{#1}[1][]{%
         #3,
         title={\matin@thmtitle{#2}{##1}},
         fontupper={#4}%
@@ -77,28 +124,34 @@
 %------------------------------------------------------------------------
 % Theorem Family (Family 1 — matinbox, blue, italic body)
 %------------------------------------------------------------------------
-\matin@newthm{theorem}    {قضیه}  {matin-theorem}    {\itshape}
-\matin@newthm{lemma}      {لم}    {matin-lemma}      {\itshape}
-\matin@newthm{corollary}  {نتیجه} {matin-corollary}  {\itshape}
-\matin@newthm{proposition}{گزاره} {matin-proposition}{\itshape}
+\matin@newthm{theorem}    {قضیه}  {matin-theorem}    {\itshape}{matin@theorem}
+\matin@newthm{lemma}      {لم}    {matin-lemma}      {\itshape}{matin@lemma}
+\matin@newthm{corollary}  {نتیجه} {matin-corollary}  {\itshape}{matin@corollary}
+\matin@newthm{proposition}{گزاره} {matin-proposition}{\itshape}{matin@proposition}
 
 
 %------------------------------------------------------------------------
 % Definition Family (Family 1 — matinbox, normal body)
 %------------------------------------------------------------------------
-\matin@newthm{definition}{تعریف}{matin-definition}{\normalfont}
-\matin@newthm{remark}    {نکته} {matin-remark}    {\normalfont}
-\matin@newthm{exercise}  {تمرین}{matin-exercise}  {\normalfont}
+\matin@newthm{definition}{تعریف}{matin-definition}{\normalfont}{matin@definition}
+\matin@newthm{remark}    {نکته} {matin-remark}    {\normalfont}{matin@remark}
+\matin@newthm{exercise}  {تمرین}{matin-exercise}  {\normalfont}{matin@exercise}
 
 
 %------------------------------------------------------------------------
 % Example (Family 2 — outline, numbered, orange, black bold body)
 %------------------------------------------------------------------------
-\matin@newthm{example}   {مثال} {matin-example-outline} {\bfseries\color{black}}
+% The example environment is numbered like the others, but uses
+% the outline style (from mb-boxes) instead of the Boyer-style box.
+%------------------------------------------------------------------------
+\matin@newthm{example}   {مثال} {matin-example-outline} {\bfseries\color{black}}{matin@example}
 
 
 %------------------------------------------------------------------------
 % Solution (Family 2 — outline, no counter, green, black bold body)
+%------------------------------------------------------------------------
+% Solutions are not numbered, so they don't need a counter. They
+% use the outline style with a fixed title.
 %------------------------------------------------------------------------
 \newtcolorbox{solution}{
     matin-solution-outline,
@@ -110,8 +163,12 @@
 %------------------------------------------------------------------------
 % Proof (Family 2 — outline, no counter, gray, black bold body, \qed)
 %------------------------------------------------------------------------
-% amsthm (loaded in mb-core) defines \proof. We clear it first
-% to avoid "Command \proof already defined" error.
+% amsthm (loaded in mb-core) already defines \proof. We clear it
+% first to avoid a "Command \proof already defined" error, then
+% redefine it as a tcolorbox.
+%
+% The proof is not numbered, and ends with a QED square (\qedsymbol)
+% aligned to the right edge.
 %------------------------------------------------------------------------
 \let\proof\relax
 \let\endproof\relax
@@ -127,6 +184,14 @@
 %------------------------------------------------------------------------
 % Reference Helpers
 %------------------------------------------------------------------------
+% Semantic aliases for \cref. These make the source more readable:
+%   \thmref{thm:main}   instead of   \cref{thm:main}
+%   \lemref{lem:aux}    instead of   \cref{lem:aux}
+%   ...
+%
+% All of them delegate to \cref, which uses the names defined
+% below via \crefname.
+%------------------------------------------------------------------------
 \newcommand{\thmref}[1]{\cref{#1}}
 \newcommand{\lemref}[1]{\cref{#1}}
 \newcommand{\corref}[1]{\cref{#1}}
@@ -138,17 +203,26 @@
 
 
 %------------------------------------------------------------------------
-% Cleveref Names
+% Cleveref Aliases & Names
 %------------------------------------------------------------------------
-\crefalias{theorem}    {matin@thmcounter}
-\crefalias{lemma}      {matin@thmcounter}
-\crefalias{corollary}  {matin@thmcounter}
-\crefalias{proposition}{matin@thmcounter}
-\crefalias{definition} {matin@thmcounter}
-\crefalias{example}    {matin@thmcounter}
-\crefalias{remark}     {matin@thmcounter}
-\crefalias{exercise}   {matin@thmcounter}
+% Each environment has its own counter (matin@theorem, matin@lemma,
+% ...). We tell cleveref to treat each environment name as an alias
+% for its counter, so that \cref{thm:main} knows it refers to
+% matin@theorem.
+%
+% This is necessary because tcolorbox creates a counter that is not
+% automatically recognized by cleveref under the environment name.
+%------------------------------------------------------------------------
+\crefalias{theorem}    {matin@theorem}
+\crefalias{lemma}      {matin@lemma}
+\crefalias{corollary}  {matin@corollary}
+\crefalias{proposition}{matin@proposition}
+\crefalias{definition} {matin@definition}
+\crefalias{example}    {matin@example}
+\crefalias{remark}     {matin@remark}
+\crefalias{exercise}   {matin@exercise}
 
+% Persian names for \cref output (singular and plural forms).
 \crefname{theorem}    {قضیه} {قضایا}
 \crefname{lemma}      {لم}   {لم‌ها}
 \crefname{corollary}  {نتیجه}{نتایج}
@@ -158,6 +232,9 @@
 \crefname{remark}     {نکته} {نکات}
 \crefname{exercise}   {تمرین}{تمرین‌ها}
 
+% \Cref is the capitalized version of \cref. Since Persian has no
+% case distinction, we mirror the singular/plural forms. This
+% ensures that both \cref and \Cref produce correct Persian text.
 \Crefname{theorem}    {قضیه} {قضایا}
 \Crefname{lemma}      {لم}   {لم‌ها}
 \Crefname{corollary}  {نتیجه}{نتایج}
@@ -171,6 +248,6 @@
 %------------------------------------------------------------------------
 % Log
 %------------------------------------------------------------------------
-\PackageInfo{mb-theorem}{Theorem environments loaded (2 style families)}
+\PackageInfo{mb-theorem}{Theorem environments loaded with independent counters}
 
 \endinput
