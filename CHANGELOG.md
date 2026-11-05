@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [1.3.0] — 2026-10-08 (مهر ۱۴۰۵)
 
 ### Added
+
+- **`mb-theorem.sty`:** Added `\Crefname` for all eight
+  theorem environments (theorem, lemma, corollary,
+  proposition, definition, example, remark, exercise).
+  Previously only `\crefname` was defined, so `\Cref`
+  produced the default English names. Now both `\cref`
+  and `\Cref` produce correct Persian text.
 
 - **`mb-code.sty`:** Added `\pcc{...}` helper for Persian
   comments in Python (and similar languages) where the
@@ -23,28 +30,85 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
     x = 5  # مقدار متغیر
 
+- **`mb-theme-cover.sty`:** Added `\authorbio{...}` API for
+  the author biography. If called before
+  `\makebackcover`, a second block is rendered on the
+  back cover. If omitted, only the book blurb is shown.
+  Backward compatible with the existing
+  `\makebackcover{...}` signature.
+
+- **`fa-IR.sty` and `en-US.sty`:** Added `\coverauthorbio`
+  ("درباره این نویسنده" / "About the Author").
+
 ### Changed
 
-(Nothing yet.)
+- **`mb-theorem.sty`:** Replaced the shared counter
+  (`matin@thmcounter`) with per-environment counters
+  (`matin@theorem`, `matin@lemma`, `matin@corollary`,
+  `matin@proposition`, `matin@definition`, `matin@remark`,
+  `matin@exercise`, `matin@example`). Each environment
+  now has its own independent counter, reset at every
+  chapter. This produces the standard textbook numbering:
+
+      تعریف ۱.۱
+      قضیه ۱.۱
+      لم ۱.۱
+
+  instead of the previous:
+
+      تعریف ۱.۱
+      قضیه ۱.۲
+      لم ۱.۳
+
+- **`mb-references.sty`:** Changed `\hypersetup` colors from
+  RGB "blue" to CMYK "matinblue", for consistency with the
+  rest of the class. Delegated `\meqref`, `\figref`,
+  `\tabref`, `\chref`, `\secref` to `\cref`.
+
+- **`mb-theme-cover.sty`:** Replaced hardcoded
+  "MATHEMATICS / COMPUTER SCIENCE" and "ویرایش" with
+  `\covertag` and `\coveredition` (defined in
+  `fa-IR.sty` and `en-US.sty`), so the cover follows the
+  active locale.
+
+- **`matinbook.cls`:** Loaded `mb-theme-default` in Phase 3
+  (after xepersian), so the theme manifest is actually
+  used.
+
+- **All `\Provides*` version strings:** Bumped from v1.1
+  to v1.3.
 
 ### Fixed
 
-- **`mb-code.sty`:** Fixed the `\pc` helper to use a
-  double `\rl` group. A single `\rl` was not enough
-  inside a minted block because minted wraps the escaped
-  text in its own LTR group, which confuses bidi. The
-  second `\rl` forces bidi to re-detect the RTL context.
-  This is a known quirk of the xepersian + minted
-  combination.
+- **`mb-core.sty`:** Removed the duplicate
+  `draftwatermark` block (now only in `mb-layout`).
 
-- **`mb-code.sty`:** Fixed the `\pcc` helper to not carry
-  its own `|...|` delimiters. The delimiters must be
-  written explicitly by the user:
+- **`mb-layout.sty`:** Moved `\RequirePackage{draftwatermark}`
+  out of `\AtBeginDocument` (packages must be loaded in
+  the preamble, not at `\begin{document}`).
 
-    x = 5  |\pcc{مقدار متغیر}|
+- **`mb-code.sty`:** Deferred `\crefname{listingcounter}`
+  to `\AtBeginDocument`, so `\codename` is defined
+  before use.
 
-  The previous definition `|\pc{\#~#1}|` caused minted to
-  render the bare macro name `\pcc` as plain text.
+- **`mb-theme-cover.sty`:** Added a note about the
+  ineffective duplicate `matinmediumgray` RGB definition
+  (the CMYK definition from `mb-theme-colors.sty` wins).
+
+### Known Issues
+
+- **`mb-table`:** The `tabularray` package requires TeX Live 2021
+  or later. Users on older distributions should install it via
+  `tlmgr install tabularray ninecolors`.
+
+- **`mb-code`:** `bgcolorpadding` not available in TeX Live 2023's
+  `fvextra`.
+
+- **`mb-theme-colors`:** CMYK values are approximate (converted
+  from RGB).
+
+- **`mb-layout`:** `\mnote` uses `\marginpar`, which cannot be
+  used inside `tcolorbox` or `figure`.
 
 
 ---
@@ -249,9 +313,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   or later. Users on older distributions should install it via
   `tlmgr install tabularray ninecolors`.
 
-- **`mb-theorem`:** `\theoremstyle{remark}` produces italic title
-  for 'نکته'. To be fixed in v1.3.
-
 - **`mb-code`:** `bgcolorpadding` not available in TeX Live 2023's
   `fvextra`.
 
@@ -261,12 +322,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`mb-layout`:** `\mnote` uses `\marginpar`, which cannot be
   used inside `tcolorbox` or `figure`.
 
-### Planned for v1.3
+### Planned for v1.4
 
 - **`matinbook.cls`:** Add `\DeclareRelease` for backward
   compatibility with v1.0.
-- **`mb-theorem`:** Unify all `\theoremstyle` calls to
-  `definition` (fix italic title for 'نکته').
 - **`mb-code`:** Migrate to `minted` v3's `bgcolorpadding`
   (requires TeX Live 2024+).
 - **`mb-code`:** Replace manual `codecounter` with minted's
